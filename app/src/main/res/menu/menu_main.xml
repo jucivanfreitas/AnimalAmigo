@@ -2,9 +2,23 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     tools:context="com.example.projetoamigoanimal.MainActivity">
+    <group android:id="@+id/group_log_off">
+        <item
+            android:title="@string/txt_entrar"
+            app:showAsAction="always" />
+    </group>
     <item
         android:id="@+id/action_settings"
         android:orderInCategory="100"
         android:title="@string/action_settings"
+        android:visible="false"
         app:showAsAction="never" />
+    <group android:id="@+id/group_log_in" >
+        <item
+            android:id="@+id/menu_meus_anuncios"
+            android:title="@string/txt_meus_anuncios" />
+        <item
+            android:id="@+id/menu_sair"
+            android:title="@string/txt_sair" />
+    </group>
 </menu>

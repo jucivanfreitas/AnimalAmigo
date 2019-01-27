@@ -35,6 +35,28 @@ public class MainActivity extends AppCompatActivity {
         return true;
     }
 
+
+    //seleçioan menu de acordo com omodo logado ou não logado
+    @Override
+    public boolean onPrepareOptionsMenu(Menu menu){
+
+            usuarioLogado();
+        menu.setGroupVisible(R.id.group_log_in,false);
+        menu.setGroupVisible(R.id.group_log_off,false);
+
+            if (usuarioLogado()=="2"){//se logado
+
+                menu.setGroupVisible(R.id.group_log_in,true);
+            }else{//se não logado
+
+                menu.setGroupVisible(R.id.group_log_in,false);
+                menu.setGroupVisible(R.id.group_log_off,true);
+
+            }
+
+        return super.onPrepareOptionsMenu(menu);
+    }
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         // Handle action bar item clicks here. The action bar will
@@ -48,5 +70,15 @@ public class MainActivity extends AppCompatActivity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+
+    private String usuarioLogado(){
+        //este metodo irá buscar informação se usuario está ou não logado
+        // TODO: 27/01/2019 após realizar implementação de firebase , implementar rotina para pesquisar usuario logado ou nao alogado  afim de definir menu
+
+        String tipo="1";
+        return tipo;
+
     }
 }
