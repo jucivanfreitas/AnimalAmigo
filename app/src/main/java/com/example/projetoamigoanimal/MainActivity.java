@@ -1,5 +1,6 @@
 package com.example.projetoamigoanimal;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -44,12 +45,12 @@ public class MainActivity extends AppCompatActivity {
         menu.setGroupVisible(R.id.group_log_in,false);
         menu.setGroupVisible(R.id.group_log_off,false);
 
-            if (usuarioLogado()=="2"){//se logado
+            if (usuarioLogado()=="1"){//se logado
 
                 menu.setGroupVisible(R.id.group_log_in,true);
             }else{//se não logado
 
-                menu.setGroupVisible(R.id.group_log_in,false);
+
                 menu.setGroupVisible(R.id.group_log_off,true);
 
             }
@@ -64,6 +65,14 @@ public class MainActivity extends AppCompatActivity {
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
 
+
+        switch (item.getItemId()){
+
+            case R.id.menu_logar:
+                startActivity(new Intent(getApplicationContext(),LoginActivity.class));
+                break;
+        }
+
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
             return true;
@@ -77,7 +86,7 @@ public class MainActivity extends AppCompatActivity {
         //este metodo irá buscar informação se usuario está ou não logado
         // TODO: 27/01/2019 após realizar implementação de firebase , implementar rotina para pesquisar usuario logado ou nao alogado  afim de definir menu
 
-        String tipo="1";
+        String tipo="2";
         return tipo;
 
     }
