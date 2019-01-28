@@ -98,11 +98,15 @@
     <EditText
         android:id="@+id/editText_cad_descrição"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="100dp"
         android:layout_margin="9dp"
+        android:capitalize="words"
         android:ems="10"
         android:hint="Descrição do animal"
-        android:inputType="textPersonName" />
+        android:inputType="textPersonName"
+        android:lineSpacingExtra="10sp"
+        android:lines="@android:integer/config_shortAnimTime"
+        android:maxLength="@android:integer/config_mediumAnimTime" />
 
     <Button
         android:id="@+id/button_cad"
