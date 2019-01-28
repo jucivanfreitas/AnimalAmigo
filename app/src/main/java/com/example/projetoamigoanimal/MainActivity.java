@@ -19,7 +19,7 @@ public class MainActivity extends AppCompatActivity {
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        FloatingActionButton fab = findViewById(R.id.fab);
+        FloatingActionButton fab = findViewById(R.id.fabcadastrar);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -95,7 +95,7 @@ public class MainActivity extends AppCompatActivity {
         //este metodo irá buscar informação se usuario está ou não logado
         // TODO: 27/01/2019 após realizar implementação de firebase , implementar rotina para pesquisar usuario logado ou nao alogado  afim de definir menu
 
-        String tipo="2";
+        String tipo="1";
         return tipo;
 
     }

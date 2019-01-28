@@ -49,20 +49,20 @@
         android:orientation="horizontal">
 
         <Spinner
-            android:id="@+id/spinner"
+            android:id="@+id/spinner_cad_Especie"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1" />
 
         <Spinner
-            android:id="@+id/spinner2"
+            android:id="@+id/spinner_cad_Sexo"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1" />
     </LinearLayout>
 
     <EditText
-        android:id="@+id/editTextNomeAnimal"
+        android:id="@+id/editText_cad_NomeAnimal"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginBottom="16dp"
@@ -77,36 +77,38 @@
         android:orientation="horizontal">
 
         <Spinner
-            android:id="@+id/spinnerEspecie"
+            android:id="@+id/spinner_cad_idade"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1" />
 
         <Spinner
-            android:id="@+id/spinnerSexo"
+            android:id="@+id/spinner_cad_porte"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1" />
 
         <Spinner
-            android:id="@+id/spinnerIdade"
+            android:id="@+id/spinner_cad_vacina"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1" />
     </LinearLayout>
 
     <EditText
-        android:id="@+id/editText4"
+        android:id="@+id/editText_cad_descrição"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_margin="9dp"
         android:ems="10"
         android:hint="Descrição do animal"
         android:inputType="textPersonName" />
 
     <Button
-        android:id="@+id/button"
+        android:id="@+id/button_cad"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:elevation="10dp"
         android:text="Cadastrar Anúncio" />
 
 </LinearLayout>
