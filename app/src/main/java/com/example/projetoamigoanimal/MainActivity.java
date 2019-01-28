@@ -71,6 +71,15 @@ public class MainActivity extends AppCompatActivity {
             case R.id.menu_logar:
                 startActivity(new Intent(getApplicationContext(),LoginActivity.class));
                 break;
+            case R.id.menu_sair:
+                // TODO: 27/01/2019 fazer logout
+
+              invalidateOptionsMenu();//apo´s habilitar função de logi logout retorna ao menu group para usuário deslogados
+
+                break;
+            case R.id.menu_meus_anuncios:
+                startActivity(new Intent(getApplicationContext(),MeusAnunciosActivity.class));
+                break;
         }
 
         //noinspection SimplifiableIfStatement
