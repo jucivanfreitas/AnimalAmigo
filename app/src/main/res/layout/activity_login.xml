@@ -61,7 +61,7 @@
                     android:inputType="textPassword"
                     android:maxLines="1"
                     android:singleLine="true"
-                    android:autofillHints="" />
+                    android:autofillHints="" tools:targetApi="o"/>
 
             </android.support.design.widget.TextInputLayout>
 
