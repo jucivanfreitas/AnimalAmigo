@@ -1,4 +1,4 @@
-package com.example.projetoamigoanimal;
+package com.celvansystems.projetoamigoanimal;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -6,6 +6,8 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
+
+import com.example.projetoamigoanimal.R;
 
 public class MeusAnunciosActivity extends AppCompatActivity {
 
@@ -30,7 +32,7 @@ public class MeusAnunciosActivity extends AppCompatActivity {
 
     public void abriCadastro(){
 
-        startActivity(new Intent(getApplicationContext(),CadastrarAnuncioActivity.class));
+        startActivity(new Intent(getApplicationContext(), CadastrarAnuncioActivity.class));
 
 
 

@@ -10,6 +10,8 @@ import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import com.celvansystems.projetoamigoanimal.MeusAnunciosActivity;
+
 public class MainActivity extends AppCompatActivity {
 
     @Override
@@ -69,7 +71,7 @@ public class MainActivity extends AppCompatActivity {
         switch (item.getItemId()){
 
             case R.id.menu_logar:
-                startActivity(new Intent(getApplicationContext(),LoginActivity.class));
+               startActivity(new Intent(getApplicationContext(),LoginActivity.class));
                 break;
             case R.id.menu_sair:
                 // TODO: 27/01/2019 fazer logout
@@ -78,7 +80,7 @@ public class MainActivity extends AppCompatActivity {
 
                 break;
             case R.id.menu_meus_anuncios:
-                startActivity(new Intent(getApplicationContext(),MeusAnunciosActivity.class));
+                startActivity(new Intent(getApplicationContext(), MeusAnunciosActivity.class));
                 break;
         }
 

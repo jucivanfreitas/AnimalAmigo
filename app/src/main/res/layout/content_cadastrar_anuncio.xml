@@ -9,7 +9,7 @@
     android:orientation="vertical"
     android:padding="16dp"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
-    tools:context=".CadastrarAnuncioActivity"
+    tools:context="com.celvansystems.projetoamigoanimal.CadastrarAnuncioActivity"
     tools:showIn="@layout/activity_cadastrar_anuncio">
 
     <LinearLayout

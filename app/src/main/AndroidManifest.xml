@@ -14,16 +14,16 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
-            android:name=".CadastrarAnuncioActivity"
+            android:name="com.celvansystems.projetoamigoanimal.CadastrarAnuncioActivity"
             android:label="@string/title_activity_cadastrar_anuncio"
-            android:parentActivityName=".MeusAnunciosActivity"
+            android:parentActivityName="com.celvansystems.projetoamigoanimal.MeusAnunciosActivity"
             android:theme="@style/AppTheme.NoActionBar">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.example.projetoamigoanimal.MeusAnunciosActivity" />
+                android:value="com.example.projetoamigoanimal.com.celvansystems.projetoamigoanimal.MeusAnunciosActivity" />
         </activity>
         <activity
-            android:name=".MeusAnunciosActivity"
+            android:name="com.celvansystems.projetoamigoanimal.MeusAnunciosActivity"
             android:label="@string/title_activity_meus_anuncios"
             android:parentActivityName=".MainActivity"
             android:theme="@style/AppTheme.NoActionBar">
