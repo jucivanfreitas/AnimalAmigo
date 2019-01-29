@@ -16,7 +16,7 @@
             android:id="@+id/menu_sair"
             android:title="@string/txt_sair" />
     </group>
-    <group android:visible="false">
+    <group>
         <item
             android:id="@+id/action_settings"
             android:orderInCategory="100"

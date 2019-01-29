@@ -10,7 +10,6 @@ import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
 
-import com.example.projetoamigoanimal.R;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -40,26 +39,8 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-    //seleçioan menu de acordo com omodo logado ou não logado
-    @Override
-    public boolean onPrepareOptionsMenu(Menu menu){
+    //seleçioan menu de acordo com o modo logado ou não logado
 
-            usuarioLogado();
-        menu.setGroupVisible(R.id.group_log_in,false);
-        menu.setGroupVisible(R.id.group_log_off,false);
-
-            if (usuarioLogado()=="1"){//se logado
-
-                menu.setGroupVisible(R.id.group_log_in,true);
-            }else{//se não logado
-
-
-                menu.setGroupVisible(R.id.group_log_off,true);
-
-            }
-
-        return super.onPrepareOptionsMenu(menu);
-    }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -74,6 +55,13 @@ public class MainActivity extends AppCompatActivity {
             case R.id.menu_logar:
                 startActivity(new Intent(getApplicationContext(),LoginActivity.class));
                 break;
+            case R.id.menu_meus_anuncios:
+                startActivity(new Intent(getApplicationContext(),MeusAnunciosActivity.class));
+                break;
+
+            case R.id.menu_sair:
+                // TODO: 29/01/2019 implementar Log Out 
+                break;   
         }
 
         //noinspection SimplifiableIfStatement
