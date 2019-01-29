@@ -7,7 +7,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 
-import com.example.projetoamigoanimal.R;
+import com.celvansystems.projetoamigoanimal.R;
 
 public class CadastrarAnuncioActivity extends AppCompatActivity {
 
