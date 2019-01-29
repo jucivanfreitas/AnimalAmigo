@@ -61,7 +61,7 @@ public class MainActivity extends AppCompatActivity {
 
             case R.id.menu_sair:
                 // TODO: 29/01/2019 implementar Log Out 
-                break;   
+                break;
         }
 
         //noinspection SimplifiableIfStatement
