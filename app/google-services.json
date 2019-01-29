@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "401004222439",
+    "firebase_url": "https://animalamigo-76912.firebaseio.com",
+    "project_id": "animalamigo-76912",
+    "storage_bucket": "animalamigo-76912.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:401004222439:android:91c1cf8cbe3698d1",
+        "android_client_info": {
+          "package_name": "com.celvansystems.projetoamigoanimal"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "401004222439-fpgc320ar0giebe3a9icj190sscsm18q.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.celvansystems.projetoamigoanimal",
+            "certificate_hash": "e7329d392119f04d690c0f3eb4c6511d94462612"
+          }
+        },
+        {
+          "client_id": "401004222439-6jkh05354iudp48p74gevduv1g297sip.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAA8_2fZUttahGz84TIg004DLF0ZXpPKig"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "401004222439-6jkh05354iudp48p74gevduv1g297sip.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
