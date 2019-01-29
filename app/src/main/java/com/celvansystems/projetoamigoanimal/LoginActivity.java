@@ -27,6 +27,7 @@ import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Switch;
 import android.widget.TextView;
 
 import java.util.ArrayList;
@@ -62,6 +63,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
     private View mProgressView;
     private View mLoginFormView;
     private Button btnLogin;
+    private Switch swtLoginCadastrar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -95,13 +97,13 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         mProgressView = findViewById(R.id.login_progress);
         mPasswordView = (EditText) findViewById(R.id.txiPassword);
         btnLogin = (Button) findViewById(R.id.btnLogin);
+        swtLoginCadastrar = (Switch) findViewById(R.id.swtLoginCadastrar);
 
     }
     private void populateAutoComplete() {
         if (!mayRequestContacts()) {
             return;
         }
-
         getLoaderManager().initLoader(0, null, this);
     }
 
@@ -197,9 +199,16 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         } else {
             // Show a progress spinner, and kick off a background task to
             // perform the user login attempt.
-            showProgress(true);
-            mAuthTask = new UserLoginTask(email, password);
-            mAuthTask.execute((Void) null);
+            if(swtLoginCadastrar.isChecked()){
+                //direcionar para a página de cadastro de usuário
+                // a desenvolver
+            } else {
+                //direciona para a activity principal
+                showProgress(true);
+                mAuthTask = new UserLoginTask(email, password);
+                mAuthTask.execute((Void) null);
+            }
+
         }
     }
 
