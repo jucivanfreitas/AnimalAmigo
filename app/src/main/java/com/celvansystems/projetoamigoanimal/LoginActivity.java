@@ -40,7 +40,7 @@ import static android.Manifest.permission.READ_CONTACTS;
 public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<Cursor> {
 
     /**
-     * Id to identity READ_CONTACTS permission request.
+     * Permissao para ler contatos.
      */
     private static final int REQUEST_READ_CONTACTS = 0;
 
@@ -61,40 +61,42 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
     private EditText mPasswordView;
     private View mProgressView;
     private View mLoginFormView;
+    private Button btnLogin;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
         setupActionBar();
-        // Set up the login form.
-        mEmailView = (AutoCompleteTextView) findViewById(R.id.txiEmail);
-        populateAutoComplete();
-
-        mPasswordView = (EditText) findViewById(R.id.txiPassword);
+        inicializarComponentes();
         mPasswordView.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
             public boolean onEditorAction(TextView textView, int id, KeyEvent keyEvent) {
                 if (id == EditorInfo.IME_ACTION_DONE || id == EditorInfo.IME_NULL) {
-                    attemptLogin();
+                    tentarLogin();
                     return true;
                 }
                 return false;
             }
         });
-
-        Button mEmailSignInButton = (Button) findViewById(R.id.btnLogin);
-        mEmailSignInButton.setOnClickListener(new OnClickListener() {
+        btnLogin.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
-                    attemptLogin();
+                tentarLogin();
             }
         });
 
-        mLoginFormView = findViewById(R.id.login_form);
-        mProgressView = findViewById(R.id.login_progress);
+        populateAutoComplete();
     }
 
+    private void inicializarComponentes(){
+        mEmailView = (AutoCompleteTextView) findViewById(R.id.txiEmail);
+        mLoginFormView = findViewById(R.id.login_form);
+        mProgressView = findViewById(R.id.login_progress);
+        mPasswordView = (EditText) findViewById(R.id.txiPassword);
+        btnLogin = (Button) findViewById(R.id.btnLogin);
+
+    }
     private void populateAutoComplete() {
         if (!mayRequestContacts()) {
             return;
@@ -154,7 +156,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
      * If there are form errors (invalid email, missing fields, etc.), the
      * errors are presented and no actual login attempt is made.
      */
-    private void attemptLogin() {
+    private void tentarLogin() {
         if (mAuthTask != null) {
             return;
         }
@@ -177,7 +179,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             cancel = true;
         }
 
-        // Check for a valid email address.
+        // checa se o e-mail é válido.
         if (TextUtils.isEmpty(email)) {
             mEmailView.setError(getString(R.string.error_field_required));
             focusView = mEmailView;
@@ -203,12 +205,14 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
 
     private boolean isEmailValid(String email) {
         //TODO: Replace this with your own logic
-        return email.contains("@");
+        boolean retorno = email.contains("@") && (email.contains("."));
+        return retorno;
     }
 
     private boolean isPasswordValid(String password) {
         //TODO: Replace this with your own logic
-        return password.length() > 4;
+        boolean retorno = password.length() > 4;
+        return retorno;
     }
 
     /**
@@ -319,6 +323,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         protected Boolean doInBackground(Void... params) {
             // TODO: attempt authentication against a network service.
 
+            boolean retorno = false;
             try {
                 // Simulate network access.
                 Thread.sleep(2000);
@@ -326,16 +331,17 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                 return false;
             }
 
-            for (String credential : DUMMY_CREDENTIALS) {
+            /*for (String credential : DUMMY_CREDENTIALS) {
                 String[] pieces = credential.split(":");
                 if (pieces[0].equals(mEmail)) {
                     // Account exists, return true if the password matches.
                     return pieces[1].equals(mPassword);
                 }
-            }
+            }*/
+
 
             // TODO: register the new account here.
-            return true;
+            return retorno;
         }
 
         @Override

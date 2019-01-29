@@ -19,4 +19,8 @@
     </string>
     <string name="title_activity_meus_anuncios">MeusAnunciosActivity</string>
     <string name="title_activity_cadastrar_anuncio">CadastrarAnuncioActivity</string>
+    <string name="cadastrar">Cadastrar</string>
+    <string name="cadastrese">Cadastre-se</string>
+    <string name="logar">Logar</string>
+
 </resources>
