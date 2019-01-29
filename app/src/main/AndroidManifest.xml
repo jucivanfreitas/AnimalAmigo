@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.example.projetoamigoanimal">
+    package="com.celvansystems.projetoamigoanimal">
 
     <!-- To auto-complete the email text field in the login form with the user's emails -->
     <uses-permission android:name="android.permission.GET_ACCOUNTS" />
@@ -20,7 +20,7 @@
             android:parentActivityName=".MainActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.example.projetoamigoanimal.MainActivity" />
+                android:value="com.celvansystems.projetoamigoanimal.MainActivity" />
         </activity>
         <activity
             android:name=".MainActivity"

@@ -42,7 +42,8 @@
                     android:hint="@string/prompt_email"
                     android:inputType="textEmailAddress"
                     android:maxLines="1"
-                    android:singleLine="true" />
+                    android:singleLine="true"
+                    android:text="@string/prompt_email" />
 
             </android.support.design.widget.TextInputLayout>
 
@@ -54,6 +55,7 @@
                     android:id="@+id/txiPassword"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:autofillHints=""
                     android:hint="@string/prompt_password"
                     android:imeActionId="6"
                     android:imeActionLabel="@string/action_sign_in_short"
@@ -61,7 +63,8 @@
                     android:inputType="textPassword"
                     android:maxLines="1"
                     android:singleLine="true"
-                    android:autofillHints="" tools:targetApi="o"/>
+                    android:text="@string/prompt_password"
+                    tools:targetApi="o" />
 
             </android.support.design.widget.TextInputLayout>
 

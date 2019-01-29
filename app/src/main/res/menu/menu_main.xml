@@ -1,7 +1,7 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:context="com.example.projetoamigoanimal.MainActivity">
+    tools:context="com.celvansystems.projetoamigoanimal.MainActivity">
     <group android:id="@+id/group_log_off">
         <item
             android:id="@+id/menu_logar"
