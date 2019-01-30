@@ -24,7 +24,8 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            app:srcCompat="@drawable/padrao" />
+            app:srcCompat="@drawable/padrao"
+            android:contentDescription="@string/todo" />
 
         <ImageView
             android:id="@+id/imageViewCadastrar2"
@@ -32,14 +33,16 @@
             android:layout_height="wrap_content"
             android:layout_margin="8dp"
             android:layout_weight="1"
-            app:srcCompat="@drawable/padrao" />
+            app:srcCompat="@drawable/padrao"
+            android:contentDescription="@string/todoo" />
 
         <ImageView
             android:id="@+id/imageViewCadastrar3"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            app:srcCompat="@drawable/padrao" />
+            app:srcCompat="@drawable/padrao"
+            android:contentDescription="@string/todo" />
     </LinearLayout>
 
     <LinearLayout
@@ -67,9 +70,10 @@
         android:layout_height="wrap_content"
         android:layout_marginBottom="16dp"
         android:ems="10"
-        android:hint="Nome do animal"
+        android:hint="@string/nome_do_animal"
         android:inputType="textPersonName"
-        android:padding="10dp" />
+        android:padding="10dp"
+        android:autofillHints="" />
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -98,21 +102,21 @@
     <EditText
         android:id="@+id/editText_cad_descrição"
         android:layout_width="match_parent"
-        android:layout_height="100dp"
+        android:layout_height="200dp"
         android:layout_margin="9dp"
-        android:capitalize="words"
         android:ems="10"
-        android:hint="Descrição do animal"
+        android:hint="@string/descricao_do_animal"
         android:inputType="textPersonName"
         android:lineSpacingExtra="10sp"
         android:lines="@android:integer/config_shortAnimTime"
-        android:maxLength="@android:integer/config_mediumAnimTime" />
+        android:maxLength="@android:integer/config_mediumAnimTime"
+        android:autofillHints="" />
 
     <Button
-        android:id="@+id/button_cad"
+        android:id="@+id/btnCadastrarAnuncio"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:elevation="10dp"
-        android:text="Cadastrar Anúncio" />
+        android:text="@string/cadastrar_anuncio" />
 
 </LinearLayout>

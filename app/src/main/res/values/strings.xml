@@ -23,5 +23,54 @@
     <string name="cadastrese">Cadastre-se</string>
     <string name="logar">Logar</string>
     <string name="anuncios">Anúncios</string>
+    <string name="cadastrar_anuncio">Cadastrar Anúncio</string>
+    <string name="descricao_do_animal">Descrição do animal</string>
+    <string name="nome_do_animal">Nome do animal</string>
+    <string name="todo">TODO</string>
+    <string name="todoo">TODO</string>
+    <string-array name="estados">
+        <item>AC</item>
+        <item>AL</item>
+        <item>AM</item>
+        <item>AP</item>
+        <item>BA</item>
+        <item>CE</item>
+        <item>DF</item>
+        <item>ES</item>
+        <item>GO</item>
+        <item>MA</item>
+        <item>MG</item>
+        <item>MS</item>
+        <item>MT</item>
+        <item>PA</item>
+        <item>PB</item>
+        <item>PE</item>
+        <item>PI</item>
+        <item>PR</item>
+        <item>RJ</item>
+        <item>RN</item>
+        <item>RO</item>
+        <item>RR</item>
+        <item>RS</item>
+        <item>SC</item>
+        <item>SE</item>
+        <item>SP</item>
+        <item>TO</item>
+    </string-array>
+
+    <string-array name="idade">
+        <item>0-3 meses</item>
+        <item>4-6 meses</item>
+        <item>7-11 meses</item>
+        <item>1-3 anos</item>
+        <item>4-6 anos</item>
+        <item>+7 anos</item>
+    </string-array>
+
+    <string-array name="portes">
+        <item>pequeno</item>
+        <item>médio</item>
+        <item>grande</item>
+    </string-array>
 
 </resources>
