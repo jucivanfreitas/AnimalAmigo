@@ -73,7 +73,7 @@
         android:hint="@string/nome_do_animal"
         android:inputType="textPersonName"
         android:padding="10dp"
-        android:autofillHints="" />
+        android:autofillHints="" tools:targetApi="o"/>
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -110,7 +110,7 @@
         android:lineSpacingExtra="10sp"
         android:lines="@android:integer/config_shortAnimTime"
         android:maxLength="@android:integer/config_mediumAnimTime"
-        android:autofillHints="" />
+        android:autofillHints="" tools:targetApi="o"/>
 
     <Button
         android:id="@+id/btnCadastrarAnuncio"
