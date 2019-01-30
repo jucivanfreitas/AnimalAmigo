@@ -24,18 +24,15 @@ public class MeusAnunciosActivity extends AppCompatActivity {
             public void onClick(View view) {
 
                 abriCadastro();
-
             }
         });
+
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
     }
 
     public void abriCadastro(){
 
         startActivity(new Intent(getApplicationContext(), CadastrarAnuncioActivity.class));
-
-
-
     }
 
 }

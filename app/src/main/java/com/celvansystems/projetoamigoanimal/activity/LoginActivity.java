@@ -4,6 +4,7 @@ import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.annotation.TargetApi;
 import android.app.LoaderManager.LoaderCallbacks;
+import android.content.Context;
 import android.content.CursorLoader;
 import android.content.Intent;
 import android.content.Loader;
@@ -21,6 +22,7 @@ import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.inputmethod.EditorInfo;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
@@ -36,6 +38,7 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException;
+import com.google.firebase.auth.FirebaseAuthInvalidUserException;
 import com.google.firebase.auth.FirebaseAuthUserCollisionException;
 import com.google.firebase.auth.FirebaseAuthWeakPasswordException;
 
@@ -103,7 +106,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         populateAutoComplete();
     }
 
-    private void inicializarComponentes(){
+    private void inicializarComponentes() {
         mEmailView = (AutoCompleteTextView) findViewById(R.id.txiEmail);
         mLoginFormView = findViewById(R.id.login_form);
         mProgressView = findViewById(R.id.login_progress);
@@ -114,6 +117,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         mEmailView.setText("");
         mPasswordView.setText("");
     }
+
     private void populateAutoComplete() {
         if (!mayRequestContacts()) {
             return;
@@ -172,11 +176,14 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
      * If there are form errors (invalid email, missing fields, etc.), the
      * errors are presented and no actual login attempt is made.
      */
-    private void tentarLogin() {
-        /*if (mAuthTask != null) {
-            return;
-        }*/
 
+    public static void hideKeyboard(Context context, View editText) {
+        InputMethodManager imm = (InputMethodManager) context.getSystemService(Context.INPUT_METHOD_SERVICE);
+        imm.hideSoftInputFromWindow(editText.getWindowToken(), 0);
+    }
+    private void tentarLogin() {
+
+        hideKeyboard(getApplicationContext(), mPasswordView);
         // Reset errors.
         mEmailView.setError(null);
         mPasswordView.setError(null);
@@ -213,61 +220,63 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         } else {
             // Show a progress spinner, and kick off a background task to
             // perform the user login attempt.
-            if(swtLoginCadastrar.isChecked()){
+            if (swtLoginCadastrar.isChecked()) {
                 //direcionar para a página de cadastro de usuário
                 // a desenvolver
                 autenticacao.createUserWithEmailAndPassword(email, password)
-                .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
-                    @Override
-                    public void onComplete(@NonNull Task<AuthResult> task) {
-                        if(task.isSuccessful()){
-                            Toast.makeText(LoginActivity.this, "Cadastro",
-                                    Toast.LENGTH_SHORT).show();
-                        } else {
-                        String erroExcecao;
-                        try {
-                            throw task.getException();
-                        } catch (FirebaseAuthWeakPasswordException e) {
-                            erroExcecao = "Digite uma senha mais forte";
-                        } catch (FirebaseAuthInvalidCredentialsException e) {
-                            erroExcecao = "Digite um e-mail válido";
-                        } catch (FirebaseAuthUserCollisionException e) {
-                            erroExcecao = "Conta já cadastrada";
-                        } catch (Exception e) {
-                            erroExcecao = "ao cadastrar usuário" + e.getMessage();
-                            e.printStackTrace();
-                        }
-                            Toast.makeText(LoginActivity.this, "Erro" + erroExcecao,
-                                    Toast.LENGTH_SHORT).show();
-                        }
-                        //direcionar o usuario para a tela principal // a desenvolver
-                    }
-                });
+                        .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+                            @Override
+                            public void onComplete(@NonNull Task<AuthResult> task) {
+
+                                if (task.isSuccessful()) {
+                                    Toast.makeText(LoginActivity.this, "Cadastro realizado",
+                                            Toast.LENGTH_SHORT).show();
+                                    //direciona para a tela principal
+                                    startActivity(new Intent(getApplicationContext(), MainActivity.class));
+                                } else {
+                                    String erroExcecao;
+                                    try {
+                                        throw task.getException();
+                                    } catch (FirebaseAuthWeakPasswordException e) {
+                                        erroExcecao = "Digite uma senha mais forte";
+                                    } catch (FirebaseAuthInvalidCredentialsException e) {
+                                        erroExcecao = "Digite um e-mail válido";
+                                    } catch (FirebaseAuthUserCollisionException e) {
+                                        erroExcecao = "Conta já cadastrada";
+                                    } catch (FirebaseAuthInvalidUserException e) {
+                                        erroExcecao = "Usuário inexistente";
+                                    } catch (Exception e) {
+                                        erroExcecao = "ao cadastrar usuário" + e.getMessage();
+                                        e.printStackTrace();
+                                    }
+                                    Toast.makeText(LoginActivity.this, "Erro: " + erroExcecao,
+                                            Toast.LENGTH_LONG).show();
+                                }
+                            }
+                        });
             } else {
                 //direciona para a activity principal
                 autenticacao.signInWithEmailAndPassword(email, password)
-                .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
-                    @Override
-                    public void onComplete(@NonNull Task<AuthResult> task) {
-                        if(task.isSuccessful()) {
-                            Intent intent = new Intent(getApplicationContext(), MainActivity.class);
-                            startActivity(intent);
-                            Toast.makeText(LoginActivity.this, "Sucesso ao realizar login",
-                                    Toast.LENGTH_SHORT).show();
+                        .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+                            @Override
+                            public void onComplete(@NonNull Task<AuthResult> task) {
+                                if (task.isSuccessful()) {
+                                    Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+                                    startActivity(intent);
+                                    Toast.makeText(LoginActivity.this, "Sucesso ao realizar login",
+                                            Toast.LENGTH_SHORT).show();
 
-                        } else {
-                            Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
-                            startActivity(intent);
-                            Toast.makeText(LoginActivity.this, "Erro ao realizar login: " +
-                                            task.getException(),
-                                    Toast.LENGTH_SHORT).show();
-                        }
-                    }
-                });
+                                } else {
+                                    Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
+                                    startActivity(intent);
+                                    Toast.makeText(LoginActivity.this, "Erro ao realizar login: " +
+                                                    task.getException(),
+                                            Toast.LENGTH_SHORT).show();
+                                }
+                            }
+                        });
 
                 showProgress(true);
-                /*mAuthTask = new UserLoginTask(email, password);
-                mAuthTask.execute((Void) null);*/
             }
 
         }
@@ -364,7 +373,6 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         mEmailView.setAdapter(adapter);
     }
 
-
     private interface ProfileQuery {
         String[] PROJECTION = {
                 ContactsContract.CommonDataKinds.Email.ADDRESS,
@@ -374,69 +382,4 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         int ADDRESS = 0;
         int IS_PRIMARY = 1;
     }
-
-    /**
-     * Represents an asynchronous login/registration task used to authenticate
-     * the user.
-     */
-    /*public class UserLoginTask extends AsyncTask<Void, Void, Boolean> {
-
-        private final String mEmail;
-        private final String mPassword;
-
-        UserLoginTask(String email, String password) {
-            mEmail = email;
-            mPassword = password;
-        }
-
-        @Override
-        protected Boolean doInBackground(Void... params) {
-            // TODO: attempt authentication against a network service.
-
-            boolean retorno = false;
-            try {
-                // Simulate network access.
-                Thread.sleep(2000);
-            } catch (InterruptedException e) {
-                return false;
-            }
-
-
-            for (String credential : DUMMY_CREDENTIALS) {
-
-                String[] pieces = credential.split(":");
-                if (pieces[0].equals(mEmail)) {
-                    // Account exists, return true if the password matches.
-                    if( pieces[1].equals(mPassword)){
-
-                        retorno = true;
-                    }
-                }
-            }
-
-
-            // TODO: register the new account here.
-            return retorno;
-        }
-
-        @Override
-        protected void onPostExecute(final Boolean success) {
-            mAuthTask = null;
-            showProgress(false);
-
-            if (success) {
-                finish();
-            } else {
-                mPasswordView.setError(getString(R.string.error_incorrect_password));
-                mPasswordView.requestFocus();
-            }
-        }
-
-        @Override
-        protected void onCancelled() {
-            mAuthTask = null;
-            showProgress(false);
-        }
-    }*/
 }
-
