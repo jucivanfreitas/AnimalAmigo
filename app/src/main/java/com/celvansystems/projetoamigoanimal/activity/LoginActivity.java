@@ -98,6 +98,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                 tentarLogin();
             }
         });
+
         autenticacao = ConfiguracaoFirebase.getFirebaseAutenticacao();
         populateAutoComplete();
     }
@@ -110,6 +111,8 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         btnLogin = (Button) findViewById(R.id.btnLogin);
         swtLoginCadastrar = (Switch) findViewById(R.id.swtLoginCadastrar);
 
+        mEmailView.setText("");
+        mPasswordView.setText("");
     }
     private void populateAutoComplete() {
         if (!mayRequestContacts()) {
