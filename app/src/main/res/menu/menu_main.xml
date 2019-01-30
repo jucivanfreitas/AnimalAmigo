@@ -2,13 +2,15 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     tools:context="com.celvansystems.projetoamigoanimal.activity.MainActivity">
-    <group android:id="@+id/group_log_off">
+
+    <group android:id="@+id/group_log_off" android:visible="false">
         <item
             android:id="@+id/menu_logar"
             android:title="@string/txt_entrar"
             app:showAsAction="always" />
     </group>
-    <group android:id="@+id/group_log_in" >
+
+    <group android:id="@+id/group_log_in" android:visible="false">
         <item
             android:id="@+id/menu_meus_anuncios"
             android:title="@string/txt_meus_anuncios" />
@@ -16,6 +18,7 @@
             android:id="@+id/menu_sair"
             android:title="@string/txt_sair" />
     </group>
+
     <group>
         <item
             android:id="@+id/action_settings"

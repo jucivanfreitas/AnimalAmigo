@@ -11,16 +11,21 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 import com.celvansystems.projetoamigoanimal.R;
+import com.celvansystems.projetoamigoanimal.helper.ConfiguracaoFirebase;
+import com.google.firebase.auth.FirebaseAuth;
 
 
 public class MainActivity extends AppCompatActivity {
 
+    private FirebaseAuth autenticacao;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
+        autenticacao = ConfiguracaoFirebase.getFirebaseAutenticacao();
 
         FloatingActionButton fab = findViewById(R.id.fabcadastrar);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -46,23 +51,21 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
-
 
         switch (item.getItemId()){
 
             case R.id.menu_logar:
                 startActivity(new Intent(getApplicationContext(),LoginActivity.class));
                 break;
+
             case R.id.menu_meus_anuncios:
                 startActivity(new Intent(getApplicationContext(),MeusAnunciosActivity.class));
                 break;
 
             case R.id.menu_sair:
-                // TODO: 29/01/2019 implementar Log Out 
+                autenticacao.signOut();
+                invalidateOptionsMenu(); //invalida o menu e chama o onPrepare de novo
                 break;   
         }
 
@@ -74,13 +77,20 @@ public class MainActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
+    // método chamado antes de mostrar o menu
+    @Override
+    public boolean onPrepareOptionsMenu(Menu menu){
 
-    private String usuarioLogado(){
+        if(isUsuarioLogado()){
+            menu.setGroupVisible(R.id.group_log_in, true);
+        } else {
+            menu.setGroupVisible(R.id.group_log_off, true);
+        }
+        return super.onPrepareOptionsMenu(menu);
+    }
+
+    private boolean isUsuarioLogado(){
         //este metodo irá buscar informação se usuario está ou não logado
-        // TODO: 27/01/2019 após realizar implementação de firebase , implementar rotina para pesquisar usuario logado ou nao alogado  afim de definir menu
-
-        String tipo="2";
-        return tipo;
-
+        return autenticacao.getCurrentUser() != null;
     }
 }
