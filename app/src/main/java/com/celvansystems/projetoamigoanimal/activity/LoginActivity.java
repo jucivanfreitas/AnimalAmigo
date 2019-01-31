@@ -181,6 +181,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         InputMethodManager imm = (InputMethodManager) context.getSystemService(Context.INPUT_METHOD_SERVICE);
         imm.hideSoftInputFromWindow(editText.getWindowToken(), 0);
     }
+
     private void tentarLogin() {
 
         hideKeyboard(getApplicationContext(), mPasswordView);

@@ -1,7 +1,13 @@
 package com.celvansystems.projetoamigoanimal.model;
 
+import com.celvansystems.projetoamigoanimal.helper.ConfiguracaoFirebase;
+import com.google.firebase.database.DatabaseReference;
+
+import java.util.List;
+
 public class Animal {
 
+    private String idAnimal;
     private String nome;
     private String uf;
     private String cidade;
@@ -11,19 +17,31 @@ public class Animal {
     private String idade;
     private String porte;
     private String sexo;
+    private List<String> fotos;
 
-    public Animal (){}
+    public Animal (){
 
-    public Animal(String nome, String uf, String cidade, String espécie, String raca, String descricao, String idade, String porte, String sexo) {
-        this.nome = nome;
-        this.uf = uf;
-        this.cidade = cidade;
-        this.espécie = espécie;
-        this.raca = raca;
-        this.descricao = descricao;
-        this.idade = idade;
-        this.porte = porte;
-        this.sexo = sexo;
+        DatabaseReference animalRef = ConfiguracaoFirebase.getFirebase()
+                .child("meus_animais");
+        setIdAnimal(animalRef.push().getKey());
+    }
+
+    public void salvar(){
+
+        String idUsuario = ConfiguracaoFirebase.getIdUsuario();
+        DatabaseReference animalRef = ConfiguracaoFirebase.getFirebase()
+                .child("meus_animais");
+        animalRef.child(idUsuario)
+                .child(getIdAnimal())
+                .setValue(this);
+    }
+
+    public String getIdAnimal() {
+        return idAnimal;
+    }
+
+    public void setIdAnimal(String idAnimal) {
+        this.idAnimal = idAnimal;
     }
 
     public String getNome() {
@@ -96,5 +114,13 @@ public class Animal {
 
     public void setSexo(String sexo) {
         this.sexo = sexo;
+    }
+
+    public List<String> getFotos() {
+        return fotos;
+    }
+
+    public void setFotos(List<String> fotos) {
+        this.fotos = fotos;
     }
 }

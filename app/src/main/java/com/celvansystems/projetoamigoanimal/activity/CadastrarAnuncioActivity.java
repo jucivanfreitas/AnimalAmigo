@@ -2,6 +2,7 @@ package com.celvansystems.projetoamigoanimal.activity;
 
 import android.Manifest;
 import android.app.Activity;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -14,6 +15,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
@@ -22,7 +24,13 @@ import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.celvansystems.projetoamigoanimal.R;
+import com.celvansystems.projetoamigoanimal.helper.ConfiguracaoFirebase;
 import com.celvansystems.projetoamigoanimal.helper.Permissoes;
+import com.celvansystems.projetoamigoanimal.model.Animal;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -34,8 +42,10 @@ public class CadastrarAnuncioActivity extends AppCompatActivity
     private EditText edtDescricao, edtRaca, edtNome;
     private Button btnCadastrarAnuncio;
     private List<String> listaFotosRecuperadas = new ArrayList<>();
+    private List<String> listaURLFotos = new ArrayList<>();
     private ImageView imagem1, imagem2, imagem3;
 
+    private StorageReference storage;
     //Permissoes
     private String[] permissoes = new String[]{
             Manifest.permission.READ_EXTERNAL_STORAGE
@@ -47,7 +57,8 @@ public class CadastrarAnuncioActivity extends AppCompatActivity
         setContentView(R.layout.activity_cadastrar_anuncio);
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-
+        //Configuracoes iniciais
+        storage = ConfiguracaoFirebase.getFirebaseStorage();
         inicializarComponentes();
 
         //Validar permissões
@@ -85,7 +96,59 @@ public class CadastrarAnuncioActivity extends AppCompatActivity
         imagem3.setOnClickListener(this);
     }
 
-    public void validarDadosAnuncio(View view){
+    // A implementar
+    private void salvarAnuncio(Animal animal){
+
+        hideKeyboard(getApplicationContext(), edtDescricao);
+
+        String valor = animal.getEspécie();
+        Log.d("salvar", "salvarAnuncio: " + valor );
+
+        //salvar imagem no storage
+        int tamanhoLista = animal.getFotos().size();
+        for (int i=0; i < tamanhoLista; i++) {
+            String urlImagem = animal.getFotos().get(i);
+            salvarFotosStorage(animal, urlImagem, tamanhoLista, i);
+        }
+
+    }
+
+    private void salvarFotosStorage(final Animal animal, String url, final int totalFotos, int contador){
+
+        //cria nó do storage
+        StorageReference imagemAnimal = storage
+                .child("imagens")
+                .child("animais")
+                .child(animal.getIdAnimal())
+                .child("imagem"+contador);
+        //faz upload do arquivo
+        UploadTask uploadTask = imagemAnimal.putFile(Uri.parse(url));
+        uploadTask.addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+            @Override
+            public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                Uri firebaseUrl = taskSnapshot.getDownloadUrl();
+                String urlConvertida = firebaseUrl.toString();
+                listaURLFotos.add(urlConvertida);
+
+                if(totalFotos == listaURLFotos.size()){
+                    animal.setFotos(listaURLFotos);
+                    animal.salvar();
+                    exibirMensagem("Sucesso ao fazer upload");
+                    Log.i("INFO", "Sucesso ao fazer upload");
+                    finish();
+                }
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                exibirMensagem("Falha ao fazer upload");
+                Log.i("INFO", "Falha ao fazer upload: " + e.getMessage());
+            }
+        });
+    }
+
+    //cria objeto que representa os campos preenchidos da activity
+    private Animal getAnimalDaActivity(){
 
         String nome = edtNome.getText().toString();
         String especie = spnEspecie.getSelectedItem().toString();
@@ -95,45 +158,57 @@ public class CadastrarAnuncioActivity extends AppCompatActivity
         String raca = edtRaca.getText().toString();
         String descricao = edtDescricao.getText().toString();
 
-        if( listaFotosRecuperadas.size() != 0 ){
-            if( !nome.isEmpty() ){
-                if( !especie.isEmpty() ){
-                    if( !sexo.isEmpty() ){
-                        if( !idade.isEmpty() ){
-                            if( !porte.isEmpty() ){
-                                if( !raca.isEmpty() ){
-                                    if( !descricao.isEmpty()){
-                                    salvarAnuncio();
-                                }else {
-                                    exibirMensagem("Preencha o campo descrição!");
-                                }
-                            }else {
-                                exibirMensagem("Preencha o campo raça!");
-                            }
-                        }else {
-                            exibirMensagem("Preencha o campo porte!");
-                        }
-                    }else {
-                        exibirMensagem("Preencha o campo idade!");
-                    }
-                }else {
-                    exibirMensagem("Preencha o campo sexo!");
-                }
-            }else {
-                exibirMensagem("Preencha o campo especie!");
-            }
-        }else {
-            exibirMensagem("Preencha o campo nome!");
-        }
-    } else {
-            exibirMensagem("Selecione ao menos uma foto!");
-        }
+        Animal retorno = new Animal();
+
+        retorno.setNome(nome);
+        retorno.setEspécie(especie);
+        retorno.setSexo(sexo);
+        retorno.setIdade(idade);
+        retorno.setPorte(porte);
+        retorno.setRaca(raca);
+        retorno.setDescricao(descricao);
+        retorno.setFotos(listaFotosRecuperadas);
+
+        return retorno;
     }
 
-    // A implementar
-    private void salvarAnuncio(){
-        String valor = spnEspecie.getSelectedItem().toString();
-        Log.d("salvar", "salvarAnuncio: " + valor );
+    public void validarDadosAnuncio(View view){
+
+        Animal animal = this.getAnimalDaActivity();
+
+        if( listaFotosRecuperadas.size() != 0 ){
+            if( !animal.getNome().isEmpty() ){
+                if( !animal.getEspécie().isEmpty() ){
+                    if( !animal.getSexo().isEmpty() ){
+                        if( !animal.getIdade().isEmpty() ){
+                            if( !animal.getPorte().isEmpty() ){
+                                if( !animal.getRaca().isEmpty() ){
+                                    if( !animal.getDescricao().isEmpty()){
+                                        salvarAnuncio(animal);
+                                    }else {
+                                        exibirMensagem("Preencha o campo descrição!");
+                                    }
+                                }else {
+                                    exibirMensagem("Preencha o campo raça!");
+                                }
+                            }else {
+                                exibirMensagem("Preencha o campo porte!");
+                            }
+                        }else {
+                            exibirMensagem("Preencha o campo idade!");
+                        }
+                    }else {
+                        exibirMensagem("Preencha o campo sexo!");
+                    }
+                }else {
+                    exibirMensagem("Preencha o campo especie!");
+                }
+            }else {
+                exibirMensagem("Preencha o campo nome!");
+            }
+        } else {
+            exibirMensagem("Selecione ao menos uma foto!");
+        }
     }
 
     //
@@ -212,7 +287,7 @@ public class CadastrarAnuncioActivity extends AppCompatActivity
         ArrayAdapter<String> adapterPortes = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, portes);
         adapterPortes.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spnPorte.setAdapter(adapterPortes);
-        }
+    }
 
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
@@ -239,5 +314,10 @@ public class CadastrarAnuncioActivity extends AppCompatActivity
         });
         AlertDialog dialog = builder.create();
         dialog.show();
+    }
+
+    public static void hideKeyboard(Context context, View editText) {
+        InputMethodManager imm = (InputMethodManager) context.getSystemService(Context.INPUT_METHOD_SERVICE);
+        imm.hideSoftInputFromWindow(editText.getWindowToken(), 0);
     }
 }
