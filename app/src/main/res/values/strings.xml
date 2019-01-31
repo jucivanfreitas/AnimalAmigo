@@ -28,6 +28,13 @@
     <string name="nome_do_animal">Nome do animal</string>
     <string name="todo">TODO</string>
     <string name="todoo">TODO</string>
+    <string name="txt_Temperamento">Temperamento</string>
+    <string name="txt_docil">Dócil</string>
+    <string name="txt_brincalão">Brincalhão</string>
+    <string name="txt_sociavel">Sociavel</string>
+    <string name="txt_carente">Carente</string>
+    <string name="txt_sonholento">Sonholento</string>
+    <string name="txt_bravo">Bravo</string>
     <string-array name="estados">
         <item>AC</item>
         <item>AL</item>

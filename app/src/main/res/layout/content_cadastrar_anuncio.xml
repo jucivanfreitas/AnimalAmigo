@@ -12,111 +12,237 @@
     tools:context="com.celvansystems.projetoamigoanimal.activity.CadastrarAnuncioActivity"
     tools:showIn="@layout/activity_cadastrar_anuncio">
 
-    <LinearLayout
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="100dp"
-        android:layout_marginBottom="16dp"
-        android:orientation="horizontal"
-        android:padding="8dp">
+        android:layout_height="match_parent">
 
-        <ImageView
-            android:id="@+id/imageViewCadastrar1"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            app:srcCompat="@drawable/padrao"
-            android:contentDescription="@string/todo" />
-
-        <ImageView
-            android:id="@+id/imageViewCadastrar2"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_margin="8dp"
-            android:layout_weight="1"
-            app:srcCompat="@drawable/padrao"
-            android:contentDescription="@string/todoo" />
-
-        <ImageView
-            android:id="@+id/imageViewCadastrar3"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            app:srcCompat="@drawable/padrao"
-            android:contentDescription="@string/todo" />
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="16dp"
-        android:orientation="horizontal">
-
-        <Spinner
-            android:id="@+id/spinner_cad_Especie"
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="1" />
+            android:orientation="vertical" >
 
-        <Spinner
-            android:id="@+id/spinner_cad_Sexo"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="1" />
-    </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="100dp"
+                android:layout_marginBottom="16dp"
+                android:orientation="horizontal"
+                android:padding="8dp">
 
-    <EditText
-        android:id="@+id/editText_cad_NomeAnimal"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="16dp"
-        android:ems="10"
-        android:hint="@string/nome_do_animal"
-        android:inputType="textPersonName"
-        android:padding="10dp"
-        android:autofillHints="" tools:targetApi="o"/>
+                <ImageView
+                    android:id="@+id/imageViewCadastrar1"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:contentDescription="@string/todo"
+                    app:srcCompat="@drawable/padrao" />
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal">
+                <ImageView
+                    android:id="@+id/imageViewCadastrar2"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="8dp"
+                    android:layout_weight="1"
+                    android:contentDescription="@string/todoo"
+                    app:srcCompat="@drawable/padrao" />
 
-        <Spinner
-            android:id="@+id/spinner_cad_idade"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="1" />
+                <ImageView
+                    android:id="@+id/imageViewCadastrar3"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:contentDescription="@string/todo"
+                    app:srcCompat="@drawable/padrao" />
+            </LinearLayout>
 
-        <Spinner
-            android:id="@+id/spinner_cad_porte"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="1" />
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="16dp"
+                android:orientation="horizontal">
 
-        <Spinner
-            android:id="@+id/spinner_cad_vacina"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="1" />
-    </LinearLayout>
+                <Spinner
+                    android:id="@+id/spinner_cad_UF"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:padding="5dp" />
 
-    <EditText
-        android:id="@+id/editText_cad_descrição"
-        android:layout_width="match_parent"
-        android:layout_height="200dp"
-        android:layout_margin="9dp"
-        android:ems="10"
-        android:hint="@string/descricao_do_animal"
-        android:inputType="textPersonName"
-        android:lineSpacingExtra="10sp"
-        android:lines="@android:integer/config_shortAnimTime"
-        android:maxLength="@android:integer/config_mediumAnimTime"
-        android:autofillHints="" tools:targetApi="o"/>
+                <Spinner
+                    android:id="@+id/spinner_cad_Cidade"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:paddingBottom="5dp" />
+            </LinearLayout>
 
-    <Button
-        android:id="@+id/btnCadastrarAnuncio"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:elevation="10dp"
-        android:text="@string/cadastrar_anuncio" />
+            <EditText
+                android:id="@+id/editText_cad_NomeAnimal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="16dp"
+                android:autofillHints=""
+                android:ems="10"
+                android:hint="@string/nome_do_animal"
+                android:inputType="textPersonName"
+                android:padding="10dp"
+                tools:targetApi="o" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal">
+
+                <EditText
+                    android:id="@+id/editText_Raca"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="16dp"
+                    android:layout_weight="1"
+                    android:ems="10"
+                    android:hint="Raça"
+                    android:inputType="textPersonName" />
+
+                <EditText
+                    android:id="@+id/editText_cad_Pelagem"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:layout_weight="1"
+                    android:ems="10"
+                    android:hint="Pelagem"
+                    android:inputType="textPersonName" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="9dp"
+                android:layout_marginBottom="9dp"
+                android:orientation="horizontal"
+                android:padding="5dp">
+
+                <Spinner
+                    android:id="@+id/spinner_Cad_especie"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:padding="5dp" />
+
+                <Spinner
+                    android:id="@+id/spinner_cad_idade"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:padding="5dp" />
+
+                <Spinner
+                    android:id="@+id/spinner_cad_Sexo"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:padding="5dp" />
+
+                <Spinner
+                    android:id="@+id/spinner_cad_porte"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:padding="5dp" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                android:paddingTop="16dp">
+
+                <TextView
+                    android:id="@+id/textView"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="5dp"
+                    android:text="@string/txt_Temperamento"
+                    android:textColor="@color/common_google_signin_btn_text_dark_focused"
+                    android:textSize="18sp"
+                    android:textStyle="bold" />
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:orientation="horizontal">
+
+                    <CheckBox
+                        android:id="@+id/ckb_cad_docil"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="@string/txt_docil" />
+
+                    <CheckBox
+                        android:id="@+id/ckb_cad_brincalhao"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="3dp"
+                        android:text="@string/txt_brincalão" />
+
+                    <CheckBox
+                        android:id="@+id/ckb_cad_sociavel"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="@string/txt_sociavel" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:orientation="horizontal">
+
+                    <CheckBox
+                        android:id="@+id/ckb_cad_carente"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="@string/txt_carente" />
+
+                    <CheckBox
+                        android:id="@+id/ckb_cad_sonholento"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="3dp"
+                        android:text="@string/txt_sonholento" />
+
+                    <CheckBox
+                        android:id="@+id/ckb_cad_bravo"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="@string/txt_bravo" />
+                </LinearLayout>
+            </LinearLayout>
+
+            <EditText
+                android:id="@+id/editText_cad_descrição"
+                android:layout_width="match_parent"
+                android:layout_height="200dp"
+                android:layout_marginTop="9dp"
+                android:layout_marginBottom="9dp"
+                android:autofillHints=""
+                android:ems="10"
+                android:hint="@string/descricao_do_animal"
+                android:inputType="textPersonName"
+                android:lineSpacingExtra="10sp"
+                android:lines="@android:integer/config_shortAnimTime"
+                android:maxLength="@android:integer/config_mediumAnimTime"
+                android:padding="9dp"
+                tools:targetApi="o" />
+
+            <Button
+                android:id="@+id/btnCadastrarAnuncio"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:elevation="10dp"
+                android:text="@string/cadastrar_anuncio" />
+        </LinearLayout>
+    </ScrollView>
 
 </LinearLayout>
