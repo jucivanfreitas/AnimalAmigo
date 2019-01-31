@@ -28,6 +28,7 @@
     <string name="nome_do_animal">Nome do animal</string>
     <string name="todo">TODO</string>
     <string name="todoo">TODO</string>
+    <string name="raca">Raça</string>
     <string-array name="estados">
         <item>AC</item>
         <item>AL</item>
@@ -61,16 +62,26 @@
     <string-array name="idade">
         <item>0-3 meses</item>
         <item>4-6 meses</item>
-        <item>7-11 meses</item>
-        <item>1-3 anos</item>
-        <item>4-6 anos</item>
-        <item>+7 anos</item>
+        <item>1 ano</item>
+        <item>2 anos</item>
+        <item>3 anos ou mais</item>
     </string-array>
 
     <string-array name="portes">
         <item>pequeno</item>
         <item>médio</item>
         <item>grande</item>
+    </string-array>
+
+    <string-array name="especies">
+        <item>Cachorro</item>
+        <item>Gato</item>
+        <item>Outro</item>
+    </string-array>
+
+    <string-array name="sexos">
+        <item>Macho</item>
+        <item>Fêmea</item>
     </string-array>
 
 </resources>

@@ -20,30 +20,42 @@
         android:padding="8dp">
 
         <ImageView
-            android:id="@+id/imageViewCadastrar1"
+            android:id="@+id/imageCadastro1"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            app:srcCompat="@drawable/padrao"
-            android:contentDescription="@string/todo" />
+            android:contentDescription="@string/todo"
+            app:srcCompat="@drawable/padrao" />
 
         <ImageView
-            android:id="@+id/imageViewCadastrar2"
+            android:id="@+id/imageCadastro2"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_margin="8dp"
             android:layout_weight="1"
-            app:srcCompat="@drawable/padrao"
-            android:contentDescription="@string/todoo" />
+            android:contentDescription="@string/todoo"
+            app:srcCompat="@drawable/padrao" />
 
         <ImageView
-            android:id="@+id/imageViewCadastrar3"
+            android:id="@+id/imageCadastro3"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            app:srcCompat="@drawable/padrao"
-            android:contentDescription="@string/todo" />
+            android:contentDescription="@string/todo"
+            app:srcCompat="@drawable/padrao" />
     </LinearLayout>
+
+    <EditText
+        android:id="@+id/editText_cad_NomeAnimal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="16dp"
+        android:autofillHints=""
+        android:ems="10"
+        android:hint="@string/nome_do_animal"
+        android:inputType="textPersonName"
+        android:padding="10dp"
+        tools:targetApi="o" />
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -64,17 +76,6 @@
             android:layout_weight="1" />
     </LinearLayout>
 
-    <EditText
-        android:id="@+id/editText_cad_NomeAnimal"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="16dp"
-        android:ems="10"
-        android:hint="@string/nome_do_animal"
-        android:inputType="textPersonName"
-        android:padding="10dp"
-        android:autofillHints="" tools:targetApi="o"/>
-
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -92,12 +93,17 @@
             android:layout_height="wrap_content"
             android:layout_weight="1" />
 
-        <Spinner
-            android:id="@+id/spinner_cad_vacina"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="1" />
     </LinearLayout>
+
+    <EditText
+        android:id="@+id/edtRaca"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:autofillHints=""
+        android:ems="10"
+        android:hint="@string/raca"
+        android:inputType="textPersonName"
+        tools:targetApi="o" />
 
     <EditText
         android:id="@+id/editText_cad_descrição"

@@ -8,11 +8,13 @@ public class Animal {
     private String espécie;
     private String raca;
     private String descricao;
-    private int idade;
+    private String idade;
+    private String porte;
+    private String sexo;
 
     public Animal (){}
 
-    public Animal(String nome, String uf, String cidade, String espécie, String raca, String descricao, int idade) {
+    public Animal(String nome, String uf, String cidade, String espécie, String raca, String descricao, String idade, String porte, String sexo) {
         this.nome = nome;
         this.uf = uf;
         this.cidade = cidade;
@@ -20,6 +22,8 @@ public class Animal {
         this.raca = raca;
         this.descricao = descricao;
         this.idade = idade;
+        this.porte = porte;
+        this.sexo = sexo;
     }
 
     public String getNome() {
@@ -70,11 +74,27 @@ public class Animal {
         this.descricao = descricao;
     }
 
-    public int getIdade() {
+    public String getIdade() {
         return idade;
     }
 
-    public void setIdade(int idade) {
+    public void setIdade(String idade) {
         this.idade = idade;
+    }
+
+    public String getPorte() {
+        return porte;
+    }
+
+    public void setPorte(String porte) {
+        this.porte = porte;
+    }
+
+    public String getSexo() {
+        return sexo;
+    }
+
+    public void setSexo(String sexo) {
+        this.sexo = sexo;
     }
 }
