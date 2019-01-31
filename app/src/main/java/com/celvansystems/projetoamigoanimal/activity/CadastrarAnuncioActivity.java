@@ -2,6 +2,7 @@ package com.celvansystems.projetoamigoanimal.activity;
 
 import android.Manifest;
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -10,7 +11,6 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
-import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
@@ -35,6 +35,8 @@ import com.google.firebase.storage.UploadTask;
 import java.util.ArrayList;
 import java.util.List;
 
+import dmax.dialog.SpotsDialog;
+
 public class CadastrarAnuncioActivity extends AppCompatActivity
         implements View.OnClickListener{
 
@@ -44,7 +46,7 @@ public class CadastrarAnuncioActivity extends AppCompatActivity
     private List<String> listaFotosRecuperadas = new ArrayList<>();
     private List<String> listaURLFotos = new ArrayList<>();
     private ImageView imagem1, imagem2, imagem3;
-
+    private AlertDialog dialog;
     private StorageReference storage;
     //Permissoes
     private String[] permissoes = new String[]{
@@ -101,6 +103,13 @@ public class CadastrarAnuncioActivity extends AppCompatActivity
 
         hideKeyboard(getApplicationContext(), edtDescricao);
 
+        dialog = new SpotsDialog.Builder()
+                .setContext(this)
+                .setMessage("Salvando anúncio")
+                .setCancelable(false)
+                .build();
+        dialog.show();
+
         String valor = animal.getEspécie();
         Log.d("salvar", "salvarAnuncio: " + valor );
 
@@ -135,6 +144,7 @@ public class CadastrarAnuncioActivity extends AppCompatActivity
                     animal.salvar();
                     exibirMensagem("Sucesso ao fazer upload");
                     Log.i("INFO", "Sucesso ao fazer upload");
+                    dialog.dismiss();
                     finish();
                 }
             }
@@ -320,4 +330,8 @@ public class CadastrarAnuncioActivity extends AppCompatActivity
         InputMethodManager imm = (InputMethodManager) context.getSystemService(Context.INPUT_METHOD_SERVICE);
         imm.hideSoftInputFromWindow(editText.getWindowToken(), 0);
     }
+
+
 }
+
+

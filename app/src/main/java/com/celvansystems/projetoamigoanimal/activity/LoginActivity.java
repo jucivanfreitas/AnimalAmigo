@@ -222,8 +222,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             // Show a progress spinner, and kick off a background task to
             // perform the user login attempt.
             if (swtLoginCadastrar.isChecked()) {
-                //direcionar para a página de cadastro de usuário
-                // a desenvolver
+
                 autenticacao.createUserWithEmailAndPassword(email, password)
                         .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                             @Override

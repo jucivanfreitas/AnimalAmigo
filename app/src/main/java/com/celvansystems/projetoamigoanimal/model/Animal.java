@@ -24,6 +24,10 @@ public class Animal {
         DatabaseReference animalRef = ConfiguracaoFirebase.getFirebase()
                 .child("meus_animais");
         setIdAnimal(animalRef.push().getKey());
+
+        //fins de teste. Falta implementar na classe CadastroAnuncioActivity
+        this.setUf("PE");
+        this.setCidade("Recife");
     }
 
     public void salvar(){
@@ -32,6 +36,17 @@ public class Animal {
         DatabaseReference animalRef = ConfiguracaoFirebase.getFirebase()
                 .child("meus_animais");
         animalRef.child(idUsuario)
+                .child(getIdAnimal())
+                .setValue(this);
+        salvarAnimalPublico();
+    }
+
+    public void salvarAnimalPublico(){
+
+        DatabaseReference animalRef = ConfiguracaoFirebase.getFirebase()
+                .child("anuncios");
+        animalRef.child(getUf())
+                .child(getCidade())
                 .child(getIdAnimal())
                 .setValue(this);
     }
