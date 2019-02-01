@@ -1,5 +1,8 @@
 package com.celvansystems.projetoamigoanimal.activity;
 
+//import android.app.AlertDialog;
+
+import android.app.AlertDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
@@ -24,12 +27,16 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import dmax.dialog.SpotsDialog;
+
 public class MeusAnunciosActivity extends AppCompatActivity {
 
     private RecyclerView recyclerAnuncios;
     private List<Animal> anuncios = new ArrayList<Animal>();
     private AdapterAnuncios adapterAnuncios;
     private DatabaseReference anuncioUsuarioRef;
+
+    private AlertDialog dialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -95,6 +102,13 @@ public class MeusAnunciosActivity extends AppCompatActivity {
 
     private void recuperarAnuncios(){
 
+        dialog = new SpotsDialog.Builder()
+                .setContext(this)
+                .setMessage("Procurando anúncios")
+                .setCancelable(false)
+                .build();
+        dialog.show();
+
         anuncioUsuarioRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -104,6 +118,8 @@ public class MeusAnunciosActivity extends AppCompatActivity {
                 }
                 Collections.reverse(anuncios);
                 adapterAnuncios.notifyDataSetChanged();
+
+                dialog.dismiss();
             }
 
             @Override
@@ -111,6 +127,7 @@ public class MeusAnunciosActivity extends AppCompatActivity {
 
             }
         });
+
 
     }
 
