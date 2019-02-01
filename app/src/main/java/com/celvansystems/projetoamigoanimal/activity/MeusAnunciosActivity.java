@@ -8,10 +8,12 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
+import android.widget.AdapterView;
 
 import com.celvansystems.projetoamigoanimal.R;
 import com.celvansystems.projetoamigoanimal.adapter.AdapterAnuncios;
 import com.celvansystems.projetoamigoanimal.helper.ConfiguracaoFirebase;
+import com.celvansystems.projetoamigoanimal.helper.RecyclerItemClickListener;
 import com.celvansystems.projetoamigoanimal.model.Animal;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -64,6 +66,31 @@ public class MeusAnunciosActivity extends AppCompatActivity {
 
         //recupera anuncios para o usuario
         recuperarAnuncios();
+
+        //adiciona evento de clique
+        recyclerAnuncios.addOnItemTouchListener(new RecyclerItemClickListener(
+                this, recyclerAnuncios, new RecyclerItemClickListener.OnItemClickListener() {
+            @Override
+            public void onItemClick(View view, int position) {
+
+            }
+
+            @Override
+            public void onLongItemClick(View view, int position) {
+
+                Animal anuncioSelecionado = anuncios.get(position);
+                anuncioSelecionado.remover();
+
+                adapterAnuncios.notifyDataSetChanged();
+            }
+
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+
+            }
+        }
+        ));
+
     }
 
     private void recuperarAnuncios(){

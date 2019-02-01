@@ -1,5 +1,7 @@
 package com.celvansystems.projetoamigoanimal.model;
 
+import android.util.Log;
+
 import com.celvansystems.projetoamigoanimal.helper.ConfiguracaoFirebase;
 import com.google.firebase.database.DatabaseReference;
 
@@ -11,7 +13,7 @@ public class Animal {
     private String nome;
     private String uf;
     private String cidade;
-    private String espécie;
+    private String especie;
     private String raca;
     private String descricao;
     private String idade;
@@ -24,10 +26,11 @@ public class Animal {
         DatabaseReference animalRef = ConfiguracaoFirebase.getFirebase()
                 .child("meus_animais");
         setIdAnimal(animalRef.push().getKey());
+        Log.d("INFO: ", getIdAnimal());
 
         //fins de teste. Falta implementar na classe CadastroAnuncioActivity
-        this.setUf("PE");
-        this.setCidade("Recife");
+        this.setUf("PB");
+        this.setCidade("Mamanguape");
     }
 
     public void salvar(){
@@ -35,6 +38,7 @@ public class Animal {
         String idUsuario = ConfiguracaoFirebase.getIdUsuario();
         DatabaseReference animalRef = ConfiguracaoFirebase.getFirebase()
                 .child("meus_animais");
+
         animalRef.child(idUsuario)
                 .child(getIdAnimal())
                 .setValue(this);
@@ -43,13 +47,39 @@ public class Animal {
 
     public void salvarAnimalPublico(){
 
-        DatabaseReference animalRef = ConfiguracaoFirebase.getFirebase()
+        DatabaseReference anuncioRef = ConfiguracaoFirebase.getFirebase()
                 .child("anuncios");
-        animalRef.child(getUf())
+
+        anuncioRef.child(getUf())
                 .child(getCidade())
                 .child(getIdAnimal())
                 .setValue(this);
     }
+
+    public void remover(){
+        String idUsuario = ConfiguracaoFirebase.getIdUsuario();
+
+        DatabaseReference animalRef = ConfiguracaoFirebase.getFirebase()
+                .child("meus_animais")
+                .child(idUsuario)
+                .child(getIdAnimal());
+
+        animalRef.removeValue();
+        removerAnimalPublico();
+    }
+/////////////////////////////////////////////
+    /////////////////////////////////////////
+    public void removerAnimalPublico(){
+
+        DatabaseReference anuncioRef = ConfiguracaoFirebase.getFirebase()
+                .child("anuncios")
+                .child(getUf())
+                .child(getCidade())
+                .child(getIdAnimal());
+
+        anuncioRef.removeValue();
+    }
+
 
     public String getIdAnimal() {
         return idAnimal;
@@ -83,12 +113,12 @@ public class Animal {
         this.cidade = cidade;
     }
 
-    public String getEspécie() {
-        return espécie;
+    public String getEspecie() {
+        return especie;
     }
 
-    public void setEspécie(String espécie) {
-        this.espécie = espécie;
+    public void setEspecie(String especie) {
+        this.especie = especie;
     }
 
     public String getRaca() {
