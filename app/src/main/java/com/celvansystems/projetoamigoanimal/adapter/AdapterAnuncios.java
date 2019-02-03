@@ -42,7 +42,7 @@ public class AdapterAnuncios extends RecyclerView.Adapter<AdapterAnuncios.MyView
     public void onBindViewHolder(@NonNull MyViewHolder myViewHolder, int i) {
 
         Animal anuncio = anuncios.get(i);
-        myViewHolder.especie.setText(anuncio.getEspécie());
+        myViewHolder.especie.setText(anuncio.getEspecie());
         myViewHolder.nome.setText(anuncio.getNome());
         myViewHolder.idade.setText(anuncio.getIdade());
 

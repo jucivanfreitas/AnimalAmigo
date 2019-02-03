@@ -110,7 +110,7 @@ public class CadastrarAnuncioActivity extends AppCompatActivity
                 .build();
         dialog.show();
 
-        String valor = animal.getEspécie();
+        String valor = animal.getEspecie();
         Log.d("salvar", "salvarAnuncio: " + valor );
 
         //salvar imagem no storage
@@ -171,7 +171,7 @@ public class CadastrarAnuncioActivity extends AppCompatActivity
         Animal retorno = new Animal();
 
         retorno.setNome(nome);
-        retorno.setEspécie(especie);
+        retorno.setEspecie(especie);
         retorno.setSexo(sexo);
         retorno.setIdade(idade);
         retorno.setPorte(porte);
@@ -188,7 +188,7 @@ public class CadastrarAnuncioActivity extends AppCompatActivity
 
         if( listaFotosRecuperadas.size() != 0 ){
             if( !animal.getNome().isEmpty() ){
-                if( !animal.getEspécie().isEmpty() ){
+                if( !animal.getEspecie().isEmpty() ){
                     if( !animal.getSexo().isEmpty() ){
                         if( !animal.getIdade().isEmpty() ){
                             if( !animal.getPorte().isEmpty() ){
