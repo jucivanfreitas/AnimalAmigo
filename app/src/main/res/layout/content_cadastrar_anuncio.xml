@@ -19,7 +19,7 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical" >
+            android:orientation="vertical">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -61,6 +61,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="16dp"
                 android:autofillHints=""
+                android:background="@drawable/bg_caixa_txt"
                 android:ems="10"
                 android:hint="@string/nome_do_animal"
                 android:inputType="textPersonName"
@@ -109,7 +110,10 @@
                 android:id="@+id/edtRaca"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="9dp"
+                android:layout_marginBottom="9dp"
                 android:autofillHints=""
+                android:background="@drawable/bg_caixa_txt"
                 android:ems="10"
                 android:hint="@string/raca"
                 android:inputType="textPersonName"
@@ -119,8 +123,9 @@
                 android:id="@+id/editText_cad_descrição"
                 android:layout_width="match_parent"
                 android:layout_height="150dp"
-                android:layout_margin="9dp"
+                android:layout_marginBottom="20dp"
                 android:autofillHints=""
+                android:background="@drawable/bg_caixa_txt"
                 android:ems="10"
                 android:hint="@string/descricao_do_animal"
                 android:inputType="textPersonName"
@@ -133,8 +138,12 @@
                 android:id="@+id/btnCadastrarAnuncio"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginBottom="20dp"
+                android:background="@drawable/bg_btn"
                 android:elevation="10dp"
-                android:text="@string/cadastrar_anuncio" />
+                android:text="@string/cadastrar_anuncio"
+                android:textColor="@color/common_google_signin_btn_text_dark_default"
+                android:textStyle="bold" />
         </LinearLayout>
     </ScrollView>
 
