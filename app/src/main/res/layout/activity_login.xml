@@ -1,10 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@drawable/bg_peb_cao_afago"
     android:gravity="center"
-    android:orientation="vertical"
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
@@ -23,7 +24,7 @@
     <ScrollView
         android:id="@+id/login_form"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="wrap_content">
 
         <LinearLayout
             android:id="@+id/email_login_form"
@@ -33,29 +34,44 @@
 
             <android.support.design.widget.TextInputLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="2dp"
+                android:padding="3dp"
+                android:textColorHint="@color/cinza">
 
                 <AutoCompleteTextView
                     android:id="@+id/txiEmail"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginBottom="5dp"
+                    android:background="@drawable/bg_caixa_txt"
+                    android:elevation="20dp"
                     android:hint="@string/prompt_email"
                     android:inputType="textEmailAddress"
                     android:maxLines="1"
+                    android:shadowColor="@color/black_overlay"
                     android:singleLine="true"
-                    android:text="@string/prompt_email" />
+                    android:textColor="@color/common_google_signin_btn_text_dark_pressed"
+                    android:textColorHighlight="@color/colorPrimaryDark"
+                    android:textColorHint="@color/colorPrimary"
+                    android:textColorLink="@color/colorPrimary" />
 
             </android.support.design.widget.TextInputLayout>
 
             <android.support.design.widget.TextInputLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:padding="3dp"
+                android:textColorHint="@color/cinza">
 
                 <EditText
                     android:id="@+id/txiPassword"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginBottom="5dp"
                     android:autofillHints=""
+                    android:background="@drawable/bg_caixa_txt"
+                    android:elevation="20dp"
                     android:hint="@string/prompt_password"
                     android:imeActionId="6"
                     android:imeActionLabel="@string/action_sign_in_short"
@@ -64,6 +80,9 @@
                     android:maxLines="1"
                     android:singleLine="true"
                     android:text="@string/prompt_password"
+                    android:textColor="@color/backgroundcolor"
+                    android:textColorHint="@color/colorPrimary"
+                    android:textColorLink="@color/colorPrimary"
                     tools:targetApi="o" />
 
             </android.support.design.widget.TextInputLayout>
@@ -73,6 +92,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
+                android:elevation="16dp"
                 android:orientation="horizontal">
 
 
@@ -80,7 +100,10 @@
                     android:id="@+id/txvLogar"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:elevation="15dp"
                     android:text="@string/logar"
+                    android:textColor="@color/colorPrimaryDark"
+                    android:textStyle="bold"
                     tools:text="@string/logar" />
 
                 <Switch
@@ -90,18 +113,21 @@
                     android:layout_gravity="center"
                     android:gravity="center"
                     android:shadowColor="@color/design_default_color_primary_dark"
-                    android:textColor="@color/design_default_color_primary_dark" />
+                    android:textColor="@color/design_default_color_primary_dark"
+                    android:textColorLink="@color/colorPrimaryDark" />
 
                 <TextView
                     android:id="@+id/txvCadastrar"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:elevation="15dp"
                     android:text="@string/cadastrese"
+                    android:textColor="@color/colorPrimaryDark"
+                    android:textStyle="bold"
                     tools:text="@string/cadastrese" />
 
 
             </LinearLayout>
-
 
 
             <Button
@@ -110,7 +136,13 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
+                android:background="@drawable/bg_btn"
+                android:clickable="true"
+                android:elevation="25dp"
+                android:shadowColor="@color/colorAccent"
                 android:text="@string/action_sign_in"
+                android:textColor="@color/common_google_signin_btn_text_dark_default"
+                android:textColorLink="@color/common_google_signin_btn_text_dark_default"
                 android:textStyle="bold" />
 
         </LinearLayout>
