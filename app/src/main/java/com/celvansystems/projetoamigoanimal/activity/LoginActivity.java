@@ -229,6 +229,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                             public void onComplete(@NonNull Task<AuthResult> task) {
 
                                 if (task.isSuccessful()) {
+
                                     Toast.makeText(LoginActivity.this, "Cadastro realizado",
                                             Toast.LENGTH_SHORT).show();
                                     //direciona para a tela principal

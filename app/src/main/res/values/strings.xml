@@ -30,6 +30,8 @@
     <string name="todoo">TODO</string>
     <string name="raca">Raça</string>
     <string name="txt_compartilhar">Compartilhar</string>
+    <string name="txt_modelo_comentarios">Fulano de tal</string>
+    <string name="txt_modelo_comentarios2">Nossa qque cadela linda, merece ganhar logo uma casa!</string>
     <string-array name="estados">
         <item>AC</item>
         <item>AL</item>

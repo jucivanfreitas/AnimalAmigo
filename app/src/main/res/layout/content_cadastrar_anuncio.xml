@@ -140,6 +140,8 @@
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="20dp"
                 android:background="@drawable/bg_btn"
+                android:clickable="true"
+                android:foreground="?attr/selectableItemBackground"
                 android:elevation="10dp"
                 android:text="@string/cadastrar_anuncio"
                 android:textColor="@color/common_google_signin_btn_text_dark_default"
