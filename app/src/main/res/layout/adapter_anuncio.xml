@@ -1,59 +1,125 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/cardView2"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:layout_margin="8dp">
+    android:layout_height="250dp">
 
-    <LinearLayout
+
+    <ImageView
+        android:id="@+id/imageAnuncio"
         android:layout_width="match_parent"
-        android:layout_height="140dp"
-        android:layout_margin="8dp"
-        android:orientation="horizontal"
-        android:padding="8dp">
+        android:layout_height="250dp"
+        android:contentDescription="TODO"
+        android:scaleType="centerCrop"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.0"
+        app:srcCompat="@color/cinza"
+        tools:layout_conversion_absoluteHeight="124dp"
+        tools:layout_conversion_absoluteWidth="150dp" />
 
-        <ImageView
-            android:id="@+id/imageAnuncio"
-            android:layout_width="150dp"
-            android:layout_height="wrap_content"
-            android:scaleType="centerInside"
-            app:srcCompat="@drawable/padrao" />
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_margin="16dp"
-            android:gravity="center_vertical"
-            android:orientation="vertical">
+    <ImageView
+        android:id="@+id/btn_perfil_compartilhar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="16dp"
+        android:background="@drawable/btn_compartilhar"
+        android:clickable="true"
+        android:elevation="35dp"
+        android:focusable="true"
+        android:paddingLeft="20dp"
+        android:paddingTop="8dp"
+        android:paddingRight="20dp"
+        android:paddingBottom="8dp"
+        android:visibility="visible"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:srcCompat="@drawable/ic_share_black_24dp" />
 
-            <TextView
-                android:id="@+id/textEspecie"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@android:string/dialog_alert_title"
-                android:textColor="@android:color/black"
-                android:textSize="18sp"
-                android:textStyle="bold" />
+    <ImageView
+        android:id="@+id/imageView3"
+        android:layout_width="0dp"
+        android:layout_height="150dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:srcCompat="@drawable/bg_img_card_gradient" />
 
-            <TextView
-                android:id="@+id/textNome"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                android:text="@string/anuncios"
-                android:textSize="14sp"
-                android:textStyle="bold" />
+    <ImageView
+        android:id="@+id/btn_edit_perfil_animal"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:clickable="true"
+        android:elevation="35dp"
+        android:focusable="true"
+        app:layout_constraintEnd_toEndOf="@+id/btn_perfil_compartilhar"
+        app:layout_constraintStart_toStartOf="@+id/btn_perfil_compartilhar"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/ic_more_vert_black_24dp" />
 
-            <TextView
-                android:id="@+id/textIdade"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                android:text="@string/anuncios"
-                android:textSize="14sp"
-                android:textStyle="bold" />
-        </LinearLayout>
-    </LinearLayout>
-</android.support.v7.widget.CardView>
+    <TextView
+        android:id="@+id/textNome"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginBottom="68dp"
+        android:text="@string/anuncios"
+        android:textColor="@color/colorPrimaryDark"
+        android:textSize="24sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        tools:layout_conversion_absoluteHeight="19dp"
+        tools:layout_conversion_absoluteWidth="197dp" />
+
+    <TextView
+        android:id="@+id/textIdade"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:text="@string/anuncios"
+        android:textColor="@color/colorAccent"
+        android:textSize="14sp"
+        android:textStyle="normal"
+        app:layout_constraintStart_toStartOf="@+id/textNome"
+        app:layout_constraintTop_toBottomOf="@+id/textNome"
+        tools:layout_conversion_absoluteHeight="19dp"
+        tools:layout_conversion_absoluteWidth="197dp" />
+
+    <TextView
+        android:id="@+id/textEspecie"
+        android:layout_width="wrap_content"
+        android:layout_height="28dp"
+        android:layout_marginTop="8dp"
+        android:text="@android:string/dialog_alert_title"
+        android:textColor="@color/colorAccent"
+        android:textSize="14sp"
+        android:textStyle="normal"
+        app:layout_constraintStart_toStartOf="@+id/textIdade"
+        app:layout_constraintTop_toBottomOf="@+id/textIdade"
+        tools:layout_conversion_absoluteHeight="24dp"
+        tools:layout_conversion_absoluteWidth="197dp" />
+
+    <View
+        android:id="@+id/divider"
+        android:layout_width="wrap_content"
+        android:layout_height="1dp"
+        android:background="@drawable/bg_btn"
+        android:elevation="35dp"
+        android:visibility="visible"
+        app:layout_constraintStart_toStartOf="@+id/textNome"
+        app:layout_constraintTop_toBottomOf="@+id/textNome" />
+
+
+</android.support.constraint.ConstraintLayout>
 

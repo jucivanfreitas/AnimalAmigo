@@ -233,6 +233,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                                             Toast.LENGTH_SHORT).show();
                                     //direciona para a tela principal
                                     startActivity(new Intent(getApplicationContext(), MainActivity.class));
+                                    finish();
                                 } else {
                                     String erroExcecao;
                                     try {
@@ -265,6 +266,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                                     startActivity(intent);
                                     Toast.makeText(LoginActivity.this, "Sucesso ao realizar login",
                                             Toast.LENGTH_SHORT).show();
+                                    finish();
 
                                 } else {
                                     Intent intent = new Intent(getApplicationContext(), LoginActivity.class);

@@ -64,7 +64,7 @@
                 android:background="@drawable/bg_caixa_txt"
                 android:ems="10"
                 android:hint="@string/nome_do_animal"
-                android:inputType="textPersonName"
+                android:inputType="textCapWords"
                 android:padding="10dp"
                 tools:targetApi="o" />
 
@@ -116,7 +116,7 @@
                 android:background="@drawable/bg_caixa_txt"
                 android:ems="10"
                 android:hint="@string/raca"
-                android:inputType="textPersonName"
+                android:inputType="textCapWords"
                 tools:targetApi="o" />
 
             <EditText
@@ -128,7 +128,7 @@
                 android:background="@drawable/bg_caixa_txt"
                 android:ems="10"
                 android:hint="@string/descricao_do_animal"
-                android:inputType="textPersonName"
+                android:inputType="textCapSentences"
                 android:lineSpacingExtra="10sp"
                 android:lines="@android:integer/config_shortAnimTime"
                 android:maxLength="@android:integer/config_mediumAnimTime"
