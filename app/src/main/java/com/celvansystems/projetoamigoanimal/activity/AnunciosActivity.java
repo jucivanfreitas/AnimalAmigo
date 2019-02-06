@@ -47,7 +47,7 @@ public class AnunciosActivity extends AppCompatActivity {
     private RecyclerView recyclerAnunciosPublicos;
     private Button btnCidade, btnEspecie;
     private AdapterAnuncios adapterAnuncios;
-    private List<Animal> listaAnuncios = new ArrayList<Animal>();
+    private List<Animal> listaAnuncios = new ArrayList<>();
     private AlertDialog dialog;
     private DatabaseReference anunciosPublicosRef;
     private Spinner spinnerEstado;
@@ -107,6 +107,7 @@ public class AnunciosActivity extends AppCompatActivity {
 
             case R.id.menu_logar:
                 startActivity(new Intent(getApplicationContext(),LoginActivity.class));
+                finish();
                 break;
 
             case R.id.menu_meus_anuncios:
@@ -146,7 +147,7 @@ public class AnunciosActivity extends AppCompatActivity {
 
     private void inicializarComponentes(){
 
-        recyclerAnunciosPublicos = (RecyclerView) findViewById(R.id.recyclerAnuncios);
+        recyclerAnunciosPublicos = findViewById(R.id.recyclerAnuncios);
     }
 
     private void recuperarAnunciosPublicos(){
@@ -199,7 +200,7 @@ public class AnunciosActivity extends AppCompatActivity {
         String [] especies = getResources().getStringArray(R.array.especies);
 
 //especies
-        ArrayAdapter<String> adapterEspecies = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, especies);
+        ArrayAdapter<String> adapterEspecies = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, especies);
         adapterEspecies.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinnerEspecie.setAdapter(adapterEspecies);
 
@@ -210,8 +211,7 @@ public class AnunciosActivity extends AppCompatActivity {
             @Override
             public void onClick(DialogInterface dialog, int which) {
 
-                String filtroEspecie = "";
-                filtroEspecie = spinnerEspecie.getSelectedItem().toString();
+                String filtroEspecie = spinnerEspecie.getSelectedItem().toString();
                 recuperarAnunciosPorEspecie(filtroEspecie);
                 try {
                     btnEspecie = findViewById(R.id.btnEspecie);
@@ -250,9 +250,11 @@ public class AnunciosActivity extends AppCompatActivity {
                             for (DataSnapshot anuncios : cidades.getChildren()) {
 
                                 Animal anuncio = anuncios.getValue(Animal.class);
+                                if(anuncio != null) {
 
-                                if (anuncio.getEspecie().equalsIgnoreCase(especie)) {
-                                    listaAnuncios.add(anuncio);
+                                    if (anuncio.getEspecie().equalsIgnoreCase(especie)) {
+                                        listaAnuncios.add(anuncio);
+                                    }
                                 }
                             }
                         } else {
@@ -260,9 +262,11 @@ public class AnunciosActivity extends AppCompatActivity {
                                 for (DataSnapshot anuncios : cidades.getChildren()) {
 
                                     Animal anuncio = anuncios.getValue(Animal.class);
+                                    if(anuncio != null) {
 
-                                    if (anuncio.getEspecie().equalsIgnoreCase(especie)) {
-                                        listaAnuncios.add(anuncio);
+                                        if (anuncio.getEspecie().equalsIgnoreCase(especie)) {
+                                            listaAnuncios.add(anuncio);
+                                        }
                                     }
                                 }
                             }
@@ -293,11 +297,11 @@ public class AnunciosActivity extends AppCompatActivity {
 
             if(jaEstados!= null) {
                 estados = new String[jaEstados.length()];
-            }
-            for(int i = 0; i < jaEstados.length(); i++){
-                estados[i] = jaEstados.getJSONObject(i).getString("sigla");
-            }
 
+                for (int i = 0; i < jaEstados.length(); i++) {
+                    estados[i] = jaEstados.getJSONObject(i).getString("sigla");
+                }
+            }
         } catch (Exception e){e.printStackTrace(); }
 
         return estados;
@@ -318,15 +322,16 @@ public class AnunciosActivity extends AppCompatActivity {
             jaEstados = obj.getJSONArray("estados");
 
             if(jaEstados!= null) {
-                estados = new String[jaEstados.length()];
-            }
-            for(int i = 0; i < jaEstados.length(); i++){
+                //estados = new String[jaEstados.length()];
+
+            for(int i = 0; i < jaEstados.length(); i++) {
                 String sigla = jaEstados.getJSONObject(i).getString("sigla");
 
-                if(sigla.equalsIgnoreCase(uf)) {
+                if (sigla.equalsIgnoreCase(uf)) {
                     array = jaEstados.getJSONObject(i).getJSONArray("cidades");
                     break;
                 }
+            }
             }
 
         } catch (Exception e){e.printStackTrace(); }
@@ -371,10 +376,10 @@ public class AnunciosActivity extends AppCompatActivity {
 //cidades
         Log.d("INFO7: ", "passou1");
 
-        adapterCidades = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, cidades);
+        adapterCidades = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, cidades);
         Log.d("INFO7: ", "passou2");
 
-        ArrayAdapter<String> adapterEstados = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, estados);
+        ArrayAdapter<String> adapterEstados = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, estados);
         adapterEstados.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         adapterCidades.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinnerEstado.setAdapter(adapterEstados);
@@ -387,11 +392,8 @@ public class AnunciosActivity extends AppCompatActivity {
             @Override
             public void onClick(DialogInterface dialog, int which) {
 
-                String filtroEstado = "";
-                String filtroCidade = "";
-
-                filtroEstado = spinnerEstado.getSelectedItem().toString();
-                filtroCidade = spinnerCidade.getSelectedItem().toString();
+                String filtroEstado = spinnerEstado.getSelectedItem().toString();
+                String filtroCidade = spinnerCidade.getSelectedItem().toString();
 
                 recuperarAnunciosPorCidade(filtroEstado, filtroCidade);
 
@@ -442,21 +444,11 @@ public class AnunciosActivity extends AppCompatActivity {
 
     public void setAdapterSpinner(){
 
-        for (int i = 0; i < cidades.length; i++){
-            Log.d("INFO88: ", cidades[i].toString());
-
-        }
-        adapterCidades = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, cidades);
+        adapterCidades = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, cidades);
         adapterCidades.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        Log.d("INFO88: ", "passou1");
 
         spinnerCidade.setAdapter(adapterCidades);
-
-        Log.d("INFO88: ", "passou3");
-
         adapterCidades.notifyDataSetChanged();
-
-        Log.d("INFO88: ", "passou tudo");
     }
 
     public void recuperarAnunciosPorCidade(String estado, final String cidade){
@@ -484,15 +476,19 @@ public class AnunciosActivity extends AppCompatActivity {
                                 if(!filtrandoEspecie) {
                                     Animal anuncio = anuncios.getValue(Animal.class);
 
-                                    if (anuncio.getCidade().equalsIgnoreCase(cidade)) {
-                                        listaAnuncios.add(anuncio);
+                                    if(anuncio!= null) {
+                                        if (anuncio.getCidade().equalsIgnoreCase(cidade)) {
+                                            listaAnuncios.add(anuncio);
+                                        }
                                     }
                                 } else {
                                     Animal anuncio = anuncios.getValue(Animal.class);
+                                    if(anuncio!= null) {
 
-                                    if(anuncio.getEspecie().equalsIgnoreCase(btnEspecie.getText().toString())) {
-                                        if (anuncio.getCidade().equalsIgnoreCase(cidade)) {
-                                            listaAnuncios.add(anuncio);
+                                        if (anuncio.getEspecie().equalsIgnoreCase(btnEspecie.getText().toString())) {
+                                            if (anuncio.getCidade().equalsIgnoreCase(cidade)) {
+                                                listaAnuncios.add(anuncio);
+                                            }
                                         }
                                     }
                                 }
@@ -515,7 +511,7 @@ public class AnunciosActivity extends AppCompatActivity {
     }
 
     public String loadJSONFromAsset(Context context) {
-        String json = null;
+        String json;
         try {
             InputStream is = context.getAssets().open("estados-cidades.json");
 
