@@ -177,6 +177,9 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
      * errors are presented and no actual login attempt is made.
      */
 
+    /*
+    * esconde teclado
+    * */
     public static void hideKeyboard(Context context, View editText) {
         InputMethodManager imm = (InputMethodManager) context.getSystemService(Context.INPUT_METHOD_SERVICE);
         imm.hideSoftInputFromWindow(editText.getWindowToken(), 0);
@@ -233,7 +236,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                                     Toast.makeText(LoginActivity.this, "Cadastro realizado",
                                             Toast.LENGTH_SHORT).show();
                                     //direciona para a tela principal
-                                    startActivity(new Intent(getApplicationContext(), MainActivity.class));
+                                    startActivity(new Intent(getApplicationContext(), AnunciosActivity.class));
                                     finish();
                                 } else {
                                     String erroExcecao;
@@ -263,7 +266,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                             @Override
                             public void onComplete(@NonNull Task<AuthResult> task) {
                                 if (task.isSuccessful()) {
-                                    Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+                                    Intent intent = new Intent(getApplicationContext(), AnunciosActivity.class);
                                     startActivity(intent);
                                     Toast.makeText(LoginActivity.this, "Sucesso ao realizar login",
                                             Toast.LENGTH_SHORT).show();

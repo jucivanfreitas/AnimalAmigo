@@ -28,22 +28,22 @@
         <activity
             android:name=".activity.MeusAnunciosActivity"
             android:label="@string/title_activity_meus_anuncios"
-            android:parentActivityName=".activity.MainActivity"
+            android:parentActivityName=".activity.AnunciosActivity"
             android:theme="@style/AppTheme.NoActionBar">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.celvansystems.projetoamigoanimal.activity.MainActivity" />
+                android:value="com.celvansystems.projetoamigoanimal.activity.AnunciosActivity" />
         </activity>
         <activity
             android:name=".activity.LoginActivity"
             android:label="@string/title_activity_login"
-            android:parentActivityName=".activity.MainActivity">
+            android:parentActivityName=".activity.AnunciosActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.celvansystems.projetoamigoanimal.activity.MainActivity" />
+                android:value="com.celvansystems.projetoamigoanimal.activity.AnunciosActivity" />
         </activity>
         <activity
-            android:name=".activity.MainActivity"
+            android:name=".activity.AnunciosActivity"
             android:label="@string/anuncios"
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>

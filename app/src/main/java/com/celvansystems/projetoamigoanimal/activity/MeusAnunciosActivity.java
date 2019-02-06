@@ -127,8 +127,6 @@ public class MeusAnunciosActivity extends AppCompatActivity {
 
             }
         });
-
-
     }
 
     private void inicializarComponentes(){
