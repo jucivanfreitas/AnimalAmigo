@@ -34,7 +34,7 @@ public class AdapterAnuncios extends RecyclerView.Adapter<AdapterAnuncios.MyView
     @Override
     public MyViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
 
-        View item = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.adapter_anuncio, viewGroup, false);
+        View item = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.adapter_meus_anuncios, viewGroup, false);
         return new MyViewHolder(item);
     }
 

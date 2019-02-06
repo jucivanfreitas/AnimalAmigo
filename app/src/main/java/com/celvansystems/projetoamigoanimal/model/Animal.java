@@ -29,8 +29,8 @@ public class Animal {
         Log.d("INFO: ", getIdAnimal());
 
         //fins de teste. Falta implementar na classe CadastroAnuncioActivity
-        this.setUf("PB");
-        this.setCidade("Mamanguape");
+        this.setUf("PE");
+        this.setCidade("Olinda");
     }
 
     public void salvar(){

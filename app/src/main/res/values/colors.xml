@@ -8,7 +8,7 @@
         <color name="colorPrimary">#FFC107</color>
         <color name="colorPrimaryDark">#FFA000</color>
         <color name="backgroundcolor">#FCFCFC</color>
-    <color name="backgroundcoloryelowtrasparent">#94C9C9C9</color>
+        <color name="backgroundcoloryelowtrasparent">#94C9C9C9</color>
         <color name="lightgray">#ededed</color>
         <color name="deeppurple">#7C4DFF</color>
         <color name="yello">#ffb300</color>
