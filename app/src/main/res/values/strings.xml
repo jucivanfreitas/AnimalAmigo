@@ -37,10 +37,6 @@
     <string name="especie">Espécie</string>
     <string name="txt_cad_helper_descrição_animal">Escreva um pouco sobre a história do Pet, quais as caracteristicas, suas rotinas, se é carinhoso, se é adestrado, castrado. Conte os motivos quais levaram à Adoção ou em que condições foi encontrado!</string>
     <string-array name="estados">
-        <item>AC</item>
-        <item>AL</item>
-        <item>AM</item>
-        <item>AP</item>
         <item>BA</item>
         <item>CE</item>
         <item>DF</item>
@@ -89,6 +85,12 @@
     <string-array name="sexos">
         <item>Macho</item>
         <item>Fêmea</item>
+    </string-array>
+
+    <string-array name="cidades">
+        <item>Mamanguape</item>
+        <item>Olinda</item>
+        <item>Recife</item>
     </string-array>
 
 </resources>
