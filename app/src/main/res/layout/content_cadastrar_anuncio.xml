@@ -25,6 +25,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="100dp"
                 android:layout_marginBottom="16dp"
+                android:background="@drawable/bg_caixa_txt"
                 android:orientation="horizontal"
                 android:padding="8dp">
 
@@ -55,18 +56,31 @@
                     app:srcCompat="@drawable/padrao" />
             </LinearLayout>
 
-            <EditText
-                android:id="@+id/editText_cad_NomeAnimal"
+
+            <android.support.design.widget.TextInputLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="16dp"
-                android:autofillHints=""
-                android:background="@drawable/bg_caixa_txt"
-                android:ems="10"
-                android:hint="@string/nome_do_animal"
-                android:inputType="textCapWords"
-                android:padding="10dp"
-                tools:targetApi="o" />
+                android:padding="3dp"
+                android:textColorHint="@color/cinza">
+
+
+                <EditText
+                    android:id="@+id/editText_cad_NomeAnimal"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+
+                    android:layout_marginBottom="16dp"
+                    android:autofillHints=""
+                    android:background="@drawable/bg_caixa_txt"
+                    android:ems="10"
+                    android:hint="@string/nome_do_animal"
+                    android:inputType="textCapWords"
+                    android:padding="10dp"
+                    tools:targetApi="o" />
+
+
+
+            </android.support.design.widget.TextInputLayout>
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -78,13 +92,20 @@
                     android:id="@+id/spinner_cad_Especie"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1" />
+                    android:layout_marginEnd="5dp"
+
+                    android:layout_weight="1"
+                    android:background="@drawable/bg_caixa_txt"
+                    android:padding="12dp" />
 
                 <Spinner
                     android:id="@+id/spinner_cad_Sexo"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1" />
+                    android:layout_marginStart="5dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/bg_caixa_txt"
+                    android:padding="12dp" />
             </LinearLayout>
 
             <LinearLayout
@@ -96,17 +117,29 @@
                     android:id="@+id/spinner_cad_idade"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1" />
+                    android:layout_marginEnd="5dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/bg_caixa_txt"
+                    android:padding="12dp" />
 
                 <Spinner
                     android:id="@+id/spinner_cad_porte"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1" />
+                    android:layout_marginStart="5dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/bg_caixa_txt"
+                    android:padding="12dp" />
 
             </LinearLayout>
 
-            <EditText
+            <android.support.design.widget.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="3dp"
+                android:textColorHint="@color/cinza">
+
+                <EditText
                 android:id="@+id/edtRaca"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -119,20 +152,49 @@
                 android:inputType="textCapWords"
                 tools:targetApi="o" />
 
-            <EditText
-                android:id="@+id/editText_cad_descrição"
+            </android.support.design.widget.TextInputLayout>
+
+
+            <android.support.design.widget.TextInputLayout
                 android:layout_width="match_parent"
-                android:layout_height="150dp"
-                android:layout_marginBottom="20dp"
-                android:autofillHints=""
-                android:background="@drawable/bg_caixa_txt"
-                android:ems="10"
-                android:hint="@string/descricao_do_animal"
-                android:inputType="textCapSentences"
-                android:lineSpacingExtra="10sp"
-                android:lines="@android:integer/config_shortAnimTime"
-                android:maxLength="@android:integer/config_mediumAnimTime"
-                tools:targetApi="o" />
+                android:layout_height="wrap_content"
+
+                android:hint="@string/txt_cad_helper_descrição_animal"
+                android:textColorHint="@color/cinza"
+                app:helperText="@string/txt_cad_helper_descrição_animal"
+                app:helperTextTextAppearance="@style/TextAppearance.AppCompat.Caption">
+
+                <android.support.design.widget.TextInputLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="160dp"
+                    android:padding="3dp"
+                    android:paddingBottom="10dp"
+                    app:counterEnabled="true"
+                    app:counterMaxLength="500"
+
+                    >
+
+                    <EditText
+                        android:id="@+id/editText_cad_descrição"
+                        android:layout_width="match_parent"
+                        android:layout_height="150dp"
+                        android:autofillHints=""
+                        android:background="@drawable/bg_caixa_txt"
+                        android:ems="10"
+                        android:hint="@string/descricao_do_animal"
+                        android:inputType="textCapWords"
+                        android:lineSpacingExtra="10sp"
+                        android:lineSpacingMultiplier="@android:integer/config_longAnimTime"
+                        android:lines="@android:integer/config_longAnimTime"
+                        android:maxLength="@android:integer/config_mediumAnimTime"
+                        android:maxLines="@android:integer/config_longAnimTime"
+                        android:singleLine="false"
+                        tools:targetApi="o" />
+
+                </android.support.design.widget.TextInputLayout>
+
+            </android.support.design.widget.TextInputLayout>
 
             <Button
                 android:id="@+id/btnCadastrarAnuncio"
@@ -141,8 +203,10 @@
                 android:layout_marginBottom="20dp"
                 android:background="@drawable/bg_btn"
                 android:clickable="true"
+                android:elevation="25dp"
                 android:foreground="?attr/selectableItemBackground"
-                android:elevation="10dp"
+                android:shadowColor="@color/black_overlay"
+                android:shadowDx="@android:integer/config_shortAnimTime"
                 android:text="@string/cadastrar_anuncio"
                 android:textColor="@color/common_google_signin_btn_text_dark_default"
                 android:textStyle="bold" />
