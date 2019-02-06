@@ -5,8 +5,6 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -56,6 +54,8 @@ public class AnunciosActivity extends AppCompatActivity {
     private Spinner spinnerCidade;
     private ArrayAdapter adapterCidades;
     private String [] cidades;
+    private boolean filtrandoCidade, filtrandoEspecie;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -77,14 +77,14 @@ public class AnunciosActivity extends AppCompatActivity {
         recuperarAnunciosPublicos();
         autenticacao = ConfiguracaoFirebase.getFirebaseAutenticacao();
 
-        FloatingActionButton fab = findViewById(R.id.fabcadastrar);
+        /*FloatingActionButton fab = findViewById(R.id.fabcadastrar);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
                         .setAction("Action", null).show();
             }
-        });
+        });*/
 
     }
 
@@ -185,6 +185,8 @@ public class AnunciosActivity extends AppCompatActivity {
 
     public void filtraPorEspecie(View view){
 
+        filtrandoEspecie = true;
+
         AlertDialog.Builder dialogEspecie = new AlertDialog.Builder(this);
         dialogEspecie.setTitle("Selecione a espécie desejada");
 
@@ -212,7 +214,7 @@ public class AnunciosActivity extends AppCompatActivity {
                 filtroEspecie = spinnerEspecie.getSelectedItem().toString();
                 recuperarAnunciosPorEspecie(filtroEspecie);
                 try {
-                    btnEspecie = findViewById(R.id.btnCidade);
+                    btnEspecie = findViewById(R.id.btnEspecie);
                     btnEspecie.setText(filtroEspecie);
                 }catch (Exception e){e.printStackTrace();}
             }
@@ -244,12 +246,25 @@ public class AnunciosActivity extends AppCompatActivity {
                 listaAnuncios.clear();
                 for(DataSnapshot estados: dataSnapshot.getChildren()){
                     for(DataSnapshot cidades: estados.getChildren()){
-                        for(DataSnapshot anuncios: cidades.getChildren()){
+                        if(!filtrandoCidade) {
+                            for (DataSnapshot anuncios : cidades.getChildren()) {
 
-                            Animal anuncio = anuncios.getValue(Animal.class);
+                                Animal anuncio = anuncios.getValue(Animal.class);
 
-                            if(anuncio.getEspecie().equalsIgnoreCase(especie)) {
-                                listaAnuncios.add(anuncio);
+                                if (anuncio.getEspecie().equalsIgnoreCase(especie)) {
+                                    listaAnuncios.add(anuncio);
+                                }
+                            }
+                        } else {
+                            if(cidades.getKey().equalsIgnoreCase(btnCidade.getText().toString())) {
+                                for (DataSnapshot anuncios : cidades.getChildren()) {
+
+                                    Animal anuncio = anuncios.getValue(Animal.class);
+
+                                    if (anuncio.getEspecie().equalsIgnoreCase(especie)) {
+                                        listaAnuncios.add(anuncio);
+                                    }
+                                }
                             }
                         }
                     }
@@ -333,6 +348,8 @@ public class AnunciosActivity extends AppCompatActivity {
     }
     //
     public void filtraPorCidade(View view){
+
+        filtrandoCidade = true;
 
         AlertDialog.Builder dialogCidade = new AlertDialog.Builder(this);
         dialogCidade.setTitle("Selecione a cidade desejada");
@@ -464,10 +481,20 @@ public class AnunciosActivity extends AppCompatActivity {
                         if(cidades.getKey().equalsIgnoreCase(cidade)) {
                             for (DataSnapshot anuncios : cidades.getChildren()) {
 
-                                Animal anuncio = anuncios.getValue(Animal.class);
+                                if(!filtrandoEspecie) {
+                                    Animal anuncio = anuncios.getValue(Animal.class);
 
-                                if (anuncio.getCidade().equalsIgnoreCase(cidade)) {
-                                    listaAnuncios.add(anuncio);
+                                    if (anuncio.getCidade().equalsIgnoreCase(cidade)) {
+                                        listaAnuncios.add(anuncio);
+                                    }
+                                } else {
+                                    Animal anuncio = anuncios.getValue(Animal.class);
+
+                                    if(anuncio.getEspecie().equalsIgnoreCase(btnEspecie.getText().toString())) {
+                                        if (anuncio.getCidade().equalsIgnoreCase(cidade)) {
+                                            listaAnuncios.add(anuncio);
+                                        }
+                                    }
                                 }
                             }
                         }
