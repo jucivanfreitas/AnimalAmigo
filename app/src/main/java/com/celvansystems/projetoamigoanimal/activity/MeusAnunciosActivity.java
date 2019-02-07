@@ -1,7 +1,5 @@
 package com.celvansystems.projetoamigoanimal.activity;
 
-//import android.app.AlertDialog;
-
 import android.app.AlertDialog;
 import android.content.Intent;
 import android.os.Bundle;
@@ -69,7 +67,7 @@ public class MeusAnunciosActivity extends AppCompatActivity {
         recyclerAnuncios.setLayoutManager(new LinearLayoutManager(this));
         recyclerAnuncios.setHasFixedSize(true);
 
-        adapterAnuncios = new AdapterAnuncios(anuncios, this);
+        adapterAnuncios = new AdapterAnuncios(anuncios);
         recyclerAnuncios.setAdapter(adapterAnuncios);
 
         //recupera anuncios para o usuario
@@ -98,7 +96,6 @@ public class MeusAnunciosActivity extends AppCompatActivity {
             }
         }
         ));
-
     }
 
     private void recuperarAnuncios(){
@@ -140,5 +137,4 @@ public class MeusAnunciosActivity extends AppCompatActivity {
 
         startActivity(new Intent(getApplicationContext(), CadastrarAnuncioActivity.class));
     }
-
 }

@@ -1,7 +1,6 @@
 package com.celvansystems.projetoamigoanimal.activity;
 
 import android.app.AlertDialog;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
@@ -20,6 +19,7 @@ import android.widget.Spinner;
 import com.celvansystems.projetoamigoanimal.R;
 import com.celvansystems.projetoamigoanimal.adapter.AdapterAnuncios;
 import com.celvansystems.projetoamigoanimal.helper.ConfiguracaoFirebase;
+import com.celvansystems.projetoamigoanimal.helper.Util;
 import com.celvansystems.projetoamigoanimal.model.Animal;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
@@ -27,12 +27,6 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.ValueEventListener;
 
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.io.IOException;
-import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -72,7 +66,7 @@ public class AnunciosActivity extends AppCompatActivity {
         recyclerAnunciosPublicos.setLayoutManager(new LinearLayoutManager(this));
         recyclerAnunciosPublicos.setHasFixedSize(true);
 
-        adapterAnuncios = new AdapterAnuncios(listaAnuncios, this);
+        adapterAnuncios = new AdapterAnuncios(listaAnuncios);
         recyclerAnunciosPublicos.setAdapter(adapterAnuncios);
 
         recuperarAnunciosPublicos();
@@ -187,7 +181,7 @@ public class AnunciosActivity extends AppCompatActivity {
         final Spinner spinnerCidade = viewSpinner.findViewById(R.id.spinnerFiltro2);
         spinnerCidade.setVisibility(View.GONE);
 
-        String [] especies = getResources().getStringArray(R.array.especies);
+        String [] especies = Util.getEspecies(getApplicationContext());
 
 //especies
         ArrayAdapter<String> adapterEspecies = new ArrayAdapter<>(this, simple_spinner_item, especies);
@@ -274,75 +268,12 @@ public class AnunciosActivity extends AppCompatActivity {
 
             }
         });
-
     }
 
-    private String[] getEstadosJSON(){
-        JSONObject obj;
-        JSONArray jaEstados;
-        String[] estados = new String[0];
-        try {
-            obj = new JSONObject(loadJSONFromAsset(this));
-            jaEstados = obj.getJSONArray("estados");
-
-            if(jaEstados!= null) {
-                estados = new String[jaEstados.length()];
-
-                for (int i = 0; i < jaEstados.length(); i++) {
-                    estados[i] = jaEstados.getJSONObject(i).getString("sigla");
-                }
-            }
-        } catch (Exception e){e.printStackTrace(); }
-
-        return estados;
-    }
-
-    /*
-    /* usa o arquivo estados-cidades.json localizado na pasta assets
+    /**
+     *
+     * @param view view
      */
-    private String[] getCidadesJSON(String uf){
-
-        JSONObject obj;
-        JSONArray jaEstados;
-        JSONArray array = null;
-        spinnerCidade.setVisibility(View.VISIBLE);
-
-        String[] cidades = new String[0];
-        try {
-            obj = new JSONObject(loadJSONFromAsset(this));
-            jaEstados = obj.getJSONArray("estados");
-
-            if(jaEstados!= null) {
-
-                for(int i = 0; i < jaEstados.length(); i++) {
-                    String sigla = jaEstados.getJSONObject(i).getString("sigla");
-
-                    if (sigla.equalsIgnoreCase(uf)) {
-                        array = jaEstados.getJSONObject(i).getJSONArray("cidades");
-                        break;
-                    }
-                }
-            }
-
-        } catch (Exception e){e.printStackTrace(); }
-
-        if(array != null) {
-
-            int len = array.length();
-            cidades = new String[len];
-            for (int i=0;i<len;i++){
-                try {
-                    cidades[i] = array.getString(i);
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-            }
-        }
-
-        return cidades;
-    }
-
-    //
     public void filtraPorCidade(View view){
 
         filtrandoCidade = true;
@@ -354,12 +285,13 @@ public class AnunciosActivity extends AppCompatActivity {
         //configura o spinner
         View viewSpinner = getLayoutInflater().inflate(R.layout.dialog_spinner, null);
 
-        String[] estados = getEstadosJSON();
+        String[] estados = Util.getEstadosJSON(this);
 
         spinnerEstado = viewSpinner.findViewById(R.id.spinnerFiltro);
         spinnerCidade = viewSpinner.findViewById(R.id.spinnerFiltro2);
 
-        cidades = getCidadesJSON("AC");
+        spinnerCidade.setVisibility(View.VISIBLE);
+        cidades = Util.getCidadesJSON("AC", this);
 
 //cidades
         adapterCidades = new ArrayAdapter<>(this, simple_spinner_item, cidades);
@@ -403,7 +335,7 @@ public class AnunciosActivity extends AppCompatActivity {
 
                 try {
                     String ufSelecionado = spinnerEstado.getItemAtPosition(position).toString();
-                    cidades = getCidadesJSON(ufSelecionado);
+                    cidades = Util.getCidadesJSON(ufSelecionado, getApplicationContext());
                     setAdapterSpinner();
                 }catch (Exception e){
                     e.printStackTrace();
@@ -479,25 +411,5 @@ public class AnunciosActivity extends AppCompatActivity {
         });
     }
 
-    public String loadJSONFromAsset(Context context) {
-        String json;
-        try {
-            InputStream is = context.getAssets().open("estados-cidades.json");
 
-            int size = is.available();
-
-            byte[] buffer = new byte[size];
-
-            is.read(buffer);
-
-            is.close();
-
-            json = new String(buffer, "Windows-1252");
-
-        } catch (IOException ex) {
-            ex.printStackTrace();
-            return null;
-        }
-        return json;
-    }
 }

@@ -4,10 +4,9 @@ import android.annotation.SuppressLint;
 import android.util.Log;
 
 import com.celvansystems.projetoamigoanimal.helper.ConfiguracaoFirebase;
+import com.celvansystems.projetoamigoanimal.helper.Util;
 import com.google.firebase.database.DatabaseReference;
 
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
 import java.util.List;
 
 public class Animal {
@@ -34,12 +33,8 @@ public class Animal {
         Log.d("INFO: ", getIdAnimal());
 
 // configuraçao da data atual do Brasil
-       Calendar cal = Calendar.getInstance();
-        cal.add(Calendar.HOUR_OF_DAY, -3);
-        setDataCadastro( new SimpleDateFormat("yyyy/MM/dd HH:mm:ss").format(cal.getTime()));
+        setDataCadastro(Util.getDataAtualBrasil());
 
-
-//
         this.setUf("AC");
         this.setCidade("Acrelândia");
     }
@@ -78,9 +73,8 @@ public class Animal {
         animalRef.removeValue();
         removerAnimalPublico();
     }
-/////////////////////////////////////////////
-    /////////////////////////////////////////
-private void removerAnimalPublico(){
+
+    private void removerAnimalPublico(){
 
         DatabaseReference anuncioRef = ConfiguracaoFirebase.getFirebase()
                 .child("anuncios")

@@ -1,6 +1,5 @@
 package com.celvansystems.projetoamigoanimal.adapter;
 
-import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -17,17 +16,10 @@ import java.util.List;
 
 public class AdapterAnuncios extends RecyclerView.Adapter<AdapterAnuncios.MyViewHolder> {
 
-
     private List<Animal> anuncios;
-    private Context context;
 
-    public AdapterAnuncios() {
-
-    }
-
-    public AdapterAnuncios(List<Animal> anuncios, Context context) {
+    public AdapterAnuncios(List<Animal> anuncios) {
         this.anuncios = anuncios;
-        this.context = context;
     }
 
     @NonNull
@@ -60,7 +52,7 @@ public class AdapterAnuncios extends RecyclerView.Adapter<AdapterAnuncios.MyView
         return anuncios.size();
     }
 
-    public class MyViewHolder extends RecyclerView.ViewHolder {
+    class MyViewHolder extends RecyclerView.ViewHolder {
 
         TextView dataCadastro;
         TextView nome;
@@ -68,7 +60,7 @@ public class AdapterAnuncios extends RecyclerView.Adapter<AdapterAnuncios.MyView
         TextView cidade;
         ImageView foto;
 
-        public MyViewHolder(View itemView) {
+        MyViewHolder(View itemView) {
             super(itemView);
 
             dataCadastro = itemView.findViewById(R.id.textDataCadastro);

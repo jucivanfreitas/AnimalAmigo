@@ -38,6 +38,8 @@ import java.util.Objects;
 
 import dmax.dialog.SpotsDialog;
 
+import static android.R.layout.simple_spinner_item;
+
 public class CadastrarAnuncioActivity extends AppCompatActivity
         implements View.OnClickListener{
 
@@ -103,6 +105,12 @@ public class CadastrarAnuncioActivity extends AppCompatActivity
 
         listaFotosRecuperadas = new ArrayList<>();
         listaURLFotos = new ArrayList<>();
+
+        //estados
+        String [] estados = getResources().getStringArray(R.array.estados);
+        ArrayAdapter<String> adapterEstados = new ArrayAdapter<>(this, simple_spinner_item, estados);
+        adapterEstados.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spnEstado.setAdapter(adapterEstados);
     }
 
     /**
