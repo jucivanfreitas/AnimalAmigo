@@ -34,6 +34,7 @@ import com.google.firebase.storage.UploadTask;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 import dmax.dialog.SpotsDialog;
 
@@ -41,10 +42,11 @@ public class CadastrarAnuncioActivity extends AppCompatActivity
         implements View.OnClickListener{
 
     private Spinner spnEspecie, spnSexo, spnIdade, spnPorte;
+    private Spinner spnEstado, spnCidade;
     private EditText edtDescricao, edtRaca, edtNome;
     private Button btnCadastrarAnuncio;
-    private List<String> listaFotosRecuperadas = new ArrayList<>();
-    private List<String> listaURLFotos = new ArrayList<>();
+    private List<String> listaFotosRecuperadas;
+    private List<String> listaURLFotos;
     private ImageView imagem1, imagem2, imagem3;
     private AlertDialog dialog;
     private StorageReference storage;
@@ -68,7 +70,7 @@ public class CadastrarAnuncioActivity extends AppCompatActivity
 
         carregarDadosSpinner();
 
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
 
         btnCadastrarAnuncio.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -79,26 +81,34 @@ public class CadastrarAnuncioActivity extends AppCompatActivity
     }
 
     private void inicializarComponentes(){
-        spnEspecie = (Spinner) findViewById(R.id.spinner_cad_Especie);
-        spnSexo = (Spinner) findViewById(R.id.spinner_cad_Sexo);
-        spnIdade = (Spinner) findViewById(R.id.spinner_cad_idade);
-        spnPorte = (Spinner) findViewById(R.id.spinner_cad_porte);
-        edtDescricao = (EditText) findViewById(R.id.editText_cad_descrição);
-        edtRaca = (EditText) findViewById(R.id.edtRaca);
-        edtNome = (EditText) findViewById(R.id.editText_cad_NomeAnimal);
+        spnEspecie = findViewById(R.id.spinner_cad_Especie);
+        spnSexo = findViewById(R.id.spinner_cad_Sexo);
+        spnIdade = findViewById(R.id.spinner_cad_idade);
+        spnPorte = findViewById(R.id.spinner_cad_porte);
+        spnEstado = findViewById(R.id.spinner_cad_estado);
+        spnCidade = findViewById(R.id.spinner_cad_cidade);
+        edtDescricao = findViewById(R.id.editText_cad_descrição);
+        edtRaca = findViewById(R.id.edtRaca);
+        edtNome = findViewById(R.id.editText_cad_NomeAnimal);
 
-        btnCadastrarAnuncio = (Button) findViewById(R.id.btnCadastrarAnuncio);
+        btnCadastrarAnuncio = findViewById(R.id.btnCadastrarAnuncio);
 
-        imagem1 = (ImageView) findViewById(R.id.imageCadastro1);
-        imagem2 = (ImageView) findViewById(R.id.imageCadastro2);
-        imagem3 = (ImageView) findViewById(R.id.imageCadastro3);
+        imagem1 = findViewById(R.id.imageCadastro1);
+        imagem2 = findViewById(R.id.imageCadastro2);
+        imagem3 = findViewById(R.id.imageCadastro3);
 
         imagem1.setOnClickListener(this);
         imagem2.setOnClickListener(this);
         imagem3.setOnClickListener(this);
+
+        listaFotosRecuperadas = new ArrayList<>();
+        listaURLFotos = new ArrayList<>();
     }
 
-    // A implementar
+    /**
+     *
+     * @param animal anuncio
+     */
     private void salvarAnuncio(Animal animal){
 
         hideKeyboard(getApplicationContext(), edtDescricao);
@@ -110,18 +120,21 @@ public class CadastrarAnuncioActivity extends AppCompatActivity
                 .build();
         dialog.show();
 
-        String valor = animal.getEspecie();
-        Log.d("salvar", "salvarAnuncio: " + valor );
-
         //salvar imagem no storage
         int tamanhoLista = animal.getFotos().size();
         for (int i=0; i < tamanhoLista; i++) {
             String urlImagem = animal.getFotos().get(i);
             salvarFotosStorage(animal, urlImagem, tamanhoLista, i);
         }
-
     }
 
+    /**
+     *
+     * @param animal animal
+     * @param url url
+     * @param totalFotos número de fotos
+     * @param contador contador
+     */
     private void salvarFotosStorage(final Animal animal, String url, final int totalFotos, int contador){
 
         //cria nó do storage
@@ -136,14 +149,13 @@ public class CadastrarAnuncioActivity extends AppCompatActivity
             @Override
             public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
                 Uri firebaseUrl = taskSnapshot.getDownloadUrl();
-                String urlConvertida = firebaseUrl.toString();
+                String urlConvertida = Objects.requireNonNull(firebaseUrl).toString();
                 listaURLFotos.add(urlConvertida);
 
                 if(totalFotos == listaURLFotos.size()){
                     animal.setFotos(listaURLFotos);
                     animal.salvar();
                     exibirMensagem("Sucesso ao fazer upload");
-                    Log.i("INFO", "Sucesso ao fazer upload");
                     dialog.dismiss();
                     finish();
                 }
@@ -152,12 +164,14 @@ public class CadastrarAnuncioActivity extends AppCompatActivity
             @Override
             public void onFailure(@NonNull Exception e) {
                 exibirMensagem("Falha ao fazer upload");
-                Log.i("INFO", "Falha ao fazer upload: " + e.getMessage());
             }
         });
     }
 
-    //cria objeto que representa os campos preenchidos da activity
+    /**
+     * cria objeto que representa os campos preenchidos da activity
+     * @return animal
+     */
     private Animal getAnimalDaActivity(){
 
         String nome = edtNome.getText().toString();
@@ -182,6 +196,10 @@ public class CadastrarAnuncioActivity extends AppCompatActivity
         return retorno;
     }
 
+    /**
+     * valida o preenchimento dos dados pelo usuário
+     * @param view view
+     */
     public void validarDadosAnuncio(View view){
 
         Animal animal = this.getAnimalDaActivity();
@@ -221,11 +239,18 @@ public class CadastrarAnuncioActivity extends AppCompatActivity
         }
     }
 
-    //
+    /**
+     * exibe um Toast
+     * @param mensagem string
+     */
     private void exibirMensagem(String mensagem){
         Toast.makeText(this, mensagem, Toast.LENGTH_SHORT).show();
     }
 
+    /**
+     *
+     * @param v view
+     */
     @Override
     public void onClick(View v) {
         Log.d("onClick", "onClick: " + v.getId() );
@@ -243,11 +268,21 @@ public class CadastrarAnuncioActivity extends AppCompatActivity
         }
     }
 
+    /**
+     *
+     * @param requestCode int
+     */
     public void escolherImagem(int requestCode){
         Intent i = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
         startActivityForResult(i, requestCode);
     }
 
+    /**
+     *
+     * @param requestCode int
+     * @param resultCode int
+     * @param data intent
+     */
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -256,7 +291,7 @@ public class CadastrarAnuncioActivity extends AppCompatActivity
 
             //Recuperar imagem
             Uri imagemSelecionada = data.getData();
-            String caminhoImagem = imagemSelecionada.toString();
+            String caminhoImagem = Objects.requireNonNull(imagemSelecionada).toString();
 
             //Configura imagem no ImageView
             if( requestCode == 1 ){
@@ -270,31 +305,33 @@ public class CadastrarAnuncioActivity extends AppCompatActivity
         }
     }
 
+    /**
+     * preenche os spinners
+     */
     private void carregarDadosSpinner() {
 
-        //String [] estados = getResources().getStringArray(R.array.estados);
         String [] especies = getResources().getStringArray(R.array.especies);
         String [] sexos = getResources().getStringArray(R.array.sexos);
         String [] idades = getResources().getStringArray(R.array.idade);
         String [] portes = getResources().getStringArray(R.array.portes);
 
         //especies
-        ArrayAdapter<String> adapterEspecies = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, especies);
+        ArrayAdapter<String> adapterEspecies = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, especies);
         adapterEspecies.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spnEspecie.setAdapter(adapterEspecies);
 
         //sexos
-        ArrayAdapter<String> adapterSexos = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, sexos);
+        ArrayAdapter<String> adapterSexos = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, sexos);
         adapterSexos.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spnSexo.setAdapter(adapterSexos);
 
-        //idades
-        ArrayAdapter<String> adapterIdades = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, idades);
+        /* idades */
+        ArrayAdapter<String> adapterIdades = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, idades);
         adapterIdades.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spnIdade.setAdapter(adapterIdades);
 
-        //portes
-        ArrayAdapter<String> adapterPortes = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, portes);
+        /* portes */
+        ArrayAdapter<String> adapterPortes = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, portes);
         adapterPortes.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spnPorte.setAdapter(adapterPortes);
     }
@@ -326,6 +363,11 @@ public class CadastrarAnuncioActivity extends AppCompatActivity
         dialog.show();
     }
 
+    /**
+     * esconde o teclado virtual
+     * @param context contexto
+     * @param editText view
+     */
     public static void hideKeyboard(Context context, View editText) {
         InputMethodManager imm = (InputMethodManager) context.getSystemService(Context.INPUT_METHOD_SERVICE);
         imm.hideSoftInputFromWindow(editText.getWindowToken(), 0);

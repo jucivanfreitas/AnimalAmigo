@@ -9,7 +9,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -39,6 +38,8 @@ import java.util.Collections;
 import java.util.List;
 
 import dmax.dialog.SpotsDialog;
+
+import static android.R.layout.simple_spinner_item;
 
 
 public class AnunciosActivity extends AppCompatActivity {
@@ -76,16 +77,6 @@ public class AnunciosActivity extends AppCompatActivity {
 
         recuperarAnunciosPublicos();
         autenticacao = ConfiguracaoFirebase.getFirebaseAutenticacao();
-
-        /*FloatingActionButton fab = findViewById(R.id.fabcadastrar);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-            }
-        });*/
-
     }
 
     @Override
@@ -95,10 +86,9 @@ public class AnunciosActivity extends AppCompatActivity {
         return true;
     }
 
-
-    //seleçioan menu de acordo com o modo logado ou não logado
-
-
+    /*
+    *seleciona menu de acordo com o modo logado ou não logado
+    * */
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
@@ -200,7 +190,7 @@ public class AnunciosActivity extends AppCompatActivity {
         String [] especies = getResources().getStringArray(R.array.especies);
 
 //especies
-        ArrayAdapter<String> adapterEspecies = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, especies);
+        ArrayAdapter<String> adapterEspecies = new ArrayAdapter<>(this, simple_spinner_item, especies);
         adapterEspecies.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinnerEspecie.setAdapter(adapterEspecies);
 
@@ -307,31 +297,31 @@ public class AnunciosActivity extends AppCompatActivity {
         return estados;
     }
 
+    /*
+    /* usa o arquivo estados-cidades.json localizado na pasta assets
+     */
     private String[] getCidadesJSON(String uf){
 
         JSONObject obj;
         JSONArray jaEstados;
         JSONArray array = null;
-        //List<String> retorno = new ArrayList<String>();
         spinnerCidade.setVisibility(View.VISIBLE);
 
-        String[] estados = new String[0];
         String[] cidades = new String[0];
         try {
             obj = new JSONObject(loadJSONFromAsset(this));
             jaEstados = obj.getJSONArray("estados");
 
             if(jaEstados!= null) {
-                //estados = new String[jaEstados.length()];
 
-            for(int i = 0; i < jaEstados.length(); i++) {
-                String sigla = jaEstados.getJSONObject(i).getString("sigla");
+                for(int i = 0; i < jaEstados.length(); i++) {
+                    String sigla = jaEstados.getJSONObject(i).getString("sigla");
 
-                if (sigla.equalsIgnoreCase(uf)) {
-                    array = jaEstados.getJSONObject(i).getJSONArray("cidades");
-                    break;
+                    if (sigla.equalsIgnoreCase(uf)) {
+                        array = jaEstados.getJSONObject(i).getJSONArray("cidades");
+                        break;
+                    }
                 }
-            }
             }
 
         } catch (Exception e){e.printStackTrace(); }
@@ -351,6 +341,7 @@ public class AnunciosActivity extends AppCompatActivity {
 
         return cidades;
     }
+
     //
     public void filtraPorCidade(View view){
 
@@ -363,28 +354,20 @@ public class AnunciosActivity extends AppCompatActivity {
         //configura o spinner
         View viewSpinner = getLayoutInflater().inflate(R.layout.dialog_spinner, null);
 
-        JSONObject obj;
-        JSONArray jaEstados;
         String[] estados = getEstadosJSON();
 
         spinnerEstado = viewSpinner.findViewById(R.id.spinnerFiltro);
         spinnerCidade = viewSpinner.findViewById(R.id.spinnerFiltro2);
-        //TODO: implementar cidades de acordo com a escolha do estado
 
         cidades = getCidadesJSON("AC");
 
 //cidades
-        Log.d("INFO7: ", "passou1");
-
-        adapterCidades = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, cidades);
-        Log.d("INFO7: ", "passou2");
-
-        ArrayAdapter<String> adapterEstados = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, estados);
+        adapterCidades = new ArrayAdapter<>(this, simple_spinner_item, cidades);
+        ArrayAdapter<String> adapterEstados = new ArrayAdapter<>(this, simple_spinner_item, estados);
         adapterEstados.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         adapterCidades.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinnerEstado.setAdapter(adapterEstados);
         spinnerCidade.setAdapter(adapterCidades);
-        Log.d("INFO7: ", "passou3");
 
         dialogCidade.setView(viewSpinner);
 
@@ -420,31 +403,22 @@ public class AnunciosActivity extends AppCompatActivity {
 
                 try {
                     String ufSelecionado = spinnerEstado.getItemAtPosition(position).toString();
-                    Log.d("INFO88: ", "estado selecionado "+ufSelecionado);
-
-                    //cidades = new String[getCidadesJSON(ufSelecionado).length];
                     cidades = getCidadesJSON(ufSelecionado);
                     setAdapterSpinner();
-                    // falta colocar cidades no spinner
-                    Log.d("INFO88: ", "setAdapterSpinner incovado");
-
                 }catch (Exception e){
                     e.printStackTrace();
-                    Log.d("INFO88: ", "erro");
-
                 }
             }
 
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
-
             }
         });
     }
 
     public void setAdapterSpinner(){
 
-        adapterCidades = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, cidades);
+        adapterCidades = new ArrayAdapter<>(this, simple_spinner_item, cidades);
         adapterCidades.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 
         spinnerCidade.setAdapter(adapterCidades);
@@ -465,11 +439,7 @@ public class AnunciosActivity extends AppCompatActivity {
             public void onDataChange(DataSnapshot dataSnapshot) {
                 listaAnuncios.clear();
                 for(DataSnapshot estados: dataSnapshot.getChildren()){
-                    Log.d("INFO2: " , estados.getKey());
-
                     for(DataSnapshot cidades: estados.getChildren()){
-                        Log.d("INFO2: " , cidades.getKey());
-                        Log.d("INFO2: " , String.valueOf(cidades.getKey().equalsIgnoreCase(cidade)));
                         if(cidades.getKey().equalsIgnoreCase(cidade)) {
                             for (DataSnapshot anuncios : cidades.getChildren()) {
 
