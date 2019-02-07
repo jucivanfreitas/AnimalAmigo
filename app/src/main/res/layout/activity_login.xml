@@ -62,7 +62,7 @@
                     android:layout_marginBottom="5dp"
                     android:background="@drawable/bg_caixa_txt"
                     android:elevation="20dp"
-                    android:focusable="false"
+                    android:focusableInTouchMode="true"
                     android:hint="@string/prompt_email"
                     android:inputType="textEmailAddress"
                     android:maxLines="1"

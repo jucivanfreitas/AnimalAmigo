@@ -4,7 +4,6 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:layout_margin="8dp"
     android:orientation="vertical"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
     tools:context=".activity.AnunciosActivity"
@@ -12,17 +11,24 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="50dp"
+        android:elevation="20dp"
         android:orientation="horizontal">
 
         <Button
             android:id="@+id/btnCidade"
             style="?attr/buttonBarButtonStyle"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
+            android:layout_height="50dp"
+            android:layout_marginEnd="2dp"
+            android:layout_weight="2"
+            android:elevation="100dp"
             android:onClick="filtraPorCidade"
-            android:text="@string/cidade" />
+            android:padding="12dp"
+            android:shadowColor="@color/black_overlay"
+            android:shadowDx="@android:integer/config_shortAnimTime"
+            android:text="@string/cidade"
+            android:textColorLink="@color/colorPrimaryDark" />
 
         <TextView
             android:layout_width="wrap_content"
@@ -37,11 +43,23 @@
             android:id="@+id/btnEspecie"
             style="?attr/buttonBarButtonStyle"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
+            android:layout_height="50dp"
+            android:layout_marginStart="2dp"
+            android:layout_weight="2"
+            android:elevation="25dp"
             android:onClick="filtraPorEspecie"
-            android:text="@string/especie" />
+            android:padding="12dp"
+            android:shadowColor="@color/common_google_signin_btn_text_dark_focused"
+            android:shadowDx="@android:integer/config_mediumAnimTime"
+            android:shadowDy="15"
+            android:text="@string/especie"
+            android:textColorLink="@color/colorPrimaryDark" />
     </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="8dp"
+        android:orientation="horizontal"></LinearLayout>
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/recyclerAnuncios"
