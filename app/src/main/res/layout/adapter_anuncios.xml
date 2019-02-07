@@ -83,9 +83,10 @@
             android:id="@+id/imageView3Principal"
             android:layout_width="0dp"
             android:layout_height="150dp"
+            android:layout_marginBottom="4dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="1.0"
+            app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
             app:srcCompat="@drawable/bg_img_card_gradient" />
 
@@ -93,8 +94,8 @@
             android:id="@+id/textNomeprincipal"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:layout_marginBottom="68dp"
+            android:layout_marginStart="4dp"
+            android:layout_marginBottom="92dp"
             android:text="@string/anuncios"
             android:textColor="@color/colorPrimaryDark"
             android:textSize="24sp"
@@ -118,13 +119,26 @@
             tools:layout_conversion_absoluteWidth="197dp" />
 
         <TextView
-            android:id="@+id/textcidadePrincipal"
+            android:id="@+id/textCidadePrincipal"
             android:layout_width="wrap_content"
             android:layout_height="28dp"
-            android:layout_marginTop="8dp"
             android:text="@android:string/dialog_alert_title"
             android:textColor="@color/colorAccent"
             android:textSize="14sp"
+            android:textStyle="normal"
+            tools:layout_conversion_absoluteHeight="24dp"
+            tools:layout_conversion_absoluteWidth="197dp"
+            tools:layout_editor_absoluteX="4dp"
+            tools:layout_editor_absoluteY="193dp" />
+
+        <TextView
+            android:id="@+id/textDataCadastro"
+            android:layout_width="wrap_content"
+            android:layout_height="28dp"
+            android:layout_marginTop="36dp"
+            android:text="@android:string/dialog_alert_title"
+            android:textColor="@color/colorAccent"
+            android:textSize="12sp"
             android:textStyle="normal"
             app:layout_constraintStart_toStartOf="@+id/textIdadePrincipal"
             app:layout_constraintTop_toBottomOf="@+id/textIdadePrincipal"

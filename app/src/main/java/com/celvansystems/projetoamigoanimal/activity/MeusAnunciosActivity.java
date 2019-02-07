@@ -26,13 +26,14 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Objects;
 
 import dmax.dialog.SpotsDialog;
 
 public class MeusAnunciosActivity extends AppCompatActivity {
 
     private RecyclerView recyclerAnuncios;
-    private List<Animal> anuncios = new ArrayList<Animal>();
+    private List<Animal> anuncios = new ArrayList<>();
     private AdapterAnuncios adapterAnuncios;
     private DatabaseReference anuncioUsuarioRef;
 
@@ -57,7 +58,7 @@ public class MeusAnunciosActivity extends AppCompatActivity {
             }
         });
 
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
 
         // configuracoes iniciais
         anuncioUsuarioRef = ConfiguracaoFirebase.getFirebase()
@@ -131,7 +132,7 @@ public class MeusAnunciosActivity extends AppCompatActivity {
 
     private void inicializarComponentes(){
 
-        recyclerAnuncios = (RecyclerView) findViewById(R.id.recycle_meus_anuncios);
+        recyclerAnuncios = findViewById(R.id.recycle_meus_anuncios);
 
     }
 

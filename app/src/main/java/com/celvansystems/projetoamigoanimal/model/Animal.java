@@ -1,10 +1,13 @@
 package com.celvansystems.projetoamigoanimal.model;
 
+import android.annotation.SuppressLint;
 import android.util.Log;
 
 import com.celvansystems.projetoamigoanimal.helper.ConfiguracaoFirebase;
 import com.google.firebase.database.DatabaseReference;
 
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.List;
 
 public class Animal {
@@ -19,8 +22,10 @@ public class Animal {
     private String idade;
     private String porte;
     private String sexo;
+    private String dataCadastro;
     private List<String> fotos;
 
+    @SuppressLint("SimpleDateFormat")
     public Animal (){
 
         DatabaseReference animalRef = ConfiguracaoFirebase.getFirebase()
@@ -28,7 +33,13 @@ public class Animal {
         setIdAnimal(animalRef.push().getKey());
         Log.d("INFO: ", getIdAnimal());
 
-        //fins de teste. Falta implementar na classe CadastroAnuncioActivity
+// configuraçao da data atual do Brasil
+       Calendar cal = Calendar.getInstance();
+        cal.add(Calendar.HOUR_OF_DAY, -3);
+        setDataCadastro( new SimpleDateFormat("yyyy/MM/dd HH:mm:ss").format(cal.getTime()));
+
+
+//
         this.setUf("AC");
         this.setCidade("Acrelândia");
     }
@@ -45,7 +56,7 @@ public class Animal {
         salvarAnimalPublico();
     }
 
-    public void salvarAnimalPublico(){
+    private void salvarAnimalPublico(){
 
         DatabaseReference anuncioRef = ConfiguracaoFirebase.getFirebase()
                 .child("anuncios");
@@ -69,7 +80,7 @@ public class Animal {
     }
 /////////////////////////////////////////////
     /////////////////////////////////////////
-    public void removerAnimalPublico(){
+private void removerAnimalPublico(){
 
         DatabaseReference anuncioRef = ConfiguracaoFirebase.getFirebase()
                 .child("anuncios")
@@ -163,6 +174,14 @@ public class Animal {
 
     public List<String> getFotos() {
         return fotos;
+    }
+
+    public String getDataCadastro() {
+        return dataCadastro;
+    }
+
+    public void setDataCadastro(String dataCadastro) {
+        this.dataCadastro = dataCadastro;
     }
 
     public void setFotos(List<String> fotos) {

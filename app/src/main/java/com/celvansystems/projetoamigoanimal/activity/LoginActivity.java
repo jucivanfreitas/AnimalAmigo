@@ -2,6 +2,7 @@ package com.celvansystems.projetoamigoanimal.activity;
 
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
+import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
 import android.app.LoaderManager.LoaderCallbacks;
 import android.content.Context;
@@ -44,6 +45,7 @@ import com.google.firebase.auth.FirebaseAuthWeakPasswordException;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 import static android.Manifest.permission.READ_CONTACTS;
 
@@ -63,9 +65,9 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
      * A dummy authentication store containing known user names and passwords.
      * TODO: remove after connecting to a real authentication system.
      */
-    private static final String[] DUMMY_CREDENTIALS = new String[]{
+    /*private static final String[] DUMMY_CREDENTIALS = new String[]{
             "foo@example.com:hello", "bar@example.com:world"
-    };
+    };*/
     /**
      * Keep track of the login task to ensure we can cancel it if requested.
      */
@@ -107,12 +109,12 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
     }
 
     private void inicializarComponentes() {
-        mEmailView = (AutoCompleteTextView) findViewById(R.id.txiEmail);
+        mEmailView = findViewById(R.id.txiEmail);
         mLoginFormView = findViewById(R.id.login_form);
         mProgressView = findViewById(R.id.login_progress);
-        mPasswordView = (EditText) findViewById(R.id.txiPassword);
-        btnLogin = (Button) findViewById(R.id.btnLogin);
-        swtLoginCadastrar = (Switch) findViewById(R.id.swtLoginCadastrar);
+        mPasswordView = findViewById(R.id.txiPassword);
+        btnLogin = findViewById(R.id.btnLogin);
+        swtLoginCadastrar = findViewById(R.id.swtLoginCadastrar);
 
         mEmailView.setText("");
         mPasswordView.setText("");
@@ -163,10 +165,11 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
     /**
      * Set up the {@link android.app.ActionBar}, if the API is available.
      */
+    @SuppressLint("ObsoleteSdkInt")
     @TargetApi(Build.VERSION_CODES.HONEYCOMB)
     private void setupActionBar() {
+        // Show the Up button in the action bar.
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
-            // Show the Up button in the action bar.
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         }
     }
@@ -241,7 +244,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                                 } else {
                                     String erroExcecao;
                                     try {
-                                        throw task.getException();
+                                        throw Objects.requireNonNull(task.getException());
                                     } catch (FirebaseAuthWeakPasswordException e) {
                                         erroExcecao = "Digite uma senha mais forte";
                                     } catch (FirebaseAuthInvalidCredentialsException e) {
@@ -289,9 +292,8 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
     }
 
     private boolean isEmailValid(String email) {
-        //TODO: Replace this with your own logic
-        boolean retorno = email.contains("@") && (email.contains("."));
-        return retorno;
+
+        return email.contains("@") && email.contains(".");
     }
 
     private boolean isPasswordValid(String password) {
@@ -303,6 +305,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
     /**
      * Shows the progress UI and hides the login form.
      */
+    @SuppressLint("ObsoleteSdkInt")
     @TargetApi(Build.VERSION_CODES.HONEYCOMB_MR2)
     private void showProgress(final boolean show) {
         // On Honeycomb MR2 we have the ViewPropertyAnimator APIs, which allow

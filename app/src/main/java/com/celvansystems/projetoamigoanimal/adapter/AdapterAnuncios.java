@@ -42,9 +42,10 @@ public class AdapterAnuncios extends RecyclerView.Adapter<AdapterAnuncios.MyView
     public void onBindViewHolder(@NonNull MyViewHolder myViewHolder, int i) {
 
         Animal anuncio = anuncios.get(i);
-        myViewHolder.especie.setText(anuncio.getEspecie());
+        myViewHolder.dataCadastro.setText(anuncio.getDataCadastro());
         myViewHolder.nome.setText(anuncio.getNome());
         myViewHolder.idade.setText(anuncio.getIdade());
+        myViewHolder.cidade.setText(anuncio.getCidade());
 
         //pega a primeira imagem cadastrada
         List<String> urlFotos = anuncio.getFotos();
@@ -61,18 +62,20 @@ public class AdapterAnuncios extends RecyclerView.Adapter<AdapterAnuncios.MyView
 
     public class MyViewHolder extends RecyclerView.ViewHolder {
 
-        TextView especie;
+        TextView dataCadastro;
         TextView nome;
         TextView idade;
+        TextView cidade;
         ImageView foto;
 
         public MyViewHolder(View itemView) {
             super(itemView);
 
-            especie = itemView.findViewById(R.id.textEspecie);
+            dataCadastro = itemView.findViewById(R.id.textDataCadastro);
             nome = itemView.findViewById(R.id.textNome);
             idade = itemView.findViewById(R.id.textIdade);
             foto = itemView.findViewById(R.id.imageAnuncio);
+            cidade = itemView.findViewById(R.id.textCidadePrincipal);
         }
     }
 }

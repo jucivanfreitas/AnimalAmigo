@@ -507,7 +507,6 @@ public class AnunciosActivity extends AppCompatActivity {
 
             }
         });
-
     }
 
     public String loadJSONFromAsset(Context context) {
@@ -524,7 +523,6 @@ public class AnunciosActivity extends AppCompatActivity {
             is.close();
 
             json = new String(buffer, "Windows-1252");
-
 
         } catch (IOException ex) {
             ex.printStackTrace();
