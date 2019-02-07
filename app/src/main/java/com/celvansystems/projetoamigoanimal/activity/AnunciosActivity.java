@@ -55,22 +55,30 @@ public class AnunciosActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_anuncios);
+
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        anunciosPublicosRef = ConfiguracaoFirebase.getFirebase()
-                .child("anuncios");
+        try {
+            autenticacao = ConfiguracaoFirebase.getFirebaseAutenticacao();
+            anunciosPublicosRef = ConfiguracaoFirebase.getFirebase()
+                    .child("anuncios");
+        } catch (Exception e){e.printStackTrace();}
+
         inicializarComponentes();
 
         //configurar recyclerview
-        recyclerAnunciosPublicos.setLayoutManager(new LinearLayoutManager(this));
-        recyclerAnunciosPublicos.setHasFixedSize(true);
+        try {
+            recyclerAnunciosPublicos.setLayoutManager(new LinearLayoutManager(this));
+            recyclerAnunciosPublicos.setHasFixedSize(true);
 
-        adapterAnuncios = new AdapterAnuncios(listaAnuncios);
-        recyclerAnunciosPublicos.setAdapter(adapterAnuncios);
+            adapterAnuncios = new AdapterAnuncios(listaAnuncios);
+            recyclerAnunciosPublicos.setAdapter(adapterAnuncios);
+        } catch (Exception e){e.printStackTrace();}
+
 
         recuperarAnunciosPublicos();
-        autenticacao = ConfiguracaoFirebase.getFirebaseAutenticacao();
+
     }
 
     @Override
@@ -81,8 +89,8 @@ public class AnunciosActivity extends AppCompatActivity {
     }
 
     /*
-    *seleciona menu de acordo com o modo logado ou não logado
-    * */
+     *seleciona menu de acordo com o modo logado ou não logado
+     * */
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
@@ -98,12 +106,15 @@ public class AnunciosActivity extends AppCompatActivity {
                 startActivity(new Intent(getApplicationContext(),MeusAnunciosActivity.class));
                 break;
 
+            case R.id.menu_configuracoes:
+                //startActivity(new Intent(getApplicationContext(),ConfiguracoesActivity.class));
+                break;
+
             case R.id.menu_sair:
                 autenticacao.signOut();
                 invalidateOptionsMenu(); //invalida o menu e chama o onPrepare de novo
                 break;
         }
-
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
             return true;
@@ -116,15 +127,16 @@ public class AnunciosActivity extends AppCompatActivity {
     @Override
     public boolean onPrepareOptionsMenu(Menu menu){
 
-        if(ConfiguracaoFirebase.isUsuarioLogado()){
-            menu.setGroupVisible(R.id.group_log_in, true);
-        } else {
-            menu.setGroupVisible(R.id.group_log_off, true);
-        }
+        try {
+            if(ConfiguracaoFirebase.isUsuarioLogado()){
+                menu.setGroupVisible(R.id.group_log_in, true);
+            } else {
+                menu.setGroupVisible(R.id.group_log_off, true);
+            }
+        } catch (Exception e){e.printStackTrace();}
+
         return super.onPrepareOptionsMenu(menu);
     }
-
-
 
     private void inicializarComponentes(){
 
@@ -133,36 +145,41 @@ public class AnunciosActivity extends AppCompatActivity {
 
     private void recuperarAnunciosPublicos(){
 
-        dialog = new SpotsDialog.Builder()
-                .setContext(this)
-                .setMessage("Procurando anúncios")
-                .setCancelable(false)
-                .build();
-        dialog.show();
+        try {
+            dialog = new SpotsDialog.Builder()
+                    .setContext(this)
+                    .setMessage("Procurando anúncios")
+                    .setCancelable(false)
+                    .build();
+            dialog.show();
+        } catch (Exception e){e.printStackTrace();}
 
-        anunciosPublicosRef.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                listaAnuncios.clear();
-                for(DataSnapshot estados: dataSnapshot.getChildren()){
-                    for(DataSnapshot cidades: estados.getChildren()){
-                        for(DataSnapshot anuncios: cidades.getChildren()){
-                            Animal anuncio = anuncios.getValue(Animal.class);
-                            listaAnuncios.add(anuncio);
+
+        try {
+            anunciosPublicosRef.addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(DataSnapshot dataSnapshot) {
+                    listaAnuncios.clear();
+                    for(DataSnapshot estados: dataSnapshot.getChildren()){
+                        for(DataSnapshot cidades: estados.getChildren()){
+                            for(DataSnapshot anuncios: cidades.getChildren()){
+                                Animal anuncio = anuncios.getValue(Animal.class);
+                                listaAnuncios.add(anuncio);
+                            }
                         }
                     }
+                    Collections.reverse(listaAnuncios);
+                    adapterAnuncios.notifyDataSetChanged();
+
+                    dialog.dismiss();
                 }
-                Collections.reverse(listaAnuncios);
-                adapterAnuncios.notifyDataSetChanged();
 
-                dialog.dismiss();
-            }
+                @Override
+                public void onCancelled(DatabaseError databaseError) {
 
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-
-            }
-        });
+                }
+            });
+        } catch (Exception e){e.printStackTrace();}
     }
 
     public void filtraPorEspecie(View view){
@@ -180,7 +197,7 @@ public class AnunciosActivity extends AppCompatActivity {
 
         String [] especies = Util.getEspecies(getApplicationContext());
 
-//especies
+        //especies
         ArrayAdapter<String> adapterEspecies = new ArrayAdapter<>(this, simple_spinner_item, especies);
         adapterEspecies.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinnerEspecie.setAdapter(adapterEspecies);
@@ -290,7 +307,7 @@ public class AnunciosActivity extends AppCompatActivity {
         spinnerCidade.setVisibility(View.VISIBLE);
         cidades = Util.getCidadesJSON("AC", this);
 
-//cidades
+        //cidades
         adapterCidades = new ArrayAdapter<>(this, simple_spinner_item, cidades);
         ArrayAdapter<String> adapterEstados = new ArrayAdapter<>(this, simple_spinner_item, estados);
         adapterEstados.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -333,7 +350,7 @@ public class AnunciosActivity extends AppCompatActivity {
                 try {
                     String ufSelecionado = spinnerEstado.getItemAtPosition(position).toString();
                     cidades = Util.getCidadesJSON(ufSelecionado, getApplicationContext());
-                    setAdapterSpinner();
+                    setAdapterSpinnerCidade();
                 }catch (Exception e){
                     e.printStackTrace();
                 }
@@ -345,15 +362,23 @@ public class AnunciosActivity extends AppCompatActivity {
         });
     }
 
-    public void setAdapterSpinner(){
 
+    private void setAdapterSpinnerCidade(){
+
+        try {
         adapterCidades = new ArrayAdapter<>(this, simple_spinner_item, cidades);
         adapterCidades.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 
         spinnerCidade.setAdapter(adapterCidades);
         adapterCidades.notifyDataSetChanged();
+        } catch (Exception e){e.printStackTrace();}
     }
 
+    /**
+     * recupera anuncios por estado e cidade
+     * @param estado uf
+     * @param cidade cidade
+     */
     public void recuperarAnunciosPorCidade(String estado, final String cidade){
 
         dialog = new SpotsDialog.Builder()
@@ -407,6 +432,4 @@ public class AnunciosActivity extends AppCompatActivity {
             }
         });
     }
-
-
 }

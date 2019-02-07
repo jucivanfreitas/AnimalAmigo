@@ -15,6 +15,9 @@
             android:id="@+id/menu_meus_anuncios"
             android:title="@string/txt_meus_anuncios" />
         <item
+            android:id="@+id/menu_configuracoes"
+            android:title="@string/configuracoes" />
+        <item
             android:id="@+id/menu_sair"
             android:title="@string/txt_sair" />
     </group>

@@ -1,7 +1,5 @@
 package com.celvansystems.projetoamigoanimal.model;
 
-import android.annotation.SuppressLint;
-
 import com.celvansystems.projetoamigoanimal.helper.ConfiguracaoFirebase;
 import com.celvansystems.projetoamigoanimal.helper.Util;
 import com.google.firebase.database.DatabaseReference;
@@ -23,61 +21,86 @@ public class Animal {
     private String dataCadastro;
     private List<String> fotos;
 
-    @SuppressLint("SimpleDateFormat")
     public Animal (){
 
-        DatabaseReference animalRef = ConfiguracaoFirebase.getFirebase()
-                .child("meus_animais");
-        setIdAnimal(animalRef.push().getKey());
+        try {
+            DatabaseReference animalRef = ConfiguracaoFirebase.getFirebase()
+                    .child("meus_animais");
+            setIdAnimal(animalRef.push().getKey());
 
-// configuraçao da data atual do Brasil
-        setDataCadastro(Util.getDataAtualBrasil());
+            // configuraçao da data atual do Brasil
+            setDataCadastro(Util.getDataAtualBrasil());
+        } catch (Exception e){e.printStackTrace();}
     }
 
+    /**
+     * salva anuncio
+     */
     public void salvar(){
 
-        String idUsuario = ConfiguracaoFirebase.getIdUsuario();
-        DatabaseReference animalRef = ConfiguracaoFirebase.getFirebase()
-                .child("meus_animais");
+        try {
+            String idUsuario = ConfiguracaoFirebase.getIdUsuario();
+            DatabaseReference animalRef = ConfiguracaoFirebase.getFirebase()
+                    .child("meus_animais");
 
-        animalRef.child(idUsuario)
-                .child(getIdAnimal())
-                .setValue(this);
+            animalRef.child(idUsuario)
+                    .child(getIdAnimal())
+                    .setValue(this);
+        } catch (Exception e){e.printStackTrace();}
+
         salvarAnimalPublico();
     }
 
+    /**
+     * salva anuncio na tabela anuncios
+     */
     private void salvarAnimalPublico(){
 
-        DatabaseReference anuncioRef = ConfiguracaoFirebase.getFirebase()
-                .child("anuncios");
+        try {
+            DatabaseReference anuncioRef = ConfiguracaoFirebase.getFirebase()
+                    .child("anuncios");
 
-        anuncioRef.child(getUf())
-                .child(getCidade())
-                .child(getIdAnimal())
-                .setValue(this);
+            anuncioRef.child(getUf())
+                    .child(getCidade())
+                    .child(getIdAnimal())
+                    .setValue(this);
+        } catch (Exception e){e.printStackTrace();}
     }
 
+    /**
+     * remove anuncio
+     */
     public void remover(){
-        String idUsuario = ConfiguracaoFirebase.getIdUsuario();
 
-        DatabaseReference animalRef = ConfiguracaoFirebase.getFirebase()
-                .child("meus_animais")
-                .child(idUsuario)
-                .child(getIdAnimal());
+        try {
+            String idUsuario = ConfiguracaoFirebase.getIdUsuario();
 
-        animalRef.removeValue();
+            DatabaseReference animalRef = ConfiguracaoFirebase.getFirebase()
+                    .child("meus_animais")
+                    .child(idUsuario)
+                    .child(getIdAnimal());
+
+            animalRef.removeValue();
+        } catch (Exception e){e.printStackTrace();}
+
         removerAnimalPublico();
     }
 
+    /**
+     * remove anuncio da tabela anuncios
+     */
     private void removerAnimalPublico(){
 
-        DatabaseReference anuncioRef = ConfiguracaoFirebase.getFirebase()
-                .child("anuncios")
-                .child(getUf())
-                .child(getCidade())
-                .child(getIdAnimal());
+        try {
+            DatabaseReference anuncioRef = ConfiguracaoFirebase.getFirebase()
+                    .child("anuncios")
+                    .child(getUf())
+                    .child(getCidade())
+                    .child(getIdAnimal());
 
-        anuncioRef.removeValue();
+
+            anuncioRef.removeValue();
+        } catch (Exception e){e.printStackTrace();}
     }
 
 
@@ -85,7 +108,7 @@ public class Animal {
         return idAnimal;
     }
 
-    public void setIdAnimal(String idAnimal) {
+    private void setIdAnimal(String idAnimal) {
         this.idAnimal = idAnimal;
     }
 
@@ -169,7 +192,7 @@ public class Animal {
         return dataCadastro;
     }
 
-    public void setDataCadastro(String dataCadastro) {
+    private void setDataCadastro(String dataCadastro) {
         this.dataCadastro = dataCadastro;
     }
 

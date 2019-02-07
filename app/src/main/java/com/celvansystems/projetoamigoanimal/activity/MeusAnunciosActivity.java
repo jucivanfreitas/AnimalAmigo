@@ -44,31 +44,21 @@ public class MeusAnunciosActivity extends AppCompatActivity {
 
         inicializarComponentes();
 
-        Toolbar toolbar = findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
-
-        FloatingActionButton fabCadastrar = findViewById(R.id.fabcadastrar);
-        fabCadastrar.setOnClickListener(new View.OnClickListener() {
-
-            public void onClick(View view) {
-
-                abriCadastro();
-            }
-        });
-
-        Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
-
         // configuracoes iniciais
-        anuncioUsuarioRef = ConfiguracaoFirebase.getFirebase()
-                .child("meus_animais")
-                .child(ConfiguracaoFirebase.getIdUsuario());
+        try {
+            anuncioUsuarioRef = ConfiguracaoFirebase.getFirebase()
+                    .child("meus_animais")
+                    .child(ConfiguracaoFirebase.getIdUsuario());
+        } catch (Exception e){e.printStackTrace();}
 
         //configurar recyclerview
-        recyclerAnuncios.setLayoutManager(new LinearLayoutManager(this));
-        recyclerAnuncios.setHasFixedSize(true);
+        try {
+            recyclerAnuncios.setLayoutManager(new LinearLayoutManager(this));
+            recyclerAnuncios.setHasFixedSize(true);
 
-        adapterAnuncios = new AdapterAnuncios(anuncios);
-        recyclerAnuncios.setAdapter(adapterAnuncios);
+            adapterAnuncios = new AdapterAnuncios(anuncios);
+            recyclerAnuncios.setAdapter(adapterAnuncios);
+        } catch (Exception e){e.printStackTrace();}
 
         //recupera anuncios para o usuario
         recuperarAnuncios();
@@ -100,13 +90,16 @@ public class MeusAnunciosActivity extends AppCompatActivity {
 
     private void recuperarAnuncios(){
 
+        try {
         dialog = new SpotsDialog.Builder()
                 .setContext(this)
                 .setMessage("Procurando anúncios")
                 .setCancelable(false)
                 .build();
         dialog.show();
+        } catch (Exception e){e.printStackTrace();}
 
+        try {
         anuncioUsuarioRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -125,16 +118,28 @@ public class MeusAnunciosActivity extends AppCompatActivity {
 
             }
         });
+        } catch (Exception e){e.printStackTrace();}
     }
 
     private void inicializarComponentes(){
 
-        recyclerAnuncios = findViewById(R.id.recycle_meus_anuncios);
+        Toolbar toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        FloatingActionButton fabCadastrar = findViewById(R.id.fabcadastrar);
 
+        fabCadastrar.setOnClickListener(new View.OnClickListener() {
+
+            public void onClick(View view) {
+                abriCadastro();
+            }
+        });
+
+        Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
+
+        recyclerAnuncios = findViewById(R.id.recycle_meus_anuncios);
     }
 
     public void abriCadastro(){
-
         startActivity(new Intent(getApplicationContext(), CadastrarAnuncioActivity.class));
     }
 }

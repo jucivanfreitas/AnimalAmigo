@@ -108,22 +108,27 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
     }
 
     private void inicializarComponentes() {
-        mEmailView = findViewById(R.id.txiEmail);
-        mLoginFormView = findViewById(R.id.login_form);
-        mProgressView = findViewById(R.id.login_progress);
-        mPasswordView = findViewById(R.id.txiPassword);
-        btnLogin = findViewById(R.id.btnLogin);
-        swtLoginCadastrar = findViewById(R.id.swtLoginCadastrar);
 
-        mEmailView.setText("");
-        mPasswordView.setText("");
+        try {
+            mEmailView = findViewById(R.id.txiEmail);
+            mLoginFormView = findViewById(R.id.login_form);
+            mProgressView = findViewById(R.id.login_progress);
+            mPasswordView = findViewById(R.id.txiPassword);
+            btnLogin = findViewById(R.id.btnLogin);
+            swtLoginCadastrar = findViewById(R.id.swtLoginCadastrar);
+
+            mEmailView.setText("");
+            mPasswordView.setText("");
+        } catch (Exception e){e.printStackTrace();}
     }
 
     private void populateAutoComplete() {
-        if (!mayRequestContacts()) {
-            return;
-        }
-        getLoaderManager().initLoader(0, null, this);
+        try {
+            if (!mayRequestContacts()) {
+                return;
+            }
+            getLoaderManager().initLoader(0, null, this);
+        } catch (Exception e){e.printStackTrace();}
     }
 
     private boolean mayRequestContacts() {
@@ -154,11 +159,13 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions,
                                            @NonNull int[] grantResults) {
-        if (requestCode == REQUEST_READ_CONTACTS) {
-            if (grantResults.length == 1 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                populateAutoComplete();
+        try {
+            if (requestCode == REQUEST_READ_CONTACTS) {
+                if (grantResults.length == 1 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    populateAutoComplete();
+                }
             }
-        }
+        } catch (Exception e){e.printStackTrace();}
     }
 
     /**
@@ -168,9 +175,11 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
     @TargetApi(Build.VERSION_CODES.HONEYCOMB)
     private void setupActionBar() {
         // Show the Up button in the action bar.
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
-            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        }
+        try {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
+                getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+            }
+        } catch (Exception e){e.printStackTrace();}
     }
 
     /**
@@ -180,11 +189,13 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
      */
 
     /*
-    * esconde teclado
-    * */
+     * esconde teclado
+     * */
     public static void hideKeyboard(Context context, View editText) {
-        InputMethodManager imm = (InputMethodManager) context.getSystemService(Context.INPUT_METHOD_SERVICE);
-        imm.hideSoftInputFromWindow(editText.getWindowToken(), 0);
+        try {
+            InputMethodManager imm = (InputMethodManager) context.getSystemService(Context.INPUT_METHOD_SERVICE);
+            imm.hideSoftInputFromWindow(editText.getWindowToken(), 0);
+        } catch (Exception e){e.printStackTrace();}
     }
 
     private void tentarLogin() {
@@ -209,15 +220,17 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         }
 
         // checa se o e-mail é válido.
-        if (TextUtils.isEmpty(email)) {
-            mEmailView.setError(getString(R.string.error_field_required));
-            focusView = mEmailView;
-            cancel = true;
-        } else if (!isEmailValid(email)) {
-            mEmailView.setError(getString(R.string.error_invalid_email));
-            focusView = mEmailView;
-            cancel = true;
-        }
+        try {
+            if (TextUtils.isEmpty(email)) {
+                mEmailView.setError(getString(R.string.error_field_required));
+                focusView = mEmailView;
+                cancel = true;
+            } else if (!isEmailValid(email)) {
+                mEmailView.setError(getString(R.string.error_invalid_email));
+                focusView = mEmailView;
+                cancel = true;
+            }
+        } catch (Exception e){e.printStackTrace();}
 
         if (cancel) {
             // There was an error; don't attempt login and focus the first
@@ -286,7 +299,6 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
 
                 showProgress(true);
             }
-
         }
     }
 
@@ -355,14 +367,17 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
 
     @Override
     public void onLoadFinished(Loader<Cursor> cursorLoader, Cursor cursor) {
-        List<String> emails = new ArrayList<>();
-        cursor.moveToFirst();
-        while (!cursor.isAfterLast()) {
-            emails.add(cursor.getString(ProfileQuery.ADDRESS));
-            cursor.moveToNext();
-        }
 
-        addEmailsToAutoComplete(emails);
+        try {
+            List<String> emails = new ArrayList<>();
+            cursor.moveToFirst();
+            while (!cursor.isAfterLast()) {
+                emails.add(cursor.getString(ProfileQuery.ADDRESS));
+                cursor.moveToNext();
+            }
+
+            addEmailsToAutoComplete(emails);
+        } catch (Exception e){e.printStackTrace();}
     }
 
     @Override
@@ -372,14 +387,17 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
 
     private void addEmailsToAutoComplete(List<String> emailAddressCollection) {
         //Create adapter to tell the AutoCompleteTextView what to show in its dropdown list.
-        ArrayAdapter<String> adapter =
-                new ArrayAdapter<>(LoginActivity.this,
-                        android.R.layout.simple_dropdown_item_1line, emailAddressCollection);
+        try {
+            ArrayAdapter<String> adapter =
+                    new ArrayAdapter<>(LoginActivity.this,
+                            android.R.layout.simple_dropdown_item_1line, emailAddressCollection);
 
-        mEmailView.setAdapter(adapter);
+            mEmailView.setAdapter(adapter);
+        } catch (Exception e){e.printStackTrace();}
     }
 
     private interface ProfileQuery {
+
         String[] PROJECTION = {
                 ContactsContract.CommonDataKinds.Email.ADDRESS,
                 ContactsContract.CommonDataKinds.Email.IS_PRIMARY,
