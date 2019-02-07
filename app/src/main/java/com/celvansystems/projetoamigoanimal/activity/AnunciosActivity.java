@@ -116,7 +116,7 @@ public class AnunciosActivity extends AppCompatActivity {
     @Override
     public boolean onPrepareOptionsMenu(Menu menu){
 
-        if(isUsuarioLogado()){
+        if(ConfiguracaoFirebase.isUsuarioLogado()){
             menu.setGroupVisible(R.id.group_log_in, true);
         } else {
             menu.setGroupVisible(R.id.group_log_off, true);
@@ -124,10 +124,7 @@ public class AnunciosActivity extends AppCompatActivity {
         return super.onPrepareOptionsMenu(menu);
     }
 
-    //este metodo irá buscar informação se usuario está ou não logado
-    private boolean isUsuarioLogado(){
-        return autenticacao.getCurrentUser() != null;
-    }
+
 
     private void inicializarComponentes(){
 

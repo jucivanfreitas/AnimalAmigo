@@ -16,6 +16,7 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
@@ -26,6 +27,7 @@ import android.widget.Toast;
 import com.celvansystems.projetoamigoanimal.R;
 import com.celvansystems.projetoamigoanimal.helper.ConfiguracaoFirebase;
 import com.celvansystems.projetoamigoanimal.helper.Permissoes;
+import com.celvansystems.projetoamigoanimal.helper.Util;
 import com.celvansystems.projetoamigoanimal.model.Animal;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -52,6 +54,8 @@ public class CadastrarAnuncioActivity extends AppCompatActivity
     private ImageView imagem1, imagem2, imagem3;
     private AlertDialog dialog;
     private StorageReference storage;
+    private ArrayAdapter adapterCidades;
+
     //Permissoes
     private String[] permissoes = new String[]{
             Manifest.permission.READ_EXTERNAL_STORAGE
@@ -106,13 +110,33 @@ public class CadastrarAnuncioActivity extends AppCompatActivity
         listaFotosRecuperadas = new ArrayList<>();
         listaURLFotos = new ArrayList<>();
 
-        //estados
-        String [] estados = getResources().getStringArray(R.array.estados);
-        ArrayAdapter<String> adapterEstados = new ArrayAdapter<>(this, simple_spinner_item, estados);
-        adapterEstados.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        spnEstado.setAdapter(adapterEstados);
+        spnEstado.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+
+                try {
+                    String ufSelecionado = spnEstado.getItemAtPosition(position).toString();
+                    String[] cidades = Util.getCidadesJSON(ufSelecionado, getApplicationContext());
+                    setAdapterSpinner();
+                }catch (Exception e){
+                    e.printStackTrace();
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+            }
+        });
     }
 
+    public void setAdapterSpinner(){
+
+        adapterCidades = new ArrayAdapter<>(this, simple_spinner_item, Util.getCidadesJSON(spnEstado.getSelectedItem().toString(), this));
+        adapterCidades.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+
+        spnCidade.setAdapter(adapterCidades);
+        adapterCidades.notifyDataSetChanged();
+    }
     /**
      *
      * @param animal anuncio
@@ -189,6 +213,8 @@ public class CadastrarAnuncioActivity extends AppCompatActivity
         String porte = spnPorte.getSelectedItem().toString();
         String raca = edtRaca.getText().toString();
         String descricao = edtDescricao.getText().toString();
+        String estado = spnEstado.getSelectedItem().toString();
+        String cidade = spnCidade.getSelectedItem().toString();
 
         Animal retorno = new Animal();
 
@@ -199,6 +225,8 @@ public class CadastrarAnuncioActivity extends AppCompatActivity
         retorno.setPorte(porte);
         retorno.setRaca(raca);
         retorno.setDescricao(descricao);
+        retorno.setUf(estado);
+        retorno.setCidade(cidade);
         retorno.setFotos(listaFotosRecuperadas);
 
         return retorno;
@@ -219,10 +247,18 @@ public class CadastrarAnuncioActivity extends AppCompatActivity
                         if( !animal.getIdade().isEmpty() ){
                             if( !animal.getPorte().isEmpty() ){
                                 if( !animal.getRaca().isEmpty() ){
-                                    if( !animal.getDescricao().isEmpty()){
-                                        salvarAnuncio(animal);
+                                    if( !animal.getUf().isEmpty() ) {
+                                        if (!animal.getCidade().isEmpty()) {
+                                            if (!animal.getDescricao().isEmpty()) {
+                                                salvarAnuncio(animal);
+                                            } else {
+                                                exibirMensagem("Preencha o campo descrição!");
+                                            }
+                                        } else {
+                                            exibirMensagem("Preencha o campo cidade!");
+                                        }
                                     }else {
-                                        exibirMensagem("Preencha o campo descrição!");
+                                        exibirMensagem("Preencha o campo estado!");
                                     }
                                 }else {
                                     exibirMensagem("Preencha o campo raça!");
@@ -318,10 +354,11 @@ public class CadastrarAnuncioActivity extends AppCompatActivity
      */
     private void carregarDadosSpinner() {
 
-        String [] especies = getResources().getStringArray(R.array.especies);
+        String [] especies = Util.getEspecies(this);
         String [] sexos = getResources().getStringArray(R.array.sexos);
         String [] idades = getResources().getStringArray(R.array.idade);
         String [] portes = getResources().getStringArray(R.array.portes);
+        String [] estados = Util.getEstadosJSON(this);
 
         //especies
         ArrayAdapter<String> adapterEspecies = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, especies);
@@ -342,6 +379,11 @@ public class CadastrarAnuncioActivity extends AppCompatActivity
         ArrayAdapter<String> adapterPortes = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, portes);
         adapterPortes.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spnPorte.setAdapter(adapterPortes);
+
+        /*estados*/
+        ArrayAdapter<String> adapterEstados = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, estados);
+        adapterEstados.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spnEstado.setAdapter(adapterEstados);
     }
 
     @Override

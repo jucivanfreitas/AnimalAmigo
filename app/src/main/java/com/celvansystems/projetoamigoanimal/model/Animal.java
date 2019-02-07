@@ -1,7 +1,6 @@
 package com.celvansystems.projetoamigoanimal.model;
 
 import android.annotation.SuppressLint;
-import android.util.Log;
 
 import com.celvansystems.projetoamigoanimal.helper.ConfiguracaoFirebase;
 import com.celvansystems.projetoamigoanimal.helper.Util;
@@ -30,13 +29,9 @@ public class Animal {
         DatabaseReference animalRef = ConfiguracaoFirebase.getFirebase()
                 .child("meus_animais");
         setIdAnimal(animalRef.push().getKey());
-        Log.d("INFO: ", getIdAnimal());
 
 // configuraçao da data atual do Brasil
         setDataCadastro(Util.getDataAtualBrasil());
-
-        this.setUf("AC");
-        this.setCidade("Acrelândia");
     }
 
     public void salvar(){

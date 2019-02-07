@@ -19,6 +19,11 @@ public class ConfiguracaoFirebase {
         return Objects.requireNonNull(getFirebaseAutenticacao().getCurrentUser()).getUid();
     }
 
+    //este metodo irá buscar informação se usuario está ou não logado
+    public static boolean isUsuarioLogado(){
+        return referenciaAutenticacao.getCurrentUser() != null;
+    }
+
     //retorna a referencia do database
     public static DatabaseReference getFirebase(){
         if( referenciaFirebase == null ){
