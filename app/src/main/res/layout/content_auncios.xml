@@ -4,7 +4,6 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:layout_margin="8dp"
     android:orientation="vertical"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
     tools:context=".activity.AnunciosActivity"
@@ -12,17 +11,26 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="50dp"
+        android:background="@drawable/bg_branco_gradient"
+        android:elevation="20dp"
         android:orientation="horizontal">
 
-        <Button
+        <android.support.v7.widget.AppCompatButton
             android:id="@+id/btnCidade"
-            style="?attr/buttonBarButtonStyle"
+            style="@style/flaButtom"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
+            android:layout_height="50dp"
+            android:layout_marginEnd="2dp"
+            android:layout_weight="2"
+            android:backgroundTint="@color/lightgray"
+            android:elevation="10dp"
             android:onClick="filtraPorCidade"
-            android:text="@string/cidade" />
+            android:shadowColor="@color/common_google_signin_btn_text_dark_focused"
+            android:shadowDx="@android:integer/config_shortAnimTime"
+            android:text="@string/cidade"
+            android:textColor="@color/colorAccent"
+            android:textColorLink="@color/colorPrimaryDark" />
 
         <TextView
             android:layout_width="wrap_content"
@@ -35,12 +43,19 @@
 
         <Button
             android:id="@+id/btnEspecie"
-            style="?attr/buttonBarButtonStyle"
+            style="@style/flaButtom"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
+            android:layout_height="50dp"
+            android:layout_marginStart="2dp"
+            android:layout_weight="2"
+            android:backgroundTint="@color/lightgray"
+            android:elevation="10dp"
             android:onClick="filtraPorEspecie"
-            android:text="@string/especie" />
+            android:shadowColor="@color/common_google_signin_btn_text_dark_focused"
+            android:shadowDx="@android:integer/config_mediumAnimTime"
+            android:text="@string/especie"
+            android:textColor="@color/colorAccent"
+            android:textColorLink="@color/colorPrimaryDark" />
     </LinearLayout>
 
     <android.support.v7.widget.RecyclerView
