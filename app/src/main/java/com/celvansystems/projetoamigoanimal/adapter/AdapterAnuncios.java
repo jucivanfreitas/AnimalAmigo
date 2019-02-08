@@ -1,6 +1,5 @@
 package com.celvansystems.projetoamigoanimal.adapter;
 
-import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -17,17 +16,10 @@ import java.util.List;
 
 public class AdapterAnuncios extends RecyclerView.Adapter<AdapterAnuncios.MyViewHolder> {
 
-
     private List<Animal> anuncios;
-    private Context context;
 
-    public AdapterAnuncios() {
-
-    }
-
-    public AdapterAnuncios(List<Animal> anuncios, Context context) {
+    public AdapterAnuncios(List<Animal> anuncios) {
         this.anuncios = anuncios;
-        this.context = context;
     }
 
     @NonNull
@@ -42,9 +34,10 @@ public class AdapterAnuncios extends RecyclerView.Adapter<AdapterAnuncios.MyView
     public void onBindViewHolder(@NonNull MyViewHolder myViewHolder, int i) {
 
         Animal anuncio = anuncios.get(i);
-        myViewHolder.especie.setText(anuncio.getEspecie());
+        myViewHolder.dataCadastro.setText(anuncio.getDataCadastro());
         myViewHolder.nome.setText(anuncio.getNome());
         myViewHolder.idade.setText(anuncio.getIdade());
+        myViewHolder.cidade.setText(anuncio.getCidade());
 
         //pega a primeira imagem cadastrada
         List<String> urlFotos = anuncio.getFotos();
@@ -59,20 +52,22 @@ public class AdapterAnuncios extends RecyclerView.Adapter<AdapterAnuncios.MyView
         return anuncios.size();
     }
 
-    public class MyViewHolder extends RecyclerView.ViewHolder {
+    class MyViewHolder extends RecyclerView.ViewHolder {
 
-        TextView especie;
+        TextView dataCadastro;
         TextView nome;
         TextView idade;
+        TextView cidade;
         ImageView foto;
 
-        public MyViewHolder(View itemView) {
+        MyViewHolder(View itemView) {
             super(itemView);
 
-            especie = itemView.findViewById(R.id.textEspecie);
+            dataCadastro = itemView.findViewById(R.id.textDataCadastro);
             nome = itemView.findViewById(R.id.textNome);
             idade = itemView.findViewById(R.id.textIdade);
             foto = itemView.findViewById(R.id.imageAnuncio);
+            cidade = itemView.findViewById(R.id.textCidadePrincipal);
         }
     }
 }

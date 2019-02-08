@@ -76,7 +76,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
-        android:layout_marginBottom="68dp"
+        android:layout_marginBottom="84dp"
         android:text="@string/anuncios"
         android:textColor="@color/colorPrimaryDark"
         android:textSize="24sp"
@@ -100,13 +100,27 @@
         tools:layout_conversion_absoluteWidth="197dp" />
 
     <TextView
-        android:id="@+id/textEspecie"
+        android:id="@+id/textCidadePrincipal"
         android:layout_width="wrap_content"
         android:layout_height="28dp"
         android:layout_marginTop="8dp"
         android:text="@android:string/dialog_alert_title"
         android:textColor="@color/colorAccent"
         android:textSize="14sp"
+        android:textStyle="normal"
+        app:layout_constraintStart_toStartOf="@+id/textIdade"
+        app:layout_constraintTop_toBottomOf="@+id/textIdade"
+        tools:layout_conversion_absoluteHeight="24dp"
+        tools:layout_conversion_absoluteWidth="197dp" />
+
+    <TextView
+        android:id="@+id/textDataCadastro"
+        android:layout_width="wrap_content"
+        android:layout_height="28dp"
+        android:layout_marginTop="36dp"
+        android:text="@android:string/dialog_alert_title"
+        android:textColor="@color/colorAccent"
+        android:textSize="12sp"
         android:textStyle="normal"
         app:layout_constraintStart_toStartOf="@+id/textIdade"
         app:layout_constraintTop_toBottomOf="@+id/textIdade"

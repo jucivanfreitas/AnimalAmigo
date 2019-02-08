@@ -32,7 +32,7 @@
                 <ImageView
                     android:id="@+id/imageCadastro1"
                     android:layout_width="0dp"
-                    android:layout_height="wrap_content"
+                    android:layout_height="75dp"
                     android:layout_margin="8dp"
                     android:layout_weight="1"
                     android:contentDescription="@string/todo"
@@ -133,6 +133,34 @@
 
             </LinearLayout>
 
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+
+                android:layout_marginBottom="0dp"
+                android:orientation="horizontal">
+
+                <Spinner
+                    android:id="@+id/spinner_cad_estado"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="5dp"
+
+                    android:layout_weight="1"
+                    android:background="@drawable/bg_caixa_txt"
+                    android:padding="12dp" />
+
+                <Spinner
+                    android:id="@+id/spinner_cad_cidade"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="5dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/bg_caixa_txt"
+                    android:padding="12dp" />
+            </LinearLayout>
+
             <android.support.design.widget.TextInputLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -178,7 +206,7 @@
                     <EditText
                         android:id="@+id/editText_cad_descrição"
                         android:layout_width="match_parent"
-                        android:layout_height="150dp"
+                        android:layout_height="100dp"
                         android:autofillHints=""
                         android:background="@drawable/bg_caixa_txt"
                         android:ems="10"
@@ -192,24 +220,25 @@
                         android:singleLine="false"
                         tools:targetApi="o" />
 
+                    <Button
+                        android:id="@+id/btnCadastrarAnuncio"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="20dp"
+                        android:background="@drawable/bg_btn"
+                        android:clickable="true"
+                        android:elevation="25dp"
+                        android:foreground="?attr/selectableItemBackground"
+                        android:shadowColor="@color/black_overlay"
+                        android:shadowDx="@android:integer/config_shortAnimTime"
+                        android:text="@string/cadastrar_anuncio"
+                        android:textColor="@color/common_google_signin_btn_text_dark_default"
+                        android:textStyle="bold" />
+
                 </android.support.design.widget.TextInputLayout>
 
             </android.support.design.widget.TextInputLayout>
 
-            <Button
-                android:id="@+id/btnCadastrarAnuncio"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="20dp"
-                android:background="@drawable/bg_btn"
-                android:clickable="true"
-                android:elevation="25dp"
-                android:foreground="?attr/selectableItemBackground"
-                android:shadowColor="@color/black_overlay"
-                android:shadowDx="@android:integer/config_shortAnimTime"
-                android:text="@string/cadastrar_anuncio"
-                android:textColor="@color/common_google_signin_btn_text_dark_default"
-                android:textStyle="bold" />
         </LinearLayout>
     </ScrollView>
 

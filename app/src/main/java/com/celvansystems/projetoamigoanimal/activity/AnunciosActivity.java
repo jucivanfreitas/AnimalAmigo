@@ -1,7 +1,6 @@
 package com.celvansystems.projetoamigoanimal.activity;
 
 import android.app.AlertDialog;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
@@ -9,7 +8,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -21,6 +19,7 @@ import android.widget.Spinner;
 import com.celvansystems.projetoamigoanimal.R;
 import com.celvansystems.projetoamigoanimal.adapter.AdapterAnuncios;
 import com.celvansystems.projetoamigoanimal.helper.ConfiguracaoFirebase;
+import com.celvansystems.projetoamigoanimal.helper.Util;
 import com.celvansystems.projetoamigoanimal.model.Animal;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
@@ -28,17 +27,13 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.ValueEventListener;
 
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.io.IOException;
-import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
 import dmax.dialog.SpotsDialog;
+
+import static android.R.layout.simple_spinner_item;
 
 
 public class AnunciosActivity extends AppCompatActivity {
@@ -60,31 +55,29 @@ public class AnunciosActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_anuncios);
+
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        anunciosPublicosRef = ConfiguracaoFirebase.getFirebase()
-                .child("anuncios");
+        try {
+            autenticacao = ConfiguracaoFirebase.getFirebaseAutenticacao();
+            anunciosPublicosRef = ConfiguracaoFirebase.getFirebase()
+                    .child("anuncios");
+        } catch (Exception e){e.printStackTrace();}
+
         inicializarComponentes();
 
         //configurar recyclerview
-        recyclerAnunciosPublicos.setLayoutManager(new LinearLayoutManager(this));
-        recyclerAnunciosPublicos.setHasFixedSize(true);
+        try {
+            recyclerAnunciosPublicos.setLayoutManager(new LinearLayoutManager(this));
+            recyclerAnunciosPublicos.setHasFixedSize(true);
 
-        adapterAnuncios = new AdapterAnuncios(listaAnuncios, this);
-        recyclerAnunciosPublicos.setAdapter(adapterAnuncios);
+            adapterAnuncios = new AdapterAnuncios(listaAnuncios);
+            recyclerAnunciosPublicos.setAdapter(adapterAnuncios);
+        } catch (Exception e){e.printStackTrace();}
+
 
         recuperarAnunciosPublicos();
-        autenticacao = ConfiguracaoFirebase.getFirebaseAutenticacao();
-
-        /*FloatingActionButton fab = findViewById(R.id.fabcadastrar);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-            }
-        });*/
 
     }
 
@@ -95,10 +88,9 @@ public class AnunciosActivity extends AppCompatActivity {
         return true;
     }
 
-
-    //seleçioan menu de acordo com o modo logado ou não logado
-
-
+    /*
+     *seleciona menu de acordo com o modo logado ou não logado
+     * */
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
@@ -114,12 +106,15 @@ public class AnunciosActivity extends AppCompatActivity {
                 startActivity(new Intent(getApplicationContext(),MeusAnunciosActivity.class));
                 break;
 
+            case R.id.menu_configuracoes:
+                //startActivity(new Intent(getApplicationContext(),ConfiguracoesActivity.class));
+                break;
+
             case R.id.menu_sair:
                 autenticacao.signOut();
                 invalidateOptionsMenu(); //invalida o menu e chama o onPrepare de novo
                 break;
         }
-
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
             return true;
@@ -132,17 +127,15 @@ public class AnunciosActivity extends AppCompatActivity {
     @Override
     public boolean onPrepareOptionsMenu(Menu menu){
 
-        if(isUsuarioLogado()){
-            menu.setGroupVisible(R.id.group_log_in, true);
-        } else {
-            menu.setGroupVisible(R.id.group_log_off, true);
-        }
-        return super.onPrepareOptionsMenu(menu);
-    }
+        try {
+            if(ConfiguracaoFirebase.isUsuarioLogado()){
+                menu.setGroupVisible(R.id.group_log_in, true);
+            } else {
+                menu.setGroupVisible(R.id.group_log_off, true);
+            }
+        } catch (Exception e){e.printStackTrace();}
 
-    //este metodo irá buscar informação se usuario está ou não logado
-    private boolean isUsuarioLogado(){
-        return autenticacao.getCurrentUser() != null;
+        return super.onPrepareOptionsMenu(menu);
     }
 
     private void inicializarComponentes(){
@@ -152,36 +145,41 @@ public class AnunciosActivity extends AppCompatActivity {
 
     private void recuperarAnunciosPublicos(){
 
-        dialog = new SpotsDialog.Builder()
-                .setContext(this)
-                .setMessage("Procurando anúncios")
-                .setCancelable(false)
-                .build();
-        dialog.show();
+        try {
+            dialog = new SpotsDialog.Builder()
+                    .setContext(this)
+                    .setMessage("Procurando anúncios")
+                    .setCancelable(false)
+                    .build();
+            dialog.show();
+        } catch (Exception e){e.printStackTrace();}
 
-        anunciosPublicosRef.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                listaAnuncios.clear();
-                for(DataSnapshot estados: dataSnapshot.getChildren()){
-                    for(DataSnapshot cidades: estados.getChildren()){
-                        for(DataSnapshot anuncios: cidades.getChildren()){
-                            Animal anuncio = anuncios.getValue(Animal.class);
-                            listaAnuncios.add(anuncio);
+
+        try {
+            anunciosPublicosRef.addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(DataSnapshot dataSnapshot) {
+                    listaAnuncios.clear();
+                    for(DataSnapshot estados: dataSnapshot.getChildren()){
+                        for(DataSnapshot cidades: estados.getChildren()){
+                            for(DataSnapshot anuncios: cidades.getChildren()){
+                                Animal anuncio = anuncios.getValue(Animal.class);
+                                listaAnuncios.add(anuncio);
+                            }
                         }
                     }
+                    Collections.reverse(listaAnuncios);
+                    adapterAnuncios.notifyDataSetChanged();
+
+                    dialog.dismiss();
                 }
-                Collections.reverse(listaAnuncios);
-                adapterAnuncios.notifyDataSetChanged();
 
-                dialog.dismiss();
-            }
+                @Override
+                public void onCancelled(DatabaseError databaseError) {
 
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-
-            }
-        });
+                }
+            });
+        } catch (Exception e){e.printStackTrace();}
     }
 
     public void filtraPorEspecie(View view){
@@ -197,10 +195,10 @@ public class AnunciosActivity extends AppCompatActivity {
         final Spinner spinnerCidade = viewSpinner.findViewById(R.id.spinnerFiltro2);
         spinnerCidade.setVisibility(View.GONE);
 
-        String [] especies = getResources().getStringArray(R.array.especies);
+        String [] especies = Util.getEspecies(getApplicationContext());
 
-//especies
-        ArrayAdapter<String> adapterEspecies = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, especies);
+        //especies
+        ArrayAdapter<String> adapterEspecies = new ArrayAdapter<>(this, simple_spinner_item, especies);
         adapterEspecies.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinnerEspecie.setAdapter(adapterEspecies);
 
@@ -284,74 +282,12 @@ public class AnunciosActivity extends AppCompatActivity {
 
             }
         });
-
     }
 
-    private String[] getEstadosJSON(){
-        JSONObject obj;
-        JSONArray jaEstados;
-        String[] estados = new String[0];
-        try {
-            obj = new JSONObject(loadJSONFromAsset(this));
-            jaEstados = obj.getJSONArray("estados");
-
-            if(jaEstados!= null) {
-                estados = new String[jaEstados.length()];
-
-                for (int i = 0; i < jaEstados.length(); i++) {
-                    estados[i] = jaEstados.getJSONObject(i).getString("sigla");
-                }
-            }
-        } catch (Exception e){e.printStackTrace(); }
-
-        return estados;
-    }
-
-    private String[] getCidadesJSON(String uf){
-
-        JSONObject obj;
-        JSONArray jaEstados;
-        JSONArray array = null;
-        //List<String> retorno = new ArrayList<String>();
-        spinnerCidade.setVisibility(View.VISIBLE);
-
-        String[] estados = new String[0];
-        String[] cidades = new String[0];
-        try {
-            obj = new JSONObject(loadJSONFromAsset(this));
-            jaEstados = obj.getJSONArray("estados");
-
-            if(jaEstados!= null) {
-                //estados = new String[jaEstados.length()];
-
-            for(int i = 0; i < jaEstados.length(); i++) {
-                String sigla = jaEstados.getJSONObject(i).getString("sigla");
-
-                if (sigla.equalsIgnoreCase(uf)) {
-                    array = jaEstados.getJSONObject(i).getJSONArray("cidades");
-                    break;
-                }
-            }
-            }
-
-        } catch (Exception e){e.printStackTrace(); }
-
-        if(array != null) {
-
-            int len = array.length();
-            cidades = new String[len];
-            for (int i=0;i<len;i++){
-                try {
-                    cidades[i] = array.getString(i);
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-            }
-        }
-
-        return cidades;
-    }
-    //
+    /**
+     *
+     * @param view view
+     */
     public void filtraPorCidade(View view){
 
         filtrandoCidade = true;
@@ -363,28 +299,21 @@ public class AnunciosActivity extends AppCompatActivity {
         //configura o spinner
         View viewSpinner = getLayoutInflater().inflate(R.layout.dialog_spinner, null);
 
-        JSONObject obj;
-        JSONArray jaEstados;
-        String[] estados = getEstadosJSON();
+        String[] estados = Util.getEstadosJSON(this);
 
         spinnerEstado = viewSpinner.findViewById(R.id.spinnerFiltro);
         spinnerCidade = viewSpinner.findViewById(R.id.spinnerFiltro2);
-        //TODO: implementar cidades de acordo com a escolha do estado
 
-        cidades = getCidadesJSON("AC");
+        spinnerCidade.setVisibility(View.VISIBLE);
+        cidades = Util.getCidadesJSON("AC", this);
 
-//cidades
-        Log.d("INFO7: ", "passou1");
-
-        adapterCidades = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, cidades);
-        Log.d("INFO7: ", "passou2");
-
-        ArrayAdapter<String> adapterEstados = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, estados);
+        //cidades
+        adapterCidades = new ArrayAdapter<>(this, simple_spinner_item, cidades);
+        ArrayAdapter<String> adapterEstados = new ArrayAdapter<>(this, simple_spinner_item, estados);
         adapterEstados.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         adapterCidades.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinnerEstado.setAdapter(adapterEstados);
         spinnerCidade.setAdapter(adapterCidades);
-        Log.d("INFO7: ", "passou3");
 
         dialogCidade.setView(viewSpinner);
 
@@ -420,37 +349,36 @@ public class AnunciosActivity extends AppCompatActivity {
 
                 try {
                     String ufSelecionado = spinnerEstado.getItemAtPosition(position).toString();
-                    Log.d("INFO88: ", "estado selecionado "+ufSelecionado);
-
-                    //cidades = new String[getCidadesJSON(ufSelecionado).length];
-                    cidades = getCidadesJSON(ufSelecionado);
-                    setAdapterSpinner();
-                    // falta colocar cidades no spinner
-                    Log.d("INFO88: ", "setAdapterSpinner incovado");
-
+                    cidades = Util.getCidadesJSON(ufSelecionado, getApplicationContext());
+                    setAdapterSpinnerCidade();
                 }catch (Exception e){
                     e.printStackTrace();
-                    Log.d("INFO88: ", "erro");
-
                 }
             }
 
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
-
             }
         });
     }
 
-    public void setAdapterSpinner(){
 
-        adapterCidades = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, cidades);
+    private void setAdapterSpinnerCidade(){
+
+        try {
+        adapterCidades = new ArrayAdapter<>(this, simple_spinner_item, cidades);
         adapterCidades.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 
         spinnerCidade.setAdapter(adapterCidades);
         adapterCidades.notifyDataSetChanged();
+        } catch (Exception e){e.printStackTrace();}
     }
 
+    /**
+     * recupera anuncios por estado e cidade
+     * @param estado uf
+     * @param cidade cidade
+     */
     public void recuperarAnunciosPorCidade(String estado, final String cidade){
 
         dialog = new SpotsDialog.Builder()
@@ -465,11 +393,7 @@ public class AnunciosActivity extends AppCompatActivity {
             public void onDataChange(DataSnapshot dataSnapshot) {
                 listaAnuncios.clear();
                 for(DataSnapshot estados: dataSnapshot.getChildren()){
-                    Log.d("INFO2: " , estados.getKey());
-
                     for(DataSnapshot cidades: estados.getChildren()){
-                        Log.d("INFO2: " , cidades.getKey());
-                        Log.d("INFO2: " , String.valueOf(cidades.getKey().equalsIgnoreCase(cidade)));
                         if(cidades.getKey().equalsIgnoreCase(cidade)) {
                             for (DataSnapshot anuncios : cidades.getChildren()) {
 
@@ -507,29 +431,5 @@ public class AnunciosActivity extends AppCompatActivity {
 
             }
         });
-
-    }
-
-    public String loadJSONFromAsset(Context context) {
-        String json;
-        try {
-            InputStream is = context.getAssets().open("estados-cidades.json");
-
-            int size = is.available();
-
-            byte[] buffer = new byte[size];
-
-            is.read(buffer);
-
-            is.close();
-
-            json = new String(buffer, "Windows-1252");
-
-
-        } catch (IOException ex) {
-            ex.printStackTrace();
-            return null;
-        }
-        return json;
     }
 }

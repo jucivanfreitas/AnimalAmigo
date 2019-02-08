@@ -6,6 +6,8 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
+import java.util.Objects;
+
 public class ConfiguracaoFirebase {
 
     private static DatabaseReference referenciaFirebase;
@@ -14,7 +16,12 @@ public class ConfiguracaoFirebase {
 
     //retorna o Id do usuario
     public static String getIdUsuario(){
-        return getFirebaseAutenticacao().getCurrentUser().getUid();
+        return Objects.requireNonNull(getFirebaseAutenticacao().getCurrentUser()).getUid();
+    }
+
+    //este metodo irá buscar informação se usuario está ou não logado
+    public static boolean isUsuarioLogado(){
+        return referenciaAutenticacao.getCurrentUser() != null;
     }
 
     //retorna a referencia do database

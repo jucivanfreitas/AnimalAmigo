@@ -1,8 +1,7 @@
 package com.celvansystems.projetoamigoanimal.model;
 
-import android.util.Log;
-
 import com.celvansystems.projetoamigoanimal.helper.ConfiguracaoFirebase;
+import com.celvansystems.projetoamigoanimal.helper.Util;
 import com.google.firebase.database.DatabaseReference;
 
 import java.util.List;
@@ -19,65 +18,89 @@ public class Animal {
     private String idade;
     private String porte;
     private String sexo;
+    private String dataCadastro;
     private List<String> fotos;
 
     public Animal (){
 
-        DatabaseReference animalRef = ConfiguracaoFirebase.getFirebase()
-                .child("meus_animais");
-        setIdAnimal(animalRef.push().getKey());
-        Log.d("INFO: ", getIdAnimal());
+        try {
+            DatabaseReference animalRef = ConfiguracaoFirebase.getFirebase()
+                    .child("meus_animais");
+            setIdAnimal(animalRef.push().getKey());
 
-        //fins de teste. Falta implementar na classe CadastroAnuncioActivity
-        this.setUf("AC");
-        this.setCidade("Acrelândia");
+            // configuraçao da data atual do Brasil
+            setDataCadastro(Util.getDataAtualBrasil());
+        } catch (Exception e){e.printStackTrace();}
     }
 
+    /**
+     * salva anuncio
+     */
     public void salvar(){
 
-        String idUsuario = ConfiguracaoFirebase.getIdUsuario();
-        DatabaseReference animalRef = ConfiguracaoFirebase.getFirebase()
-                .child("meus_animais");
+        try {
+            String idUsuario = ConfiguracaoFirebase.getIdUsuario();
+            DatabaseReference animalRef = ConfiguracaoFirebase.getFirebase()
+                    .child("meus_animais");
 
-        animalRef.child(idUsuario)
-                .child(getIdAnimal())
-                .setValue(this);
+            animalRef.child(idUsuario)
+                    .child(getIdAnimal())
+                    .setValue(this);
+        } catch (Exception e){e.printStackTrace();}
+
         salvarAnimalPublico();
     }
 
-    public void salvarAnimalPublico(){
+    /**
+     * salva anuncio na tabela anuncios
+     */
+    private void salvarAnimalPublico(){
 
-        DatabaseReference anuncioRef = ConfiguracaoFirebase.getFirebase()
-                .child("anuncios");
+        try {
+            DatabaseReference anuncioRef = ConfiguracaoFirebase.getFirebase()
+                    .child("anuncios");
 
-        anuncioRef.child(getUf())
-                .child(getCidade())
-                .child(getIdAnimal())
-                .setValue(this);
+            anuncioRef.child(getUf())
+                    .child(getCidade())
+                    .child(getIdAnimal())
+                    .setValue(this);
+        } catch (Exception e){e.printStackTrace();}
     }
 
+    /**
+     * remove anuncio
+     */
     public void remover(){
-        String idUsuario = ConfiguracaoFirebase.getIdUsuario();
 
-        DatabaseReference animalRef = ConfiguracaoFirebase.getFirebase()
-                .child("meus_animais")
-                .child(idUsuario)
-                .child(getIdAnimal());
+        try {
+            String idUsuario = ConfiguracaoFirebase.getIdUsuario();
 
-        animalRef.removeValue();
+            DatabaseReference animalRef = ConfiguracaoFirebase.getFirebase()
+                    .child("meus_animais")
+                    .child(idUsuario)
+                    .child(getIdAnimal());
+
+            animalRef.removeValue();
+        } catch (Exception e){e.printStackTrace();}
+
         removerAnimalPublico();
     }
-/////////////////////////////////////////////
-    /////////////////////////////////////////
-    public void removerAnimalPublico(){
 
-        DatabaseReference anuncioRef = ConfiguracaoFirebase.getFirebase()
-                .child("anuncios")
-                .child(getUf())
-                .child(getCidade())
-                .child(getIdAnimal());
+    /**
+     * remove anuncio da tabela anuncios
+     */
+    private void removerAnimalPublico(){
 
-        anuncioRef.removeValue();
+        try {
+            DatabaseReference anuncioRef = ConfiguracaoFirebase.getFirebase()
+                    .child("anuncios")
+                    .child(getUf())
+                    .child(getCidade())
+                    .child(getIdAnimal());
+
+
+            anuncioRef.removeValue();
+        } catch (Exception e){e.printStackTrace();}
     }
 
 
@@ -85,7 +108,7 @@ public class Animal {
         return idAnimal;
     }
 
-    public void setIdAnimal(String idAnimal) {
+    private void setIdAnimal(String idAnimal) {
         this.idAnimal = idAnimal;
     }
 
@@ -163,6 +186,14 @@ public class Animal {
 
     public List<String> getFotos() {
         return fotos;
+    }
+
+    public String getDataCadastro() {
+        return dataCadastro;
+    }
+
+    private void setDataCadastro(String dataCadastro) {
+        this.dataCadastro = dataCadastro;
     }
 
     public void setFotos(List<String> fotos) {

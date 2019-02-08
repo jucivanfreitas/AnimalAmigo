@@ -1,7 +1,5 @@
 package com.celvansystems.projetoamigoanimal.activity;
 
-//import android.app.AlertDialog;
-
 import android.app.AlertDialog;
 import android.content.Intent;
 import android.os.Bundle;
@@ -26,13 +24,14 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Objects;
 
 import dmax.dialog.SpotsDialog;
 
 public class MeusAnunciosActivity extends AppCompatActivity {
 
     private RecyclerView recyclerAnuncios;
-    private List<Animal> anuncios = new ArrayList<Animal>();
+    private List<Animal> anuncios = new ArrayList<>();
     private AdapterAnuncios adapterAnuncios;
     private DatabaseReference anuncioUsuarioRef;
 
@@ -45,31 +44,21 @@ public class MeusAnunciosActivity extends AppCompatActivity {
 
         inicializarComponentes();
 
-        Toolbar toolbar = findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
-
-        FloatingActionButton fabCadastrar = findViewById(R.id.fabcadastrar);
-        fabCadastrar.setOnClickListener(new View.OnClickListener() {
-
-            public void onClick(View view) {
-
-                abriCadastro();
-            }
-        });
-
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-
         // configuracoes iniciais
-        anuncioUsuarioRef = ConfiguracaoFirebase.getFirebase()
-                .child("meus_animais")
-                .child(ConfiguracaoFirebase.getIdUsuario());
+        try {
+            anuncioUsuarioRef = ConfiguracaoFirebase.getFirebase()
+                    .child("meus_animais")
+                    .child(ConfiguracaoFirebase.getIdUsuario());
+        } catch (Exception e){e.printStackTrace();}
 
         //configurar recyclerview
-        recyclerAnuncios.setLayoutManager(new LinearLayoutManager(this));
-        recyclerAnuncios.setHasFixedSize(true);
+        try {
+            recyclerAnuncios.setLayoutManager(new LinearLayoutManager(this));
+            recyclerAnuncios.setHasFixedSize(true);
 
-        adapterAnuncios = new AdapterAnuncios(anuncios, this);
-        recyclerAnuncios.setAdapter(adapterAnuncios);
+            adapterAnuncios = new AdapterAnuncios(anuncios);
+            recyclerAnuncios.setAdapter(adapterAnuncios);
+        } catch (Exception e){e.printStackTrace();}
 
         //recupera anuncios para o usuario
         recuperarAnuncios();
@@ -97,18 +86,20 @@ public class MeusAnunciosActivity extends AppCompatActivity {
             }
         }
         ));
-
     }
 
     private void recuperarAnuncios(){
 
+        try {
         dialog = new SpotsDialog.Builder()
                 .setContext(this)
                 .setMessage("Procurando anúncios")
                 .setCancelable(false)
                 .build();
         dialog.show();
+        } catch (Exception e){e.printStackTrace();}
 
+        try {
         anuncioUsuarioRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -127,17 +118,28 @@ public class MeusAnunciosActivity extends AppCompatActivity {
 
             }
         });
+        } catch (Exception e){e.printStackTrace();}
     }
 
     private void inicializarComponentes(){
 
-        recyclerAnuncios = (RecyclerView) findViewById(R.id.recycle_meus_anuncios);
+        Toolbar toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        FloatingActionButton fabCadastrar = findViewById(R.id.fabcadastrar);
 
+        fabCadastrar.setOnClickListener(new View.OnClickListener() {
+
+            public void onClick(View view) {
+                abriCadastro();
+            }
+        });
+
+        Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
+
+        recyclerAnuncios = findViewById(R.id.recycle_meus_anuncios);
     }
 
     public void abriCadastro(){
-
         startActivity(new Intent(getApplicationContext(), CadastrarAnuncioActivity.class));
     }
-
 }

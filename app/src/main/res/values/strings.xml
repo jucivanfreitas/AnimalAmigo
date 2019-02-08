@@ -36,35 +36,11 @@
     <string name="cidade">Cidade</string>
     <string name="especie">Espécie</string>
     <string name="txt_cad_helper_descrição_animal">Escreva um pouco sobre a história do Pet, quais as caracteristicas, suas rotinas, se é carinhoso, se é adestrado, castrado. Conte os motivos quais levaram à Adoção ou em que condições foi encontrado!</string>
-    <string-array name="estados">
-        <item>BA</item>
-        <item>CE</item>
-        <item>DF</item>
-        <item>ES</item>
-        <item>GO</item>
-        <item>MA</item>
-        <item>MG</item>
-        <item>MS</item>
-        <item>MT</item>
-        <item>PA</item>
-        <item>PB</item>
-        <item>PE</item>
-        <item>PI</item>
-        <item>PR</item>
-        <item>RJ</item>
-        <item>RN</item>
-        <item>RO</item>
-        <item>RR</item>
-        <item>RS</item>
-        <item>SC</item>
-        <item>SE</item>
-        <item>SP</item>
-        <item>TO</item>
-    </string-array>
+    <string name="configuracoes">Configurações</string>
 
     <string-array name="idade">
-        <item>0-3 meses</item>
-        <item>4-6 meses</item>
+        <item>0–3 meses</item>
+        <item>4–6 meses</item>
         <item>1 ano</item>
         <item>2 anos</item>
         <item>3 anos ou mais</item>
