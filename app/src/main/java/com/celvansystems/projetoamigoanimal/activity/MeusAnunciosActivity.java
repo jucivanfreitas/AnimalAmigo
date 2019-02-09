@@ -12,7 +12,7 @@ import android.view.View;
 import android.widget.AdapterView;
 
 import com.celvansystems.projetoamigoanimal.R;
-import com.celvansystems.projetoamigoanimal.adapter.AdapterAnuncios;
+import com.celvansystems.projetoamigoanimal.adapter.AdapterMeusAnuncios;
 import com.celvansystems.projetoamigoanimal.helper.ConfiguracaoFirebase;
 import com.celvansystems.projetoamigoanimal.helper.RecyclerItemClickListener;
 import com.celvansystems.projetoamigoanimal.model.Animal;
@@ -32,7 +32,7 @@ public class MeusAnunciosActivity extends AppCompatActivity {
 
     private RecyclerView recyclerAnuncios;
     private List<Animal> anuncios = new ArrayList<>();
-    private AdapterAnuncios adapterAnuncios;
+    private AdapterMeusAnuncios adapterMeusAnuncios;
     private DatabaseReference anuncioUsuarioRef;
 
     private AlertDialog dialog;
@@ -56,8 +56,8 @@ public class MeusAnunciosActivity extends AppCompatActivity {
             recyclerAnuncios.setLayoutManager(new LinearLayoutManager(this));
             recyclerAnuncios.setHasFixedSize(true);
 
-            adapterAnuncios = new AdapterAnuncios(anuncios);
-            recyclerAnuncios.setAdapter(adapterAnuncios);
+            adapterMeusAnuncios = new AdapterMeusAnuncios(anuncios);
+            recyclerAnuncios.setAdapter(adapterMeusAnuncios);
         } catch (Exception e){e.printStackTrace();}
 
         //recupera anuncios para o usuario
@@ -77,7 +77,7 @@ public class MeusAnunciosActivity extends AppCompatActivity {
                 Animal anuncioSelecionado = anuncios.get(position);
                 anuncioSelecionado.remover();
 
-                adapterAnuncios.notifyDataSetChanged();
+                adapterMeusAnuncios.notifyDataSetChanged();
             }
 
             @Override
@@ -91,33 +91,33 @@ public class MeusAnunciosActivity extends AppCompatActivity {
     private void recuperarAnuncios(){
 
         try {
-        dialog = new SpotsDialog.Builder()
-                .setContext(this)
-                .setMessage("Procurando anúncios")
-                .setCancelable(false)
-                .build();
-        dialog.show();
+            dialog = new SpotsDialog.Builder()
+                    .setContext(this)
+                    .setMessage("Procurando anúncios")
+                    .setCancelable(false)
+                    .build();
+            dialog.show();
         } catch (Exception e){e.printStackTrace();}
 
         try {
-        anuncioUsuarioRef.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                anuncios.clear();
-                for(DataSnapshot ds: dataSnapshot.getChildren()){
-                    anuncios.add(ds.getValue(Animal.class));
+            anuncioUsuarioRef.addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(DataSnapshot dataSnapshot) {
+                    anuncios.clear();
+                    for(DataSnapshot ds: dataSnapshot.getChildren()){
+                        anuncios.add(ds.getValue(Animal.class));
+                    }
+                    Collections.reverse(anuncios);
+                    adapterMeusAnuncios.notifyDataSetChanged();
+
+                    dialog.dismiss();
                 }
-                Collections.reverse(anuncios);
-                adapterAnuncios.notifyDataSetChanged();
 
-                dialog.dismiss();
-            }
+                @Override
+                public void onCancelled(DatabaseError databaseError) {
 
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-
-            }
-        });
+                }
+            });
         } catch (Exception e){e.printStackTrace();}
     }
 
@@ -130,16 +130,12 @@ public class MeusAnunciosActivity extends AppCompatActivity {
         fabCadastrar.setOnClickListener(new View.OnClickListener() {
 
             public void onClick(View view) {
-                abriCadastro();
+                startActivity(new Intent(getApplicationContext(), CadastrarAnuncioActivity.class));
             }
         });
 
         Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
 
         recyclerAnuncios = findViewById(R.id.recycle_meus_anuncios);
-    }
-
-    public void abriCadastro(){
-        startActivity(new Intent(getApplicationContext(), CadastrarAnuncioActivity.class));
     }
 }

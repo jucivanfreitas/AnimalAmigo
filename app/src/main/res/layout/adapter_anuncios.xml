@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/cardView2"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
     android:clickable="true"
     android:foreground="?attr/selectableItemBackground">
 
@@ -18,10 +18,10 @@
         app:layout_constraintTop_toTopOf="parent">
 
         <ImageView
-            android:id="@+id/imageAnuncioPrincipal"
+            android:id="@+id/imageAnuncio"
             android:layout_width="match_parent"
             android:layout_height="250dp"
-            android:contentDescription="TODO"
+            android:contentDescription="@string/todo"
             android:scaleType="centerCrop"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
@@ -80,7 +80,7 @@
             app:srcCompat="@drawable/ic_favorite_border_black_24dp" />
 
         <ImageView
-            android:id="@+id/imageView3Principal"
+            android:id="@+id/imageAnuncio2"
             android:layout_width="0dp"
             android:layout_height="150dp"
             android:layout_marginBottom="4dp"
@@ -91,7 +91,7 @@
             app:srcCompat="@drawable/bg_img_card_gradient" />
 
         <TextView
-            android:id="@+id/textNomeprincipal"
+            android:id="@+id/textNome"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="4dp"
@@ -105,7 +105,7 @@
             tools:layout_conversion_absoluteWidth="197dp" />
 
         <TextView
-            android:id="@+id/textIdadePrincipal"
+            android:id="@+id/textIdade"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
@@ -113,8 +113,8 @@
             android:textColor="@color/colorAccent"
             android:textSize="14sp"
             android:textStyle="normal"
-            app:layout_constraintStart_toStartOf="@+id/textNomeprincipal"
-            app:layout_constraintTop_toBottomOf="@+id/textNomeprincipal"
+            app:layout_constraintStart_toStartOf="@+id/textNome"
+            app:layout_constraintTop_toBottomOf="@+id/textNome"
             tools:layout_conversion_absoluteHeight="19dp"
             tools:layout_conversion_absoluteWidth="197dp" />
 
@@ -122,14 +122,17 @@
             android:id="@+id/textCidadePrincipal"
             android:layout_width="wrap_content"
             android:layout_height="28dp"
+            android:layout_marginTop="28dp"
+            android:layout_marginBottom="28dp"
             android:text="@android:string/dialog_alert_title"
             android:textColor="@color/colorAccent"
             android:textSize="14sp"
             android:textStyle="normal"
+            app:layout_constraintBottom_toBottomOf="@+id/textDataCadastro"
+            app:layout_constraintStart_toStartOf="@+id/textDataCadastro"
+            app:layout_constraintTop_toTopOf="@+id/textIdade"
             tools:layout_conversion_absoluteHeight="24dp"
-            tools:layout_conversion_absoluteWidth="197dp"
-            tools:layout_editor_absoluteX="4dp"
-            tools:layout_editor_absoluteY="193dp" />
+            tools:layout_conversion_absoluteWidth="197dp" />
 
         <TextView
             android:id="@+id/textDataCadastro"
@@ -140,8 +143,8 @@
             android:textColor="@color/colorAccent"
             android:textSize="12sp"
             android:textStyle="normal"
-            app:layout_constraintStart_toStartOf="@+id/textIdadePrincipal"
-            app:layout_constraintTop_toBottomOf="@+id/textIdadePrincipal"
+            app:layout_constraintStart_toStartOf="@+id/textIdade"
+            app:layout_constraintTop_toBottomOf="@+id/textIdade"
             tools:layout_conversion_absoluteHeight="24dp"
             tools:layout_conversion_absoluteWidth="197dp" />
 
@@ -152,8 +155,8 @@
             android:background="@drawable/bg_btn"
             android:elevation="35dp"
             android:visibility="visible"
-            app:layout_constraintStart_toStartOf="@+id/textNomeprincipal"
-            app:layout_constraintTop_toBottomOf="@+id/textNomeprincipal" />
+            app:layout_constraintStart_toStartOf="@+id/textNome"
+            app:layout_constraintTop_toBottomOf="@+id/textNome" />
     </android.support.constraint.ConstraintLayout>
 
     <android.support.constraint.ConstraintLayout
