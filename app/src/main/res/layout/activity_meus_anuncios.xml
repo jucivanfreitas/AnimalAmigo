@@ -40,6 +40,7 @@
         app:elevation="15dp"
         app:layout_anchor="@+id/include"
         app:layout_anchorGravity="bottom|center"
-        app:srcCompat="@drawable/ic_add_black_24dp" />
+        app:srcCompat="@drawable/ic_add_black_24dp"
+        android:focusable="true" />
 
 </android.support.design.widget.CoordinatorLayout>

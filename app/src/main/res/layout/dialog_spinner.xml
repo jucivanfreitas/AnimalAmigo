@@ -4,6 +4,7 @@
     android:layout_height="wrap_content"
     android:elevation="25dp"
     android:orientation="vertical"
+    android:background="@color/backgroundcolor80p"
     android:padding="@dimen/progress_margin">
 
     <Spinner
