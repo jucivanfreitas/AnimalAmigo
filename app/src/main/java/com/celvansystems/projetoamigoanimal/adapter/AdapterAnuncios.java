@@ -68,7 +68,7 @@ public class AdapterAnuncios extends RecyclerView.Adapter<AdapterAnuncios.MyView
             dataCadastro = itemView.findViewById(R.id.textDataCadastro);
             nome = itemView.findViewById(R.id.textNome);
             idade = itemView.findViewById(R.id.textIdade);
-            foto = itemView.findViewById(R.id.imageAnuncio);
+            foto = itemView.findViewById(R.id.imganun);
             cidade = itemView.findViewById(R.id.textCidadePrincipal);
         }
     }

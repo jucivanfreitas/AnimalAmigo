@@ -39,6 +39,7 @@
     <string name="comentrios_foto">comentários....</string>
     <string name="botao_curtir">Botão curtir</string>
     <string name="back">background</string>
+    <string name="txt_num_curtidas">Numero de curtidas</string>
 
     <string-array name="idade">
         <item>0–3 meses</item>

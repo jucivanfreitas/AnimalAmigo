@@ -18,7 +18,7 @@
         app:layout_constraintTop_toTopOf="parent">
 
         <ImageView
-            android:id="@+id/imageAnuncio"
+            android:id="@+id/imganun"
             android:layout_width="match_parent"
             android:layout_height="250dp"
             android:contentDescription="@string/todo"
@@ -34,7 +34,7 @@
             tools:layout_conversion_absoluteWidth="150dp" />
 
         <ImageView
-            android:id="@+id/btn_perfil_comentarPrincipal"
+            android:id="@+id/btn_perfil_compart"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="8dp"
@@ -50,23 +50,7 @@
             app:srcCompat="@drawable/ic_share_black_24dp" />
 
         <ImageView
-            android:id="@+id/btn_perfil_compartilharPrincipal"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="8dp"
-            android:layout_marginBottom="3dp"
-            android:clickable="true"
-            android:elevation="40dp"
-            android:focusable="true"
-            android:foreground="?attr/selectableItemBackground"
-            android:padding="9dp"
-            android:visibility="visible"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@+id/btn_perfil_comentarPrincipal"
-            app:srcCompat="@android:drawable/sym_action_chat" />
-
-        <ImageView
-            android:id="@+id/btn_perfil_curtir_Principal3"
+            android:id="@+id/btn_perfil_curtir"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="8dp"
@@ -79,8 +63,24 @@
             android:padding="11dp"
             android:visibility="visible"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@+id/btn_perfil_compartilharPrincipal"
+            app:layout_constraintEnd_toStartOf="@+id/btn_cad_coment"
             app:srcCompat="@drawable/ic_favorite_border_black_24dp" />
+
+        <ImageView
+            android:id="@+id/btn_cad_coment"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="8dp"
+            android:layout_marginBottom="3dp"
+            android:clickable="true"
+            android:elevation="40dp"
+            android:focusable="true"
+            android:foreground="?attr/selectableItemBackground"
+            android:padding="9dp"
+            android:visibility="visible"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/btn_perfil_compart"
+            app:srcCompat="@android:drawable/sym_action_chat" />
 
         <ImageView
             android:id="@+id/imageAnuncio2"
@@ -88,7 +88,7 @@
             android:layout_height="150dp"
             android:contentDescription="@string/back"
             android:onClick="comertar_open"
-            app:layout_constraintBottom_toBottomOf="@+id/imageAnuncio"
+            app:layout_constraintBottom_toBottomOf="@+id/imganun"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
@@ -99,11 +99,12 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
             android:text="@string/anuncios"
             android:textColor="@color/colorPrimaryDark"
             android:textSize="24sp"
-            app:layout_constraintBottom_toTopOf="@+id/dividerPrincipal"
             app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
             tools:layout_conversion_absoluteHeight="19dp"
             tools:layout_conversion_absoluteWidth="197dp" />
 
@@ -161,7 +162,7 @@
             android:background="@drawable/bg_btn"
             android:elevation="35dp"
             android:visibility="visible"
-            app:layout_constraintBottom_toTopOf="@+id/btn_perfil_curtir_Principal3"
+            app:layout_constraintBottom_toTopOf="@+id/btn_perfil_curtir"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="@+id/textNome" />
 
@@ -174,7 +175,8 @@
             android:padding="9dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:srcCompat="@drawable/ic_more_vert_black_24dp" />
+            app:srcCompat="@drawable/ic_more_vert_black_24dp"
+            android:contentDescription="TODO" />
 
     </android.support.constraint.ConstraintLayout>
 
@@ -190,13 +192,13 @@
         app:layout_constraintTop_toBottomOf="@+id/constraintLayout2">
 
         <TextView
-            android:id="@+id/textViewComentarios"
+            android:id="@+id/text_num_curtidas"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
             android:layout_marginTop="8dp"
             android:layout_marginEnd="8dp"
-            android:text="@string/txt_modelo_comentarios"
+            android:text="@string/txt_num_curtidas"
             android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -212,18 +214,18 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textViewComentarios" />
+            app:layout_constraintTop_toBottomOf="@+id/text_num_curtidas" />
 
     </android.support.constraint.ConstraintLayout>
 
     <LinearLayout
-        android:id="@+id/linearLayout"
+        android:id="@+id/coment_box"
         android:layout_width="0dp"
         android:layout_height="50dp"
         android:layout_marginStart="8dp"
         android:layout_marginEnd="8dp"
         android:orientation="vertical"
-        android:visibility="visible"
+        android:visibility="gone"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
@@ -269,7 +271,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/linearLayout" />
+        app:layout_constraintTop_toBottomOf="@+id/coment_box" />
 
 
 </android.support.constraint.ConstraintLayout>
