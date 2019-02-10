@@ -6,8 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:clickable="true"
-    android:foreground="?attr/selectableItemBackground"
-    android:focusable="true">
+    android:foreground="?attr/selectableItemBackground">
 
 
     <android.support.constraint.ConstraintLayout
@@ -48,8 +47,24 @@
             android:visibility="visible"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:srcCompat="@drawable/ic_share_black_24dp"
-            android:contentDescription="TODO" />
+            app:srcCompat="@drawable/ic_share_black_24dp" />
+
+        <ImageView
+            android:id="@+id/btn_perfil_curtir"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="8dp"
+            android:layout_marginBottom="4dp"
+            android:clickable="true"
+            android:contentDescription="@string/botao_curtir"
+            android:elevation="40dp"
+            android:focusable="true"
+            android:foreground="?attr/selectableItemBackground"
+            android:padding="11dp"
+            android:visibility="visible"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/btn_cad_coment"
+            app:srcCompat="@drawable/ic_favorite_border_black_24dp" />
 
         <ImageView
             android:id="@+id/btn_cad_coment"
@@ -65,47 +80,31 @@
             android:visibility="visible"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@+id/btn_perfil_compart"
-            app:srcCompat="@android:drawable/sym_action_chat"
-            android:contentDescription="TODO" />
-
-        <ImageView
-            android:id="@+id/btn_perfil_curtir"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="8dp"
-            android:layout_marginBottom="4dp"
-            android:clickable="true"
-            android:elevation="40dp"
-            android:focusable="true"
-            android:foreground="?attr/selectableItemBackground"
-            android:padding="11dp"
-            android:visibility="visible"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@+id/btn_cad_coment"
-            app:srcCompat="@drawable/ic_favorite_border_black_24dp" />
+            app:srcCompat="@android:drawable/sym_action_chat" />
 
         <ImageView
             android:id="@+id/imageAnuncio2"
             android:layout_width="0dp"
             android:layout_height="150dp"
+            android:contentDescription="@string/back"
             android:onClick="comertar_open"
             app:layout_constraintBottom_toBottomOf="@+id/imganun"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
-            app:srcCompat="@drawable/bg_img_card_gradient"
-            android:contentDescription="TODO" />
+            app:srcCompat="@drawable/bg_img_card_gradient" />
 
         <TextView
             android:id="@+id/textNome"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
             android:text="@string/anuncios"
             android:textColor="@color/colorPrimaryDark"
             android:textSize="24sp"
-            app:layout_constraintBottom_toTopOf="@+id/dividerPrincipal"
             app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
             tools:layout_conversion_absoluteHeight="19dp"
             tools:layout_conversion_absoluteWidth="197dp" />
 
@@ -166,6 +165,19 @@
             app:layout_constraintBottom_toTopOf="@+id/btn_perfil_curtir"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="@+id/textNome" />
+
+        <ImageView
+            android:id="@+id/btn_propriedades"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="16dp"
+            android:padding="9dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@drawable/ic_more_vert_black_24dp"
+            android:contentDescription="TODO" />
+
     </android.support.constraint.ConstraintLayout>
 
     <android.support.constraint.ConstraintLayout
@@ -186,7 +198,7 @@
             android:layout_marginStart="8dp"
             android:layout_marginTop="8dp"
             android:layout_marginEnd="8dp"
-            android:text="@string/txt_modelo_comentarios"
+            android:text="@string/txt_num_curtidas"
             android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -230,7 +242,7 @@
                 android:layout_marginStart="8dp"
                 android:layout_marginEnd="8dp"
                 android:ems="10"
-                android:hint="@string/comentrios_foto"
+                android:hint="comentários...."
                 android:inputType="textAutoCorrect|textAutoComplete|textCapWords"
                 app:layout_constraintEnd_toStartOf="@+id/btn_comentario_foto"
                 app:layout_constraintStart_toStartOf="parent"
