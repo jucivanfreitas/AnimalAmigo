@@ -19,6 +19,7 @@ import android.widget.Spinner;
 import com.celvansystems.projetoamigoanimal.R;
 import com.celvansystems.projetoamigoanimal.adapter.AdapterAnuncios;
 import com.celvansystems.projetoamigoanimal.helper.ConfiguracaoFirebase;
+import com.celvansystems.projetoamigoanimal.helper.RecyclerItemClickListener;
 import com.celvansystems.projetoamigoanimal.helper.Util;
 import com.celvansystems.projetoamigoanimal.model.Animal;
 import com.google.firebase.auth.FirebaseAuth;
@@ -76,9 +77,31 @@ public class AnunciosActivity extends AppCompatActivity {
             recyclerAnunciosPublicos.setAdapter(adapterAnuncios);
         } catch (Exception e){e.printStackTrace();}
 
-
         recuperarAnunciosPublicos();
 
+        //eventos de ckick
+        recyclerAnunciosPublicos.addOnItemTouchListener(new RecyclerItemClickListener(
+                this, recyclerAnunciosPublicos,
+                new RecyclerItemClickListener.OnItemClickListener() {
+                    @Override
+                    public void onItemClick(View view, int position) {
+                        Animal anuncioSelecionado = listaAnuncios.get(position);
+                        Intent i = new Intent(AnunciosActivity.this, DetalhesActivity.class);
+                        i.putExtra("anuncioSelecionado", anuncioSelecionado);
+                        startActivity(i);
+                    }
+
+                    @Override
+                    public void onLongItemClick(View view, int position) {
+
+                    }
+
+                    @Override
+                    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+
+                    }
+                }
+        ));
     }
 
     @Override

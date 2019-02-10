@@ -4,9 +4,10 @@ import com.celvansystems.projetoamigoanimal.helper.ConfiguracaoFirebase;
 import com.celvansystems.projetoamigoanimal.helper.Util;
 import com.google.firebase.database.DatabaseReference;
 
+import java.io.Serializable;
 import java.util.List;
 
-public class Animal {
+public class Animal implements Serializable {
 
     private String idAnimal;
     private String nome;
