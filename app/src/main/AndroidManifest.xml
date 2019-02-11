@@ -16,6 +16,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+        <activity android:name=".activity.DetalhesActivity"
+            android:parentActivityName=".activity.AnunciosActivity"></activity>
         <activity
             android:name=".activity.CadastrarAnuncioActivity"
             android:label="@string/title_activity_cadastrar_anuncio"

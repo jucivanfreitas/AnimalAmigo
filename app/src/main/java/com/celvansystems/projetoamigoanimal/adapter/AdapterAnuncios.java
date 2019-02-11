@@ -46,7 +46,8 @@ public class AdapterAnuncios extends RecyclerView.Adapter<AdapterAnuncios.MyView
         String urlCapa = urlFotos.get(0);
 
         Picasso.get().load(urlCapa).into(myViewHolder.foto);
-    }
+
+        }
 
     @Override
     public int getItemCount() {
@@ -70,6 +71,9 @@ public class AdapterAnuncios extends RecyclerView.Adapter<AdapterAnuncios.MyView
             idade = itemView.findViewById(R.id.textIdade);
             foto = itemView.findViewById(R.id.imganun);
             cidade = itemView.findViewById(R.id.textCidadePrincipal);
+
         }
+
     }
+
 }

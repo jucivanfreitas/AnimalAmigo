@@ -212,12 +212,6 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         boolean cancel = false;
         View focusView = null;
 
-        // Check for a valid password, if the user entered one.
-        if (!TextUtils.isEmpty(password) && !isPasswordValid(password)) {
-            mPasswordView.setError(getString(R.string.error_invalid_password));
-            focusView = mPasswordView;
-            cancel = true;
-        }
 
         // checa se o e-mail é válido.
         try {
@@ -232,10 +226,21 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             }
         } catch (Exception e){e.printStackTrace();}
 
-        if (cancel) {
+        // Check for a valid password, if the user entered one.
+        try {
+            if (TextUtils.isEmpty(password) && !isPasswordValid(password)) {
+                mPasswordView.setError(getString(R.string.error_invalid_password));
+                focusView = mPasswordView;
+                cancel = true;
+            }
+        } catch (Exception e){e.printStackTrace();}
+
+        if (cancel == true) {
             // There was an error; don't attempt login and focus the first
             // form field with an error.
             focusView.requestFocus();
+
+            // se não há erro
         } else {
             // Show a progress spinner, and kick off a background task to
             // perform the user login attempt.
@@ -290,7 +295,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                                 } else {
                                     Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
                                     startActivity(intent);
-                                    Toast.makeText(LoginActivity.this, "Erro ao realizar login: " +
+                                    Toast.makeText(LoginActivity.this, "Falha ao realizar login: " +
                                                     task.getException(),
                                             Toast.LENGTH_SHORT).show();
                                 }
