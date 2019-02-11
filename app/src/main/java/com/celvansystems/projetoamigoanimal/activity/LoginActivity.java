@@ -177,7 +177,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         // Show the Up button in the action bar.
         try {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
-                getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+                Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
             }
         } catch (Exception e){e.printStackTrace();}
     }
@@ -235,7 +235,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             }
         } catch (Exception e){e.printStackTrace();}
 
-        if (cancel == true) {
+        if (cancel) {
             // There was an error; don't attempt login and focus the first
             // form field with an error.
             focusView.requestFocus();

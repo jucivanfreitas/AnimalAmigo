@@ -20,7 +20,11 @@
 
     </android.support.design.widget.AppBarLayout>
 
-    <include layout="@layout/content_auncios" />
+    <include
+        android:id="@+id/include"
+        layout="@layout/content_auncios" />
+
+
 
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/fabcadastrar"
@@ -30,5 +34,18 @@
         android:layout_margin="@dimen/fab_margin"
         android:visibility="invisible"
         app:srcCompat="@android:drawable/ic_dialog_email" />
+
+    <com.google.android.gms.ads.AdView xmlns:ads="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/adView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:visibility="visible"
+        ads:adSize="BANNER"
+        ads:adUnitId="ca-app-pub-3940256099942544/6300978111"
+        ads:layout_anchor="@+id/include"
+        ads:layout_anchorGravity="bottom|center">
+    </com.google.android.gms.ads.AdView>
 
 </android.support.design.widget.CoordinatorLayout>

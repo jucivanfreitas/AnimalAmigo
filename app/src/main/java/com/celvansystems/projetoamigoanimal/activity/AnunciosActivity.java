@@ -15,12 +15,17 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.Spinner;
+import android.widget.Toast;
 
 import com.celvansystems.projetoamigoanimal.R;
 import com.celvansystems.projetoamigoanimal.adapter.AdapterAnuncios;
 import com.celvansystems.projetoamigoanimal.helper.ConfiguracaoFirebase;
 import com.celvansystems.projetoamigoanimal.helper.Util;
 import com.celvansystems.projetoamigoanimal.model.Animal;
+import com.google.android.gms.ads.AdListener;
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdView;
+import com.google.android.gms.ads.MobileAds;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -50,6 +55,7 @@ public class AnunciosActivity extends AppCompatActivity {
     private ArrayAdapter adapterCidades;
     private String [] cidades;
     private boolean filtrandoCidade, filtrandoEspecie;
+    private AdView adView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -101,6 +107,10 @@ public class AnunciosActivity extends AppCompatActivity {
                     }
                 }
         ));*/
+
+        //admob
+        MobileAds.initialize(this, "ca-app-pub-6718857112988900~5442725100");
+
     }
 
     @Override
@@ -163,6 +173,49 @@ public class AnunciosActivity extends AppCompatActivity {
     private void inicializarComponentes(){
 
         recyclerAnunciosPublicos = findViewById(R.id.recyclerAnuncios);
+
+        adView = findViewById(R.id.adView);
+
+        AdRequest adRequest = new AdRequest.Builder().build();
+        adView.loadAd(adRequest);
+
+        adView.setAdListener(new AdListener() {
+            @Override
+            public void onAdLoaded() {
+                // Code to be executed when an ad finishes loading.
+                Toast.makeText(getApplicationContext(), "loaded", Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onAdFailedToLoad(int errorCode) {
+                // Code to be executed when an ad request fails.
+                Toast.makeText(getApplicationContext(), "falied to load", Toast.LENGTH_SHORT).show();
+
+            }
+
+            @Override
+            public void onAdOpened() {
+                // Code to be executed when an ad opens an overlay that
+                // covers the screen.
+                Toast.makeText(getApplicationContext(), "opened", Toast.LENGTH_SHORT).show();
+
+            }
+
+            @Override
+            public void onAdLeftApplication() {
+                // Code to be executed when the user has left the app.
+                Toast.makeText(getApplicationContext(), "left", Toast.LENGTH_SHORT).show();
+
+            }
+
+            @Override
+            public void onAdClosed() {
+                // Code to be executed when when the user is about to return
+                // to the app after tapping on an ad.
+                Toast.makeText(getApplicationContext(), "closed", Toast.LENGTH_SHORT).show();
+
+            }
+        });
     }
 
     private void recuperarAnunciosPublicos(){
