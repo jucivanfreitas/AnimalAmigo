@@ -19,7 +19,6 @@ import android.widget.Spinner;
 import com.celvansystems.projetoamigoanimal.R;
 import com.celvansystems.projetoamigoanimal.adapter.AdapterAnuncios;
 import com.celvansystems.projetoamigoanimal.helper.ConfiguracaoFirebase;
-import com.celvansystems.projetoamigoanimal.helper.RecyclerItemClickListener;
 import com.celvansystems.projetoamigoanimal.helper.Util;
 import com.celvansystems.projetoamigoanimal.model.Animal;
 import com.google.firebase.auth.FirebaseAuth;
@@ -80,7 +79,7 @@ public class AnunciosActivity extends AppCompatActivity {
         recuperarAnunciosPublicos();
 
         //eventos de ckick
-        recyclerAnunciosPublicos.addOnItemTouchListener(new RecyclerItemClickListener(
+        /*recyclerAnunciosPublicos.addOnItemTouchListener(new RecyclerItemClickListener(
                 this, recyclerAnunciosPublicos,
                 new RecyclerItemClickListener.OnItemClickListener() {
                     @Override
@@ -101,7 +100,7 @@ public class AnunciosActivity extends AppCompatActivity {
 
                     }
                 }
-        ));
+        ));*/
     }
 
     @Override
@@ -179,6 +178,7 @@ public class AnunciosActivity extends AppCompatActivity {
 
 
         try {
+
             anunciosPublicosRef.addValueEventListener(new ValueEventListener() {
                 @Override
                 public void onDataChange(DataSnapshot dataSnapshot) {
@@ -188,6 +188,7 @@ public class AnunciosActivity extends AppCompatActivity {
                             for(DataSnapshot anuncios: cidades.getChildren()){
                                 Animal anuncio = anuncios.getValue(Animal.class);
                                 listaAnuncios.add(anuncio);
+
                             }
                         }
                     }
@@ -384,7 +385,6 @@ public class AnunciosActivity extends AppCompatActivity {
             }
         });
     }
-
 
     private void setAdapterSpinnerCidade(){
 

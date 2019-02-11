@@ -64,7 +64,7 @@ public class DetalhesActivity extends AppCompatActivity {
             public void onClick(View v) {
                 Intent i = new Intent(Intent.ACTION_DIAL, Uri.fromParts("tel",
                         anuncioSelecionado.getIdade(), null));
-                // TODO: 10/02/2019 mudar getIdade para getTelefone 
+                // TODO: 10/02/2019 mudar getIdade para getTelefone
                 startActivity(i);
             }
         });
