@@ -1,13 +1,16 @@
 package com.celvansystems.projetoamigoanimal.activity;
 
+import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -55,7 +58,6 @@ public class AnunciosActivity extends AppCompatActivity {
     private ArrayAdapter adapterCidades;
     private String [] cidades;
     private boolean filtrandoCidade, filtrandoEspecie;
-    private AdView adView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -67,8 +69,10 @@ public class AnunciosActivity extends AppCompatActivity {
 
         try {
             autenticacao = ConfiguracaoFirebase.getFirebaseAutenticacao();
+            //anunciosPublicosRef = ConfiguracaoFirebase.getFirebase()
+            //        .child("anuncios");
             anunciosPublicosRef = ConfiguracaoFirebase.getFirebase()
-                    .child("anuncios");
+                    .child("meus_animais");
         } catch (Exception e){e.printStackTrace();}
 
         inicializarComponentes();
@@ -83,30 +87,6 @@ public class AnunciosActivity extends AppCompatActivity {
         } catch (Exception e){e.printStackTrace();}
 
         recuperarAnunciosPublicos();
-
-        //eventos de ckick
-        /*recyclerAnunciosPublicos.addOnItemTouchListener(new RecyclerItemClickListener(
-                this, recyclerAnunciosPublicos,
-                new RecyclerItemClickListener.OnItemClickListener() {
-                    @Override
-                    public void onItemClick(View view, int position) {
-                        Animal anuncioSelecionado = listaAnuncios.get(position);
-                        Intent i = new Intent(AnunciosActivity.this, DetalhesActivity.class);
-                        i.putExtra("anuncioSelecionado", anuncioSelecionado);
-                        startActivity(i);
-                    }
-
-                    @Override
-                    public void onLongItemClick(View view, int position) {
-
-                    }
-
-                    @Override
-                    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-
-                    }
-                }
-        ));*/
 
         //admob
         MobileAds.initialize(this, "ca-app-pub-6718857112988900~5442725100");
@@ -155,7 +135,11 @@ public class AnunciosActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    // método chamado antes de mostrar o menu
+    /**
+     * método chamado antes de mostrar o menu
+     * @param menu menu
+     * @return boolean
+     */
     @Override
     public boolean onPrepareOptionsMenu(Menu menu){
 
@@ -170,11 +154,14 @@ public class AnunciosActivity extends AppCompatActivity {
         return super.onPrepareOptionsMenu(menu);
     }
 
+    /**
+     * inicializa os componentes da view
+     */
     private void inicializarComponentes(){
 
         recyclerAnunciosPublicos = findViewById(R.id.recyclerAnuncios);
 
-        adView = findViewById(R.id.adView);
+        AdView adView = findViewById(R.id.adView);
 
         AdRequest adRequest = new AdRequest.Builder().build();
         adView.loadAd(adRequest);
@@ -227,22 +214,17 @@ public class AnunciosActivity extends AppCompatActivity {
                     .setCancelable(false)
                     .build();
             dialog.show();
-        } catch (Exception e){e.printStackTrace();}
-
+            } catch (Exception e){e.printStackTrace();
+        }
 
         try {
-
             anunciosPublicosRef.addValueEventListener(new ValueEventListener() {
                 @Override
-                public void onDataChange(DataSnapshot dataSnapshot) {
+                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                     listaAnuncios.clear();
-                    for(DataSnapshot estados: dataSnapshot.getChildren()){
-                        for(DataSnapshot cidades: estados.getChildren()){
-                            for(DataSnapshot anuncios: cidades.getChildren()){
-                                Animal anuncio = anuncios.getValue(Animal.class);
-                                listaAnuncios.add(anuncio);
-
-                            }
+                    for(DataSnapshot users: dataSnapshot.getChildren()){
+                        for(DataSnapshot animais: users.getChildren()){
+                            listaAnuncios.add(animais.getValue(Animal.class));
                         }
                     }
                     Collections.reverse(listaAnuncios);
@@ -252,13 +234,22 @@ public class AnunciosActivity extends AppCompatActivity {
                 }
 
                 @Override
-                public void onCancelled(DatabaseError databaseError) {
+                public void onCancelled(@NonNull DatabaseError databaseError) {
+                    Toast.makeText(getApplicationContext(),
+                            "Falha ao acessar anúncios" + databaseError.getMessage(),
+                            Toast.LENGTH_SHORT).show();
+                    Log.d("INFO1: ", databaseError.getMessage());
+                    dialog.dismiss();
 
                 }
             });
         } catch (Exception e){e.printStackTrace();}
     }
 
+    /**
+     * filtra por espécie
+     * @param view view
+     */
     public void filtraPorEspecie(View view){
 
         filtrandoEspecie = true;
@@ -267,6 +258,7 @@ public class AnunciosActivity extends AppCompatActivity {
         dialogEspecie.setTitle("Selecione a espécie desejada");
 
         //configura o spinner
+        @SuppressLint("InflateParams")
         View viewSpinner = getLayoutInflater().inflate(R.layout.dialog_spinner, null);
         final Spinner spinnerEspecie = viewSpinner.findViewById(R.id.spinnerFiltro);
         final Spinner spinnerCidade = viewSpinner.findViewById(R.id.spinnerFiltro2);
@@ -280,7 +272,6 @@ public class AnunciosActivity extends AppCompatActivity {
         spinnerEspecie.setAdapter(adapterEspecies);
 
         dialogEspecie.setView(viewSpinner);
-
 
         dialogEspecie.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
             @Override
@@ -306,6 +297,10 @@ public class AnunciosActivity extends AppCompatActivity {
         dialog.show();
     }
 
+    /**
+     * recupera por especie
+     * @param especie especie
+     */
     public void recuperarAnunciosPorEspecie(final String especie){
 
         dialog = new SpotsDialog.Builder()
@@ -317,35 +312,27 @@ public class AnunciosActivity extends AppCompatActivity {
 
         anunciosPublicosRef.addValueEventListener(new ValueEventListener() {
             @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 listaAnuncios.clear();
-                for(DataSnapshot estados: dataSnapshot.getChildren()){
-                    for(DataSnapshot cidades: estados.getChildren()){
-                        if(!filtrandoCidade) {
-                            for (DataSnapshot anuncios : cidades.getChildren()) {
+                //for(DataSnapshot estados: dataSnapshot.getChildren()){
+                //for(DataSnapshot cidades: estados.getChildren()){
+                for(DataSnapshot users: dataSnapshot.getChildren()){
+                    for(DataSnapshot animais: users.getChildren()){
 
-                                Animal anuncio = anuncios.getValue(Animal.class);
-                                if(anuncio != null) {
+                        Animal animal = animais.getValue(Animal.class);
 
-                                    if (anuncio.getEspecie().equalsIgnoreCase(especie)) {
-                                        listaAnuncios.add(anuncio);
-                                    }
-                                }
-                            }
-                        } else {
-                            if(cidades.getKey().equalsIgnoreCase(btnCidade.getText().toString())) {
-                                for (DataSnapshot anuncios : cidades.getChildren()) {
-
-                                    Animal anuncio = anuncios.getValue(Animal.class);
-                                    if(anuncio != null) {
-
-                                        if (anuncio.getEspecie().equalsIgnoreCase(especie)) {
-                                            listaAnuncios.add(anuncio);
-                                        }
+                        if(animal != null) {
+                            if (animal.getEspecie().equalsIgnoreCase(especie)) {
+                                if (!filtrandoCidade) {
+                                    listaAnuncios.add(animal);
+                                } else {
+                                    if (animal.getCidade().equalsIgnoreCase(btnCidade.getText().toString())) {
+                                        listaAnuncios.add(animal);
                                     }
                                 }
                             }
                         }
+
                     }
                 }
                 Collections.reverse(listaAnuncios);
@@ -355,7 +342,7 @@ public class AnunciosActivity extends AppCompatActivity {
             }
 
             @Override
-            public void onCancelled(DatabaseError databaseError) {
+            public void onCancelled(@NonNull DatabaseError databaseError) {
 
             }
         });
@@ -374,6 +361,7 @@ public class AnunciosActivity extends AppCompatActivity {
 
 
         //configura o spinner
+        @SuppressLint("InflateParams")
         View viewSpinner = getLayoutInflater().inflate(R.layout.dialog_spinner, null);
 
         String[] estados = Util.getEstadosJSON(this);
@@ -442,11 +430,11 @@ public class AnunciosActivity extends AppCompatActivity {
     private void setAdapterSpinnerCidade(){
 
         try {
-        adapterCidades = new ArrayAdapter<>(this, simple_spinner_item, cidades);
-        adapterCidades.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+            adapterCidades = new ArrayAdapter<>(this, simple_spinner_item, cidades);
+            adapterCidades.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 
-        spinnerCidade.setAdapter(adapterCidades);
-        adapterCidades.notifyDataSetChanged();
+            spinnerCidade.setAdapter(adapterCidades);
+            adapterCidades.notifyDataSetChanged();
         } catch (Exception e){e.printStackTrace();}
     }
 
@@ -455,7 +443,7 @@ public class AnunciosActivity extends AppCompatActivity {
      * @param estado uf
      * @param cidade cidade
      */
-    public void recuperarAnunciosPorCidade(String estado, final String cidade){
+    public void recuperarAnunciosPorCidade(final String estado, final String cidade){
 
         dialog = new SpotsDialog.Builder()
                 .setContext(this)
@@ -466,30 +454,21 @@ public class AnunciosActivity extends AppCompatActivity {
 
         anunciosPublicosRef.addValueEventListener(new ValueEventListener() {
             @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 listaAnuncios.clear();
-                for(DataSnapshot estados: dataSnapshot.getChildren()){
-                    for(DataSnapshot cidades: estados.getChildren()){
-                        if(cidades.getKey().equalsIgnoreCase(cidade)) {
-                            for (DataSnapshot anuncios : cidades.getChildren()) {
+                for(DataSnapshot users: dataSnapshot.getChildren()){
+                    for(DataSnapshot animais: users.getChildren()){
 
-                                if(!filtrandoEspecie) {
-                                    Animal anuncio = anuncios.getValue(Animal.class);
+                        Animal animal = animais.getValue(Animal.class);
 
-                                    if(anuncio!= null) {
-                                        if (anuncio.getCidade().equalsIgnoreCase(cidade)) {
-                                            listaAnuncios.add(anuncio);
-                                        }
-                                    }
+                        if(animal != null) {
+                            if (animal.getCidade().equalsIgnoreCase(cidade)
+                                    && animal.getUf().equalsIgnoreCase(estado)) {
+                                if (!filtrandoEspecie) {
+                                    listaAnuncios.add(animal);
                                 } else {
-                                    Animal anuncio = anuncios.getValue(Animal.class);
-                                    if(anuncio!= null) {
-
-                                        if (anuncio.getEspecie().equalsIgnoreCase(btnEspecie.getText().toString())) {
-                                            if (anuncio.getCidade().equalsIgnoreCase(cidade)) {
-                                                listaAnuncios.add(anuncio);
-                                            }
-                                        }
+                                    if (animal.getEspecie().equalsIgnoreCase(btnEspecie.getText().toString())) {
+                                        listaAnuncios.add(animal);
                                     }
                                 }
                             }
@@ -503,7 +482,7 @@ public class AnunciosActivity extends AppCompatActivity {
             }
 
             @Override
-            public void onCancelled(DatabaseError databaseError) {
+            public void onCancelled(@NonNull DatabaseError databaseError) {
 
             }
         });

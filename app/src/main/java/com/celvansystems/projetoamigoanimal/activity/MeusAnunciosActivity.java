@@ -11,6 +11,7 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.Toast;
 
 import com.celvansystems.projetoamigoanimal.R;
 import com.celvansystems.projetoamigoanimal.adapter.AdapterMeusAnuncios;
@@ -79,6 +80,8 @@ public class MeusAnunciosActivity extends AppCompatActivity {
                 anuncioSelecionado.remover();
 
                 adapterMeusAnuncios.notifyDataSetChanged();
+
+                Toast.makeText(getApplicationContext(), "Anúncio excluído!", Toast.LENGTH_LONG).show();
             }
 
             @Override
@@ -89,6 +92,9 @@ public class MeusAnunciosActivity extends AppCompatActivity {
         ));
     }
 
+    /**
+     * recupera os anuncios do usuario que estiver logado
+     */
     private void recuperarAnuncios(){
 
         try {
@@ -116,16 +122,20 @@ public class MeusAnunciosActivity extends AppCompatActivity {
 
                 @Override
                 public void onCancelled(@NonNull DatabaseError databaseError) {
-
+                    Toast.makeText(getApplicationContext(), "Falha ao carregar anúncios.", Toast.LENGTH_LONG).show();
                 }
             });
         } catch (Exception e){e.printStackTrace();}
     }
 
+    /**
+     * inicializa os componentes da view
+     */
     private void inicializarComponentes(){
 
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
         FloatingActionButton fabCadastrar = findViewById(R.id.fabcadastrar);
 
         fabCadastrar.setOnClickListener(new View.OnClickListener() {

@@ -211,31 +211,6 @@ public class CadastrarAnuncioActivity extends AppCompatActivity
                     }
                 }
             });
-
-            //faz upload do arquivo
-            /*UploadTask uploadTask = imagemAnimal.putFile(Uri.parse(url));
-            uploadTask.addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-                @Override
-                public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-
-                    Task<Uri> firebaseUrl = taskSnapshot.getDownloadUrl();
-                    String urlConvertida = Objects.requireNonNull(firebaseUrl).toString();
-                    listaURLFotos.add(urlConvertida);
-
-                    if(totalFotos == listaURLFotos.size()){
-                        animal.setFotos(listaURLFotos);
-                        animal.salvar();
-                        exibirMensagem("Sucesso ao fazer upload");
-                        dialog.dismiss();
-                        finish();
-                    }
-                }
-            }).addOnFailureListener(new OnFailureListener() {
-                @Override
-                public void onFailure(@NonNull Exception e) {
-                    exibirMensagem("Falha ao fazer upload");
-                }
-            });*/
         } catch (Exception e){e.printStackTrace();}
     }
 
@@ -332,7 +307,7 @@ public class CadastrarAnuncioActivity extends AppCompatActivity
     }
 
     /**
-     *
+     * captura clique para seleção de imagens
      * @param v view
      */
     @Override
@@ -352,7 +327,7 @@ public class CadastrarAnuncioActivity extends AppCompatActivity
     }
 
     /**
-     *
+     * abre a tela para escolha de imagem
      * @param requestCode int
      */
     public void escolherImagem(int requestCode){
@@ -363,7 +338,7 @@ public class CadastrarAnuncioActivity extends AppCompatActivity
     }
 
     /**
-     *
+     * configura a lista de imagens a serem cadastradas
      * @param requestCode int
      * @param resultCode int
      * @param data intent

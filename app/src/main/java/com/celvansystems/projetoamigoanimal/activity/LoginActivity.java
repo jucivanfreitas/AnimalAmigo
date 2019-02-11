@@ -59,14 +59,15 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
      */
     private static final int REQUEST_READ_CONTACTS = 0;
 
-    private FirebaseAuth autenticacao;
+    private FirebaseAuth authentication;
 
-    /**
+    /*
      * A dummy authentication store containing known user names and passwords.
      */
+    /*
     private static final String[] DUMMY_CREDENTIALS = new String[]{
             "foo@example.com:hello", "bar@example.com:world"
-    };
+    };*/
     /**
      * Keep track of the login task to ensure we can cancel it if requested.
      */
@@ -103,7 +104,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             }
         });
 
-        autenticacao = ConfiguracaoFirebase.getFirebaseAutenticacao();
+        authentication = ConfiguracaoFirebase.getFirebaseAutenticacao();
         populateAutoComplete();
     }
 
@@ -246,7 +247,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             // perform the user login attempt.
             if (swtLoginCadastrar.isChecked()) {
 
-                autenticacao.createUserWithEmailAndPassword(email, password)
+                authentication.createUserWithEmailAndPassword(email, password)
                         .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                             @Override
                             public void onComplete(@NonNull Task<AuthResult> task) {
@@ -281,7 +282,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                         });
             } else {
                 //direciona para a activity principal
-                autenticacao.signInWithEmailAndPassword(email, password)
+                authentication.signInWithEmailAndPassword(email, password)
                         .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                             @Override
                             public void onComplete(@NonNull Task<AuthResult> task) {
