@@ -1,5 +1,6 @@
 package com.celvansystems.projetoamigoanimal.adapter;
 
+import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -10,14 +11,17 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.celvansystems.projetoamigoanimal.R;
+import com.celvansystems.projetoamigoanimal.activity.DetalhesActivity;
 import com.celvansystems.projetoamigoanimal.model.Animal;
 import com.squareup.picasso.Picasso;
 
+import java.io.Serializable;
 import java.util.List;
 
-public class AdapterAnuncios extends RecyclerView.Adapter<AdapterAnuncios.MyViewHolder> {
+public class AdapterAnuncios extends RecyclerView.Adapter<AdapterAnuncios.MyViewHolder> implements Serializable {
 
     private List<Animal> anuncios;
+    private int n;
 
     public AdapterAnuncios(List<Animal> anuncios) {
         this.anuncios = anuncios;
@@ -32,8 +36,9 @@ public class AdapterAnuncios extends RecyclerView.Adapter<AdapterAnuncios.MyView
     }
 
     @Override
-    public void onBindViewHolder(@NonNull MyViewHolder myViewHolder, int i) {
+    public void onBindViewHolder(@NonNull final MyViewHolder myViewHolder, int i) {
 
+        n = i;
         Log.d("INFO1"," "+ i);
         Animal anuncio = anuncios.get(i);
         myViewHolder.dataCadastro.setText(anuncio.getDataCadastro());
@@ -46,6 +51,16 @@ public class AdapterAnuncios extends RecyclerView.Adapter<AdapterAnuncios.MyView
         String urlCapa = urlFotos.get(0);
 
         Picasso.get().load(urlCapa).into(myViewHolder.foto);
+
+        myViewHolder.foto.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Animal anuncioSelecionado = anuncios.get(n);
+                Intent j = new Intent(v.getContext(), DetalhesActivity.class);
+                j.putExtra("anuncioSelecionado", anuncioSelecionado);
+                v.getContext().startActivity(j);
+            }
+        });
 
         }
 
@@ -62,6 +77,7 @@ public class AdapterAnuncios extends RecyclerView.Adapter<AdapterAnuncios.MyView
         TextView idade;
         TextView cidade;
         ImageView foto;
+        ImageView imv_perfil_principal;
 
         MyViewHolder(View itemView) {
             super(itemView);
@@ -71,9 +87,7 @@ public class AdapterAnuncios extends RecyclerView.Adapter<AdapterAnuncios.MyView
             idade = itemView.findViewById(R.id.textIdade);
             foto = itemView.findViewById(R.id.imganun);
             cidade = itemView.findViewById(R.id.textCidadePrincipal);
-
+            //imv_perfil_principal = itemView.findViewById(R.id.imv_perfil_curtir_Principal3);
         }
-
     }
-
 }

@@ -28,8 +28,9 @@ import com.celvansystems.projetoamigoanimal.helper.ConfiguracaoFirebase;
 import com.celvansystems.projetoamigoanimal.helper.Permissoes;
 import com.celvansystems.projetoamigoanimal.helper.Util;
 import com.celvansystems.projetoamigoanimal.model.Animal;
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Continuation;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
@@ -171,32 +172,43 @@ public class CadastrarAnuncioActivity extends AppCompatActivity
 
         //cria nó do storage
         try {
-            StorageReference imagemAnimal = storage
+            final StorageReference imagemAnimal = storage
                     .child("imagens")
                     .child("animais")
                     .child(animal.getIdAnimal())
                     .child("imagem"+contador);
-            //faz upload do arquivo
-            UploadTask uploadTask = imagemAnimal.putFile(Uri.parse(url));
-            uploadTask.addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-                @Override
-                public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                    Uri firebaseUrl = taskSnapshot.getDownloadUrl();
-                    String urlConvertida = Objects.requireNonNull(firebaseUrl).toString();
-                    listaURLFotos.add(urlConvertida);
 
-                    if(totalFotos == listaURLFotos.size()){
-                        animal.setFotos(listaURLFotos);
-                        animal.salvar();
-                        exibirMensagem("Sucesso ao fazer upload");
-                        dialog.dismiss();
-                        finish();
-                    }
-                }
-            }).addOnFailureListener(new OnFailureListener() {
+            UploadTask uploadTask = imagemAnimal.putFile(Uri.parse(url));
+
+            uploadTask.continueWithTask(new Continuation<UploadTask.TaskSnapshot, Task<Uri>>() {
                 @Override
-                public void onFailure(@NonNull Exception e) {
-                    exibirMensagem("Falha ao fazer upload");
+                public Task<Uri> then(@NonNull Task<UploadTask.TaskSnapshot> task) throws Exception {
+                    if (!task.isSuccessful()) {
+                        throw Objects.requireNonNull(task.getException());
+                    }
+
+                    // Continue with the task to get the download URL
+                    return imagemAnimal.getDownloadUrl();
+                }
+            }).addOnCompleteListener(new OnCompleteListener<Uri>() {
+                @Override
+                public void onComplete(@NonNull Task<Uri> task) {
+                    if (task.isSuccessful()) {
+
+                        Uri firebaseUrl = task.getResult();
+                        String urlConvertida = Objects.requireNonNull(firebaseUrl).toString();
+                        listaURLFotos.add(urlConvertida);
+
+                        if(totalFotos == listaURLFotos.size()){
+                            animal.setFotos(listaURLFotos);
+                            animal.salvar();
+                            exibirMensagem("Sucesso ao fazer upload");
+                            dialog.dismiss();
+                            finish();
+                        }
+                    } else {
+                        exibirMensagem("Falha ao fazer upload");
+                    }
                 }
             });
         } catch (Exception e){e.printStackTrace();}
@@ -295,7 +307,7 @@ public class CadastrarAnuncioActivity extends AppCompatActivity
     }
 
     /**
-     *
+     * captura clique para seleção de imagens
      * @param v view
      */
     @Override
@@ -315,7 +327,7 @@ public class CadastrarAnuncioActivity extends AppCompatActivity
     }
 
     /**
-     *
+     * abre a tela para escolha de imagem
      * @param requestCode int
      */
     public void escolherImagem(int requestCode){
@@ -326,7 +338,7 @@ public class CadastrarAnuncioActivity extends AppCompatActivity
     }
 
     /**
-     *
+     * configura a lista de imagens a serem cadastradas
      * @param requestCode int
      * @param resultCode int
      * @param data intent

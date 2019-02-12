@@ -3,6 +3,7 @@ package com.celvansystems.projetoamigoanimal.activity;
 import android.app.AlertDialog;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
@@ -10,6 +11,7 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.Toast;
 
 import com.celvansystems.projetoamigoanimal.R;
 import com.celvansystems.projetoamigoanimal.adapter.AdapterMeusAnuncios;
@@ -78,6 +80,8 @@ public class MeusAnunciosActivity extends AppCompatActivity {
                 anuncioSelecionado.remover();
 
                 adapterMeusAnuncios.notifyDataSetChanged();
+
+                Toast.makeText(getApplicationContext(), "Anúncio excluído!", Toast.LENGTH_LONG).show();
             }
 
             @Override
@@ -88,6 +92,9 @@ public class MeusAnunciosActivity extends AppCompatActivity {
         ));
     }
 
+    /**
+     * recupera os anuncios do usuario que estiver logado
+     */
     private void recuperarAnuncios(){
 
         try {
@@ -102,7 +109,7 @@ public class MeusAnunciosActivity extends AppCompatActivity {
         try {
             anuncioUsuarioRef.addValueEventListener(new ValueEventListener() {
                 @Override
-                public void onDataChange(DataSnapshot dataSnapshot) {
+                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                     anuncios.clear();
                     for(DataSnapshot ds: dataSnapshot.getChildren()){
                         anuncios.add(ds.getValue(Animal.class));
@@ -114,17 +121,21 @@ public class MeusAnunciosActivity extends AppCompatActivity {
                 }
 
                 @Override
-                public void onCancelled(DatabaseError databaseError) {
-
+                public void onCancelled(@NonNull DatabaseError databaseError) {
+                    Toast.makeText(getApplicationContext(), "Falha ao carregar anúncios.", Toast.LENGTH_LONG).show();
                 }
             });
         } catch (Exception e){e.printStackTrace();}
     }
 
+    /**
+     * inicializa os componentes da view
+     */
     private void inicializarComponentes(){
 
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
         FloatingActionButton fabCadastrar = findViewById(R.id.fabcadastrar);
 
         fabCadastrar.setOnClickListener(new View.OnClickListener() {
