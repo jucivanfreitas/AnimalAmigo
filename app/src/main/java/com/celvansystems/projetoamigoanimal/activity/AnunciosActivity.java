@@ -57,7 +57,6 @@ public class AnunciosActivity extends AppCompatActivity {
     private Spinner spinnerCidade;
     private ArrayAdapter adapterCidades;
     private String [] cidades;
-    private boolean filtrandoEstado, filtrandoCidade, filtrandoEspecie;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -254,8 +253,6 @@ public class AnunciosActivity extends AppCompatActivity {
      */
     public void filtraPorEspecie(View view){
 
-        filtrandoEspecie = true;
-
         AlertDialog.Builder dialogEspecie = new AlertDialog.Builder(this);
         dialogEspecie.setTitle("Selecione a espécie desejada");
 
@@ -279,14 +276,13 @@ public class AnunciosActivity extends AppCompatActivity {
             public void onClick(DialogInterface dialog, int which) {
 
                 String filtroEspecie = spinnerEspecie.getSelectedItem().toString();
-
                 String cidadeBotao = btnCidade.getText().toString();
 
                 if(!cidadeBotao.equalsIgnoreCase("Todas") &&
-                        cidadeBotao.equalsIgnoreCase("cidade")) {
-                    recuperarAnunciosFiltro(null, null,filtroEspecie);
+                        !cidadeBotao.equalsIgnoreCase("cidade")) {
+                    recuperarAnunciosFiltro(null, null, filtroEspecie);
                 } else {
-                    recuperarAnunciosFiltro(null, cidadeBotao,filtroEspecie);
+                    recuperarAnunciosFiltro(null, cidadeBotao, filtroEspecie);
                 }
                 try {
                     btnEspecie = findViewById(R.id.btnEspecie);
@@ -306,13 +302,11 @@ public class AnunciosActivity extends AppCompatActivity {
         dialog.show();
     }
 
-     /**
+    /**
      *
      * @param view view
      */
     public void filtraPorCidade(View view){
-
-        filtrandoCidade = true;
 
         AlertDialog.Builder dialogCidade = new AlertDialog.Builder(this);
         dialogCidade.setTitle("Selecione a cidade desejada");
@@ -346,13 +340,11 @@ public class AnunciosActivity extends AppCompatActivity {
 
                 String filtroEstado = spinnerEstado.getSelectedItem().toString();
                 String filtroCidade = spinnerCidade.getSelectedItem().toString();
+                String filtroEspecie = btnEspecie.getText().toString();
 
-                //recuperarAnunciosPorCidade(filtroEstado, filtroCidade);
-                String especieBotao = btnEspecie.getText().toString();
-
-                if(!especieBotao.equalsIgnoreCase("Todas") &&
-                        !especieBotao.equalsIgnoreCase("espécie")) {
-                    recuperarAnunciosFiltro(filtroEstado, filtroCidade, btnEspecie.getText().toString());
+                if(!filtroEspecie.equalsIgnoreCase("Todas") &&
+                        !filtroEspecie.equalsIgnoreCase("espécie")) {
+                    recuperarAnunciosFiltro(filtroEstado, filtroCidade, filtroEspecie);
                 } else {
                     recuperarAnunciosFiltro(filtroEstado, filtroCidade, null);
                 }
@@ -406,40 +398,35 @@ public class AnunciosActivity extends AppCompatActivity {
 
     public void recuperarAnunciosFiltro(final String estado, final String cidade, final String especie) {
 
-        filtrandoEstado = false;
-        filtrandoCidade = false;
-        filtrandoEspecie = false;
-        //cidade
-        if (cidade != null) {
-            if (!cidade.equalsIgnoreCase("Todas")) {
-                btnCidade.setText(cidade);
-                filtrandoCidade = true;
-                filtrandoEstado = false;
-            }
-            //estado
-            else if (estado != null) {
-                if (!estado.equalsIgnoreCase("Todos")) {
-                    btnCidade.setText(estado);
-                    filtrandoEstado = true;
-                    filtrandoCidade = false;
-                }
-            }
-        }
-        //especie
-        if (especie != null) {
-            if (!especie.equalsIgnoreCase("Todas")) {
-                //btnEspecie = this.<Button>findViewById(R.id.btnEspecie);
-                btnEspecie.setText(especie);
-                filtrandoEspecie = true;
-            }
-        }
-
         dialog = new SpotsDialog.Builder()
                 .setContext(this)
                 .setMessage("Procurando anúncios da espécie " + especie)
                 .setCancelable(false)
                 .build();
         dialog.show();
+
+        //cidade
+        if (cidade != null) {
+            if (!cidade.equalsIgnoreCase("Todas") &&
+                    !cidade.equalsIgnoreCase("cidade")) {
+                btnCidade.setText(cidade);
+            }
+            //estado
+            else if (estado != null ){
+                if (!estado.equalsIgnoreCase("Todas") &&
+                        !estado.equalsIgnoreCase("cidade")) {
+                    btnCidade.setText(estado);
+
+                }
+            }
+        }
+        //especie
+        if (especie != null) {
+            if (!especie.equalsIgnoreCase("Todas") &&
+                    !especie.equalsIgnoreCase("espécie")) {
+                btnEspecie.setText(especie);
+            }
+        }
 
         anunciosPublicosRef.addValueEventListener(new ValueEventListener() {
             @Override
@@ -453,33 +440,42 @@ public class AnunciosActivity extends AppCompatActivity {
 
                         if (animal != null) {
 
-                            if(!filtrandoEspecie && !filtrandoCidade && !filtrandoEstado) {
-                                listaAnuncios.add(animal);
-                            } else if (filtrandoEspecie && !filtrandoCidade && !filtrandoEstado) {
-                                if(animal.getEspecie().equalsIgnoreCase(especie)){
+                            String textoBotaoCidade = btnCidade.getText().toString();
+                            String textoBotaoEspecie = btnEspecie.getText().toString();
+
+                            if(textoBotaoEspecie.equalsIgnoreCase("espécie") ||
+                                    textoBotaoEspecie.equalsIgnoreCase("Todas")){
+
+                                if(textoBotaoCidade.equalsIgnoreCase("cidade") ||
+                                        textoBotaoCidade.equalsIgnoreCase("Todas") ||
+                                        textoBotaoCidade.equalsIgnoreCase("Todos")){
+
                                     listaAnuncios.add(animal);
+
+                                } else {
+                                    if(textoBotaoCidade.equalsIgnoreCase(animal.getCidade()) ||
+                                            textoBotaoCidade.equalsIgnoreCase(animal.getUf())){
+                                        listaAnuncios.add(animal);
+                                    }
                                 }
-                            } else if (filtrandoEspecie && filtrandoCidade && !filtrandoEstado) {
-                                if(animal.getEspecie().equalsIgnoreCase(especie) &&
-                                        animal.getCidade().equalsIgnoreCase(cidade) &&
-                                        animal.getUf().equalsIgnoreCase(estado)){
-                                    listaAnuncios.add(animal);
-                                }
-                            } else if (filtrandoEspecie && !filtrandoCidade && filtrandoEstado) {
-                                if(animal.getEspecie().equalsIgnoreCase(especie) &&
-                                        animal.getUf().equalsIgnoreCase(estado)){
-                                    listaAnuncios.add(animal);
-                                }
-                            } else if(!filtrandoEspecie && filtrandoCidade && !filtrandoEstado) {
-                                if(animal.getCidade().equalsIgnoreCase(cidade) &&
-                                        animal.getUf().equalsIgnoreCase(estado)){
-                                    listaAnuncios.add(animal);
-                                }
-                            } else if(!filtrandoEspecie && !filtrandoCidade && filtrandoEstado) {
-                                if(animal.getUf().equalsIgnoreCase(estado)){
-                                    listaAnuncios.add(animal);
+
+                            } else {
+                                if(textoBotaoEspecie.equalsIgnoreCase(animal.getEspecie())){
+
+                                    if(textoBotaoCidade.equalsIgnoreCase("cidade") ||
+                                            textoBotaoCidade.equalsIgnoreCase("Todas") ||
+                                            textoBotaoCidade.equalsIgnoreCase("Todos")){
+                                        listaAnuncios.add(animal);
+                                    } else {
+                                        if(textoBotaoCidade.equalsIgnoreCase(animal.getCidade()) ||
+                                                textoBotaoCidade.equalsIgnoreCase(animal.getUf())){
+                                            listaAnuncios.add(animal);
+                                        }
+                                    }
                                 }
                             }
+
+
                         }
                     }
                 }
