@@ -1,5 +1,6 @@
 package com.celvansystems.projetoamigoanimal.adapter;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
@@ -36,7 +37,7 @@ public class AdapterAnuncios extends RecyclerView.Adapter<AdapterAnuncios.MyView
     }
 
     @Override
-    public void onBindViewHolder(@NonNull final MyViewHolder myViewHolder, int i) {
+    public void onBindViewHolder(@NonNull final MyViewHolder myViewHolder, @SuppressLint("RecyclerView") int i) {
 
         n = i;
         Log.d("INFO1"," "+ i);
@@ -77,7 +78,7 @@ public class AdapterAnuncios extends RecyclerView.Adapter<AdapterAnuncios.MyView
         TextView idade;
         TextView cidade;
         ImageView foto;
-        ImageView imv_perfil_principal;
+        //ImageView imv_perfil_principal;
 
         MyViewHolder(View itemView) {
             super(itemView);

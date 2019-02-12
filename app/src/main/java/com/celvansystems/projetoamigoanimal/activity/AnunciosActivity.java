@@ -214,7 +214,7 @@ public class AnunciosActivity extends AppCompatActivity {
                     .setCancelable(false)
                     .build();
             dialog.show();
-            } catch (Exception e){e.printStackTrace();
+        } catch (Exception e){e.printStackTrace();
         }
 
         try {
@@ -259,10 +259,8 @@ public class AnunciosActivity extends AppCompatActivity {
 
         //configura o spinner
         @SuppressLint("InflateParams")
-        View viewSpinner = getLayoutInflater().inflate(R.layout.dialog_spinner, null);
-        final Spinner spinnerEspecie = viewSpinner.findViewById(R.id.spinnerFiltro);
-        final Spinner spinnerCidade = viewSpinner.findViewById(R.id.spinnerFiltro2);
-        spinnerCidade.setVisibility(View.GONE);
+        View viewSpinner = getLayoutInflater().inflate(R.layout.dialog_spinner_especie, null);
+        final Spinner spinnerEspecie = viewSpinner.findViewById(R.id.spinnerFiltroEspecie);
 
         String [] especies = Util.getEspecies(getApplicationContext());
 
@@ -366,8 +364,8 @@ public class AnunciosActivity extends AppCompatActivity {
 
         String[] estados = Util.getEstadosJSON(this);
 
-        spinnerEstado = viewSpinner.findViewById(R.id.spinnerFiltro);
-        spinnerCidade = viewSpinner.findViewById(R.id.spinnerFiltro2);
+        spinnerEstado = viewSpinner.findViewById(R.id.spinnerFiltroEstado);
+        spinnerCidade = viewSpinner.findViewById(R.id.spinnerFiltroCidade);
 
         spinnerCidade.setVisibility(View.VISIBLE);
         cidades = Util.getCidadesJSON("AC", this);
