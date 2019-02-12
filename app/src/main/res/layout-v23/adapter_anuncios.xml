@@ -86,7 +86,7 @@
             android:id="@+id/imageAnuncio2"
             android:layout_width="0dp"
             android:layout_height="150dp"
-            android:contentDescription="@string/back"
+            android:contentDescription="background_black"
             android:onClick="comertar_open"
             app:layout_constraintBottom_toBottomOf="@+id/imganun"
             app:layout_constraintEnd_toEndOf="parent"

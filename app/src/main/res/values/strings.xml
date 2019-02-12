@@ -36,6 +36,10 @@
     <string name="txt_cad_helper_descrição_animal">Escreva um pouco sobre a história do Pet, quais as caracteristicas, suas rotinas, se é carinhoso, se é adestrado, castrado. Conte os motivos quais levaram à Adoção ou em que condições foi encontrado!</string>
     <string name="configuracoes">Configurações</string>
     <string name="todo">TODO</string>
+    <string name="txt_num_curtidas">num_curtidas</string>
+    <string name="botao_curtir">btn_curtir</string>
+    <string name="ver_telefone">ver_telefone</string>
+    <string name="background_black">background_black</string>
 
     <string-array name="idade">
         <item>0–3 meses</item>
