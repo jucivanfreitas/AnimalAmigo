@@ -20,18 +20,27 @@
 
     </android.support.design.widget.AppBarLayout>
 
-    <include layout="@layout/content_meus_anuncios" />
+    <include
+        android:id="@+id/include"
+        layout="@layout/content_meus_anuncios"
+        app:layout_anchor="@+id/fabcadastrar"
+        app:layout_anchorGravity="right|top" />
 
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/fabcadastrar"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="bottom|end"
-        android:elevation="50dp"
-        android:clickable="true"
-        android:foreground="?attr/selectableItemBackground"
+        android:layout_gravity="center|center_horizontal"
         android:layout_marginEnd="150dp"
         android:layout_marginBottom="6dp"
-        app:srcCompat="@drawable/ic_add_black_24dp" />
+        android:clickable="true"
+        android:elevation="50dp"
+        android:foreground="?attr/selectableItemBackground"
+        android:foregroundGravity="clip_horizontal|center"
+        app:elevation="15dp"
+        app:layout_anchor="@+id/include"
+        app:layout_anchorGravity="bottom|center"
+        app:srcCompat="@drawable/ic_add_black_24dp"
+        android:focusable="true" />
 
 </android.support.design.widget.CoordinatorLayout>

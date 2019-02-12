@@ -17,6 +17,8 @@
         <color name="darkblue">#23283a</color>
         <color name="testcolorblue">#152B38</color>
         <color name="pink">#FE104D</color>
+    <color name="backgroundcolor80p">#FCFCFC</color>
+
 
         <color name="black_overlay">#66000000</color>
     <color name="cinza">#BDBDBD</color>
