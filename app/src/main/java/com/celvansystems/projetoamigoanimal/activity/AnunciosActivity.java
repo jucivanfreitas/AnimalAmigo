@@ -278,16 +278,8 @@ public class AnunciosActivity extends AppCompatActivity {
                 String filtroEspecie = spinnerEspecie.getSelectedItem().toString();
                 String cidadeBotao = btnCidade.getText().toString();
 
-                if(!cidadeBotao.equalsIgnoreCase("Todas") &&
-                        !cidadeBotao.equalsIgnoreCase("cidade")) {
-                    recuperarAnunciosFiltro(null, null, filtroEspecie);
-                } else {
-                    recuperarAnunciosFiltro(null, cidadeBotao, filtroEspecie);
-                }
-                try {
-                    btnEspecie = findViewById(R.id.btnEspecie);
-                    btnEspecie.setText(filtroEspecie);
-                }catch (Exception e){e.printStackTrace();}
+                recuperarAnunciosFiltro(null, cidadeBotao, filtroEspecie);
+
             }
         });
 
@@ -342,17 +334,8 @@ public class AnunciosActivity extends AppCompatActivity {
                 String filtroCidade = spinnerCidade.getSelectedItem().toString();
                 String filtroEspecie = btnEspecie.getText().toString();
 
-                if(!filtroEspecie.equalsIgnoreCase("Todas") &&
-                        !filtroEspecie.equalsIgnoreCase("espécie")) {
-                    recuperarAnunciosFiltro(filtroEstado, filtroCidade, filtroEspecie);
-                } else {
-                    recuperarAnunciosFiltro(filtroEstado, filtroCidade, null);
-                }
+                recuperarAnunciosFiltro(filtroEstado, filtroCidade, filtroEspecie);
 
-                try {
-                    btnCidade = findViewById(R.id.btnCidade);
-                    btnCidade.setText(filtroCidade);
-                }catch (Exception e){e.printStackTrace();}
             }
         });
 
@@ -407,25 +390,16 @@ public class AnunciosActivity extends AppCompatActivity {
 
         //cidade
         if (cidade != null) {
-            if (!cidade.equalsIgnoreCase("Todas") &&
-                    !cidade.equalsIgnoreCase("cidade")) {
-                btnCidade.setText(cidade);
-            }
-            //estado
-            else if (estado != null ){
-                if (!estado.equalsIgnoreCase("Todas") &&
-                        !estado.equalsIgnoreCase("cidade")) {
-                    btnCidade.setText(estado);
 
-                }
-            }
+            btnCidade.setText(cidade);
+        }
+        //estado
+        else if (estado != null ){
+            btnCidade.setText(estado);
         }
         //especie
         if (especie != null) {
-            if (!especie.equalsIgnoreCase("Todas") &&
-                    !especie.equalsIgnoreCase("espécie")) {
-                btnEspecie.setText(especie);
-            }
+            btnEspecie.setText(especie);
         }
 
         anunciosPublicosRef.addValueEventListener(new ValueEventListener() {
