@@ -80,7 +80,7 @@ public class AnunciosActivity extends AppCompatActivity {
         recuperarAnunciosPublicos();
 
         //admob
-        MobileAds.initialize(this, "ca-app-pub-6718857112988900~5442725100");
+        MobileAds.initialize(this, "ca-app-pub-6718857112988900~9519509403");
     }
 
     @Override
@@ -156,6 +156,7 @@ public class AnunciosActivity extends AppCompatActivity {
         AdView adView = findViewById(R.id.adView);
         AdRequest adRequest = new AdRequest.Builder().build();
         adView.loadAd(adRequest);
+
         adView.setAdListener(new AdListener() {
             @Override
             public void onAdLoaded() {
@@ -225,9 +226,7 @@ public class AnunciosActivity extends AppCompatActivity {
                     Toast.makeText(getApplicationContext(),
                             "Falha ao acessar anúncios" + databaseError.getMessage(),
                             Toast.LENGTH_SHORT).show();
-                    //Log.d("INFO1: ", databaseError.getMessage());
                     dialog.dismiss();
-
                 }
             });
         } catch (Exception e){e.printStackTrace();}
@@ -249,11 +248,6 @@ public class AnunciosActivity extends AppCompatActivity {
 
         //String [] especies = Util.getEspecies(getApplicationContext());
         ArrayList<String> especiesLista = Util.getEspeciesLista(getApplicationContext());
-        //especiesLista.add("Todas");
-        ////for (String s: especies) {
-        //    especiesLista.add(s);
-        //}
-
 
         //especies
         ArrayAdapter<String> adapterEspecies = new ArrayAdapter<>(this, simple_spinner_item, especiesLista);
@@ -397,7 +391,6 @@ public class AnunciosActivity extends AppCompatActivity {
         //Log.d("INFO", estado + " / "+cidade+" / "+especie);
         //cidade
         if (cidade!=null && !cidade.equalsIgnoreCase("Todas")) {
-
             btnCidade.setText(cidade);
         }
         //estado

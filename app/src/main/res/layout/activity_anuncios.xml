@@ -26,8 +26,6 @@
         android:id="@+id/include"
         layout="@layout/content_auncios" />
 
-
-
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/fabcadastrar"
         android:layout_width="wrap_content"
@@ -45,7 +43,7 @@
         android:layout_centerHorizontal="true"
         android:visibility="visible"
         ads:adSize="BANNER"
-        ads:adUnitId="ca-app-pub-6718857112988900/3708462293"
+        ads:adUnitId="ca-app-pub-6718857112988900/9409443166"
         ads:layout_anchor="@+id/include"
         ads:layout_anchorGravity="bottom|center">
     </com.google.android.gms.ads.AdView>

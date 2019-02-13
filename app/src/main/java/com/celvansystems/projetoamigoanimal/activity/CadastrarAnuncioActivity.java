@@ -211,31 +211,6 @@ public class CadastrarAnuncioActivity extends AppCompatActivity
                     }
                 }
             });
-
-            //faz upload do arquivo
-            /*UploadTask uploadTask = imagemAnimal.putFile(Uri.parse(url));
-            uploadTask.addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-                @Override
-                public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-
-                    Task<Uri> firebaseUrl = taskSnapshot.getDownloadUrl();
-                    String urlConvertida = Objects.requireNonNull(firebaseUrl).toString();
-                    listaURLFotos.add(urlConvertida);
-
-                    if(totalFotos == listaURLFotos.size()){
-                        animal.setFotos(listaURLFotos);
-                        animal.salvar();
-                        exibirMensagem("Sucesso ao fazer upload");
-                        dialog.dismiss();
-                        finish();
-                    }
-                }
-            }).addOnFailureListener(new OnFailureListener() {
-                @Override
-                public void onFailure(@NonNull Exception e) {
-                    exibirMensagem("Falha ao fazer upload");
-                }
-            });*/
         } catch (Exception e){e.printStackTrace();}
     }
 

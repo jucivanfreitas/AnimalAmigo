@@ -120,7 +120,6 @@ public class Util {
 
     public static ArrayList<String> getCidadesLista(String uf, Context ctx){
 
-
         String [] cidades = getCidadesJSON(uf, ctx);
         ArrayList<String> cidadesLista = new ArrayList<>();
         cidadesLista.add("Todas");

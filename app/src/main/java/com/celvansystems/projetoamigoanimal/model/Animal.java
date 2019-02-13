@@ -49,24 +49,7 @@ public class Animal implements Serializable {
                     .setValue(this);
         } catch (Exception e){e.printStackTrace();}
 
-        //salvarAnimalPublico();
     }
-
-    /*
-      salva anuncio na tabela anuncios
-     */
-    /*private void salvarAnimalPublico(){
-
-        try {
-            DatabaseReference anuncioRef = ConfiguracaoFirebase.getFirebase()
-                    .child("anuncios");
-
-            anuncioRef.child(getUf())
-                    .child(getCidade())
-                    .child(getIdAnimal())
-                    .setValue(this);
-        } catch (Exception e){e.printStackTrace();}
-    }*/
 
     /**
      * remove anuncio
@@ -83,28 +66,7 @@ public class Animal implements Serializable {
 
             animalRef.removeValue();
         } catch (Exception e){e.printStackTrace();}
-
-        //removerAnimalPublico();
     }
-
-    /**
-     * remove anuncio da tabela anuncios
-     */
-    /*
-    private void removerAnimalPublico(){
-
-        try {
-            DatabaseReference anuncioRef = ConfiguracaoFirebase.getFirebase()
-                    .child("anuncios")
-                    .child(getUf())
-                    .child(getCidade())
-                    .child(getIdAnimal());
-
-
-            anuncioRef.removeValue();
-        } catch (Exception e){e.printStackTrace();}
-    }*/
-
 
     public String getIdAnimal() {
         return idAnimal;
