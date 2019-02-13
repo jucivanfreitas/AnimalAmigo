@@ -350,7 +350,7 @@ public class AnunciosActivity extends AppCompatActivity {
         spinnerCidade.setAdapter(adapterCidades);
 
         dialogCidade.setView(viewSpinner);
-// TODO: 12/02/2019  
+// TODO: 12/02/2019    
         dialogCidade.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
