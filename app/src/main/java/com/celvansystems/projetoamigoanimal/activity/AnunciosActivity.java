@@ -33,15 +33,11 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.ValueEventListener;
-
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-
 import dmax.dialog.SpotsDialog;
-
 import static android.R.layout.simple_spinner_item;
-
 
 public class AnunciosActivity extends AppCompatActivity {
 
@@ -55,7 +51,6 @@ public class AnunciosActivity extends AppCompatActivity {
     private Spinner spinnerEstado;
     private Spinner spinnerCidade;
     private ArrayAdapter adapterCidades;
-    //private String [] cidades;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -67,8 +62,6 @@ public class AnunciosActivity extends AppCompatActivity {
 
         try {
             autenticacao = ConfiguracaoFirebase.getFirebaseAutenticacao();
-            //anunciosPublicosRef = ConfiguracaoFirebase.getFirebase()
-            //        .child("anuncios");
             anunciosPublicosRef = ConfiguracaoFirebase.getFirebase()
                     .child("meus_animais");
         } catch (Exception e){e.printStackTrace();}
@@ -88,7 +81,6 @@ public class AnunciosActivity extends AppCompatActivity {
 
         //admob
         MobileAds.initialize(this, "ca-app-pub-6718857112988900~5442725100");
-
     }
 
     @Override
@@ -125,7 +117,6 @@ public class AnunciosActivity extends AppCompatActivity {
                 invalidateOptionsMenu(); //invalida o menu e chama o onPrepare de novo
                 break;
         }
-        //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
             return true;
         }
@@ -161,24 +152,6 @@ public class AnunciosActivity extends AppCompatActivity {
         btnCidade = findViewById(R.id.btnCidade);
         btnEspecie = findViewById(R.id.btnEspecie);
 
-        /*spinnerEstado.setOnItemClickListener(new RecyclerItemClickListener.OnItemClickListener() {
-            @Override
-            public void onItemClick(View view, int position) {
-                if(spinnerEstado.getSelectedItem().toString().equalsIgnoreCase("Todos")){
-                    //spinnerCidade.setVisibility(View.GONE);
-                }
-            }
-
-            @Override
-            public void onLongItemClick(View view, int position) {
-
-            }
-
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-
-            }
-        });*/
         //AdView
         AdView adView = findViewById(R.id.adView);
         AdRequest adRequest = new AdRequest.Builder().build();
@@ -194,7 +167,6 @@ public class AnunciosActivity extends AppCompatActivity {
             public void onAdFailedToLoad(int errorCode) {
                 // Code to be executed when an ad request fails.
                 Toast.makeText(getApplicationContext(), "falied to load", Toast.LENGTH_SHORT).show();
-
             }
 
             @Override
@@ -202,22 +174,19 @@ public class AnunciosActivity extends AppCompatActivity {
                 // Code to be executed when an ad opens an overlay that
                 // covers the screen.
                 Toast.makeText(getApplicationContext(), "opened", Toast.LENGTH_SHORT).show();
-
             }
 
             @Override
             public void onAdLeftApplication() {
                 // Code to be executed when the user has left the app.
                 Toast.makeText(getApplicationContext(), "left", Toast.LENGTH_SHORT).show();
-
             }
 
             @Override
             public void onAdClosed() {
-                // Code to be executed when when the user is about to return
+                // Code to be executed when when the user is about to return.
                 // to the app after tapping on an ad.
                 Toast.makeText(getApplicationContext(), "closed", Toast.LENGTH_SHORT).show();
-
             }
         });
 
@@ -390,7 +359,7 @@ public class AnunciosActivity extends AppCompatActivity {
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
 
                 try {
-                    String ufSelecionado = spinnerEstado.getItemAtPosition(position).toString();
+                    //String ufSelecionado = spinnerEstado.getItemAtPosition(position).toString();
                     //cidades = Util.getCidadesJSON(ufSelecionado, getApplicationContext());
                     setAdapterSpinnerCidade();
                 }catch (Exception e){
@@ -414,7 +383,7 @@ public class AnunciosActivity extends AppCompatActivity {
             if(!estadoSelecionado.equalsIgnoreCase("Todos")) {
                 cidadesLista = Util.getCidadesLista(estadoSelecionado, getApplicationContext());
             }
-            adapterCidades = new ArrayAdapter<String>(this, simple_spinner_item, cidadesLista);
+            adapterCidades = new ArrayAdapter<>(this, simple_spinner_item, cidadesLista);
             adapterCidades.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 
             spinnerCidade.setAdapter(adapterCidades);
@@ -453,7 +422,6 @@ public class AnunciosActivity extends AppCompatActivity {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 listaAnuncios.clear();
-                //Log.d("INFO4: ", "método invocado");
 
                 for (DataSnapshot users : dataSnapshot.getChildren()) {
                     for (DataSnapshot animais : users.getChildren()) {
