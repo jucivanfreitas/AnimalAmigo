@@ -33,10 +33,13 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.ValueEventListener;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+
 import dmax.dialog.SpotsDialog;
+
 import static android.R.layout.simple_spinner_item;
 
 public class AnunciosActivity extends AppCompatActivity {
@@ -151,6 +154,10 @@ public class AnunciosActivity extends AppCompatActivity {
         recyclerAnunciosPublicos = findViewById(R.id.recyclerAnuncios);
         btnCidade = findViewById(R.id.btnCidade);
         btnEspecie = findViewById(R.id.btnEspecie);
+
+
+
+
 
         //AdView
         AdView adView = findViewById(R.id.adView);
