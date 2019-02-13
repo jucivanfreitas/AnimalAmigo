@@ -9,6 +9,7 @@ import java.util.List;
 
 public class Animal implements Serializable {
 
+    private String donoAnuncio;
     private String idAnimal;
     private String nome;
     private String uf;
@@ -44,7 +45,8 @@ public class Animal implements Serializable {
             DatabaseReference animalRef = ConfiguracaoFirebase.getFirebase()
                     .child("meus_animais");
 
-            animalRef.child(idUsuario)
+            //animalRef.child(idUsuario)
+            animalRef
                     .child(getIdAnimal())
                     .setValue(this);
         } catch (Exception e){e.printStackTrace();}
@@ -61,7 +63,7 @@ public class Animal implements Serializable {
 
             DatabaseReference animalRef = ConfiguracaoFirebase.getFirebase()
                     .child("meus_animais")
-                    .child(idUsuario)
+                    //.child(idUsuario)
                     .child(getIdAnimal());
 
             animalRef.removeValue();
@@ -162,5 +164,13 @@ public class Animal implements Serializable {
 
     public void setFotos(List<String> fotos) {
         this.fotos = fotos;
+    }
+
+    public String getDonoAnuncio() {
+        return donoAnuncio;
+    }
+
+    public void setDonoAnuncio(String donoAnuncio) {
+        this.donoAnuncio = donoAnuncio;
     }
 }

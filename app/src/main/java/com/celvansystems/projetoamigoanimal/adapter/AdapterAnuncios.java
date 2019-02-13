@@ -52,89 +52,92 @@ public class AdapterAnuncios extends RecyclerView.Adapter<AdapterAnuncios.MyView
 
         n = i;
 
-
-
+    if(anuncios != null) {
         final Animal anuncio = anuncios.get(i);
-        myViewHolder.dataCadastro.setText(anuncio.getDataCadastro());
-        myViewHolder.nome.setText(anuncio.getNome());
-        myViewHolder.idade.setText(anuncio.getIdade());
-        myViewHolder.cidade.setText(anuncio.getCidade());
 
-        //pega a primeira imagem cadastrada
-        List<String> urlFotos = anuncio.getFotos();
-        urlCapa = urlFotos.get(0);
+        if(anuncio != null) {
+            myViewHolder.dataCadastro.setText(anuncio.getDataCadastro());
+            myViewHolder.nome.setText(anuncio.getNome());
+            myViewHolder.idade.setText(anuncio.getIdade());
+            myViewHolder.cidade.setText(anuncio.getCidade());
 
-        Picasso.get().load(urlCapa).into(myViewHolder.foto);
+            //pega a primeira imagem cadastrada
+            List<String> urlFotos = anuncio.getFotos();
 
-        // ação de clique na foto do anuncio
-        myViewHolder.foto.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Animal anuncioSelecionado = anuncios.get(n);
-                Intent j = new Intent(v.getContext(), DetalhesActivity.class);
-                j.putExtra("anuncioSelecionado", anuncioSelecionado);
-                v.getContext().startActivity(j);
+            if(urlFotos != null && urlFotos.size() > 0) {
+                urlCapa = urlFotos.get(0);
+
+                Picasso.get().load(urlCapa).into(myViewHolder.foto);
+
+                // ação de clique na foto do anuncio
+                myViewHolder.foto.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Animal anuncioSelecionado = anuncios.get(n);
+                        Intent j = new Intent(v.getContext(), DetalhesActivity.class);
+                        j.putExtra("anuncioSelecionado", anuncioSelecionado);
+                        v.getContext().startActivity(j);
+                    }
+                });
             }
-        });
+            //acao de clique no botao curtir anuncio
+            myViewHolder.imvCurtirAnuncio.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    // TODO: 13/02/2019 curtir anuncio
 
-        //acao de clique no botao curtir anuncio
-        myViewHolder.imvCurtirAnuncio.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                // TODO: 13/02/2019 curtir anuncio
+                    if (ConfiguracaoFirebase.isUsuarioLogado()) {
+                        anuncioRef = ConfiguracaoFirebase.getFirebase()
+                                .child("meus_animais");
 
-                if(ConfiguracaoFirebase.isUsuarioLogado()) {
-                    anuncioRef = ConfiguracaoFirebase.getFirebase()
-                            .child("meus_animais");
+                        final String idUsuario = ConfiguracaoFirebase.getIdUsuario();
+                        curtido = false;
+                        anuncioRef.addValueEventListener(new ValueEventListener() {
 
-                    final String idUsuario = ConfiguracaoFirebase.getIdUsuario();
-                    curtido = false;
-                    anuncioRef.addValueEventListener(new ValueEventListener() {
+                            @Override
+                            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
 
-                        @Override
-                        public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                                for (DataSnapshot users : dataSnapshot.getChildren()) {
+                                    String usuario = users.getKey();
+                                    for (DataSnapshot animais : users.getChildren()) {
+                                        Animal animal = animais.getValue(Animal.class);
+                                        if (animais.getKey().equalsIgnoreCase(anuncio.getIdAnimal()) &&
+                                                curtido == false) {
+                                            Task<Void> anuncioCurtidasRef = anuncioRef
+                                                    .child(usuario)
+                                                    .child(animal.getIdAnimal())
+                                                    .child("curtidas")
+                                                    .setValue(usuario);
 
-                            for(DataSnapshot users: dataSnapshot.getChildren()){
-                                String usuario = users.getKey();
-                                for(DataSnapshot animais: users.getChildren()){
-                                    Animal animal = animais.getValue(Animal.class);
-                                    if(animais.getKey().equalsIgnoreCase(anuncio.getIdAnimal()) &&
-                                    curtido == false) {
-                                        Task<Void> anuncioCurtidasRef = anuncioRef
-                                                .child(usuario)
-                                                .child(animal.getIdAnimal())
-                                                .child("curtidas")
-                                                .setValue(usuario);
+                                            //PAREI NAS CURTIDAS (TENTANDO...)
 
-                                        //PAREI NAS CURTIDAS (TENTANDO...)
+                                            myViewHolder.imvCurtirAnuncio.setBackgroundColor(Color.RED);
+                                            curtido = true;
 
-                                        myViewHolder.imvCurtirAnuncio.setBackgroundColor(Color.RED);
-                                        curtido = true;
-
-                                        anuncioCurtidasRef.addOnCompleteListener(new OnCompleteListener<Void>() {
-                                            @Override
-                                            public void onComplete(@NonNull Task<Void> task) {
-                                                Toast.makeText(myViewHolder.itemView.getContext(), "Animal curtido!", Toast.LENGTH_LONG).show();
-                                            }
-                                        });
-                                        break;
-                                    }
+                                            anuncioCurtidasRef.addOnCompleteListener(new OnCompleteListener<Void>() {
+                                                @Override
+                                                public void onComplete(@NonNull Task<Void> task) {
+                                                    Toast.makeText(myViewHolder.itemView.getContext(), "Animal curtido!", Toast.LENGTH_LONG).show();
+                                                }
+                                            });
+                                            break;
+                                        }
 
                                     /*if(animais.getKey().equalsIgnoreCase(anuncio.getIdAnimal())) {
                                         anuncioRef.child("curtidas");
                                         anuncioRef.push().setValue(idUsuario);
 
                                     }*/
+                                    }
                                 }
                             }
-                        }
 
-                        @Override
-                        public void onCancelled(@NonNull DatabaseError databaseError) {
+                            @Override
+                            public void onCancelled(@NonNull DatabaseError databaseError) {
 
-                        }
+                            }
 
-                    });
+                        });
                     /*DatabaseReference anuncioRef = ConfiguracaoFirebase.getFirebase()
                             .child("meus_animais");
 
@@ -152,41 +155,42 @@ public class AdapterAnuncios extends RecyclerView.Adapter<AdapterAnuncios.MyView
                         myViewHolder.imvCurtirAnuncio.setBackgroundColor(Color.RED);
                     } catch (Exception e){e.printStackTrace();}*/
 
-                } else {
-                    Toast.makeText(myViewHolder.itemView.getContext(), "Usuário não logado!", Toast.LENGTH_LONG).show();
+                    } else {
+                        Toast.makeText(myViewHolder.itemView.getContext(), "Usuário não logado!", Toast.LENGTH_LONG).show();
+                    }
                 }
-            }
-        });
+            });
 
-        //acao de clique no botao comentar anuncio
-        myViewHolder.imvComentarAnuncio.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                // TODO: 13/02/2019 inserir comentário no anuncio
+            //acao de clique no botao comentar anuncio
+            myViewHolder.imvComentarAnuncio.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    // TODO: 13/02/2019 inserir comentário no anuncio
 
-            }
-        });
+                }
+            });
 
-        //acao de clique no botao compartilhar anuncio
-        myViewHolder.imvCompartilharAnuncio.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                // TODO: 13/02/2019 configurar quando o app for publicado do google play
-                Intent shareIntent = new Intent();
-                shareIntent.setAction(Intent.ACTION_SEND);
-                shareIntent.putExtra(Intent.EXTRA_TEXT, "Baixe o App Amigo Animal em " +
-                        "https://play.google.com/store/apps/details?id=com.google.android.apps.plus");
-                shareIntent.putExtra(Intent.EXTRA_SUBJECT, anuncio.getNome());
-                shareIntent.putExtra(Intent.EXTRA_STREAM, urlCapa);
-                shareIntent.setType("image/*");
+            //acao de clique no botao compartilhar anuncio
+            myViewHolder.imvCompartilharAnuncio.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    // TODO: 13/02/2019 configurar quando o app for publicado do google play
+                    Intent shareIntent = new Intent();
+                    shareIntent.setAction(Intent.ACTION_SEND);
+                    shareIntent.putExtra(Intent.EXTRA_TEXT, "Baixe o App Amigo Animal em " +
+                            "https://play.google.com/store/apps/details?id=com.google.android.apps.plus");
+                    shareIntent.putExtra(Intent.EXTRA_SUBJECT, anuncio.getNome());
+                    shareIntent.putExtra(Intent.EXTRA_STREAM, urlCapa);
+                    shareIntent.setType("image/*");
 
-                myViewHolder.itemView.getContext().startActivity(
-                        Intent.createChooser(shareIntent, "Compartilhe este animal"));
+                    myViewHolder.itemView.getContext().startActivity(
+                            Intent.createChooser(shareIntent, "Compartilhe este animal"));
 
-            }
-        });
-
+                }
+            });
         }
+        }
+    }
 
     @Override
     public int getItemCount() {

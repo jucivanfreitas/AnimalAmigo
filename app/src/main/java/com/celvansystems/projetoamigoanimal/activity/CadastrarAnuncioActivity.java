@@ -113,8 +113,6 @@ public class CadastrarAnuncioActivity extends AppCompatActivity
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
 
-                //String ufSelecionado = spnEstado.getItemAtPosition(position).toString();
-                //String[] cidades = Util.getCidadesJSON(ufSelecionado, getApplicationContext());
                 setAdapterSpinnerCidades();
             }
 
@@ -233,6 +231,7 @@ public class CadastrarAnuncioActivity extends AppCompatActivity
             String estado = spnEstado.getSelectedItem().toString();
             String cidade = spnCidade.getSelectedItem().toString();
 
+            retorno.setDonoAnuncio(ConfiguracaoFirebase.getIdUsuario());
             retorno.setNome(nome);
             retorno.setEspecie(especie);
             retorno.setSexo(sexo);

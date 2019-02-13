@@ -155,10 +155,6 @@ public class AnunciosActivity extends AppCompatActivity {
         btnCidade = findViewById(R.id.btnCidade);
         btnEspecie = findViewById(R.id.btnEspecie);
 
-
-
-
-
         //AdView
         AdView adView = findViewById(R.id.adView);
         AdRequest adRequest = new AdRequest.Builder().build();
@@ -217,11 +213,11 @@ public class AnunciosActivity extends AppCompatActivity {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                     listaAnuncios.clear();
-                    for(DataSnapshot users: dataSnapshot.getChildren()){
-                        for(DataSnapshot animais: users.getChildren()){
+                    //for(DataSnapshot users: dataSnapshot.getChildren()){
+                        for(DataSnapshot animais: dataSnapshot.getChildren()){
                             listaAnuncios.add(animais.getValue(Animal.class));
                         }
-                    }
+                    //}
                     Collections.reverse(listaAnuncios);
                     adapterAnuncios.notifyDataSetChanged();
 
@@ -253,7 +249,6 @@ public class AnunciosActivity extends AppCompatActivity {
         View viewSpinnerEspecie = getLayoutInflater().inflate(R.layout.dialog_spinner_especie, null);
         final Spinner spinnerEspecie = viewSpinnerEspecie.findViewById(R.id.spinnerFiltroEspecie);
 
-        //String [] especies = Util.getEspecies(getApplicationContext());
         ArrayList<String> especiesLista = Util.getEspeciesLista(getApplicationContext());
 
         //especies
@@ -408,7 +403,6 @@ public class AnunciosActivity extends AppCompatActivity {
         if (especie != null) {
             btnEspecie.setText(especie);
         }
-        //Log.d("INFO: BOTOES", btnCidade.getText() + " / "+btnEspecie.getText());
 
         anunciosPublicosRef.addValueEventListener(new ValueEventListener() {
 
@@ -416,8 +410,8 @@ public class AnunciosActivity extends AppCompatActivity {
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 listaAnuncios.clear();
 
-                for (DataSnapshot users : dataSnapshot.getChildren()) {
-                    for (DataSnapshot animais : users.getChildren()) {
+                //for (DataSnapshot users : dataSnapshot.getChildren()) {
+                    for (DataSnapshot animais : dataSnapshot.getChildren()) {
 
                         Animal animal = animais.getValue(Animal.class);
                         //Log.d("INFO5: ", animal.getCidade()+"/"+animal.getUf());
@@ -492,7 +486,7 @@ public class AnunciosActivity extends AppCompatActivity {
 
                         }
                     }
-                }
+                //}
                 Collections.reverse(listaAnuncios);
                 adapterAnuncios.notifyDataSetChanged();
 

@@ -49,8 +49,8 @@ public class MeusAnunciosActivity extends AppCompatActivity {
         // configuracoes iniciais
         try {
             anuncioUsuarioRef = ConfiguracaoFirebase.getFirebase()
-                    .child("meus_animais")
-                    .child(ConfiguracaoFirebase.getIdUsuario());
+                    .child("meus_animais");
+                    //.child(ConfiguracaoFirebase.getIdUsuario());
         } catch (Exception e){e.printStackTrace();}
 
         //configurar recyclerview
@@ -112,7 +112,12 @@ public class MeusAnunciosActivity extends AppCompatActivity {
                 public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                     anuncios.clear();
                     for(DataSnapshot ds: dataSnapshot.getChildren()){
-                        anuncios.add(ds.getValue(Animal.class));
+                        Animal animal = ds.getValue(Animal.class);
+                        if(animal!= null && animal.getDonoAnuncio()!= null) {
+                            if (animal.getDonoAnuncio().equalsIgnoreCase(ConfiguracaoFirebase.getIdUsuario())) {
+                                anuncios.add(animal);
+                            }
+                        }
                     }
                     Collections.reverse(anuncios);
                     adapterMeusAnuncios.notifyDataSetChanged();
