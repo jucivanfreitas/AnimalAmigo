@@ -11,6 +11,7 @@ import org.json.JSONObject;
 import java.io.IOException;
 import java.io.InputStream;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 
 public class Util {
@@ -38,6 +39,17 @@ public class Util {
         } catch (Exception e){e.printStackTrace(); }
 
         return estados;
+    }
+
+    public static ArrayList<String> getEstadosLista(Context ctx){
+
+        String [] estados = getEstadosJSON(ctx);
+        ArrayList<String> estadosLista = new ArrayList<>();
+        estadosLista.add("Todos");
+        for (String s: estados) {
+            estadosLista.add(s);
+        }
+        return estadosLista;
     }
 
     private static String loadJSONFromAsset(Context context) {
@@ -106,8 +118,31 @@ public class Util {
         return cidades;
     }
 
+    public static ArrayList<String> getCidadesLista(String uf, Context ctx){
+
+
+        String [] cidades = getCidadesJSON(uf, ctx);
+        ArrayList<String> cidadesLista = new ArrayList<>();
+        cidadesLista.add("Todas");
+        for (String s: cidades) {
+            cidadesLista.add(s);
+        }
+        return cidadesLista;
+    }
+
     public static String[] getEspecies(Context ctx){
         return ctx.getResources().getStringArray(R.array.especies);
+    }
+
+    public static ArrayList<String> getEspeciesLista(Context ctx){
+
+        String [] especies = ctx.getResources().getStringArray(R.array.especies);
+        ArrayList<String> especiesLista = new ArrayList<>();
+        especiesLista.add("Todas");
+        for (String s: especies) {
+            especiesLista.add(s);
+        }
+        return especiesLista;
     }
 
     public static String getDataAtualBrasil(){
