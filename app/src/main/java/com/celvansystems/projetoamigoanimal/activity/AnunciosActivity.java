@@ -300,14 +300,12 @@ public class AnunciosActivity extends AppCompatActivity {
         @SuppressLint("InflateParams")
         View viewSpinner = getLayoutInflater().inflate(R.layout.dialog_spinner, null);
 
-        //String[] estados = Util.getEstadosJSON(this);
         ArrayList<String> estadosLista = Util.getEstadosLista(getApplicationContext());
 
         spinnerEstado = viewSpinner.findViewById(R.id.spinnerFiltroEstado);
         spinnerCidade = viewSpinner.findViewById(R.id.spinnerFiltroCidade);
 
         spinnerCidade.setVisibility(View.VISIBLE);
-        //cidades = Util.getCidadesJSON("AC", this);
         ArrayList<String> cidadesLista = Util.getCidadesLista("AC", getApplicationContext());
 
         //cidades
@@ -319,7 +317,6 @@ public class AnunciosActivity extends AppCompatActivity {
         spinnerCidade.setAdapter(adapterCidades);
 
         dialogCidade.setView(viewSpinner);
-// TODO:.
         dialogCidade.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
@@ -338,9 +335,7 @@ public class AnunciosActivity extends AppCompatActivity {
 
                 filtroEspecie = btnEspecie.getText().toString();
 
-
                 recuperarAnunciosFiltro(filtroEstado, filtroCidade, filtroEspecie);
-
             }
         });
 
@@ -359,8 +354,6 @@ public class AnunciosActivity extends AppCompatActivity {
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
 
                 try {
-                    //String ufSelecionado = spinnerEstado.getItemAtPosition(position).toString();
-                    //cidades = Util.getCidadesJSON(ufSelecionado, getApplicationContext());
                     setAdapterSpinnerCidade();
                 }catch (Exception e){
                     e.printStackTrace();
