@@ -22,6 +22,7 @@ public class Animal implements Serializable {
     private String sexo;
     private String dataCadastro;
     private List<String> fotos;
+    private List<String> curtidas;
 
     public Animal (){
 
@@ -45,9 +46,7 @@ public class Animal implements Serializable {
             DatabaseReference animalRef = ConfiguracaoFirebase.getFirebase()
                     .child("meus_animais");
 
-            //animalRef.child(idUsuario)
-            animalRef
-                    .child(getIdAnimal())
+            animalRef.child(getIdAnimal())
                     .setValue(this);
         } catch (Exception e){e.printStackTrace();}
 
@@ -63,7 +62,6 @@ public class Animal implements Serializable {
 
             DatabaseReference animalRef = ConfiguracaoFirebase.getFirebase()
                     .child("meus_animais")
-                    //.child(idUsuario)
                     .child(getIdAnimal());
 
             animalRef.removeValue();
@@ -172,5 +170,13 @@ public class Animal implements Serializable {
 
     public void setDonoAnuncio(String donoAnuncio) {
         this.donoAnuncio = donoAnuncio;
+    }
+
+    public List<String> getCurtidas() {
+        return curtidas;
+    }
+
+    public void setCurtidas(List<String> curtidas) {
+        this.curtidas = curtidas;
     }
 }

@@ -99,7 +99,7 @@
             android:visibility="visible"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@+id/imv_compartilhar_anuncio"
-            app:srcCompat="@drawable/ic_escrever_white_24dp" />
+            app:srcCompat="@drawable/ic_comentario_branco_24dp" />
 
         <ImageView
             android:id="@+id/imv_curtir_anuncio"
@@ -113,7 +113,7 @@
             android:visibility="visible"
             app:layout_constraintEnd_toStartOf="@+id/imv_comentar_anuncio"
             app:layout_constraintTop_toTopOf="@+id/imv_comentar_anuncio"
-            app:srcCompat="@drawable/ic_favorite_border_black_24dp" />
+            app:srcCompat="@drawable/ic_coracao_branco_24dp" />
 
         <ImageView
             android:id="@+id/mascara_foto2"
@@ -184,23 +184,25 @@
 
 
         <TextView
+            android:id="@+id/txv_num_curtidas"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginEnd="8dp"
+            android:text="@string/zero"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/imv_curtir_anuncio" />
+
+        <TextView
             android:id="@+id/textViewComentarios"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
             android:text="@string/txt_curtidas"
             android:textStyle="bold"
-            app:layout_constraintStart_toEndOf="@+id/textView_qtd_curtidas"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toBottomOf="parent"
+            tools:layout_editor_absoluteX="281dp" />
 
-        <TextView
-            android:id="@+id/textView_qtd_curtidas"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:text="0"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
     </android.support.constraint.ConstraintLayout>
 
     <android.support.constraint.ConstraintLayout
