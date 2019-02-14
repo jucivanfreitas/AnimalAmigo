@@ -178,6 +178,13 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent" />
 
+        <android.support.constraint.Guideline
+            android:id="@+id/guideline6"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_begin="273dp" />
+
     </android.support.constraint.ConstraintLayout>
 
     <android.support.constraint.ConstraintLayout
@@ -194,15 +201,20 @@
             android:id="@+id/txv_num_curtidas"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="8dp"
+            android:layout_marginEnd="4dp"
             android:text="@string/zero"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="@+id/textViewComentarios"
             app:layout_constraintEnd_toStartOf="@+id/textViewComentarios"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="@+id/textViewComentarios" />
 
         <TextView
             android:id="@+id/textViewComentarios"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginTop="1dp"
+            android:layout_marginEnd="20dp"
             android:text="@string/txt_curtidas"
             android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="parent"
@@ -214,7 +226,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            app:layout_constraintGuide_begin="273dp" />
+            app:layout_constraintGuide_begin="278dp" />
 
     </android.support.constraint.ConstraintLayout>
 
