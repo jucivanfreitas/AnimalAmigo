@@ -42,6 +42,7 @@
     <string name="background_black">background_black</string>
     <string name="txt_nun_cuti">quantidade de curtidas</string>
     <string name="txt_curtidas">Curtidas</string>
+    <string name="txt_comentar">Comentar...</string>
 
     <string-array name="idade">
         <item>0–3 meses</item>
