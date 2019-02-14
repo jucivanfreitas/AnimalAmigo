@@ -35,7 +35,7 @@ public class AdapterAnuncios extends RecyclerView.Adapter<AdapterAnuncios.MyView
     private DatabaseReference anuncioRef;
 
     public AdapterAnuncios(List<Animal> anuncios) {
-        this.anuncios = anuncios;
+        this.anuncios = anuncios;;
     }
 
     @NonNull
