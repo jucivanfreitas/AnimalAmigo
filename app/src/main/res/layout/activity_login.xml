@@ -80,7 +80,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:padding="3dp"
-                app:passwordToggleEnabled="true"
+
                 android:textColorHint="@color/cinza">
 
                 <EditText
@@ -89,6 +89,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="5dp"
                     android:autofillHints=""
+
                     android:background="@drawable/bg_caixa_txt"
                     android:elevation="20dp"
                     android:hint="@string/prompt_password"

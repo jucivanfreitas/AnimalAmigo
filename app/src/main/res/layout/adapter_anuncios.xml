@@ -3,33 +3,66 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/cardViewAnuncios"
-    android:layout_width="match_parent"
+    android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:clickable="true"
-    android:foreground="?attr/selectableItemBackground"
-    android:focusable="true">
+    android:focusable="true"
+    android:foreground="?attr/selectableItemBackground">
 
 
     <android.support.constraint.ConstraintLayout
-        android:id="@+id/constraintLayout2"
-        android:layout_width="match_parent"
-        android:layout_height="250dp"
+        android:id="@+id/constraintLayout_Titulo"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
+        <TextView
+            android:id="@+id/textNome"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:text="@string/anuncios"
+            android:textColor="@color/colorPrimaryDark"
+            android:textSize="24sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:layout_conversion_absoluteHeight="19dp"
+            tools:layout_conversion_absoluteWidth="197dp" />
+
+        <TextView
+            android:id="@+id/textDataCadastro"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="8dp"
+            android:text="@android:string/dialog_alert_title"
+            android:textColor="@color/colorAccent"
+            android:textSize="12sp"
+            android:textStyle="normal"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:layout_conversion_absoluteHeight="24dp"
+            tools:layout_conversion_absoluteWidth="197dp" />
+    </android.support.constraint.ConstraintLayout>
+
+    <android.support.constraint.ConstraintLayout
+        android:id="@+id/constraintLayout_card"
+        android:layout_width="match_parent"
+        android:layout_height="260dp"
+        app:layout_constraintTop_toBottomOf="@+id/constraintLayout_Titulo">
+
         <ImageView
             android:id="@+id/imageAnuncio"
             android:layout_width="match_parent"
-            android:layout_height="250dp"
+            android:layout_height="268dp"
             android:contentDescription="@string/todo"
             android:scaleType="centerCrop"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="1.0"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.0"
             app:srcCompat="@color/cinza"
             tools:layout_conversion_absoluteHeight="124dp"
             tools:layout_conversion_absoluteWidth="150dp" />
@@ -38,24 +71,26 @@
             android:id="@+id/imv_compartilhar_anuncio"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
             android:layout_marginEnd="16dp"
-            android:layout_marginBottom="16dp"
+            android:layout_marginBottom="8dp"
             android:clickable="true"
+            android:contentDescription="@string/todo"
             android:elevation="40dp"
             android:focusable="true"
             android:foreground="?attr/selectableItemBackground"
             android:visibility="visible"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:srcCompat="@drawable/ic_share_black_24dp"
-            android:contentDescription="@string/todo" />
+            app:layout_constraintTop_toBottomOf="@+id/dividerPrincipal"
+            app:srcCompat="@drawable/ic_share_black_24dp" />
 
         <ImageView
             android:id="@+id/imv_comentar_anuncio"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="24dp"
+            android:layout_height="0dp"
             android:layout_marginEnd="16dp"
-            android:layout_marginBottom="9dp"
+            android:layout_marginBottom="16dp"
             android:clickable="true"
             android:elevation="40dp"
             android:focusable="true"
@@ -64,78 +99,61 @@
             android:visibility="visible"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@+id/imv_compartilhar_anuncio"
-            app:srcCompat="@android:drawable/sym_action_chat" />
+            app:srcCompat="@drawable/ic_escrever_white_24dp" />
 
         <ImageView
             android:id="@+id/imv_curtir_anuncio"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="16dp"
-            android:layout_marginBottom="14dp"
             android:clickable="true"
             android:elevation="40dp"
             android:focusable="true"
             android:foreground="?attr/selectableItemBackground"
             android:visibility="visible"
-            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@+id/imv_comentar_anuncio"
+            app:layout_constraintTop_toTopOf="@+id/imv_comentar_anuncio"
             app:srcCompat="@drawable/ic_favorite_border_black_24dp" />
 
+        <ImageView
+            android:id="@+id/mascara_foto2"
+            android:layout_width="0dp"
+            android:layout_height="150dp"
+
+            android:contentDescription="@string/background_black"
+            app:layout_constraintBottom_toBottomOf="@+id/imageAnuncio"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:srcCompat="@drawable/bg_img_card_gradient" />
+
         <TextView
-            android:id="@+id/textNome"
+            android:id="@+id/textIdade"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="4dp"
-            android:layout_marginBottom="92dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginBottom="8dp"
             android:text="@string/anuncios"
-            android:textColor="@color/colorPrimaryDark"
-            android:textSize="24sp"
+            android:textColor="@color/colorAccent"
+            android:textSize="14sp"
+            android:textStyle="normal"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             tools:layout_conversion_absoluteHeight="19dp"
             tools:layout_conversion_absoluteWidth="197dp" />
 
         <TextView
-            android:id="@+id/textIdade"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:text="@string/anuncios"
-            android:textColor="@color/colorAccent"
-            android:textSize="14sp"
-            android:textStyle="normal"
-            app:layout_constraintStart_toStartOf="@+id/textNome"
-            app:layout_constraintTop_toBottomOf="@+id/textNome"
-            tools:layout_conversion_absoluteHeight="19dp"
-            tools:layout_conversion_absoluteWidth="197dp" />
-
-        <TextView
             android:id="@+id/textCidadePrincipal"
             android:layout_width="wrap_content"
-            android:layout_height="28dp"
-            android:layout_marginTop="28dp"
-            android:layout_marginBottom="28dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginBottom="4dp"
             android:text="@android:string/dialog_alert_title"
             android:textColor="@color/colorAccent"
             android:textSize="14sp"
             android:textStyle="normal"
-            app:layout_constraintBottom_toBottomOf="@+id/textDataCadastro"
-            app:layout_constraintStart_toStartOf="@+id/textDataCadastro"
-            app:layout_constraintTop_toTopOf="@+id/textIdade"
-            tools:layout_conversion_absoluteHeight="24dp"
-            tools:layout_conversion_absoluteWidth="197dp" />
-
-        <TextView
-            android:id="@+id/textDataCadastro"
-            android:layout_width="wrap_content"
-            android:layout_height="28dp"
-            android:layout_marginTop="36dp"
-            android:text="@android:string/dialog_alert_title"
-            android:textColor="@color/colorAccent"
-            android:textSize="12sp"
-            android:textStyle="normal"
-            app:layout_constraintStart_toStartOf="@+id/textIdade"
-            app:layout_constraintTop_toBottomOf="@+id/textIdade"
+            app:layout_constraintBottom_toTopOf="@+id/textIdade"
+            app:layout_constraintStart_toStartOf="parent"
             tools:layout_conversion_absoluteHeight="24dp"
             tools:layout_conversion_absoluteWidth="197dp" />
 
@@ -143,21 +161,26 @@
             android:id="@+id/dividerPrincipal"
             android:layout_width="wrap_content"
             android:layout_height="1dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginBottom="16dp"
             android:background="@drawable/bg_btn"
             android:elevation="35dp"
             android:visibility="visible"
-            app:layout_constraintStart_toStartOf="@+id/textNome"
-            app:layout_constraintTop_toBottomOf="@+id/textNome" />
+            app:layout_constraintBottom_toTopOf="@+id/imv_comentar_anuncio"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
+
     </android.support.constraint.ConstraintLayout>
 
     <android.support.constraint.ConstraintLayout
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginEnd="8dp"
+        android:id="@+id/constraintLayout_curtidas"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/constraintLayout2">
+        app:layout_constraintTop_toBottomOf="@+id/constraintLayout_card">
 
 
         <TextView
@@ -165,26 +188,38 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
-            android:layout_marginTop="8dp"
-            android:layout_marginEnd="8dp"
-            android:text="@string/txt_modelo_comentarios"
+            android:text="@string/txt_curtidas"
             android:textStyle="bold"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/textView_qtd_curtidas"
             app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
-            android:id="@+id/textView3"
-            android:layout_width="0dp"
+            android:id="@+id/textView_qtd_curtidas"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:text="0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+    </android.support.constraint.ConstraintLayout>
+
+    <android.support.constraint.ConstraintLayout
+        android:layout_width="0dp"
+        android:layout_height="60dp"
+        android:layout_marginStart="8dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/constraintLayout_curtidas">
+
+        <TextView
+            android:id="@+id/textView2"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
-
-
-            android:layout_marginEnd="8dp"
-            android:text="@string/txt_modelo_comentarios2"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.0"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="8dp"
+            android:text="aqui teremos os comenários ainda em construção"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textViewComentarios" />
+            app:layout_constraintTop_toTopOf="parent" />
     </android.support.constraint.ConstraintLayout>
 </android.support.constraint.ConstraintLayout>
