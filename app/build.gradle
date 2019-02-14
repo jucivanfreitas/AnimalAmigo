@@ -46,6 +46,7 @@ dependencies {
     //carouselview
     implementation 'com.synnapps:carouselview:0.1.5'
 
+    implementation 'com.github.jrvansuita:PickImage:+'
 
 }
 apply plugin: 'com.google.gms.google-services'

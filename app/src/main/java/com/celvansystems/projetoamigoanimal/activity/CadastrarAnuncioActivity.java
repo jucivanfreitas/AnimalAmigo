@@ -1,7 +1,6 @@
 package com.celvansystems.projetoamigoanimal.activity;
 
 import android.Manifest;
-import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -9,7 +8,6 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Bundle;
-import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -33,6 +31,10 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
+import com.vansuita.pickimage.bean.PickResult;
+import com.vansuita.pickimage.bundle.PickSetup;
+import com.vansuita.pickimage.dialog.PickImageDialog;
+import com.vansuita.pickimage.listeners.IPickResult;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -43,7 +45,7 @@ import dmax.dialog.SpotsDialog;
 import static android.R.layout.simple_spinner_item;
 
 public class CadastrarAnuncioActivity extends AppCompatActivity
-        implements View.OnClickListener{
+        implements View.OnClickListener, IPickResult {
 
     private Spinner spnEspecie, spnSexo, spnIdade, spnPorte;
     private Spinner spnEstado, spnCidade;
@@ -54,6 +56,7 @@ public class CadastrarAnuncioActivity extends AppCompatActivity
     private ImageView imagem1, imagem2, imagem3;
     private AlertDialog dialog;
     private StorageReference storage;
+    private int requisicao;
 
     //Permissoes
     private String[] permissoes = new String[]{
@@ -314,12 +317,15 @@ public class CadastrarAnuncioActivity extends AppCompatActivity
 
         switch ( v.getId() ){
             case R.id.imageCadastro1 :
+                requisicao = 1;
                 escolherImagem(1);
                 break;
             case R.id.imageCadastro2 :
+                requisicao = 2;
                 escolherImagem(2);
                 break;
             case R.id.imageCadastro3 :
+                requisicao = 3;
                 escolherImagem(3);
                 break;
         }
@@ -331,11 +337,52 @@ public class CadastrarAnuncioActivity extends AppCompatActivity
      */
     public void escolherImagem(int requestCode){
         try {
-            Intent i = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-            startActivityForResult(i, requestCode);
+            /*Intent i = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+            i.setType("image/*");
+            startActivityForResult(i, requestCode);*/
+            PickSetup setup = new PickSetup()
+                    .setTitle("Escolha")
+                    .setFlip(true)
+                    .setMaxSize(500)
+                    .setCameraButtonText("Câmera")
+                    .setCancelText("Cancelar")
+                    .setGalleryButtonText("Galeria");
+                    //.setTitleColor(yourColor)
+                    //.setBackgroundColor(yourColor)
+                    //.setProgressText(yourText)
+                    //.setProgressTextColor(yourColor)
+                    //.setCancelTextColor(yourColor)
+                    //.setButtonTextColor(R.color.colorAccent)
+                    //.setDimAmount(yourFloat)
+                    //.setIconGravity(Gravity.LEFT)
+                    //.setButtonOrientation(LinearLayoutCompat.VERTICAL)
+                    //.setSystemDialog(false)
+                    //.setGalleryIcon(yourIcon)
+                    //.setCameraIcon(yourIcon);
+            PickImageDialog.build(setup).show(this);
+
         }catch (Exception e){e.printStackTrace();}
     }
 
+    @Override
+    public void onPickResult(PickResult r) {
+        if (r.getError() == null) {
+            Uri imagemSelecionada = r.getUri();
+            String caminhoImagem = Objects.requireNonNull(imagemSelecionada).toString();
+            if(requisicao == 1) {
+                imagem1.setImageURI(r.getUri());
+            } else if(requisicao == 2) {
+                imagem2.setImageURI(r.getUri());
+            } else {
+                imagem3.setImageURI(r.getUri());
+            }
+            listaFotosRecuperadas.add(caminhoImagem);
+            //imageView.setImageURI(r.getUri());
+        } else {
+            //Handle possible errors
+            //TODO: do what you have to do with r.getError();
+        }
+    }
     /**
      *
      * @param requestCode int
@@ -346,7 +393,7 @@ public class CadastrarAnuncioActivity extends AppCompatActivity
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        if (resultCode == Activity.RESULT_OK) {
+        /*if (resultCode == Activity.RESULT_OK) {
             //Recuperar imagem
             Uri imagemSelecionada = data.getData();
             String caminhoImagem = Objects.requireNonNull(imagemSelecionada).toString();
@@ -364,7 +411,7 @@ public class CadastrarAnuncioActivity extends AppCompatActivity
                 e.printStackTrace();
             }
             listaFotosRecuperadas.add(caminhoImagem);
-        }
+        }*/
     }
     /**
      * preenche os spinners
@@ -457,6 +504,8 @@ public class CadastrarAnuncioActivity extends AppCompatActivity
             imm.hideSoftInputFromWindow(editText.getWindowToken(), 0);
         } catch (Exception e){e.printStackTrace();}
     }
+
+
 }
 
 
