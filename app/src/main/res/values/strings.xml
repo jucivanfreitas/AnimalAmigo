@@ -44,6 +44,7 @@
     <string name="txt_curtidas">Curtidas</string>
     <string name="txt_comentar">Comentar...</string>
     <string name="zero">0</string>
+    <string name="doacao">Doação</string>
 
 
     <string-array name="idade">

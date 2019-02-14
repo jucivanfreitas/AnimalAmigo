@@ -12,6 +12,9 @@
 
     <group android:id="@+id/group_log_in" android:visible="false">
         <item
+            android:id="@+id/menu_doacao"
+            android:title="@string/doacao" />
+        <item
             android:id="@+id/menu_meus_anuncios"
             android:title="@string/txt_meus_anuncios" />
         <item
