@@ -216,11 +216,9 @@ public class AnunciosActivity extends AppCompatActivity {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                     listaAnuncios.clear();
-                    //for(DataSnapshot users: dataSnapshot.getChildren()){
                     for(DataSnapshot animais: dataSnapshot.getChildren()){
                         listaAnuncios.add(animais.getValue(Animal.class));
                     }
-                    //}
                     Collections.reverse(listaAnuncios);
                     adapterAnuncios.notifyDataSetChanged();
 

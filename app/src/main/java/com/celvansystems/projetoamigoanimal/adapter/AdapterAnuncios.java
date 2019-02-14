@@ -28,8 +28,6 @@ import java.util.List;
 public class AdapterAnuncios extends RecyclerView.Adapter<AdapterAnuncios.MyViewHolder> implements Serializable {
 
     private List<Animal> anuncios;
-    private int n;
-    private DatabaseReference anuncioRef;
 
     /**
      * construtor
@@ -49,8 +47,6 @@ public class AdapterAnuncios extends RecyclerView.Adapter<AdapterAnuncios.MyView
 
     @Override
     public void onBindViewHolder(@NonNull final MyViewHolder myViewHolder, @SuppressLint("RecyclerView") int i) {
-
-        n = i;
 
         if(anuncios != null) {
             final Animal anuncio = anuncios.get(i);
@@ -83,10 +79,9 @@ public class AdapterAnuncios extends RecyclerView.Adapter<AdapterAnuncios.MyView
                     myViewHolder.foto.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
-                            Animal anuncioSelecionado = anuncios.get(n);
-                            Intent j = new Intent(v.getContext(), DetalhesActivity.class);
-                            j.putExtra("anuncioSelecionado", anuncioSelecionado);
-                            v.getContext().startActivity(j);
+                            Intent detalhesIntent = new Intent(v.getContext(), DetalhesActivity.class);
+                            detalhesIntent.putExtra("anuncioSelecionado", anuncio);
+                            v.getContext().startActivity(detalhesIntent);
                         }
                     });
                 }
@@ -132,7 +127,7 @@ public class AdapterAnuncios extends RecyclerView.Adapter<AdapterAnuncios.MyView
                                final Animal anuncio, final ImageView imageView){
 
         if (ConfiguracaoFirebase.isUsuarioLogado()) {
-            anuncioRef = ConfiguracaoFirebase.getFirebase()
+            DatabaseReference anuncioRef = ConfiguracaoFirebase.getFirebase()
                     .child("meus_animais");
 
             //anuncioRef.addValueEventListener(new ValueEventListener() {
@@ -181,7 +176,7 @@ public class AdapterAnuncios extends RecyclerView.Adapter<AdapterAnuncios.MyView
                 //}
             //});
         } else {
-        //    Toast.makeText(myViewHolder.itemView.getContext(), "Usuário não logado!", Toast.LENGTH_LONG).show();
+            Toast.makeText(myViewHolder.itemView.getContext(), "Usuário não logado!", Toast.LENGTH_LONG).show();
         }
     }
     /**
