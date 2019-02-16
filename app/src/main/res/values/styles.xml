@@ -20,15 +20,15 @@
 
     <style name="ReisedButtom" parent="Widget.AppCompat.Button.Colored">
         <item name="android:backgroundTint">@color/colorPrimaryDark</item>
-        <item name="android:animation" >@android:anim/fade_out</item>
+        <item name="android:animation">@android:anim/fade_out</item>
 
 
-        </style>
+    </style>
+
     <style name="flaButtom" parent="Widget.AppCompat.Button.Borderless">
-        <item name="android:backgroundTint" >@color/colorPrimaryDark</item>
-        <item name="android:animation" >@android:anim/fade_out</item>
+        <item name="android:backgroundTint">@color/colorPrimaryDark</item>
+        <item name="android:animation">@android:anim/fade_out</item>
         <item name="android:itemPadding">9dp</item>
-
 
 
     </style>

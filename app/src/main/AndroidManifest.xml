@@ -20,6 +20,10 @@
         android:roundIcon="@mipmap/ic_launcher_pegada_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+        <activity
+            android:name=".activity.PerfilHumanoActivity"
+            android:label="@string/title_activity_perfil_humano"
+            android:theme="@style/AppTheme.NoActionBar.navheader"></activity>
 
         <provider
             android:name="android.support.v4.content.FileProvider"
@@ -32,8 +36,8 @@
                 android:resource="@xml/picker_provider_paths" />
         </provider>
 
-        <activity android:name=".activity.DoacaoActivity"></activity>
-        <activity android:name=".activity.PerfisActivity"></activity>
+        <activity android:name=".activity.DoacaoActivity" />
+        <activity android:name=".activity.PerfisActivity" />
 
         <meta-data
             android:name="com.google.android.gms.ads.APPLICATION_ID"
@@ -73,7 +77,6 @@
             android:label="@string/nome_app"
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
-
                 <action android:name="android.intent.action.MAIN" />
                 <action android:name="android.intent.action.VIEW" />
 

@@ -115,7 +115,7 @@ public class AnunciosActivity extends AppCompatActivity {
                 break;
 
             case R.id.menu_configuracoes:
-                //startActivity(new Intent(getApplicationContext(),ConfiguracoesActivity.class));
+                startActivity(new Intent(getApplicationContext(),PerfilHumanoActivity.class));
                 break;
 
             case R.id.menu_sair:

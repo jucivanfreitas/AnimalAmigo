@@ -46,6 +46,8 @@
     <string name="zero">0</string>
     <string name="doacao">Doação</string>
     <string name="nome_app">PetAdoption</string>
+    <string name="txt_nome">Nome do Perfil Humano</string>
+    <string name="txt_email_exemplo">nome@email.com.br</string>
 
 
     <string-array name="idade">
@@ -78,5 +80,11 @@
         <item>Olinda</item>
         <item>Recife</item>
     </string-array>
+    <string name="title_activity_perfil_humano">PerfilHumanoActivity</string>
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+    <string name="nav_header_title">Android Studio</string>
+    <string name="nav_header_subtitle">android.studio@android.com</string>
+    <string name="nav_header_desc">Navigation header</string>
 
 </resources>
