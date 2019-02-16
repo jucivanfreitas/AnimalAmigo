@@ -45,6 +45,7 @@
     <string name="txt_comentar">Comentar...</string>
     <string name="zero">0</string>
     <string name="doacao">Doação</string>
+    <string name="nome_app">PetAdoption</string>
 
 
     <string-array name="idade">
