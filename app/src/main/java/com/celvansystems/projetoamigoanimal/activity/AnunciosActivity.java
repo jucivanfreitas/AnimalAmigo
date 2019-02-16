@@ -83,7 +83,9 @@ public class AnunciosActivity extends AppCompatActivity {
         recuperarAnunciosPublicos();
 
         //admob
-        MobileAds.initialize(this, "ca-app-pub-6718857112988900~9519509403");
+        //MobileAds.initialize(this, String.valueOf(R.string.app_id));
+        //teste do google
+        MobileAds.initialize(this, "ca-app-pub-3940256099942544~3347511713");
     }
 
     @Override
@@ -159,44 +161,49 @@ public class AnunciosActivity extends AppCompatActivity {
         btnEspecie = findViewById(R.id.btnEspecie);
 
         //AdView
-        AdView adView = findViewById(R.id.adView);
-        AdRequest adRequest = new AdRequest.Builder().build();
-        adView.loadAd(adRequest);
+        try {
+            final AdRequest adRequest = new AdRequest.Builder().addTestDevice("33BE2250B43518CCDA7DE426D04EE231").build();
 
-        adView.setAdListener(new AdListener() {
-            @Override
-            public void onAdLoaded() {
-                // Code to be executed when an ad finishes loading.
-                Toast.makeText(getApplicationContext(), "loaded", Toast.LENGTH_SHORT).show();
-            }
+            final AdView adView = findViewById(R.id.adView);
+            //final AdRequest adRequest = new AdRequest.Builder().build();
+            adView.loadAd(adRequest);
 
-            @Override
-            public void onAdFailedToLoad(int errorCode) {
-                // Code to be executed when an ad request fails.
-                Toast.makeText(getApplicationContext(), "falied to load", Toast.LENGTH_SHORT).show();
-            }
+            adView.setAdListener(new AdListener() {
+                @Override
+                public void onAdLoaded() {
+                    // Code to be executed when an ad finishes loading.
+                    Toast.makeText(getApplicationContext(), "loaded. " +
+                            adRequest.getContentUrl(), Toast.LENGTH_SHORT).show();
+                }
 
-            @Override
-            public void onAdOpened() {
-                // Code to be executed when an ad opens an overlay that
-                // covers the screen.
-                Toast.makeText(getApplicationContext(), "opened", Toast.LENGTH_SHORT).show();
-            }
+                @Override
+                public void onAdFailedToLoad(int errorCode) {
+                    // Code to be executed when an ad request fails.
+                    Toast.makeText(getApplicationContext(), "failed to load. " +
+                            adRequest.getContentUrl(), Toast.LENGTH_SHORT).show();
+                }
 
-            @Override
-            public void onAdLeftApplication() {
-                // Code to be executed when the user has left the app.
-                Toast.makeText(getApplicationContext(), "left", Toast.LENGTH_SHORT).show();
-            }
+                @Override
+                public void onAdOpened() {
+                    // Code to be executed when an ad opens an overlay that
+                    // covers the screen.
+                    Toast.makeText(getApplicationContext(), "opened", Toast.LENGTH_SHORT).show();
+                }
 
-            @Override
-            public void onAdClosed() {
-                // Code to be executed when when the user is about to return.
-                // to the app after tapping on an ad.
-                Toast.makeText(getApplicationContext(), "closed", Toast.LENGTH_SHORT).show();
-            }
-        });
+                @Override
+                public void onAdLeftApplication() {
+                    // Code to be executed when the user has left the app.
+                    Toast.makeText(getApplicationContext(), "left", Toast.LENGTH_SHORT).show();
+                }
 
+                @Override
+                public void onAdClosed() {
+                    // Code to be executed when when the user is about to return.
+                    // to the app after tapping on an ad.
+                    Toast.makeText(getApplicationContext(), "closed", Toast.LENGTH_SHORT).show();
+                }
+            });
+        } catch (Exception e) {e.printStackTrace();}
     }
 
     private void recuperarAnunciosPublicos(){
@@ -208,8 +215,7 @@ public class AnunciosActivity extends AppCompatActivity {
                     .setCancelable(false)
                     .build();
             dialog.show();
-        } catch (Exception e){e.printStackTrace();
-        }
+        } catch (Exception e){e.printStackTrace();}
 
         try {
             anunciosPublicosRef.addValueEventListener(new ValueEventListener() {

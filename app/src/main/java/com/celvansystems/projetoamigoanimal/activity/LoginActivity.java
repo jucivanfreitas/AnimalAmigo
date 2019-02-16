@@ -120,7 +120,9 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
 
             mEmailView.setText("");
             mPasswordView.setText("");
-        } catch (Exception e){e.printStackTrace();}
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     private void populateAutoComplete() {
@@ -129,7 +131,9 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                 return;
             }
             getLoaderManager().initLoader(0, null, this);
-        } catch (Exception e){e.printStackTrace();}
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     private boolean mayRequestContacts() {
@@ -166,7 +170,9 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                     populateAutoComplete();
                 }
             }
-        } catch (Exception e){e.printStackTrace();}
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     /**
@@ -180,7 +186,9 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
                 Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
             }
-        } catch (Exception e){e.printStackTrace();}
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     /**
@@ -196,9 +204,12 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         try {
             InputMethodManager imm = (InputMethodManager) context.getSystemService(Context.INPUT_METHOD_SERVICE);
             imm.hideSoftInputFromWindow(editText.getWindowToken(), 0);
-        } catch (Exception e){e.printStackTrace();}
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
+    @SuppressLint("MissingPermission")
     private void tentarLogin() {
 
         hideKeyboard(getApplicationContext(), mPasswordView);
@@ -225,7 +236,9 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                 focusView = mEmailView;
                 cancel = true;
             }
-        } catch (Exception e){e.printStackTrace();}
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
         // Check for a valid password, if the user entered one.
         try {
@@ -234,7 +247,9 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                 focusView = mPasswordView;
                 cancel = true;
             }
-        } catch (Exception e){e.printStackTrace();}
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
         if (cancel) {
             // There was an error; don't attempt login and focus the first
@@ -245,6 +260,82 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         } else {
             // Show a progress spinner, and kick off a background task to
             // perform the user login attempt.
+/*
+            Usuario usuarioTemp = new Usuario();
+            usuarioTemp.setEmail(email);
+            // TODO: 16/02/2019 pegar dados gps
+
+            LocationManager locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+
+            long tempo = 1000; //5 minutos
+            float distancia = 30; // 30 metros
+
+            String[] perm = new String[2];
+            perm[0] = permission.ACCESS_FINE_LOCATION;
+            perm[1] = permission.ACCESS_COARSE_LOCATION;
+
+            if (Permissoes.validarPermissoes(perm, this, 1)) {
+
+                locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, tempo, distancia, new LocationListener() {
+
+                    @Override
+                    public void onStatusChanged(String arg0, int arg1, Bundle arg2) {
+                        Toast.makeText(getApplicationContext(), "Status alterado", Toast.LENGTH_LONG).show();
+                    }
+
+                    @Override
+                    public void onProviderEnabled(String arg0) {
+                        Toast.makeText(getApplicationContext(), "Provider Habilitado", Toast.LENGTH_LONG).show();
+                    }
+
+                    @Override
+                    public void onProviderDisabled(String arg0) {
+                        Toast.makeText(getApplicationContext(), "Provider Desabilitado", Toast.LENGTH_LONG).show();
+                    }
+
+                    @Override
+                    public void onLocationChanged(Location location) {
+                        /*TextView numero = (TextView) findViewById(R.id.numero);
+                        TextView latitude = (TextView) findViewById(R.id.latitude);
+                        TextView longitude = (TextView) findViewById(R.id.longitude);
+                        TextView time = (TextView) findViewById(R.id.time);
+                        TextView acuracy = (TextView) findViewById(R.id.Acuracy);*/
+/*
+                        if (location != null) {
+                            locs.add(location);
+                            numero.setText("Número de posições travadas: " + locs.size());
+                            latitude.setText("Latitude: " + location.getLatitude());
+                            longitude.setText("Longitude: " + location.getLongitude());
+                            acuracy.setText("Precisão: " + location.getAccuracy() + "");
+
+                            SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
+                            time.setText("Data:" + sdf.format(location.getTime()));
+
+                        }*/
+     /*               }
+                }, null);
+            }
+
+
+            GPSTracker gps = new GPSTracker(this);
+
+            // GPS: localização do usuário
+            if (gps.canGetLocation()) {
+                // passa sua latitude e longitude para duas variaveis
+                Location local = gps.getLocation();
+
+                double latitude = gps.getLatitude();
+                double longitude = gps.getLongitude();
+
+                usuarioTemp.setLatitude(String.valueOf(latitude));
+                usuarioTemp.setLongitude(String.valueOf(longitude));
+
+                /*pode-se utilizar o metodo gps.getLocation.distanceTo para calcular distancia entre dois locais*/
+
+                // e mostra no Toast
+                /*Toast.makeText(getApplicationContext(), "Sua localização - \nLat: " + latitude + "\nLong: " + longitude, Toast.LENGTH_LONG).show();
+            }*/
+            
             if (swtLoginCadastrar.isChecked()) {
 
                 authentication.createUserWithEmailAndPassword(email, password)

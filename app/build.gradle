@@ -9,6 +9,9 @@ android {
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+        ndk {
+            abiFilters 'armeabi','x86'//or armeabi-v7a、arm64-v8a、x86
+        }
     }
     buildTypes {
         release {
@@ -47,6 +50,9 @@ dependencies {
     implementation 'com.synnapps:carouselview:0.1.5'
 
     implementation 'com.github.jrvansuita:PickImage:+'
+    implementation 'com.zxy.android:tiny:1.1.0'
+    //compressor
+    implementation 'id.zelory:compressor:2.1.0'
 
 }
 apply plugin: 'com.google.gms.google-services'

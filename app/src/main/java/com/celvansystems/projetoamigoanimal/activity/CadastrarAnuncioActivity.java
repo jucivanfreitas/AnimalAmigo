@@ -6,6 +6,9 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -36,6 +39,7 @@ import com.vansuita.pickimage.bundle.PickSetup;
 import com.vansuita.pickimage.dialog.PickImageDialog;
 import com.vansuita.pickimage.listeners.IPickResult;
 
+import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -337,9 +341,7 @@ public class CadastrarAnuncioActivity extends AppCompatActivity
      */
     public void escolherImagem(int requestCode){
         try {
-            /*Intent i = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-            i.setType("image/*");
-            startActivityForResult(i, requestCode);*/
+
             PickSetup setup = new PickSetup()
                     .setTitle("Escolha")
                     .setFlip(true)
@@ -347,18 +349,18 @@ public class CadastrarAnuncioActivity extends AppCompatActivity
                     .setCameraButtonText("Câmera")
                     .setCancelText("Cancelar")
                     .setGalleryButtonText("Galeria");
-                    //.setTitleColor(yourColor)
-                    //.setBackgroundColor(yourColor)
-                    //.setProgressText(yourText)
-                    //.setProgressTextColor(yourColor)
-                    //.setCancelTextColor(yourColor)
-                    //.setButtonTextColor(R.color.colorAccent)
-                    //.setDimAmount(yourFloat)
-                    //.setIconGravity(Gravity.LEFT)
-                    //.setButtonOrientation(LinearLayoutCompat.VERTICAL)
-                    //.setSystemDialog(false)
-                    //.setGalleryIcon(yourIcon)
-                    //.setCameraIcon(yourIcon);
+            //.setTitleColor(yourColor)
+            //.setBackgroundColor(yourColor)
+            //.setProgressText(yourText)
+            //.setProgressTextColor(yourColor)
+            //.setCancelTextColor(yourColor)
+            //.setButtonTextColor(R.color.colorAccent)
+            //.setDimAmount(yourFloat)
+            //.setIconGravity(Gravity.LEFT)
+            //.setButtonOrientation(LinearLayoutCompat.VERTICAL)
+            //.setSystemDialog(false)
+            //.setGalleryIcon(yourIcon)
+            //.setCameraIcon(yourIcon);
             PickImageDialog.build(setup).show(this);
 
         }catch (Exception e){e.printStackTrace();}
@@ -367,21 +369,53 @@ public class CadastrarAnuncioActivity extends AppCompatActivity
     @Override
     public void onPickResult(PickResult r) {
         if (r.getError() == null) {
+
             Uri imagemSelecionada = r.getUri();
             String caminhoImagem = Objects.requireNonNull(imagemSelecionada).toString();
+
             if(requisicao == 1) {
+
                 imagem1.setImageURI(r.getUri());
+                Bitmap bitmap = ((BitmapDrawable) imagem1.getDrawable()).getBitmap();
+                ByteArrayOutputStream baos = new ByteArrayOutputStream();
+                bitmap.compress(Bitmap.CompressFormat.JPEG, 60, baos);
+                byte[] bitmapdata = baos.toByteArray();
+                Bitmap bmp = BitmapFactory.decodeByteArray(bitmapdata, 0, bitmapdata.length);
+                imagem1.setImageBitmap(bmp);
+                //imagem1.setImageBitmap();
+
             } else if(requisicao == 2) {
+                //Tiny.BitmapCompressOptions options = new Tiny.BitmapCompressOptions();
+                //Tiny.FileCompressOptions options = new Tiny.FileCompressOptions();
+
+                //BitmapResult result = Tiny.getInstance().source(caminhoImagem).asBitmap().withOptions(options).compressSync();
+                //FileResult result = Tiny.getInstance().source(caminhoImagem).asFile().withOptions(options).compressSync();
+                //imagem2.setImageURI(Uri.fromFile(new File(result.toString())));
+
                 imagem2.setImageURI(r.getUri());
+                Bitmap bitmap = ((BitmapDrawable) imagem2.getDrawable()).getBitmap();
+                ByteArrayOutputStream baos = new ByteArrayOutputStream();
+                bitmap.compress(Bitmap.CompressFormat.JPEG, 90, baos);
+                byte[] bitmapdata = baos.toByteArray();
+                Bitmap bmp = BitmapFactory.decodeByteArray(bitmapdata, 0, bitmapdata.length);
+                imagem2.setImageBitmap(bmp);
+                //imagem2.setImageURI(r.getUri());
+
             } else {
+
                 imagem3.setImageURI(r.getUri());
             }
             listaFotosRecuperadas.add(caminhoImagem);
-            //imageView.setImageURI(r.getUri());
         } else {
             //Handle possible errors
             //TODO: do what you have to do with r.getError();
         }
+    }
+
+    public void comprimirImagem (String path){
+
+
+
     }
     /**
      *

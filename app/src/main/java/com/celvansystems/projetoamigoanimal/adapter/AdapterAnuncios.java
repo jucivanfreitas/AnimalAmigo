@@ -60,6 +60,8 @@ public class AdapterAnuncios extends RecyclerView.Adapter<AdapterAnuncios.MyView
                 //verifica se o animal foi curtido pelo usuario atual
                 if(isCurtido(anuncio)) {
                     myViewHolder.imvCurtirAnuncio.setImageResource(R.drawable.ic_coracao_vermelho_24dp);
+                } else {
+                    myViewHolder.imvCurtirAnuncio.setImageResource(R.drawable.ic_coracao_branco_24dp);
                 }
                 if(anuncio.getCurtidas()!= null) {
                     myViewHolder.numeroCurtidas.setText(String.valueOf(anuncio.getCurtidas().size()));

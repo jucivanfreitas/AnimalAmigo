@@ -35,17 +35,25 @@
         android:visibility="invisible"
         app:srcCompat="@android:drawable/ic_dialog_email" />
 
-    <com.google.android.gms.ads.AdView xmlns:ads="http://schemas.android.com/apk/res-auto"
-        android:id="@+id/adView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true"
-        android:visibility="visible"
-        ads:adSize="BANNER"
-        ads:adUnitId="ca-app-pub-6718857112988900/9409443166"
-        ads:layout_anchor="@+id/include"
-        ads:layout_anchorGravity="bottom|center">
-    </com.google.android.gms.ads.AdView>
+    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_height="match_parent"
+        android:layout_width="match_parent">
+
+        <com.google.android.gms.ads.AdView xmlns:ads="http://schemas.android.com/apk/res-auto"
+            android:id="@+id/adView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"
+            android:visibility="visible"
+            ads:adSize="BANNER"
+            ads:adUnitId="@string/banner_id">
+            //ads:layout_anchor="@+id/include"
+            //ads:layout_anchorGravity="bottom|center">
+
+        </com.google.android.gms.ads.AdView>
+    </RelativeLayout>
+
 
 </android.support.design.widget.CoordinatorLayout>
