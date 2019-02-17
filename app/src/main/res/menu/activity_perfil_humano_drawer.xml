@@ -30,7 +30,7 @@
             android:title="@string/txt_sair" />
     </group>
 
-    <item android:title="Communicate">
+    <item android:title="@string/comunication">
         <menu>
             <item
                 android:id="@+id/nav_share_app"
@@ -38,7 +38,7 @@
                 android:title="Compatrilhar App" />
             <item
                 android:id="@+id/nav_conversar"
-                android:icon="@drawable/ic_menu_send"
+                android:icon="@drawable/ic_conversa"
                 android:title="@string/txt_conversas" />
             <item
                 android:id="@+id/nav_help"
