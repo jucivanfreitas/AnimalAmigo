@@ -25,18 +25,25 @@
             android:id="@+id/doacao"
             android:icon="@drawable/ic_ajudar_causa"
             android:title="@string/txt_ajudar" />
+        <item
+            android:id="@+id/nav_sair"
+            android:title="@string/txt_sair" />
     </group>
 
     <item android:title="Communicate">
         <menu>
             <item
-                android:id="@+id/nav_share"
+                android:id="@+id/nav_share_app"
                 android:icon="@drawable/ic_menu_share"
                 android:title="Compatrilhar App" />
             <item
-                android:id="@+id/nav_send"
+                android:id="@+id/nav_conversar"
                 android:icon="@drawable/ic_menu_send"
                 android:title="@string/txt_conversas" />
+            <item
+                android:id="@+id/nav_help"
+                android:icon="@android:drawable/ic_menu_help"
+                android:title="@string/txt_Sobre_App" />
 
         </menu>
 

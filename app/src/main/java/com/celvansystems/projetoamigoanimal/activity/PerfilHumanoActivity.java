@@ -9,6 +9,7 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
+import android.widget.Toast;
 
 import com.celvansystems.projetoamigoanimal.R;
 
@@ -81,23 +82,55 @@ public class PerfilHumanoActivity extends AppCompatActivity
 
         if (id == R.id.nav_perfil) {
             // Handle the camera action
-        } else if (id == R.id.nav_config_notificacoes) {
 
+            Toast.makeText(getApplicationContext(), "falta implementar esta função de navegabilidade sobre o perfil humano"
+                    , Toast.LENGTH_SHORT).show();
+        } else if (id == R.id.nav_config_notificacoes) {
+            // TODO: 17/02/2019 programar ações da content_cotificações
+            Toast.makeText(getApplicationContext(),
+                    "implementar content configuração de notificação",
+                    Toast.LENGTH_SHORT).show();
         } else if (id == R.id.nav_meus_anuncios) {
+            //reuso da activit meus anuncios
             startActivity(new Intent(getApplicationContext(),MeusAnunciosActivity.class));
 
         } else if (id == R.id.cad_pet) {
+            //reuso da activity cadastrar anuncio
             startActivity(new Intent(getApplicationContext(), CadastrarAnuncioActivity.class));
 
-
         } else if (id == R.id.doacao) {
+            // implementar funções na activit doação.
             startActivity(new Intent(getApplicationContext(), DoacaoActivity.class));
 
-        } else if (id == R.id.nav_share) {
+        } else if (id == R.id.nav_share_app) {
 
-        } else if (id == R.id.nav_send) {
+            Toast.makeText(getApplicationContext(),
+                    "implementar função de compartilhar app para instalação",
+                    Toast.LENGTH_SHORT).show();
+            // TODO: 17/02/2019 programar ação do botão compartilahar app on clic compartilhar para instalação do app
 
+        } else if (id == R.id.nav_conversar) {
+            Toast.makeText(getApplicationContext(),
+                    "criar e implementar activity conversas resumida a envio e recebimento de mensagens, " +
+                            "semelhante ao zap",
+                    Toast.LENGTH_SHORT).show();
+
+            // TODO: 17/02/2019 implementar activity com conversar: funcionalidades basicas do zap e enviar e receber mensagens pelo app
+
+        }else if (id == R.id.nav_help) {
+
+            Toast.makeText(getApplicationContext(),
+                    "implementar content help sobre o APP",
+                    Toast.LENGTH_SHORT).show();
+// TODO: 17/02/2019 imPlementar janela de ajudas sobre o app
+       }else if (id == R.id.nav_sair) {
+
+            Toast.makeText(getApplicationContext(),
+                    "implementar logoff",
+                    Toast.LENGTH_SHORT).show();
+// TODO: 17/02/2019 imPlementar janela
         }
+
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
