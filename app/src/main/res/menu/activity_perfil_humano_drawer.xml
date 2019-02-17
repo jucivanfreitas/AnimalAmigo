@@ -5,21 +5,26 @@
 
     <group android:checkableBehavior="single">
         <item
-            android:id="@+id/nav_camera"
-            android:icon="@drawable/ic_menu_camera"
-            android:title="Import" />
+            android:id="@+id/nav_perfil"
+            android:icon="@drawable/ic_usuario"
+            android:title="@string/txt_minha_conta" />
         <item
-            android:id="@+id/nav_gallery"
-            android:icon="@drawable/ic_menu_gallery"
-            android:title="Gallery" />
+            android:id="@+id/nav_config_notificacoes"
+            android:icon="@drawable/ic_notifications"
+            android:title="@string/txt_config_notificar" />
         <item
-            android:id="@+id/nav_slideshow"
+            android:id="@+id/nav_meus_anuncios"
             android:icon="@drawable/ic_menu_slideshow"
-            android:title="Slideshow" />
+            android:title="@string/txt_meus_anuncios" />
         <item
-            android:id="@+id/nav_manage"
-            android:icon="@drawable/ic_menu_manage"
-            android:title="Tools" />
+            android:id="@+id/cad_pet"
+            android:icon="@drawable/ic_perfilpet"
+            android:title="@string/cad_novo_animal" />
+
+        <item
+            android:id="@+id/doacao"
+            android:icon="@drawable/ic_ajudar_causa"
+            android:title="@string/txt_ajudar" />
     </group>
 
     <item android:title="Communicate">
@@ -27,12 +32,15 @@
             <item
                 android:id="@+id/nav_share"
                 android:icon="@drawable/ic_menu_share"
-                android:title="Share" />
+                android:title="Compatrilhar App" />
             <item
                 android:id="@+id/nav_send"
                 android:icon="@drawable/ic_menu_send"
-                android:title="Send" />
+                android:title="@string/txt_conversas" />
+
         </menu>
+
+
     </item>
 
 </menu>
