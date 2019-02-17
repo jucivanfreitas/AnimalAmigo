@@ -25,7 +25,10 @@ import com.squareup.picasso.Picasso;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
-public class AdapterAnuncios extends RecyclerView.Adapter<AdapterAnuncios.MyViewHolder> implements Serializable {
+public class AdapterAnuncios extends RecyclerView.Adapter<AdapterAnuncios.MyViewHolder>
+
+        implements Serializable {
+
 
     private List<Animal> anuncios;
 

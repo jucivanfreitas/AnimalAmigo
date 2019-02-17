@@ -18,16 +18,33 @@
             android:title="@string/txt_meus_anuncios" />
         <item
             android:id="@+id/cad_pet"
-            android:icon="@drawable/ic_perfilpet"
-            android:title="@string/cad_novo_animal" />
+            android:title="@string/cad_novo_animal">
+            <menu>
+                <item
+                    android:id="@+id/pet_adote"
+                    android:icon="@drawable/ic_perfilpet"
+                    android:title="Para Adoção" />
+                <item
+                    android:id="@+id/pet_procurado"
+                    android:icon="@drawable/ic_procurar_pet"
+                    android:title="@string/txt_perdido" />
 
-        <item
-            android:id="@+id/doacao"
-            android:icon="@drawable/ic_ajudar_causa"
-            android:title="@string/txt_ajudar" />
-        <item
-            android:id="@+id/nav_sair"
-            android:title="@string/txt_sair" />
+                <item
+                    android:id="@+id/doacao"
+                    android:icon="@drawable/ic_ajudar_causa"
+                    android:title="@string/txt_ajudar" />
+                <item
+                    android:id="@+id/nav_sair"
+                    android:title="@string/txt_sair" />
+
+
+            </menu>>
+
+
+        </item>
+
+
+
     </group>
 
     <item android:title="@string/comunication">
@@ -35,7 +52,7 @@
             <item
                 android:id="@+id/nav_share_app"
                 android:icon="@drawable/ic_menu_share"
-                android:title="Compatrilhar App" />
+                android:title="@string/txt_compartilhar_app" />
             <item
                 android:id="@+id/nav_conversar"
                 android:icon="@drawable/ic_conversa"

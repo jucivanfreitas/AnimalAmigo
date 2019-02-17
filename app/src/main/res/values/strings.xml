@@ -90,10 +90,12 @@
     <string name="nav_header_desc">Navigation header</string>
     <string name="txt_minha_conta">Minha Conta</string>
     <string name="txt_config_notificar">Configurar Notificações</string>
-    <string name="cad_novo_animal">Cadastar Pets</string>
+    <string name="cad_novo_animal">Cadastar Pet</string>
     <string name="txt_ajudar">Saiba como Contribuir</string>
     <string name="txt_conversas">Minhas Mensagens</string>
-    <string name="txt_Sobre_App">Sopre o App</string>
+    <string name="txt_Sobre_App">Sobre o App</string>
     <string name="comunication">Comunicações</string>
+    <string name="txt_perdido">Perdido</string>
+    <string name="txt_compartilhar_app">Compartilhar App</string>
 
 </resources>

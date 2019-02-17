@@ -98,7 +98,7 @@ public class PerfilHumanoActivity extends AppCompatActivity
             //reuso da activit meus anuncios
             startActivity(new Intent(getApplicationContext(),MeusAnunciosActivity.class));
 
-        } else if (id == R.id.cad_pet) {
+        } else if (id == R.id.pet_adote) {
             //reuso da activity cadastrar anuncio
             startActivity(new Intent(getApplicationContext(), CadastrarAnuncioActivity.class));
 
@@ -138,6 +138,11 @@ public class PerfilHumanoActivity extends AppCompatActivity
             // TODO: 17/02/2019 implementar a função de invalidade do menu para retorno ao menus de usuarios não logado 
             finish();
 // TODO: 17/02/2019 imPlementar janela
+        }else if (id == R.id.pet_procurado) {
+            // TODO: 17/02/2019 programar activit cadastrar procurado
+            Toast.makeText(getApplicationContext(),
+                    "implementar content cadastro de procurados",
+                    Toast.LENGTH_SHORT).show();
         }
 
 
