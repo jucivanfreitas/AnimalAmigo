@@ -64,35 +64,28 @@ public class CadastrarAnuncioActivity extends AppCompatActivity
 
     //Permissoes
     private String[] permissoes = new String[]{
-            Manifest.permission.READ_EXTERNAL_STORAGE
+            Manifest.permission.READ_EXTERNAL_STORAGE,
+            Manifest.permission.CAMERA
     };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_cadastrar_anuncio);
-        Toolbar toolbar = findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
+
         //Configuracoes iniciais
-        storage = ConfiguracaoFirebase.getFirebaseStorage();
         inicializarComponentes();
-
-        //Validar permissões
-        Permissoes.validarPermissoes(permissoes, this, 1);
-
-        carregarDadosSpinner();
-
-        Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
-
-        btnCadastrarAnuncio.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                validarDadosAnuncio(v);
-            }
-        });
     }
 
+    /**
+     * Configuracoes iniciais
+     */
     private void inicializarComponentes(){
+        Toolbar toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+
+        storage = ConfiguracaoFirebase.getFirebaseStorage();
+
         spnEspecie = findViewById(R.id.spinner_cad_Especie);
         spnSexo = findViewById(R.id.spinner_cad_Sexo);
         spnIdade = findViewById(R.id.spinner_cad_idade);
@@ -127,8 +120,26 @@ public class CadastrarAnuncioActivity extends AppCompatActivity
             public void onNothingSelected(AdapterView<?> parent) {
             }
         });
+
+        //Validar permissões
+        Permissoes.validarPermissoes(permissoes, this, 1);
+
+        carregarDadosSpinner();
+
+        //botao voltar da Activity
+        Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
+
+        btnCadastrarAnuncio.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                validarDadosAnuncio(v);
+            }
+        });
     }
 
+    /**
+     * Configura o adapter do spinner Cidades
+     */
     public void setAdapterSpinnerCidades(){
 
         try {
@@ -139,6 +150,7 @@ public class CadastrarAnuncioActivity extends AppCompatActivity
             adapterCidades.notifyDataSetChanged();
         } catch (Exception e){e.printStackTrace();}
     }
+
     /**
      *
      * @param animal anuncio
@@ -174,7 +186,7 @@ public class CadastrarAnuncioActivity extends AppCompatActivity
      * @param contador contador
      */
     private void salvarFotosStorage(final Animal animal, String url, final int totalFotos, int contador){
-
+// TODO: 16/02/2019 tentar comrpessao de fotos neste método
         //cria nó do storage
         try {
             final StorageReference imagemAnimal = storage
@@ -368,55 +380,56 @@ public class CadastrarAnuncioActivity extends AppCompatActivity
 
     @Override
     public void onPickResult(PickResult r) {
-        if (r.getError() == null) {
 
-            Uri imagemSelecionada = r.getUri();
-            String caminhoImagem = Objects.requireNonNull(imagemSelecionada).toString();
+        try {
+            if (r.getError() == null) {
 
-            if(requisicao == 1) {
+                Uri imagemSelecionada = r.getUri();
+                String caminhoImagem = Objects.requireNonNull(imagemSelecionada).toString();
 
-                imagem1.setImageURI(r.getUri());
-                Bitmap bitmap = ((BitmapDrawable) imagem1.getDrawable()).getBitmap();
-                ByteArrayOutputStream baos = new ByteArrayOutputStream();
-                bitmap.compress(Bitmap.CompressFormat.JPEG, 60, baos);
-                byte[] bitmapdata = baos.toByteArray();
-                Bitmap bmp = BitmapFactory.decodeByteArray(bitmapdata, 0, bitmapdata.length);
-                imagem1.setImageBitmap(bmp);
-                //imagem1.setImageBitmap();
+                if (requisicao == 1) {
 
-            } else if(requisicao == 2) {
-                //Tiny.BitmapCompressOptions options = new Tiny.BitmapCompressOptions();
-                //Tiny.FileCompressOptions options = new Tiny.FileCompressOptions();
+                    imagem1.setImageURI(r.getUri());
+                    Bitmap bitmap = ((BitmapDrawable) imagem1.getDrawable()).getBitmap();
+                    ByteArrayOutputStream baos = new ByteArrayOutputStream();
+                    bitmap.compress(Bitmap.CompressFormat.JPEG, 60, baos);
+                    byte[] bitmapdata = baos.toByteArray();
+                    Bitmap bmp = BitmapFactory.decodeByteArray(bitmapdata, 0, bitmapdata.length);
+                    imagem1.setImageBitmap(bmp);
+                    //imagem1.setImageBitmap();
 
-                //BitmapResult result = Tiny.getInstance().source(caminhoImagem).asBitmap().withOptions(options).compressSync();
-                //FileResult result = Tiny.getInstance().source(caminhoImagem).asFile().withOptions(options).compressSync();
-                //imagem2.setImageURI(Uri.fromFile(new File(result.toString())));
+                } else if (requisicao == 2) {
+                    //Tiny.BitmapCompressOptions options = new Tiny.BitmapCompressOptions();
+                    //Tiny.FileCompressOptions options = new Tiny.FileCompressOptions();
 
-                imagem2.setImageURI(r.getUri());
-                Bitmap bitmap = ((BitmapDrawable) imagem2.getDrawable()).getBitmap();
-                ByteArrayOutputStream baos = new ByteArrayOutputStream();
-                bitmap.compress(Bitmap.CompressFormat.JPEG, 90, baos);
-                byte[] bitmapdata = baos.toByteArray();
-                Bitmap bmp = BitmapFactory.decodeByteArray(bitmapdata, 0, bitmapdata.length);
-                imagem2.setImageBitmap(bmp);
-                //imagem2.setImageURI(r.getUri());
+                    //BitmapResult result = Tiny.getInstance().source(caminhoImagem).asBitmap().withOptions(options).compressSync();
+                    //FileResult result = Tiny.getInstance().source(caminhoImagem).asFile().withOptions(options).compressSync();
+                    //imagem2.setImageURI(Uri.fromFile(new File(result.toString())));
 
+                    imagem2.setImageURI(r.getUri());
+                    Bitmap bitmap = ((BitmapDrawable) imagem2.getDrawable()).getBitmap();
+                    ByteArrayOutputStream baos = new ByteArrayOutputStream();
+                    bitmap.compress(Bitmap.CompressFormat.JPEG, 90, baos);
+                    byte[] bitmapdata = baos.toByteArray();
+                    Bitmap bmp = BitmapFactory.decodeByteArray(bitmapdata, 0, bitmapdata.length);
+                    imagem2.setImageBitmap(bmp);
+                    //imagem2.setImageURI(r.getUri());
+
+                } else {
+
+                    imagem3.setImageURI(r.getUri());
+                }
+                listaFotosRecuperadas.add(caminhoImagem);
             } else {
-
-                imagem3.setImageURI(r.getUri());
+                //Handle possible errors
+                //TODO: do what you have to do with r.getError();
             }
-            listaFotosRecuperadas.add(caminhoImagem);
-        } else {
-            //Handle possible errors
-            //TODO: do what you have to do with r.getError();
-        }
+        } catch (Exception e){e.printStackTrace();}
     }
 
     public void comprimirImagem (String path){
-
-
-
     }
+
     /**
      *
      * @param requestCode int
@@ -538,8 +551,6 @@ public class CadastrarAnuncioActivity extends AppCompatActivity
             imm.hideSoftInputFromWindow(editText.getWindowToken(), 0);
         } catch (Exception e){e.printStackTrace();}
     }
-
-
 }
 
 

@@ -205,12 +205,12 @@
             android:text="@string/zero"
             android:textSize="16sp"
             android:textStyle="bold"
-            app:layout_constraintBottom_toBottomOf="@+id/textViewComentarios"
-            app:layout_constraintEnd_toStartOf="@+id/textViewComentarios"
-            app:layout_constraintTop_toTopOf="@+id/textViewComentarios" />
+            app:layout_constraintBottom_toBottomOf="@+id/textViewCurtidas"
+            app:layout_constraintEnd_toStartOf="@+id/textViewCurtidas"
+            app:layout_constraintTop_toTopOf="@+id/textViewCurtidas" />
 
         <TextView
-            android:id="@+id/textViewComentarios"
+            android:id="@+id/textViewCurtidas"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="1dp"

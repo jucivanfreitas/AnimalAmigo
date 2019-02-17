@@ -45,7 +45,6 @@ import static android.R.layout.simple_spinner_item;
 public class AnunciosActivity extends AppCompatActivity {
 
     private FirebaseAuth autenticacao;
-    private RecyclerView recyclerAnunciosPublicos;
     private Button btnCidade, btnEspecie;
     private AdapterAnuncios adapterAnuncios;
     private List<Animal> listaAnuncios = new ArrayList<>();
@@ -60,32 +59,9 @@ public class AnunciosActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_anuncios);
 
-        Toolbar toolbar = findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
-
-        try {
-            autenticacao = ConfiguracaoFirebase.getFirebaseAutenticacao();
-            anunciosPublicosRef = ConfiguracaoFirebase.getFirebase()
-                    .child("meus_animais");
-        } catch (Exception e){e.printStackTrace();}
-
         inicializarComponentes();
 
-        //configurar recyclerview
-        try {
-            recyclerAnunciosPublicos.setLayoutManager(new LinearLayoutManager(this));
-            recyclerAnunciosPublicos.setHasFixedSize(true);
-
-            adapterAnuncios = new AdapterAnuncios(listaAnuncios);
-            recyclerAnunciosPublicos.setAdapter(adapterAnuncios);
-        } catch (Exception e){e.printStackTrace();}
-
         recuperarAnunciosPublicos();
-
-        //admob
-        //MobileAds.initialize(this, String.valueOf(R.string.app_id));
-        //teste do google
-        MobileAds.initialize(this, "ca-app-pub-3940256099942544~3347511713");
     }
 
     @Override
@@ -156,12 +132,46 @@ public class AnunciosActivity extends AppCompatActivity {
      */
     private void inicializarComponentes(){
 
+        Toolbar toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+
+        try {
+            autenticacao = ConfiguracaoFirebase.getFirebaseAutenticacao();
+            anunciosPublicosRef = ConfiguracaoFirebase.getFirebase()
+                    .child("meus_animais");
+        } catch (Exception e){e.printStackTrace();}
+
+        RecyclerView recyclerAnunciosPublicos;
         recyclerAnunciosPublicos = findViewById(R.id.recyclerAnuncios);
         btnCidade = findViewById(R.id.btnCidade);
         btnEspecie = findViewById(R.id.btnEspecie);
 
+        //configurar recyclerview
+        try {
+            recyclerAnunciosPublicos.setLayoutManager(new LinearLayoutManager(this));
+            recyclerAnunciosPublicos.setHasFixedSize(true);
+
+            adapterAnuncios = new AdapterAnuncios(listaAnuncios);
+            recyclerAnunciosPublicos.setAdapter(adapterAnuncios);
+        } catch (Exception e){e.printStackTrace();}
+
+        //propagandas
+        configuraAdMob();
+    }
+
+    /**
+     * método que configura as propagandas via AdMob
+     */
+    private void configuraAdMob() {
+
+        //admob
+        //MobileAds.initialize(this, String.valueOf(R.string.app_id));
+        //teste do google
+        MobileAds.initialize(this, "ca-app-pub-3940256099942544~3347511713");
+
         //AdView
         try {
+            //teste
             final AdRequest adRequest = new AdRequest.Builder().addTestDevice("33BE2250B43518CCDA7DE426D04EE231").build();
 
             final AdView adView = findViewById(R.id.adView);
@@ -248,45 +258,46 @@ public class AnunciosActivity extends AppCompatActivity {
      */
     public void filtraPorEspecie(View view){
 
-        AlertDialog.Builder dialogEspecie = new AlertDialog.Builder(this);
-        dialogEspecie.setTitle("Selecione a espécie desejada");
+        try {
+            AlertDialog.Builder dialogEspecie = new AlertDialog.Builder(this);
+            dialogEspecie.setTitle("Selecione a espécie desejada");
 
-        //configura o spinner
-        @SuppressLint("InflateParams")
-        View viewSpinnerEspecie = getLayoutInflater().inflate(R.layout.dialog_spinner_especie, null);
-        final Spinner spinnerEspecie = viewSpinnerEspecie.findViewById(R.id.spinnerFiltroEspecie);
+            //configura o spinner
+            @SuppressLint("InflateParams")
+            View viewSpinnerEspecie = getLayoutInflater().inflate(R.layout.dialog_spinner_especie, null);
+            final Spinner spinnerEspecie = viewSpinnerEspecie.findViewById(R.id.spinnerFiltroEspecie);
 
-        ArrayList<String> especiesLista = Util.getEspeciesLista(getApplicationContext());
+            ArrayList<String> especiesLista = Util.getEspeciesLista(getApplicationContext());
 
-        //especies
-        ArrayAdapter<String> adapterEspecies = new ArrayAdapter<>(this, simple_spinner_item, especiesLista);
-        adapterEspecies.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        spinnerEspecie.setAdapter(adapterEspecies);
+            //especies
+            ArrayAdapter<String> adapterEspecies = new ArrayAdapter<>(this, simple_spinner_item, especiesLista);
+            adapterEspecies.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+            spinnerEspecie.setAdapter(adapterEspecies);
 
-        dialogEspecie.setView(viewSpinnerEspecie
-        );
+            dialogEspecie.setView(viewSpinnerEspecie
+            );
 
-        dialogEspecie.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
+            dialogEspecie.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
 
-                String filtroEspecie = spinnerEspecie.getSelectedItem().toString();
-                String cidadeBotao = btnCidade.getText().toString();
+                    String filtroEspecie = spinnerEspecie.getSelectedItem().toString();
+                    String cidadeBotao = btnCidade.getText().toString();
 
-                recuperarAnunciosFiltro(null, cidadeBotao, filtroEspecie);
+                    recuperarAnunciosFiltro(null, cidadeBotao, filtroEspecie);
+                }
+            });
 
-            }
-        });
+            dialogEspecie.setNegativeButton("Cancelar", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
 
-        dialogEspecie.setNegativeButton("Cancelar", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
+                }
+            });
 
-            }
-        });
-
-        AlertDialog dialog = dialogEspecie.create();
-        dialog.show();
+            AlertDialog dialog = dialogEspecie.create();
+            dialog.show();
+        } catch (Exception e) {e.printStackTrace();}
     }
 
     /**
@@ -295,78 +306,80 @@ public class AnunciosActivity extends AppCompatActivity {
      */
     public void filtraPorCidade(View view){
 
-        AlertDialog.Builder dialogCidade = new AlertDialog.Builder(this);
-        dialogCidade.setTitle("Selecione a cidade desejada");
+        try {
+            AlertDialog.Builder dialogCidade = new AlertDialog.Builder(this);
+            dialogCidade.setTitle("Selecione a cidade desejada");
 
+            //configura o spinner
+            @SuppressLint("InflateParams")
+            View viewSpinner = getLayoutInflater().inflate(R.layout.dialog_spinner, null);
 
-        //configura o spinner
-        @SuppressLint("InflateParams")
-        View viewSpinner = getLayoutInflater().inflate(R.layout.dialog_spinner, null);
+            ArrayList<String> estadosLista = Util.getEstadosLista(getApplicationContext());
 
-        ArrayList<String> estadosLista = Util.getEstadosLista(getApplicationContext());
+            spinnerEstado = viewSpinner.findViewById(R.id.spinnerFiltroEstado);
+            spinnerCidade = viewSpinner.findViewById(R.id.spinnerFiltroCidade);
 
-        spinnerEstado = viewSpinner.findViewById(R.id.spinnerFiltroEstado);
-        spinnerCidade = viewSpinner.findViewById(R.id.spinnerFiltroCidade);
+            spinnerCidade.setVisibility(View.VISIBLE);
+            ArrayList<String> cidadesLista = Util.getCidadesLista("AC", getApplicationContext());
 
-        spinnerCidade.setVisibility(View.VISIBLE);
-        ArrayList<String> cidadesLista = Util.getCidadesLista("AC", getApplicationContext());
+            //cidades
+            adapterCidades = new ArrayAdapter<>(this, simple_spinner_item, cidadesLista);
+            ArrayAdapter<String> adapterEstados = new ArrayAdapter<>(this, simple_spinner_item, estadosLista);
+            adapterEstados.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+            adapterCidades.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+            spinnerEstado.setAdapter(adapterEstados);
+            spinnerCidade.setAdapter(adapterCidades);
 
-        //cidades
-        adapterCidades = new ArrayAdapter<>(this, simple_spinner_item, cidadesLista);
-        ArrayAdapter<String> adapterEstados = new ArrayAdapter<>(this, simple_spinner_item, estadosLista);
-        adapterEstados.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        adapterCidades.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        spinnerEstado.setAdapter(adapterEstados);
-        spinnerCidade.setAdapter(adapterCidades);
+            dialogCidade.setView(viewSpinner);
+            dialogCidade.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    String filtroEstado = "Todos";
+                    String filtroCidade = "Todas";
+                    String filtroEspecie;
 
-        dialogCidade.setView(viewSpinner);
-        dialogCidade.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                String filtroEstado = "Todos";
-                String filtroCidade = "Todas";
-                String filtroEspecie;
+                    if(spinnerEstado.getSelectedItem()!=null) {
 
-                if(spinnerEstado.getSelectedItem()!=null) {
+                        filtroEstado = spinnerEstado.getSelectedItem().toString();
+                    }
+                    if(spinnerCidade.getSelectedItem()!=null) {
 
-                    filtroEstado = spinnerEstado.getSelectedItem().toString();
+                        filtroCidade = spinnerCidade.getSelectedItem().toString();
+                    }
+
+                    filtroEspecie = btnEspecie.getText().toString();
+
+                    recuperarAnunciosFiltro(filtroEstado, filtroCidade, filtroEspecie);
                 }
-                if(spinnerCidade.getSelectedItem()!=null) {
+            });
 
-                    filtroCidade = spinnerCidade.getSelectedItem().toString();
+            dialogCidade.setNegativeButton("Cancelar", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+
+                }
+            });
+
+            AlertDialog dialog = dialogCidade.create();
+            dialog.show();
+
+            spinnerEstado.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                @Override
+                public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+
+                    try {
+                        setAdapterSpinnerCidade();
+                    }catch (Exception e){
+                        e.printStackTrace();
+                    }
                 }
 
-                filtroEspecie = btnEspecie.getText().toString();
-
-                recuperarAnunciosFiltro(filtroEstado, filtroCidade, filtroEspecie);
-            }
-        });
-
-        dialogCidade.setNegativeButton("Cancelar", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-
-            }
-        });
-
-        AlertDialog dialog = dialogCidade.create();
-        dialog.show();
-
-        spinnerEstado.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-
-                try {
-                    setAdapterSpinnerCidade();
-                }catch (Exception e){
-                    e.printStackTrace();
+                @Override
+                public void onNothingSelected(AdapterView<?> parent) {
                 }
-            }
+            });
+        } catch (Exception e) {e.printStackTrace();}
 
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-            }
-        });
     }
 
     private void setAdapterSpinnerCidade(){
@@ -390,120 +403,107 @@ public class AnunciosActivity extends AppCompatActivity {
 
     public void recuperarAnunciosFiltro(final String estado, final String cidade, final String especie) {
 
-        dialog = new SpotsDialog.Builder()
-                .setContext(this)
-                .setMessage("Procurando anúncios")
-                .setCancelable(false)
-                .build();
-        dialog.show();
+        try {
+            dialog = new SpotsDialog.Builder()
+                    .setContext(this)
+                    .setMessage("Procurando anúncios")
+                    .setCancelable(false)
+                    .build();
+            dialog.show();
 
-        //Log.d("INFO", estado + " / "+cidade+" / "+especie);
-        //cidade
-        if (cidade!=null && !cidade.equalsIgnoreCase("Todas")) {
-            btnCidade.setText(cidade);
-        }
-        //estado
-        else if (estado != null){
-            btnCidade.setText(estado);
-        }
-        //especie
-        if (especie != null) {
-            btnEspecie.setText(especie);
-        }
+            //cidade
+            if (cidade!=null && !cidade.equalsIgnoreCase("Todas")) {
+                btnCidade.setText(cidade);
+            }
+            //estado
+            else if (estado != null){
+                btnCidade.setText(estado);
+            }
+            //especie
+            if (especie != null) {
+                btnEspecie.setText(especie);
+            }
 
-        anunciosPublicosRef.addValueEventListener(new ValueEventListener() {
+            anunciosPublicosRef.addValueEventListener(new ValueEventListener() {
 
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                listaAnuncios.clear();
+                @Override
+                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                    listaAnuncios.clear();
 
-                //for (DataSnapshot users : dataSnapshot.getChildren()) {
-                for (DataSnapshot animais : dataSnapshot.getChildren()) {
+                    for (DataSnapshot animais : dataSnapshot.getChildren()) {
 
-                    Animal animal = animais.getValue(Animal.class);
-                    //Log.d("INFO5: ", animal.getCidade()+"/"+animal.getUf());
+                        Animal animal = animais.getValue(Animal.class);
+                        //Log.d("INFO5: ", animal.getCidade()+"/"+animal.getUf());
 
-                    if (animal != null) {
+                        if (animal != null) {
 
-                        String textoBotaoCidade = btnCidade.getText().toString();
-                        String textoBotaoEspecie = btnEspecie.getText().toString();
+                            String textoBotaoCidade = btnCidade.getText().toString();
+                            String textoBotaoEspecie = btnEspecie.getText().toString();
 
-                        //sem filtro
-                        if((textoBotaoCidade.equalsIgnoreCase("Todas") ||
-                                textoBotaoCidade.equalsIgnoreCase("Todos") ||
-                                textoBotaoCidade.equalsIgnoreCase("Cidade")) && (
-                                textoBotaoEspecie.equalsIgnoreCase("espécie") ||
-                                        textoBotaoEspecie.equalsIgnoreCase("Todas"))){
-                            //Log.d("INFO6: ", animal.getNome()+"/ "+animal.getCidade()+"/"+animal.getUf());
-                            listaAnuncios.add(animal);
+                            //sem filtro
+                            if((textoBotaoCidade.equalsIgnoreCase("Todas") ||
+                                    textoBotaoCidade.equalsIgnoreCase("Todos") ||
+                                    textoBotaoCidade.equalsIgnoreCase("Cidade")) && (
+                                    textoBotaoEspecie.equalsIgnoreCase("espécie") ||
+                                            textoBotaoEspecie.equalsIgnoreCase("Todas"))){
+                                //Log.d("INFO6: ", animal.getNome()+"/ "+animal.getCidade()+"/"+animal.getUf());
+                                listaAnuncios.add(animal);
 
-                        } else {
-                            //Log.d("INFOBAD: ", animal.getCidade()+"/"+animal.getUf());
-                            //sem espécie
-                            if (textoBotaoEspecie.equalsIgnoreCase("espécie") ||
-                                    textoBotaoEspecie.equalsIgnoreCase("Todas")) {
+                            } else {
+                                //Log.d("INFOBAD: ", animal.getCidade()+"/"+animal.getUf());
+                                //sem espécie
+                                if (textoBotaoEspecie.equalsIgnoreCase("espécie") ||
+                                        textoBotaoEspecie.equalsIgnoreCase("Todas")) {
 
-                                if (textoBotaoCidade.equalsIgnoreCase("cidade") ||
-                                        textoBotaoCidade.equalsIgnoreCase("Todas") ||
-                                        textoBotaoCidade.equalsIgnoreCase("Todos")) {
+                                    if (textoBotaoCidade.equalsIgnoreCase("cidade") ||
+                                            textoBotaoCidade.equalsIgnoreCase("Todas") ||
+                                            textoBotaoCidade.equalsIgnoreCase("Todos")) {
 
-                                    //Log.d("INFO7: ", animal.getCidade()+"/"+animal.getUf());
-                                    listaAnuncios.add(animal);
-
-                                } else {
-                                    if (textoBotaoCidade.equalsIgnoreCase(animal.getCidade()) ||
-                                            textoBotaoCidade.equalsIgnoreCase(animal.getUf())) {
-                                        //Log.d("INFO8: ", animal.getNome()+"/ "+animal.getCidade()+"/"+animal.getUf());
                                         listaAnuncios.add(animal);
 
-                                    }
-                                }
-                                //com espécie
-                            } else {
-                                if (textoBotaoEspecie.equalsIgnoreCase(animal.getEspecie())) {
-
-                                    //estado
-                                    if (textoBotaoCidade.length()== 2) {
-
-                                        if(textoBotaoCidade.equalsIgnoreCase(animal.getUf())) {
-
-                                            //Log.d("INFO10: ", animal.getCidade() + "/" + animal.getUf());
-                                            listaAnuncios.add(animal);
-                                        }
-                                        //cidade
                                     } else {
-
-                                        if (textoBotaoCidade.equalsIgnoreCase("cidade") ||
-                                                textoBotaoCidade.equalsIgnoreCase("Todas") ||
-                                                textoBotaoCidade.equalsIgnoreCase("Todos")) {
-
-                                            //Log.d("INFO9: ", animal.getCidade() + "/" + animal.getUf());
-                                            listaAnuncios.add(animal);
-
-                                        } else if(textoBotaoCidade.equalsIgnoreCase(animal.getCidade())) {
-
-                                            //Log.d("INFO11: ", animal.getCidade() + "/" + animal.getUf());
+                                        if (textoBotaoCidade.equalsIgnoreCase(animal.getCidade()) ||
+                                                textoBotaoCidade.equalsIgnoreCase(animal.getUf())) {
                                             listaAnuncios.add(animal);
                                         }
                                     }
+                                    //com espécie
+                                } else {
+                                    if (textoBotaoEspecie.equalsIgnoreCase(animal.getEspecie())) {
 
+                                        //estado
+                                        if (textoBotaoCidade.length()== 2) {
+
+                                            if(textoBotaoCidade.equalsIgnoreCase(animal.getUf())) {
+                                                listaAnuncios.add(animal);
+                                            }
+                                            //cidade
+                                        } else {
+
+                                            if (textoBotaoCidade.equalsIgnoreCase("cidade") ||
+                                                    textoBotaoCidade.equalsIgnoreCase("Todas") ||
+                                                    textoBotaoCidade.equalsIgnoreCase("Todos")) {
+                                                listaAnuncios.add(animal);
+                                            } else if(textoBotaoCidade.equalsIgnoreCase(animal.getCidade())) {
+                                                listaAnuncios.add(animal);
+                                            }
+                                        }
+                                    }
                                 }
                             }
+
                         }
-
                     }
+                    Collections.reverse(listaAnuncios);
+                    adapterAnuncios.notifyDataSetChanged();
+
+                    dialog.dismiss();
                 }
-                //}
-                Collections.reverse(listaAnuncios);
-                adapterAnuncios.notifyDataSetChanged();
 
-                dialog.dismiss();
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-
-            }
-        });
+                @Override
+                public void onCancelled(@NonNull DatabaseError databaseError) {
+                }
+            });
+        } catch (Exception e){e.printStackTrace();}
     }
 }
