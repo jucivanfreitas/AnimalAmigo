@@ -18,10 +18,13 @@ import com.celvansystems.projetoamigoanimal.adapter.AdapterMeusAnuncios;
 import com.celvansystems.projetoamigoanimal.helper.ConfiguracaoFirebase;
 import com.celvansystems.projetoamigoanimal.helper.RecyclerItemClickListener;
 import com.celvansystems.projetoamigoanimal.model.Animal;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.storage.StorageReference;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -36,6 +39,7 @@ public class MeusAnunciosActivity extends AppCompatActivity {
     private List<Animal> anuncios = new ArrayList<>();
     private AdapterMeusAnuncios adapterMeusAnuncios;
     private DatabaseReference anuncioUsuarioRef;
+    private StorageReference storage;
 
     private AlertDialog dialog;
 
@@ -50,7 +54,6 @@ public class MeusAnunciosActivity extends AppCompatActivity {
         try {
             anuncioUsuarioRef = ConfiguracaoFirebase.getFirebase()
                     .child("meus_animais");
-                    //.child(ConfiguracaoFirebase.getIdUsuario());
         } catch (Exception e){e.printStackTrace();}
 
         //configurar recyclerview
@@ -79,6 +82,8 @@ public class MeusAnunciosActivity extends AppCompatActivity {
                 Animal anuncioSelecionado = anuncios.get(position);
                 anuncioSelecionado.remover();
 
+                apagarFotosStorage(anuncioSelecionado);
+
                 adapterMeusAnuncios.notifyDataSetChanged();
 
                 Toast.makeText(getApplicationContext(), "Anúncio excluído!", Toast.LENGTH_LONG).show();
@@ -90,6 +95,38 @@ public class MeusAnunciosActivity extends AppCompatActivity {
             }
         }
         ));
+    }
+
+    /**
+     * metodo auxilicar que apaga as fotos de um animal
+     * @param anuncio
+     */
+    private void apagarFotosStorage (Animal anuncio){
+
+        try {
+            StorageReference imagemAnimal = storage
+                    .child("imagens")
+                    .child("animais")
+                    .child(anuncio.getIdAnimal());
+
+            int numFotos = anuncio.getFotos().size();
+
+            for (int i = 0; i < numFotos; i++) {
+                String textoFoto = "imagem" + i;
+
+                imagemAnimal.child(textoFoto).delete().addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+                        Toast.makeText(getApplicationContext(), "Fotos excluídas com sucesso", Toast.LENGTH_SHORT).show();
+                    }
+                }).addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception exception) {
+                        Toast.makeText(getApplicationContext(), "Falha ao deletar fotos", Toast.LENGTH_SHORT).show();
+                    }
+                });
+            }
+        } catch (Exception e) {e.printStackTrace();}
     }
 
     /**
@@ -140,6 +177,8 @@ public class MeusAnunciosActivity extends AppCompatActivity {
 
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
+        storage = ConfiguracaoFirebase.getFirebaseStorage();
 
         FloatingActionButton fabCadastrar = findViewById(R.id.fabcadastrar);
 
