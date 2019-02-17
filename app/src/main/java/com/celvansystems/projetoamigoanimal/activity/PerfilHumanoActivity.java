@@ -12,9 +12,13 @@ import android.view.MenuItem;
 import android.widget.Toast;
 
 import com.celvansystems.projetoamigoanimal.R;
+import com.celvansystems.projetoamigoanimal.helper.ConfiguracaoFirebase;
+import com.google.firebase.auth.FirebaseAuth;
 
 public class PerfilHumanoActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
+
+    private FirebaseAuth autenticacao;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -22,7 +26,7 @@ public class PerfilHumanoActivity extends AppCompatActivity
         setContentView(R.layout.activity_perfil_humano);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-
+        inicializarComponentes();
        // FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
       //  fab.setOnClickListener(new View.OnClickListener() {
       //      @Override
@@ -126,8 +130,13 @@ public class PerfilHumanoActivity extends AppCompatActivity
        }else if (id == R.id.nav_sair) {
 
             Toast.makeText(getApplicationContext(),
-                    "implementar logoff",
+                    "Volte sempre, precisamos de você!!!",
                     Toast.LENGTH_SHORT).show();
+
+            autenticacao.signOut();
+            invalidateOptionsMenu(); //invalida o menu e chama o onPrepare de novo
+            // TODO: 17/02/2019 implementar a função de invalidade do menu para retorno ao menus de usuarios não logado 
+            finish();
 // TODO: 17/02/2019 imPlementar janela
         }
 
@@ -135,5 +144,9 @@ public class PerfilHumanoActivity extends AppCompatActivity
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
+    }
+
+    private void inicializarComponentes(){
+        autenticacao = ConfiguracaoFirebase.getFirebaseAutenticacao();
     }
 }
