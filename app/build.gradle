@@ -54,5 +54,10 @@ dependencies {
     //compressor
     implementation 'id.zelory:compressor:2.1.0'
 
+    implementation 'com.facebook.android:facebook-android-sdk:[4,5)'
+
+    //login google
+    implementation 'com.google.android.gms:play-services-auth:16.0.0'
+
 }
 apply plugin: 'com.google.gms.google-services'
