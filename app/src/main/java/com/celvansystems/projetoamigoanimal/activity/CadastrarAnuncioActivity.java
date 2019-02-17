@@ -4,11 +4,9 @@ import android.Manifest;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -26,6 +24,7 @@ import android.widget.Toast;
 
 import com.celvansystems.projetoamigoanimal.R;
 import com.celvansystems.projetoamigoanimal.helper.ConfiguracaoFirebase;
+import com.celvansystems.projetoamigoanimal.helper.Constantes;
 import com.celvansystems.projetoamigoanimal.helper.Permissoes;
 import com.celvansystems.projetoamigoanimal.helper.Util;
 import com.celvansystems.projetoamigoanimal.model.Animal;
@@ -40,6 +39,9 @@ import com.vansuita.pickimage.dialog.PickImageDialog;
 import com.vansuita.pickimage.listeners.IPickResult;
 
 import java.io.ByteArrayOutputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -54,7 +56,6 @@ public class CadastrarAnuncioActivity extends AppCompatActivity
     private Spinner spnEspecie, spnSexo, spnIdade, spnPorte;
     private Spinner spnEstado, spnCidade;
     private EditText edtDescricao, edtRaca, edtNome;
-    private Button btnCadastrarAnuncio;
     private List<String> listaFotosRecuperadas;
     private List<String> listaURLFotos;
     private ImageView imagem1, imagem2, imagem3;
@@ -96,7 +97,7 @@ public class CadastrarAnuncioActivity extends AppCompatActivity
         edtRaca = findViewById(R.id.edtRaca);
         edtNome = findViewById(R.id.editText_cad_NomeAnimal);
 
-        btnCadastrarAnuncio = findViewById(R.id.btnCadastrarAnuncio);
+        Button btnCadastrarAnuncio = findViewById(R.id.btnCadastrarAnuncio);
 
         imagem1 = findViewById(R.id.imageCadastro1);
         imagem2 = findViewById(R.id.imageCadastro2);
@@ -186,7 +187,7 @@ public class CadastrarAnuncioActivity extends AppCompatActivity
      * @param contador contador
      */
     private void salvarFotosStorage(final Animal animal, String url, final int totalFotos, int contador){
-// TODO: 16/02/2019 tentar comrpessao de fotos neste método
+
         //cria nó do storage
         try {
             final StorageReference imagemAnimal = storage
@@ -195,7 +196,10 @@ public class CadastrarAnuncioActivity extends AppCompatActivity
                     .child(animal.getIdAnimal())
                     .child("imagem"+contador);
 
-            UploadTask uploadTask = imagemAnimal.putFile(Uri.parse(url));
+            Uri selectedImage = Uri.parse(url);
+
+            byte[] byteArray = comprimirImagem(selectedImage);
+            UploadTask uploadTask = imagemAnimal.putBytes(byteArray);
 
             uploadTask.continueWithTask(new Continuation<UploadTask.TaskSnapshot, Task<Uri>>() {
                 @Override
@@ -229,6 +233,36 @@ public class CadastrarAnuncioActivity extends AppCompatActivity
                 }
             });
         } catch (Exception e){e.printStackTrace();}
+    }
+
+    /**
+     * metodo auxiliar para comprimir imagens que serao salvas do firebase storage
+     * @param selectedImage
+     * @return
+     */
+    public byte[] comprimirImagem (Uri selectedImage){
+        byte[] byteArray = null;
+        try {
+            InputStream imageStream = null;
+
+            imageStream = getContentResolver().openInputStream(
+                    selectedImage);
+
+            Bitmap bmp = BitmapFactory.decodeStream(imageStream);
+
+            ByteArrayOutputStream stream = new ByteArrayOutputStream();
+            bmp.compress(Bitmap.CompressFormat.JPEG, Constantes.QUALIDADE_IMAGEM, stream);
+            byteArray = stream.toByteArray();
+
+            stream.close();
+
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }catch (IOException e) {
+
+            e.printStackTrace();
+        }
+        return byteArray;
     }
 
     /**
@@ -390,76 +424,20 @@ public class CadastrarAnuncioActivity extends AppCompatActivity
                 if (requisicao == 1) {
 
                     imagem1.setImageURI(r.getUri());
-                    Bitmap bitmap = ((BitmapDrawable) imagem1.getDrawable()).getBitmap();
-                    ByteArrayOutputStream baos = new ByteArrayOutputStream();
-                    bitmap.compress(Bitmap.CompressFormat.JPEG, 60, baos);
-                    byte[] bitmapdata = baos.toByteArray();
-                    Bitmap bmp = BitmapFactory.decodeByteArray(bitmapdata, 0, bitmapdata.length);
-                    imagem1.setImageBitmap(bmp);
-                    //imagem1.setImageBitmap();
 
                 } else if (requisicao == 2) {
-                    //Tiny.BitmapCompressOptions options = new Tiny.BitmapCompressOptions();
-                    //Tiny.FileCompressOptions options = new Tiny.FileCompressOptions();
-
-                    //BitmapResult result = Tiny.getInstance().source(caminhoImagem).asBitmap().withOptions(options).compressSync();
-                    //FileResult result = Tiny.getInstance().source(caminhoImagem).asFile().withOptions(options).compressSync();
-                    //imagem2.setImageURI(Uri.fromFile(new File(result.toString())));
 
                     imagem2.setImageURI(r.getUri());
-                    Bitmap bitmap = ((BitmapDrawable) imagem2.getDrawable()).getBitmap();
-                    ByteArrayOutputStream baos = new ByteArrayOutputStream();
-                    bitmap.compress(Bitmap.CompressFormat.JPEG, 90, baos);
-                    byte[] bitmapdata = baos.toByteArray();
-                    Bitmap bmp = BitmapFactory.decodeByteArray(bitmapdata, 0, bitmapdata.length);
-                    imagem2.setImageBitmap(bmp);
-                    //imagem2.setImageURI(r.getUri());
 
                 } else {
 
                     imagem3.setImageURI(r.getUri());
                 }
                 listaFotosRecuperadas.add(caminhoImagem);
-            } else {
-                //Handle possible errors
-                //TODO: do what you have to do with r.getError();
             }
         } catch (Exception e){e.printStackTrace();}
     }
 
-    public void comprimirImagem (String path){
-    }
-
-    /**
-     *
-     * @param requestCode int
-     * @param resultCode int
-     * @param data intent
-     */
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-
-        /*if (resultCode == Activity.RESULT_OK) {
-            //Recuperar imagem
-            Uri imagemSelecionada = data.getData();
-            String caminhoImagem = Objects.requireNonNull(imagemSelecionada).toString();
-
-            try {
-                //Configura imagem no ImageView
-                if (requestCode == 1) {
-                    imagem1.setImageURI(imagemSelecionada);
-                } else if (requestCode == 2) {
-                    imagem2.setImageURI(imagemSelecionada);
-                } else if (requestCode == 3) {
-                    imagem3.setImageURI(imagemSelecionada);
-                }
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-            listaFotosRecuperadas.add(caminhoImagem);
-        }*/
-    }
     /**
      * preenche os spinners
      */
