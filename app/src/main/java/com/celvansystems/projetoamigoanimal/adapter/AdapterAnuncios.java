@@ -58,16 +58,27 @@ public class AdapterAnuncios extends RecyclerView.Adapter<AdapterAnuncios.MyView
                 myViewHolder.cidade.setText(anuncio.getCidade());
 
                 //verifica se o animal foi curtido pelo usuario atual
-                if(isCurtido(anuncio)) {
-                    myViewHolder.imvCurtirAnuncio.setImageResource(R.drawable.ic_coracao_vermelho_24dp);
-                } else {
-                    myViewHolder.imvCurtirAnuncio.setImageResource(R.drawable.ic_coracao_branco_24dp);
-                }
-                if(anuncio.getCurtidas()!= null) {
-                    myViewHolder.numeroCurtidas.setText(String.valueOf(anuncio.getCurtidas().size()));
-                } else {
-                    myViewHolder.numeroCurtidas.setText("0");
-                }
+                try {
+                    if (isCurtido(anuncio)) {
+                        myViewHolder.imvCurtirAnuncio.setImageResource(R.drawable.ic_coracao_vermelho_24dp);
+                    } else {
+                        myViewHolder.imvCurtirAnuncio.setImageResource(R.drawable.ic_coracao_branco_24dp);
+                    }
+                    if (anuncio.getCurtidas() != null) {
+                        int numeroCurtidas = anuncio.getCurtidas().size();
+                        if (numeroCurtidas == 1) {
+                            myViewHolder.textViewCurtidas.setText("Curtida");
+                        } else if (numeroCurtidas > 1) {
+                            myViewHolder.textViewCurtidas.setText("Curtidas");
+                        }
+
+                        myViewHolder.numeroCurtidas.setText(String.valueOf(numeroCurtidas));
+
+                    } else {
+                        myViewHolder.numeroCurtidas.setText("");
+                        myViewHolder.textViewCurtidas.setText("");
+                    }
+                } catch (Exception e) {e.printStackTrace();}
 
                 //pega a primeira imagem cadastrada
                 List<String> urlFotos = anuncio.getFotos();
@@ -134,48 +145,48 @@ public class AdapterAnuncios extends RecyclerView.Adapter<AdapterAnuncios.MyView
 
             //anuncioRef.addValueEventListener(new ValueEventListener() {
 
-             //   @Override
-             //   public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+            //   @Override
+            //   public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
 
-                    String usuarioAtual = ConfiguracaoFirebase.getIdUsuario();
-                     List<String> listaCurtidas = new ArrayList<>();
+            String usuarioAtual = ConfiguracaoFirebase.getIdUsuario();
+            List<String> listaCurtidas = new ArrayList<>();
 
-                    if(isCurtido(anuncio)){
-                        Toast.makeText(ctx, "Usuário já curtiu animal!", Toast.LENGTH_SHORT).show();
-                    } else {
-                        if(ConfiguracaoFirebase.isUsuarioLogado()) {
-                            if (anuncio.getCurtidas() != null) {
-                                listaCurtidas = anuncio.getCurtidas();
-                            }
-                            listaCurtidas.add(usuarioAtual);
-                            anuncio.setCurtidas(listaCurtidas);
-
-                            Toast.makeText(ctx, "Animal curtido!", Toast.LENGTH_SHORT).show();
-
-                            Task<Void> anuncioCurtidasRef = anuncioRef
-                                    .child(anuncio.getIdAnimal())
-                                    .child("curtidas")
-                                    .setValue(listaCurtidas);
-
-                            imageView.setImageResource(R.drawable.ic_coracao_vermelho_24dp);
-
-                            anuncioCurtidasRef.addOnCompleteListener(new OnCompleteListener<Void>() {
-                                @Override
-                                public void onComplete(@NonNull Task<Void> task) {
-                                    if (anuncio.getCurtidas() != null) {
-                                        Toast.makeText(myViewHolder.itemView.getContext(), anuncio.getCurtidas().size() +
-                                                " curtida(s)", Toast.LENGTH_LONG).show();
-                                    }
-                                }
-                            });
-                        }
+            if(isCurtido(anuncio)){
+                Toast.makeText(ctx, "Usuário já curtiu animal!", Toast.LENGTH_SHORT).show();
+            } else {
+                if(ConfiguracaoFirebase.isUsuarioLogado()) {
+                    if (anuncio.getCurtidas() != null) {
+                        listaCurtidas = anuncio.getCurtidas();
                     }
-                //}
+                    listaCurtidas.add(usuarioAtual);
+                    anuncio.setCurtidas(listaCurtidas);
 
-               // @Override
-               // public void onCancelled(@NonNull DatabaseError databaseError) {
+                    Toast.makeText(ctx, "Animal curtido!", Toast.LENGTH_SHORT).show();
 
-                //}
+                    Task<Void> anuncioCurtidasRef = anuncioRef
+                            .child(anuncio.getIdAnimal())
+                            .child("curtidas")
+                            .setValue(listaCurtidas);
+
+                    imageView.setImageResource(R.drawable.ic_coracao_vermelho_24dp);
+
+                    anuncioCurtidasRef.addOnCompleteListener(new OnCompleteListener<Void>() {
+                        @Override
+                        public void onComplete(@NonNull Task<Void> task) {
+                            if (anuncio.getCurtidas() != null) {
+                                Toast.makeText(myViewHolder.itemView.getContext(), anuncio.getCurtidas().size() +
+                                        " curtida(s)", Toast.LENGTH_LONG).show();
+                            }
+                        }
+                    });
+                }
+            }
+            //}
+
+            // @Override
+            // public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            //}
             //});
         } else {
             Toast.makeText(myViewHolder.itemView.getContext(), "Usuário não logado!", Toast.LENGTH_LONG).show();
@@ -237,6 +248,7 @@ public class AdapterAnuncios extends RecyclerView.Adapter<AdapterAnuncios.MyView
         TextView idade;
         TextView cidade;
         TextView numeroCurtidas;
+        TextView textViewCurtidas;
         ImageView foto;
         ImageView imvCompartilharAnuncio, imvComentarAnuncio, imvCurtirAnuncio;
 
@@ -249,6 +261,7 @@ public class AdapterAnuncios extends RecyclerView.Adapter<AdapterAnuncios.MyView
             foto = itemView.findViewById(R.id.imageAnuncio);
             cidade = itemView.findViewById(R.id.textCidadePrincipal);
             numeroCurtidas = itemView.findViewById(R.id.txv_num_curtidas);
+            textViewCurtidas = itemView.findViewById(R.id.textViewCurtidas);
 
             //curtir, comentar e compartilhar anuncio da tela principal
             imvCompartilharAnuncio = itemView.findViewById(R.id.imv_compartilhar_anuncio);
