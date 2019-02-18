@@ -72,7 +72,7 @@
         app:srcCompat="@drawable/ic_more_vert_black_24dp" />
 
     <TextView
-        android:id="@+id/textNome"
+        android:id="@+id/txv_nome"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
@@ -94,8 +94,8 @@
         android:textColor="@color/colorAccent"
         android:textSize="14sp"
         android:textStyle="normal"
-        app:layout_constraintStart_toStartOf="@+id/textNome"
-        app:layout_constraintTop_toBottomOf="@+id/textNome"
+        app:layout_constraintStart_toStartOf="@+id/txv_nome"
+        app:layout_constraintTop_toBottomOf="@+id/txv_nome"
         tools:layout_conversion_absoluteHeight="19dp"
         tools:layout_conversion_absoluteWidth="197dp" />
 
@@ -134,8 +134,8 @@
         android:background="@drawable/bg_btn"
         android:elevation="35dp"
         android:visibility="visible"
-        app:layout_constraintStart_toStartOf="@+id/textNome"
-        app:layout_constraintTop_toBottomOf="@+id/textNome" />
+        app:layout_constraintStart_toStartOf="@+id/txv_nome"
+        app:layout_constraintTop_toBottomOf="@+id/txv_nome" />
 
 
 </android.support.constraint.ConstraintLayout>

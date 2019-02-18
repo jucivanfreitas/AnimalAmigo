@@ -73,7 +73,10 @@ public class MeusAnunciosActivity extends AppCompatActivity {
                 this, recyclerAnuncios, new RecyclerItemClickListener.OnItemClickListener() {
             @Override
             public void onItemClick(View view, int position) {
-
+                Animal anuncioSelecionado = anuncios.get(position);
+                Intent detalhesIntent = new Intent(view.getContext(), DetalhesAnimalActivity.class);
+                detalhesIntent.putExtra("anuncioSelecionado", anuncioSelecionado);
+                view.getContext().startActivity(detalhesIntent);
             }
 
             @Override
@@ -99,7 +102,7 @@ public class MeusAnunciosActivity extends AppCompatActivity {
 
     /**
      * metodo auxilicar que apaga as fotos de um animal
-     * @param anuncio
+     * @param anuncio animal
      */
     private void apagarFotosStorage (Animal anuncio){
 

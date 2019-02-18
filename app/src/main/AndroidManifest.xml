@@ -46,7 +46,7 @@
             android:value="ca-app-pub-3940256099942544~3347511713" />
 
         <activity
-            android:name=".activity.DetalhesActivity"
+            android:name=".activity.DetalhesAnimalActivity"
             android:parentActivityName=".activity.AnunciosActivity" />
         <activity
             android:name=".activity.CadastrarAnuncioActivity"

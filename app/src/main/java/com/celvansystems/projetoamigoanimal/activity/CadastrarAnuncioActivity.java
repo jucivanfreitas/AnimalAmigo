@@ -285,6 +285,10 @@ public class CadastrarAnuncioActivity extends AppCompatActivity
             String estado = spnEstado.getSelectedItem().toString();
             String cidade = spnCidade.getSelectedItem().toString();
 
+            // TODO: 18/02/2019 configurar Usuario para pegar dados do banco
+            //Usuario donoAnuncio = new Usuario();
+            //donoAnuncio.setId(ConfiguracaoFirebase.getIdUsuario());
+
             retorno.setDonoAnuncio(ConfiguracaoFirebase.getIdUsuario());
             retorno.setNome(nome);
             retorno.setEspecie(especie);
