@@ -96,7 +96,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
 
-                    android:layout_marginLeft="8dp"
+                    android:layout_marginStart="8dp"
                     android:layout_weight="1"
                     android:background="@drawable/bg_caixa_txt"
                     android:padding="12dp" />
@@ -121,7 +121,7 @@
                     android:id="@+id/spinner_cad_idade"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="8dp"
+                    android:layout_marginStart="8dp"
                     android:layout_weight="1"
                     android:background="@drawable/bg_caixa_txt"
                     android:padding="12dp" />
@@ -151,7 +151,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
 
-                    android:layout_marginLeft="8dp"
+                    android:layout_marginStart="8dp"
                     android:layout_weight="1"
                     android:background="@drawable/bg_caixa_txt"
                     android:padding="12dp" />
@@ -222,7 +222,7 @@
                         android:isScrollContainer="true"
                         android:lineSpacingExtra="3sp"
                         android:nestedScrollingEnabled="true"
-                        android:paddingLeft="8dp"
+                        android:paddingStart="8dp"
                         android:scrollbarAlwaysDrawVerticalTrack="true"
                         android:scrollbars="vertical" />
 

@@ -11,16 +11,18 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.Toast;
 
 import com.celvansystems.projetoamigoanimal.R;
 import com.celvansystems.projetoamigoanimal.helper.ConfiguracaoFirebase;
-import com.celvansystems.projetoamigoanimal.model.Usuario;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 
 public class PerfilHumanoActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -162,18 +164,16 @@ public class PerfilHumanoActivity extends AppCompatActivity
                 alertDesativarConta.setTitle("Tem certeza que deseja desativar sua conta? ");
                 alertDesativarConta.setMessage("Esta opção não poderá ser revertida.");
 
-                final EditText input = new EditText(v.getContext());
-                input.setHint("Digite sua senha");
-                alertDesativarConta.setView(input);
+                //final EditText input = new EditText(v.getContext());
+                //input.setHint("Digite sua senha");
+                //alertDesativarConta.setView(input);
 
-                //editText.setSingleLine(false); /* Makes it Multi line */
                 alertDesativarConta.setPositiveButton("Sim", new DialogInterface.OnClickListener() {
 
                     public void onClick(DialogInterface dialog, int which) {
                         // TODO: 18/02/2019 codigo para excluir conta do usuario e todos os seus anuncios
 
-                        Usuario usuario = new Usuario();
-                        usuario.setEmail(ConfiguracaoFirebase.getFirebaseAutenticacao().getCurrentUser().getEmail());
+                        removerContaAtual();
 
                         dialog.dismiss();
                     }
@@ -191,5 +191,32 @@ public class PerfilHumanoActivity extends AppCompatActivity
                 alert.show();
             }
         });
+    }
+
+    /**
+     * metodo que exclui o usuario atual
+     */
+    private void removerContaAtual(){
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        String usuarioId = ConfiguracaoFirebase.getIdUsuario();
+
+        user.delete()
+                .addOnCompleteListener(new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        if (task.isSuccessful()) {
+
+                            // TODO: 18/02/2019 inserir lógica para excluir todos os anuncios do usuario excluido
+
+                            Log.d("INFO3", "User account deleted.");
+                            Toast.makeText(getApplicationContext(), "Usuário excluído com sucesso!", Toast.LENGTH_SHORT).show();
+                            startActivity(new Intent(getApplicationContext(), LoginActivity.class));
+                            finish();
+                        } else {
+                            Log.d("INFO3", "User account not deleted.");
+                            Toast.makeText(getApplicationContext(), "Falha ao excluir usuário!", Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                });
     }
 }
