@@ -17,8 +17,8 @@
     <string name="permission_rationale">"Contacts permissions are needed for providing email
         completions."
     </string>
-    <string name="title_activity_meus_anuncios">MeusAnunciosActivity</string>
-    <string name="title_activity_cadastrar_anuncio">CadastrarAnuncioActivity</string>
+    <string name="title_activity_meus_anuncios">Meus Anúncios</string>
+    <string name="title_activity_cadastrar_anuncio">Cadastrar anúncio</string>
     <string name="cadastrar">Cadastrar</string>
     <string name="cadastrese">Cadastre-se</string>
     <string name="logar">Logar</string>
@@ -101,5 +101,6 @@
     <string name="enc_conta">Encerrar Conta</string>
     <string name="curtida">Curtida</string>
     <string name="curtidas">Curtidas</string>
+    <string name="desativarConta">Desativar Conta</string>
 
 </resources>

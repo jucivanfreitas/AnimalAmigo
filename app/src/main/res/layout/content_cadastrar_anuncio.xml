@@ -24,7 +24,9 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="100dp"
-                android:layout_marginBottom="16dp"
+                android:layout_marginLeft="8dp"
+                android:layout_marginRight="8dp"
+                android:layout_marginBottom="8dp"
                 android:background="@drawable/bg_caixa_txt"
                 android:orientation="horizontal"
                 android:padding="8dp">
@@ -69,6 +71,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
 
+                    android:layout_marginLeft="8dp"
+                    android:layout_marginRight="8dp"
                     android:layout_marginBottom="16dp"
                     android:autofillHints=""
                     android:background="@drawable/bg_caixa_txt"
@@ -91,8 +95,8 @@
                     android:id="@+id/spinner_cad_Especie"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginEnd="5dp"
 
+                    android:layout_marginLeft="8dp"
                     android:layout_weight="1"
                     android:background="@drawable/bg_caixa_txt"
                     android:padding="12dp" />
@@ -101,7 +105,8 @@
                     android:id="@+id/spinner_cad_Sexo"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="5dp"
+                    android:layout_marginLeft="8dp"
+                    android:layout_marginRight="8dp"
                     android:layout_weight="1"
                     android:background="@drawable/bg_caixa_txt"
                     android:padding="12dp" />
@@ -116,7 +121,7 @@
                     android:id="@+id/spinner_cad_idade"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginEnd="5dp"
+                    android:layout_marginLeft="8dp"
                     android:layout_weight="1"
                     android:background="@drawable/bg_caixa_txt"
                     android:padding="12dp" />
@@ -125,7 +130,8 @@
                     android:id="@+id/spinner_cad_porte"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="5dp"
+                    android:layout_marginLeft="8dp"
+                    android:layout_marginRight="8dp"
                     android:layout_weight="1"
                     android:background="@drawable/bg_caixa_txt"
                     android:padding="12dp" />
@@ -144,8 +150,8 @@
                     android:id="@+id/spinner_cad_estado"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginEnd="5dp"
 
+                    android:layout_marginLeft="8dp"
                     android:layout_weight="1"
                     android:background="@drawable/bg_caixa_txt"
                     android:padding="12dp" />
@@ -154,7 +160,8 @@
                     android:id="@+id/spinner_cad_cidade"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="5dp"
+                    android:layout_marginLeft="8dp"
+                    android:layout_marginRight="8dp"
                     android:layout_weight="1"
                     android:background="@drawable/bg_caixa_txt"
                     android:padding="12dp" />
@@ -170,8 +177,9 @@
                     android:id="@+id/edtRaca"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="9dp"
-                    android:layout_marginBottom="9dp"
+                    android:layout_margin="8dp"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginBottom="8dp"
                     android:autofillHints=""
                     android:background="@drawable/bg_caixa_txt"
                     android:ems="10"
@@ -186,6 +194,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
 
+                android:layout_marginLeft="8dp"
+                android:layout_marginRight="8dp"
                 android:hint="@string/txt_cad_helper_descrição_animal"
                 android:textAlignment="inherit"
                 android:textColorHint="@color/cinza"
@@ -195,35 +205,32 @@
                 <android.support.design.widget.TextInputLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="30dp"
+                    android:layout_marginBottom="16dp"
                     android:padding="0dp"
                     android:paddingBottom="10dp"
                     app:counterEnabled="true"
                     app:counterMaxLength="500">
 
-                    <EditText
+                    <AutoCompleteTextView
                         android:id="@+id/editText_cad_descrição"
-                        android:layout_width="wrap_content"
+                        android:layout_width="match_parent"
                         android:layout_height="100dp"
-                        android:autofillHints=""
+
                         android:background="@drawable/bg_caixa_txt"
-                        android:ems="10"
                         android:hint="@string/descricao_do_animal"
-                        android:inputType="textCapWords"
-                        android:lineSpacingExtra="10sp"
-                        android:lineSpacingMultiplier="@android:integer/config_longAnimTime"
-                        android:lines="@android:integer/config_longAnimTime"
-                        android:maxLength="@android:integer/config_mediumAnimTime"
-                        android:maxLines="@android:integer/config_longAnimTime"
-                        android:outlineProvider="bounds"
-                        android:singleLine="true"
-                        tools:targetApi="o" />
+                        android:inputType="textMultiLine"
+                        android:isScrollContainer="true"
+                        android:lineSpacingExtra="3sp"
+                        android:nestedScrollingEnabled="true"
+                        android:paddingLeft="8dp"
+                        android:scrollbarAlwaysDrawVerticalTrack="true"
+                        android:scrollbars="vertical" />
 
                     <Button
                         android:id="@+id/btnCadastrarAnuncio"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="16dp"
+                        android:layout_marginTop="8dp"
                         android:background="@drawable/bg_btn"
                         android:clickable="true"
                         android:elevation="25dp"

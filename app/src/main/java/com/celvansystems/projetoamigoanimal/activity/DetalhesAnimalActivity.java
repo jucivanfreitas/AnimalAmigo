@@ -95,7 +95,7 @@ public class DetalhesAnimalActivity extends AppCompatActivity {
                 if(anuncioSelecionado.getDonoAnuncio()!= null) {
                     Intent i = new Intent(Intent.ACTION_DIAL, Uri.fromParts("tel",
                             anuncioSelecionado.getDonoAnuncio(), null));
-                    // TODO: 10/02/2019 mudar getIdade para getTelefone
+                    // TODO: 10/02/2019 mudar getDonoanuncio para getTelefone
                     startActivity(i);
                 } else {
                     Toast.makeText(getApplicationContext(), "Telefone não cadastrado.", Toast.LENGTH_LONG).show();

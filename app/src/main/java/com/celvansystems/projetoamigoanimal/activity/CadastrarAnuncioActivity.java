@@ -12,10 +12,12 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.text.method.ScrollingMovementMethod;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -55,13 +57,15 @@ public class CadastrarAnuncioActivity extends AppCompatActivity
 
     private Spinner spnEspecie, spnSexo, spnIdade, spnPorte;
     private Spinner spnEstado, spnCidade;
-    private EditText edtDescricao, edtRaca, edtNome;
+    private EditText edtRaca, edtNome;
+    private AutoCompleteTextView edtDescricao;
     private List<String> listaFotosRecuperadas;
     private List<String> listaURLFotos;
     private ImageView imagem1, imagem2, imagem3;
     private AlertDialog dialog;
     private StorageReference storage;
     private int requisicao;
+
 
     //Permissoes
     private String[] permissoes = new String[]{
@@ -94,6 +98,11 @@ public class CadastrarAnuncioActivity extends AppCompatActivity
         spnEstado = findViewById(R.id.spinner_cad_estado);
         spnCidade = findViewById(R.id.spinner_cad_cidade);
         edtDescricao = findViewById(R.id.editText_cad_descrição);
+        ////edtDescricao.setSingleLine(false);
+        //edtDescricao.setScroller(new Scroller(this));
+        //edtDescricao.setMaxLines(10);
+        edtDescricao.setVerticalScrollBarEnabled(true);
+        edtDescricao.setMovementMethod(new ScrollingMovementMethod());
         edtRaca = findViewById(R.id.edtRaca);
         edtNome = findViewById(R.id.editText_cad_NomeAnimal);
 

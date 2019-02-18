@@ -59,7 +59,7 @@
         </activity>
         <activity
             android:name=".activity.MeusAnunciosActivity"
-            android:label="@string/title_activity_meus_anuncios"
+            android:label="@string/txt_meus_anuncios"
             android:parentActivityName=".activity.AnunciosActivity"
             android:theme="@style/AppTheme.NoActionBar">
             <meta-data
