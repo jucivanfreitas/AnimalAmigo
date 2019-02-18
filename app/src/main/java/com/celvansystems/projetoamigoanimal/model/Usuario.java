@@ -10,6 +10,8 @@ public class Usuario {
     private String cidade;
     private String latitude;
     private String longitude;
+    private String foto;
+    private String genero;
 
     public String getNome() {
         return nome;
@@ -73,5 +75,21 @@ public class Usuario {
 
     public void setLongitude(String longitude) {
         this.longitude = longitude;
+    }
+
+    public String getFoto() {
+        return foto;
+    }
+
+    public void setFoto(String foto) {
+        this.foto = foto;
+    }
+
+    public String getGenero() {
+        return genero;
+    }
+
+    public void setGenero(String genero) {
+        this.genero = genero;
     }
 }

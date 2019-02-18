@@ -97,5 +97,6 @@
     <string name="comunication">Comunicações</string>
     <string name="txt_perdido">Perdido</string>
     <string name="txt_compartilhar_app">Compartilhar App</string>
+    <string name="enc_conta">Encerrar Conta</string>
 
 </resources>

@@ -147,7 +147,7 @@ public class Util {
     public static String getDataAtualBrasil(){
         // configuraçao da data atual do Brasil
         Calendar cal = Calendar.getInstance();
-        cal.add(Calendar.HOUR_OF_DAY, -3);
+        //cal.add(Calendar.HOUR_OF_DAY, -3);
         return( new SimpleDateFormat("yyyy/MM/dd HH:mm:ss").format(cal.getTime()));
     }
 }
