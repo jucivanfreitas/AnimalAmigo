@@ -41,7 +41,7 @@ public class DetalhesAnimalActivity extends AppCompatActivity {
 
         //configurar toolbar
         Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setTitle("Detalhes");
+        getSupportActionBar().setTitle(R.string.detalhes);
 
         inicializarComponentes();
 
