@@ -104,5 +104,7 @@
     <string name="txt_pais">País</string>
     <string name="txt_um_pouco_sobre">Sobre mim..</string>
     <string name="txt_genero">Sexo</string>
+    <string name="curtida">Curtida</string>
+    <string name="curtidas">Curtidas</string>
 
 </resources>

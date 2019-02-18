@@ -36,7 +36,7 @@ public class AdapterMeusAnuncios extends RecyclerView.Adapter<AdapterMeusAnuncio
 
         Log.d("INFO1"," "+ i);
 
-        Animal anuncio = anuncios.get(i);
+        final Animal anuncio = anuncios.get(i);
         myViewHolder.dataCadastro.setText(anuncio.getDataCadastro());
         myViewHolder.nome.setText(anuncio.getNome());
         myViewHolder.idade.setText(anuncio.getIdade());
@@ -44,9 +44,14 @@ public class AdapterMeusAnuncios extends RecyclerView.Adapter<AdapterMeusAnuncio
 
         //pega a primeira imagem cadastrada
         List<String> urlFotos = anuncio.getFotos();
-        String urlCapa = urlFotos.get(0);
 
-        Picasso.get().load(urlCapa).into(myViewHolder.foto);
+        if(urlFotos != null && urlFotos.size() > 0) {
+            String urlCapa = urlFotos.get(0);
+
+            Picasso.get().load(urlCapa).into(myViewHolder.foto);
+
+
+        }
     }
 
     @Override
@@ -67,7 +72,7 @@ public class AdapterMeusAnuncios extends RecyclerView.Adapter<AdapterMeusAnuncio
             super(itemView);
 
             dataCadastro = itemView.findViewById(R.id.textDataCadastro);
-            nome = itemView.findViewById(R.id.textNome);
+            nome = itemView.findViewById(R.id.txv_nome);
             idade = itemView.findViewById(R.id.textIdade);
             foto = itemView.findViewById(R.id.imganun);
             cidade = itemView.findViewById(R.id.textCidadePrincipal);

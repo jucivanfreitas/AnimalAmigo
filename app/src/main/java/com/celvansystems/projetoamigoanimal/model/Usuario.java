@@ -6,12 +6,21 @@ public class Usuario {
     private String nome;
     private String email;
     private String telefone;
+    private String pais;
     private String uf;
     private String cidade;
     private String latitude;
     private String longitude;
     private String foto;
     private String genero;
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
 
     public String getNome() {
         return nome;
@@ -37,6 +46,14 @@ public class Usuario {
         this.telefone = telefone;
     }
 
+    public String getPais() {
+        return pais;
+    }
+
+    public void setPais(String pais) {
+        this.pais = pais;
+    }
+
     public String getUf() {
         return uf;
     }
@@ -51,14 +68,6 @@ public class Usuario {
 
     public void setCidade(String cidade) {
         this.cidade = cidade;
-    }
-
-    public String getId() {
-        return id;
-    }
-
-    public void setId(String id) {
-        this.id = id;
     }
 
     public String getLatitude() {

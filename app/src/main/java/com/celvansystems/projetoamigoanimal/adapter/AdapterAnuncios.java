@@ -14,7 +14,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.celvansystems.projetoamigoanimal.R;
-import com.celvansystems.projetoamigoanimal.activity.DetalhesActivity;
+import com.celvansystems.projetoamigoanimal.activity.DetalhesAnimalActivity;
 import com.celvansystems.projetoamigoanimal.helper.ConfiguracaoFirebase;
 import com.celvansystems.projetoamigoanimal.model.Animal;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -26,9 +26,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 public class AdapterAnuncios extends RecyclerView.Adapter<AdapterAnuncios.MyViewHolder>
-
         implements Serializable {
-
 
     private List<Animal> anuncios;
 
@@ -70,9 +68,9 @@ public class AdapterAnuncios extends RecyclerView.Adapter<AdapterAnuncios.MyView
                     if (anuncio.getCurtidas() != null) {
                         int numeroCurtidas = anuncio.getCurtidas().size();
                         if (numeroCurtidas == 1) {
-                            myViewHolder.textViewCurtidas.setText("Curtida");
+                            myViewHolder.textViewCurtidas.setText(R.string.curtida);
                         } else if (numeroCurtidas > 1) {
-                            myViewHolder.textViewCurtidas.setText("Curtidas");
+                            myViewHolder.textViewCurtidas.setText(R.string.curtidas);
                         }
 
                         myViewHolder.numeroCurtidas.setText(String.valueOf(numeroCurtidas));
@@ -95,7 +93,7 @@ public class AdapterAnuncios extends RecyclerView.Adapter<AdapterAnuncios.MyView
                     myViewHolder.foto.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
-                            Intent detalhesIntent = new Intent(v.getContext(), DetalhesActivity.class);
+                            Intent detalhesIntent = new Intent(v.getContext(), DetalhesAnimalActivity.class);
                             detalhesIntent.putExtra("anuncioSelecionado", anuncio);
                             v.getContext().startActivity(detalhesIntent);
                         }
@@ -259,7 +257,7 @@ public class AdapterAnuncios extends RecyclerView.Adapter<AdapterAnuncios.MyView
             super(itemView);
 
             dataCadastro = itemView.findViewById(R.id.textDataCadastro);
-            nome = itemView.findViewById(R.id.textNome);
+            nome = itemView.findViewById(R.id.txv_nome);
             idade = itemView.findViewById(R.id.textIdade);
             foto = itemView.findViewById(R.id.imageAnuncio);
             cidade = itemView.findViewById(R.id.textCidadePrincipal);
