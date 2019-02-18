@@ -152,7 +152,7 @@ public class PerfilHumanoActivity extends AppCompatActivity
 
     private void inicializarComponentes(){
         autenticacao = ConfiguracaoFirebase.getFirebaseAutenticacao();
-        Button btnDesativarConta = findViewById(R.id.btnDesativarConta);
+        Button btnDesativarConta = findViewById(R.id.btnEncerrarConta);
 
         btnDesativarConta.setOnClickListener(new View.OnClickListener() {
             @Override
