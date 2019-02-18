@@ -382,7 +382,6 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                                     startActivity(intent);
                                     Toast.makeText(LoginActivity.this, "Sucesso ao realizar login",
                                             Toast.LENGTH_SHORT).show();
-                                    finish();
 
                                 } else {
                                     Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
@@ -391,6 +390,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                                                     task.getException(),
                                             Toast.LENGTH_SHORT).show();
                                 }
+                                finish();
                             }
                         });
 

@@ -188,8 +188,8 @@ public class CadastrarAnuncioActivity extends AppCompatActivity
      */
     private void salvarFotosStorage(final Animal animal, String url, final int totalFotos, int contador){
 
-        //cria nó do storage
         try {
+            //cria nó do storage
             final StorageReference imagemAnimal = storage
                     .child("imagens")
                     .child("animais")
@@ -198,6 +198,7 @@ public class CadastrarAnuncioActivity extends AppCompatActivity
 
             Uri selectedImage = Uri.parse(url);
 
+            //imagem comprimida
             byte[] byteArray = comprimirImagem(selectedImage);
             UploadTask uploadTask = imagemAnimal.putBytes(byteArray);
 
