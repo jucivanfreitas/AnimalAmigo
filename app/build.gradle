@@ -48,13 +48,14 @@ dependencies {
     implementation 'com.squareup.picasso:picasso:2.71828'
     //carouselview
     implementation 'com.synnapps:carouselview:0.1.5'
+    //PickImage
+    implementation 'com.github.jrvansuita:PickImage:2.2.4'
 
-    implementation 'com.github.jrvansuita:PickImage:+'
     implementation 'com.zxy.android:tiny:1.1.0'
     //compressor
     implementation 'id.zelory:compressor:2.1.0'
 
-    implementation 'com.facebook.android:facebook-android-sdk:[4,5)'
+    implementation 'com.facebook.android:facebook-android-sdk:4.40.0'
 
     //login google
     implementation 'com.google.android.gms:play-services-auth:16.0.0'

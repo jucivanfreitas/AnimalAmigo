@@ -22,10 +22,11 @@
         android:roundIcon="@mipmap/ic_launcher_pegada_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+
         <activity
             android:name=".activity.PerfilHumanoActivity"
             android:label="@string/title_activity_perfil_humano"
-            android:theme="@style/AppTheme.NoActionBar.navheader"></activity>
+            android:theme="@style/AppTheme.NoActionBar.navheader"/>
 
         <provider
             android:name="android.support.v4.content.FileProvider"
@@ -52,6 +53,7 @@
         <activity android:name="com.facebook.FacebookActivity"
             android:configChanges= "keyboard|keyboardHidden|screenLayout|screenSize|orientation"
             android:label="@string/app_name" />
+
         <activity android:name="com.facebook.CustomTabActivity"
             android:exported="true">
             <intent-filter>

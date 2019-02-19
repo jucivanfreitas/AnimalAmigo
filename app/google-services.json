@@ -31,7 +31,7 @@
           }
         },
         {
-          "client_id": "401004222439-6jkh05354iudp48p74gevduv1g297sip.apps.googleusercontent.com",
+          "client_id": "401004222439-k032p84b3o9tp5rngjjqqeiodtflfa50.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
@@ -48,7 +48,7 @@
           "status": 2,
           "other_platform_oauth_client": [
             {
-              "client_id": "401004222439-6jkh05354iudp48p74gevduv1g297sip.apps.googleusercontent.com",
+              "client_id": "401004222439-vcq1o7a32eocodqf4k2ho6t2q3c35pq0.apps.googleusercontent.com",
               "client_type": 3
             }
           ]
@@ -58,38 +58,6 @@
         }
       },
       "admob_app_id": "ca-app-pub-6718857112988900~9519509403"
-    },
-    {
-      "client_info": {
-        "mobilesdk_app_id": "1:401004222439:android:8842a15ca7822522",
-        "android_client_info": {
-          "package_name": "om.celvansystems.projetoamigoanimal"
-        }
-      },
-      "oauth_client": [
-        {
-          "client_id": "401004222439-6jkh05354iudp48p74gevduv1g297sip.apps.googleusercontent.com",
-          "client_type": 3
-        }
-      ],
-      "api_key": [
-        {
-          "current_key": "AIzaSyAA8_2fZUttahGz84TIg004DLF0ZXpPKig"
-        }
-      ],
-      "services": {
-        "analytics_service": {
-          "status": 1
-        },
-        "appinvite_service": {
-          "status": 1,
-          "other_platform_oauth_client": []
-        },
-        "ads_service": {
-          "status": 2
-        }
-      },
-      "admob_app_id": "ca-app-pub-6718857112988900~5442725100"
     }
   ],
   "configuration_version": "1"

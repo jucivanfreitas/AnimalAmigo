@@ -144,16 +144,11 @@ public class AdapterAnuncios extends RecyclerView.Adapter<AdapterAnuncios.MyView
             DatabaseReference anuncioRef = ConfiguracaoFirebase.getFirebase()
                     .child("meus_animais");
 
-            //anuncioRef.addValueEventListener(new ValueEventListener() {
-
-            //   @Override
-            //   public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-
             String usuarioAtual = ConfiguracaoFirebase.getIdUsuario();
             List<String> listaCurtidas = new ArrayList<>();
 
             if(isCurtido(anuncio)){
-                Toast.makeText(ctx, "Usuário já curtiu animal!", Toast.LENGTH_SHORT).show();
+                Toast.makeText(ctx, "Usuário já curtiu " + anuncio.getNome()+"!", Toast.LENGTH_SHORT).show();
             } else {
                 if(ConfiguracaoFirebase.isUsuarioLogado()) {
                     if (anuncio.getCurtidas() != null) {
@@ -175,20 +170,13 @@ public class AdapterAnuncios extends RecyclerView.Adapter<AdapterAnuncios.MyView
                         @Override
                         public void onComplete(@NonNull Task<Void> task) {
                             if (anuncio.getCurtidas() != null) {
-                                Toast.makeText(myViewHolder.itemView.getContext(), anuncio.getCurtidas().size() +
-                                        " curtida(s)", Toast.LENGTH_LONG).show();
+                                /*Toast.makeText(myViewHolder.itemView.getContext(), anuncio.getCurtidas().size() +
+                                        " curtida(s)", Toast.LENGTH_LONG).show();*/
                             }
                         }
                     });
                 }
             }
-            //}
-
-            // @Override
-            // public void onCancelled(@NonNull DatabaseError databaseError) {
-
-            //}
-            //});
         } else {
             Toast.makeText(myViewHolder.itemView.getContext(), "Usuário não logado!", Toast.LENGTH_LONG).show();
         }
@@ -210,7 +198,6 @@ public class AdapterAnuncios extends RecyclerView.Adapter<AdapterAnuncios.MyView
             share.setType("image/*");
             share.putExtra(Intent.EXTRA_STREAM, Uri.parse(anuncio.getFotos().get(0)));
             ctx.startActivity(Intent.createChooser(share, "Compartilhando anúncio de animal..."));
-            //Toast.makeText(ctx,anuncio.getFotos().get(0) , Toast.LENGTH_LONG).show();
 
         }catch (Exception e) {e.printStackTrace();}
     }

@@ -22,7 +22,6 @@ import android.text.TextUtils;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
-import android.view.View.OnClickListener;
 import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.ArrayAdapter;
@@ -69,27 +68,13 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
      * Permissao para ler contatos.
      */
     private static final int REQUEST_READ_CONTACTS = 0;
-
     private FirebaseAuth authentication;
-
-    /*
-     * A dummy authentication store containing known user names and passwords.
-     */
-    /*
-    private static final String[] DUMMY_CREDENTIALS = new String[]{
-            "foo@example.com:hello", "bar@example.com:world"
-    };*/
-    /**
-     * Keep track of the login task to ensure we can cancel it if requested.
-     */
-    /*private UserLoginTask mAuthTask = null;*/
 
     // UI references.
     private AutoCompleteTextView mEmailView;
     private EditText mPasswordView;
     private View mProgressView;
     private View mLoginFormView;
-    private Button btnLogin;
     private Switch swtLoginCadastrar;
     private CallbackManager callbackManager;
 
@@ -99,21 +84,55 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         setContentView(R.layout.activity_login);
         setupActionBar();
 
+        authentication = ConfiguracaoFirebase.getFirebaseAutenticacao();
+
         inicializarComponentes();
-        mPasswordView.setOnEditorActionListener(new TextView.OnEditorActionListener() {
-            @Override
-            public boolean onEditorAction(TextView textView, int id, KeyEvent keyEvent) {
-                if (id == EditorInfo.IME_ACTION_DONE || id == EditorInfo.IME_NULL) {
-                    tentarLogin();
-                    return true;
+
+        configuraLoginFacebook();
+
+        populateAutoComplete();
+    }
+
+    private void inicializarComponentes() {
+
+        try {
+            mEmailView = findViewById(R.id.txiEmail);
+            mLoginFormView = findViewById(R.id.login_form);
+            mProgressView = findViewById(R.id.login_progress);
+            mPasswordView = findViewById(R.id.txiPassword);
+            Button btnLogin = findViewById(R.id.btnLogin);
+            swtLoginCadastrar = findViewById(R.id.swtLoginCadastrar);
+
+            mEmailView.setText("");
+            mPasswordView.setText("");
+
+            mPasswordView.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+                @Override
+                public boolean onEditorAction(TextView textView, int id, KeyEvent keyEvent) {
+                    if (id == EditorInfo.IME_ACTION_DONE || id == EditorInfo.IME_NULL) {
+                        tentarLogin();
+                        return true;
+                    }
+                    return false;
                 }
-                return false;
-            }
-        });
+            });
 
-        //FacebookSdk.sdkInitialize(getApplicationContext());
+            btnLogin.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    tentarLogin();
+                }
+            });
 
-        //AppEventsLogger.activateApp(this);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * método que configura o login por meio do facebook
+     */
+    private void configuraLoginFacebook(){
         callbackManager = CallbackManager.Factory.create();
 
         LoginButton loginButton = findViewById(R.id.login_button);
@@ -124,12 +143,6 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         loginButton.registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
             @Override
             public void onSuccess(LoginResult loginResult) {
-
-                Log.d("INFO30", "facebook:onSuccess Handle:" + loginResult);
-                Log.d("INFO30", "facebook:onSuccess Handle:" + loginResult.getAccessToken().getToken());
-                Log.d("INFO30", "facebook:onSuccess Handle:" + loginResult.getAccessToken().getDataAccessExpirationTime());
-
-
                 handleFacebookAccessToken(loginResult.getAccessToken());
             }
             @Override
@@ -137,64 +150,44 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             }
             @Override
             public void onError(FacebookException exception) {
-                Log.d("INFO30", "facebook:onErrorHandle:");
-
+                Log.d("INFO30", "facebook:onErrorHandle: eroo" + exception.getMessage());
             }
         });
-
-        authentication = ConfiguracaoFirebase.getFirebaseAutenticacao();
-
-        /*LoginManager.getInstance().registerCallback(callbackManager,
-                new FacebookCallback<LoginResult>() {
-                    @Override
-                    public void onSuccess(LoginResult loginResult) {
-                        Log.d("INFO30", "facebook:onSuccesLoginManager:");
-                        AccessToken accessToken = AccessToken.getCurrentAccessToken();
-                        AuthCredential credential = FacebookAuthProvider
-                                .getCredential(loginResult.getAccessToken().getToken());
-                        signInCredential(credential);
-                        Intent intent = new Intent(getApplicationContext(), AnunciosActivity.class);
-                        startActivity(intent);
-                    }
-                    @Override
-                    public void onCancel() {
-                    }
-                    @Override
-                    public void onError(FacebookException exception) {
-                        Log.d("INFO30", "facebook:onErrorLoginManager:");
-
-                    }
-                });*/
-
-        FirebaseAuth.AuthStateListener mAuthListener = new FirebaseAuth.AuthStateListener(){
-            @Override
-            public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
-                FirebaseUser user = firebaseAuth.getCurrentUser();
-                if (user!=null){
-                    Log.d("INFO30", "facebook:onStateChanged:");
-
-                    String username = user.getDisplayName();
-                    Toast.makeText(LoginActivity.this, "Bem-vindo "+username, Toast.LENGTH_SHORT).show();
-                }else {
-                    Log.d("INFO30", "facebook:onStateChangedError:");
-                    Toast.makeText(LoginActivity.this,"something went wrong",Toast.LENGTH_LONG).show();
-                }
-            }
-        };
-        btnLogin.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                tentarLogin();
-            }
-        });
-
-        //authentication = ConfiguracaoFirebase.getFirebaseAutenticacao();
-        FirebaseUser currentUser = authentication.getCurrentUser();
-
-        //updateUI(currentUser);
-
-        populateAutoComplete();
     }
+
+    /**
+     * método auxiliar para login por facebook
+     * @param token
+     */
+    private void handleFacebookAccessToken(AccessToken token) {
+
+        AuthCredential credential = FacebookAuthProvider.getCredential(token.getToken());
+
+        authentication.signInWithCredential(credential)
+                .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+                    @Override
+                    public void onComplete(@NonNull Task<AuthResult> task) {
+                        try {
+                            if (task.isSuccessful()) {
+
+                                //direciona para a tela principal
+                                startActivity(new Intent(getApplicationContext(), AnunciosActivity.class));
+                                finish();
+
+                                Toast.makeText(LoginActivity.this, "Sucesso ao realizar login pelo facebook",
+                                        Toast.LENGTH_SHORT).show();
+                            } else {
+
+                                Toast.makeText(LoginActivity.this, "Authentication failed.",
+                                        Toast.LENGTH_SHORT).show();
+                            }
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                    }
+                });
+    }
+
     @Override
     public void onStart() {
         super.onStart();
@@ -203,87 +196,12 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         if(currentUser!= null) {
             Log.d("INFO30", "usuario jah autenticado: " + currentUser.getEmail());
         }
-
-        //updateUI(currentUser);
     }
-    /*private void signInCredential(AuthCredential credential)
-    {
-        authentication.signInWithCredential(credential)
-                .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
-                    @Override
-                    public void onComplete(@NonNull Task<AuthResult> task) {
-                        if(task.isSuccessful())
-                        {
-                            FirebaseUser usuario = authentication.getCurrentUser();
-                            // todos os dados do usuário ficam guardados na variavel usuario.
-                            Log.d("INFO30", "firebaseuser: " + usuario.getEmail());
-                            Log.d("INFO30", "firebaseuser: " + usuario.getDisplayName());
-                            Log.d("INFO30", "firebaseuser: " + usuario.getUid());
 
-                        }
-                        else
-                        {
-                            //O login falhou
-                            Log.d("INFO30", "firebaseuser error: ");
-                        }
-                    }
-                });
-    }*/
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         callbackManager.onActivityResult(requestCode, resultCode, data);
         callbackManager.onActivityResult(requestCode, resultCode, data);
-    }
-
-    private void handleFacebookAccessToken(AccessToken token) {
-        Log.d("INFO30", "handleFacebookAccessToken:" + token);
-
-        AuthCredential credential = FacebookAuthProvider.getCredential(token.getToken());
-        authentication.signInWithCredential(credential)
-                .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
-                    @Override
-                    public void onComplete(@NonNull Task<AuthResult> task) {
-                        try {
-                            if (task.isSuccessful()) {
-                                // Sign in success, update UI with the signed-in user's information
-                                Log.d("INFO30", "signInWithCredential:success");
-                                FirebaseUser user = authentication.getCurrentUser();
-
-                                Toast.makeText(LoginActivity.this, "Sucesso ao realizar login",
-                                        Toast.LENGTH_SHORT).show();
-                                //updateUI(user);
-                            } else {
-                                // If sign in fails, display a message to the user.
-                                Log.d("INFO30", "signInWithCredential:failure", task.getException());
-                                Toast.makeText(LoginActivity.this, "Authentication failed.",
-                                        Toast.LENGTH_SHORT).show();
-                                //updateUI(null);
-                            }
-                        }
-                        catch(Exception e) {
-                            Log.d("INFO30", e.getMessage());
-                            e.printStackTrace();
-                        }
-                        // ...
-                    }
-                });
-    }
-
-    private void inicializarComponentes() {
-
-        try {
-            mEmailView = findViewById(R.id.txiEmail);
-            mLoginFormView = findViewById(R.id.login_form);
-            mProgressView = findViewById(R.id.login_progress);
-            mPasswordView = findViewById(R.id.txiPassword);
-            btnLogin = findViewById(R.id.btnLogin);
-            swtLoginCadastrar = findViewById(R.id.swtLoginCadastrar);
-
-            mEmailView.setText("");
-            mPasswordView.setText("");
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
     }
 
     private void populateAutoComplete() {

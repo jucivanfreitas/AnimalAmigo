@@ -10,7 +10,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -25,7 +24,7 @@ import com.celvansystems.projetoamigoanimal.adapter.AdapterAnuncios;
 import com.celvansystems.projetoamigoanimal.helper.ConfiguracaoFirebase;
 import com.celvansystems.projetoamigoanimal.helper.Util;
 import com.celvansystems.projetoamigoanimal.model.Animal;
-import com.facebook.AccessToken;
+import com.facebook.login.LoginManager;
 import com.google.android.gms.ads.AdListener;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
@@ -60,86 +59,10 @@ public class AnunciosActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_anuncios);
-        autenticacao = ConfiguracaoFirebase.getFirebaseAutenticacao();
 
-        boolean logado = ConfiguracaoFirebase.isUsuarioLogado();
-        if(ConfiguracaoFirebase.isUsuarioLogado()){
-            Log.d("INFO30", "usuario logado");
-        }
-
+        //configurações iniciais
         inicializarComponentes();
         recuperarAnunciosPublicos();
-
-        AccessToken accessToken = AccessToken.getCurrentAccessToken();
-        boolean isLogadoFacebook = (accessToken != null && !accessToken.isExpired());
-
-        if(isLogadoFacebook) {
-            Toast.makeText(this, "Logado por facebook: " + accessToken.getUserId(), Toast.LENGTH_SHORT).show();
-            Log.d("INFO30", "usuario logado por facebook: " + accessToken.getUserId());
-        }
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_main, menu);
-        return true;
-    }
-
-    /*
-     *seleciona menu de acordo com o modo logado ou não logado
-     * */
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        int id = item.getItemId();
-
-        switch (item.getItemId()){
-
-            case R.id.menu_logar:
-                startActivity(new Intent(getApplicationContext(),LoginActivity.class));
-                finish();
-                break;
-
-            case R.id.menu_doacao:
-                startActivity(new Intent(getApplicationContext(),DoacaoActivity.class));
-                break;
-            case R.id.menu_meus_anuncios:
-                startActivity(new Intent(getApplicationContext(),MeusAnunciosActivity.class));
-                break;
-
-            case R.id.menu_configuracoes:
-                startActivity(new Intent(getApplicationContext(),PerfilHumanoActivity.class));
-                break;
-
-            case R.id.menu_sair:
-                autenticacao.signOut();
-                invalidateOptionsMenu(); //invalida o menu e chama o onPrepare de novo
-                break;
-        }
-        if (id == R.id.action_settings) {
-            return true;
-        }
-
-        return super.onOptionsItemSelected(item);
-    }
-
-    /**
-     * método chamado antes de mostrar o menu
-     * @param menu menu
-     * @return boolean
-     */
-    @Override
-    public boolean onPrepareOptionsMenu(Menu menu){
-
-        try {
-            if(ConfiguracaoFirebase.isUsuarioLogado()){
-                menu.setGroupVisible(R.id.group_log_in, true);
-            } else {
-                menu.setGroupVisible(R.id.group_log_off, true);
-            }
-        } catch (Exception e){e.printStackTrace();}
-
-        return super.onPrepareOptionsMenu(menu);
     }
 
     /**
@@ -200,27 +123,23 @@ public class AnunciosActivity extends AppCompatActivity {
                     Toast.makeText(getApplicationContext(), "loaded. " +
                             adRequest.getContentUrl(), Toast.LENGTH_SHORT).show();
                 }
-
                 @Override
                 public void onAdFailedToLoad(int errorCode) {
                     // Code to be executed when an ad request fails.
                     Toast.makeText(getApplicationContext(), "failed to load. " +
                             adRequest.getContentUrl(), Toast.LENGTH_SHORT).show();
                 }
-
                 @Override
                 public void onAdOpened() {
                     // Code to be executed when an ad opens an overlay that
                     // covers the screen.
                     Toast.makeText(getApplicationContext(), "opened", Toast.LENGTH_SHORT).show();
                 }
-
                 @Override
                 public void onAdLeftApplication() {
                     // Code to be executed when the user has left the app.
                     Toast.makeText(getApplicationContext(), "left", Toast.LENGTH_SHORT).show();
                 }
-
                 @Override
                 public void onAdClosed() {
                     // Code to be executed when when the user is about to return.
@@ -231,6 +150,9 @@ public class AnunciosActivity extends AppCompatActivity {
         } catch (Exception e) {e.printStackTrace();}
     }
 
+    /**
+     * exibe os anúncios públicos
+     */
     private void recuperarAnunciosPublicos(){
 
         try {
@@ -265,6 +187,68 @@ public class AnunciosActivity extends AppCompatActivity {
                 }
             });
         } catch (Exception e){e.printStackTrace();}
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.menu_main, menu);
+        return true;
+    }
+
+    /*
+     *seleciona menu de acordo com o modo logado ou não logado
+     * */
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+
+        switch (item.getItemId()){
+
+            case R.id.menu_logar:
+                startActivity(new Intent(getApplicationContext(),LoginActivity.class));
+                finish();
+                break;
+
+            case R.id.menu_doacao:
+                startActivity(new Intent(getApplicationContext(),DoacaoActivity.class));
+                break;
+            case R.id.menu_meus_anuncios:
+                startActivity(new Intent(getApplicationContext(),MeusAnunciosActivity.class));
+                break;
+
+            case R.id.menu_configuracoes:
+                startActivity(new Intent(getApplicationContext(),PerfilHumanoActivity.class));
+                break;
+
+            case R.id.menu_sair:
+                autenticacao.signOut();
+                LoginManager.getInstance().logOut(); //logout do facebook
+                invalidateOptionsMenu(); //invalida o menu e chama o onPrepare de novo
+                break;
+        }
+        if (id == R.id.action_settings) {
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+    /**
+     * método chamado antes de mostrar o menu
+     * @param menu menu
+     * @return boolean
+     */
+    @Override
+    public boolean onPrepareOptionsMenu(Menu menu){
+
+        try {
+            if(ConfiguracaoFirebase.isUsuarioLogado()){
+                menu.setGroupVisible(R.id.group_log_in, true);
+            } else {
+                menu.setGroupVisible(R.id.group_log_off, true);
+            }
+        } catch (Exception e){e.printStackTrace();}
+        return super.onPrepareOptionsMenu(menu);
     }
 
     /**
@@ -394,7 +378,6 @@ public class AnunciosActivity extends AppCompatActivity {
                 }
             });
         } catch (Exception e) {e.printStackTrace();}
-
     }
 
     private void setAdapterSpinnerCidade(){
