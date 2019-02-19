@@ -108,5 +108,7 @@
     <string name="curtida">Curtida</string>
     <string name="curtidas">Curtidas</string>
     <string name="desativarConta">Desativar Conta</string>
+    <string name="facebook_app_id">314424992539028</string>
+    <string name="fb_login_protocol_scheme">fb314424992539028</string>
 
 </resources>

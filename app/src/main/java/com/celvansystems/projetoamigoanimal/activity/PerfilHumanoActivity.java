@@ -173,6 +173,8 @@ public class PerfilHumanoActivity extends AppCompatActivity
                     public void onClick(DialogInterface dialog, int which) {
                         // TODO: 18/02/2019 codigo para excluir conta do usuario e todos os seus anuncios
 
+
+
                         removerContaAtual();
 
                         dialog.dismiss();
@@ -196,27 +198,61 @@ public class PerfilHumanoActivity extends AppCompatActivity
     /**
      * metodo que exclui o usuario atual
      */
-    private void removerContaAtual(){
+    private boolean removerContaAtual(){
+        boolean retorno = false;
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-        String usuarioId = ConfiguracaoFirebase.getIdUsuario();
-
-        user.delete()
+        final String usuarioId = ConfiguracaoFirebase.getIdUsuario();
+        Log.d("INFO29", "usuario id: " + usuarioId);
+        Task<Void> task = user.delete()
                 .addOnCompleteListener(new OnCompleteListener<Void>() {
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {
                         if (task.isSuccessful()) {
 
+                            /*try {
+                                //excluindo todos os anuncios do usuario removido
+                                DatabaseReference anunciosPublicosRef = ConfiguracaoFirebase.getFirebase()
+                                        .child("meus_animais");
+                                Log.d("INFO29", "passou1");
+                                anunciosPublicosRef.addListenerForSingleValueEvent(new ValueEventListener() {
+                                    @Override
+                                    public void onDataChange(DataSnapshot snapshot) {
+                                        for(DataSnapshot animal: snapshot.getChildren()){
+                                            Log.d("INFO29", "passou2");
+                                            Animal anuncio = animal.getValue(Animal.class);
+                                            if(anuncio != null && anuncio.getDonoAnuncio()!= null) {
+                                                Log.d("INFO29", "passou3");
+                                                if (anuncio.getDonoAnuncio().equalsIgnoreCase(usuarioId)) {
+                                                    Log.d("INFO29", "passou4");
+                                                    animal.getRef().removeValue();
+                                                }
+                                            }
+                                        }
+                                    }
+
+                                    @Override
+                                    public void onCancelled(DatabaseError databaseError) {
+                                        throw databaseError.toException();
+                                    }
+                                });
+                            } catch (Exception e) {e.printStackTrace();}
+*/
                             // TODO: 18/02/2019 inserir lógica para excluir todos os anuncios do usuario excluido
 
                             Log.d("INFO3", "User account deleted.");
                             Toast.makeText(getApplicationContext(), "Usuário excluído com sucesso!", Toast.LENGTH_SHORT).show();
                             startActivity(new Intent(getApplicationContext(), LoginActivity.class));
                             finish();
+
                         } else {
                             Log.d("INFO3", "User account not deleted.");
                             Toast.makeText(getApplicationContext(), "Falha ao excluir usuário!", Toast.LENGTH_SHORT).show();
                         }
                     }
                 });
+        if(task.isSuccessful()) {
+            retorno = true;
+        }
+        return retorno;
     }
 }

@@ -10,6 +10,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -24,6 +25,7 @@ import com.celvansystems.projetoamigoanimal.adapter.AdapterAnuncios;
 import com.celvansystems.projetoamigoanimal.helper.ConfiguracaoFirebase;
 import com.celvansystems.projetoamigoanimal.helper.Util;
 import com.celvansystems.projetoamigoanimal.model.Animal;
+import com.facebook.AccessToken;
 import com.google.android.gms.ads.AdListener;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
@@ -58,10 +60,23 @@ public class AnunciosActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_anuncios);
+        autenticacao = ConfiguracaoFirebase.getFirebaseAutenticacao();
+
+        boolean logado = ConfiguracaoFirebase.isUsuarioLogado();
+        if(ConfiguracaoFirebase.isUsuarioLogado()){
+            Log.d("INFO30", "usuario logado");
+        }
 
         inicializarComponentes();
-
         recuperarAnunciosPublicos();
+
+        AccessToken accessToken = AccessToken.getCurrentAccessToken();
+        boolean isLogadoFacebook = (accessToken != null && !accessToken.isExpired());
+
+        if(isLogadoFacebook) {
+            Toast.makeText(this, "Logado por facebook: " + accessToken.getUserId(), Toast.LENGTH_SHORT).show();
+            Log.d("INFO30", "usuario logado por facebook: " + accessToken.getUserId());
+        }
     }
 
     @Override
