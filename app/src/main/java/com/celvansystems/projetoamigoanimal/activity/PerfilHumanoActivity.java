@@ -87,10 +87,13 @@ public class PerfilHumanoActivity extends AppCompatActivity
 
         if (id == R.id.nav_perfil) {
             // Handle the camera action
+     //       setContentView(R.layout.content_perfil_humano);
 
             Toast.makeText(getApplicationContext(), "falta implementar esta função de navegabilidade sobre o perfil humano"
                     , Toast.LENGTH_SHORT).show();
         } else if (id == R.id.nav_config_notificacoes) {
+
+        //    setContentView(R.layout.content_notifications);
             // TODO: 17/02/2019 programar ações da content_cotificações
             Toast.makeText(getApplicationContext(),
                     "implementar content configuração de notificação",
