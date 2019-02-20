@@ -113,6 +113,14 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             Button btnLogin = findViewById(R.id.btnLogin);
             swtLoginCadastrar = findViewById(R.id.swtLoginCadastrar);
 
+            TextView txtAnuncios = findViewById(R.id.txtAnuncios);
+            txtAnuncios.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    startActivity(new Intent(getApplicationContext(), AnunciosActivity.class));
+                }
+            });
+
             mEmailView.setText("");
             mPasswordView.setText("");
 

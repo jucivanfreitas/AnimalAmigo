@@ -186,27 +186,41 @@
                 <com.facebook.login.widget.LoginButton
                     android:id="@+id/login_button_facebook"
                     style="@style/FacebookLoginButton"
-                    android:layout_marginTop="10dp"
                     android:layout_width="250dp"
                     android:layout_height="match_parent"
+                    android:layout_marginTop="10dp"
                     android:layout_weight="1"
                     android:elevation="2dp"
                     android:gravity="center"
-                    android:textSize="15dp" />
+                    android:textSize="15sp" />
 
                 <com.google.android.gms.common.SignInButton
                     android:id="@+id/login_button_google"
-                    android:layout_marginTop="10dp"
                     android:layout_width="258dp"
-                    android:layout_height="match_parent"
+                    android:layout_height="50dp"
                     android:layout_gravity="center"
+                    android:layout_marginTop="10dp"
                     android:layout_weight="1"
                     android:elevation="2dp"
                     android:textColor="@color/backgroundcolor"
 
-                    android:textSize="15dp" />
+                    android:textSize="15sp" />
             </LinearLayout>
 
         </LinearLayout>
     </ScrollView>
+
+    <TextView
+        android:id="@+id/txtAnuncios"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="8dp"
+        android:text="@string/ir_anuncios"
+        android:textColor="@color/backgroundcolor"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/login_form" />
+
 </android.support.constraint.ConstraintLayout>

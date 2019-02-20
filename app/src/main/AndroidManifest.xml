@@ -89,7 +89,8 @@
         <activity
             android:name=".activity.LoginActivity"
             android:label="@string/title_activity_login"
-            android:parentActivityName=".activity.AnunciosActivity">
+            android:windowSoftInputMode="adjustPan"
+        android:parentActivityName=".activity.AnunciosActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.celvansystems.projetoamigoanimal.activity.AnunciosActivity" />
