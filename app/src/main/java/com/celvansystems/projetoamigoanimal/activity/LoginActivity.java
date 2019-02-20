@@ -318,83 +318,6 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                 });
     }
 
-    private void populateAutoComplete() {
-        try {
-            if (!mayRequestContacts()) {
-                return;
-            }
-            getLoaderManager().initLoader(0, null, this);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-
-    private boolean mayRequestContacts() {
-        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) {
-            return true;
-        }
-        if (checkSelfPermission(READ_CONTACTS) == PackageManager.PERMISSION_GRANTED) {
-            return true;
-        }
-        if (shouldShowRequestPermissionRationale(READ_CONTACTS)) {
-            Snackbar.make(mEmailView, R.string.permission_rationale, Snackbar.LENGTH_INDEFINITE)
-                    .setAction(android.R.string.ok, new View.OnClickListener() {
-                        @Override
-                        @TargetApi(Build.VERSION_CODES.M)
-                        public void onClick(View v) {
-                            requestPermissions(new String[]{READ_CONTACTS}, REQUEST_READ_CONTACTS);
-                        }
-                    });
-        } else {
-            requestPermissions(new String[]{READ_CONTACTS}, REQUEST_READ_CONTACTS);
-        }
-        return false;
-    }
-
-    /**
-     * Callback received when a permissions request has been completed.
-     */
-    @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions,
-                                           @NonNull int[] grantResults) {
-        try {
-            if (requestCode == REQUEST_READ_CONTACTS) {
-                if (grantResults.length == 1 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    populateAutoComplete();
-                }
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-
-    /**
-     * Set up the {@link android.app.ActionBar}, if the API is available.
-     */
-    @SuppressLint("ObsoleteSdkInt")
-    @TargetApi(Build.VERSION_CODES.HONEYCOMB)
-    private void setupActionBar() {
-        // Show the Up button in the action bar.
-        try {
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
-                Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-
-    /*
-     * esconde teclado
-     * */
-    public static void hideKeyboard(Context context, View editText) {
-        try {
-            InputMethodManager imm = (InputMethodManager) context.getSystemService(Context.INPUT_METHOD_SERVICE);
-            imm.hideSoftInputFromWindow(editText.getWindowToken(), 0);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
 
     @SuppressLint("MissingPermission")
     private void tentarLogin() {
@@ -532,11 +455,11 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
 
                                 if (task.isSuccessful()) {
 
-                                    Toast.makeText(LoginActivity.this, "Cadastro realizado",
-                                            Toast.LENGTH_SHORT).show();
-                                    //direciona para a tela principal
-                                    startActivity(new Intent(getApplicationContext(), AnunciosActivity.class));
-                                    finish();
+                                    Toast.makeText(LoginActivity.this, "Cadastro realizado. Acesse sua caixa de e-mails e valide sua conta.",
+                                            Toast.LENGTH_LONG).show();
+                                    sendVerificationEmail();
+
+                                    swtLoginCadastrar.setChecked(false);
                                 } else {
                                     String erroExcecao;
                                     try {
@@ -546,7 +469,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                                     } catch (FirebaseAuthInvalidCredentialsException e) {
                                         erroExcecao = "Digite um e-mail válido";
                                     } catch (FirebaseAuthUserCollisionException e) {
-                                        erroExcecao = "Conta já cadastrada";
+                                        erroExcecao = "Conta já cadastrada. Realize seu login";
                                     } catch (FirebaseAuthInvalidUserException e) {
                                         erroExcecao = "Usuário inexistente";
                                     } catch (Exception e) {
@@ -565,25 +488,72 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                             @Override
                             public void onComplete(@NonNull Task<AuthResult> task) {
                                 if (task.isSuccessful()) {
-                                    Intent intent = new Intent(getApplicationContext(), AnunciosActivity.class);
-                                    startActivity(intent);
-                                    Toast.makeText(LoginActivity.this, "Sucesso ao realizar login",
-                                            Toast.LENGTH_SHORT).show();
 
+                                    if(checkIfEmailVerified()) {
+                                        Intent intent = new Intent(getApplicationContext(), AnunciosActivity.class);
+                                        startActivity(intent);
+                                        Toast.makeText(LoginActivity.this, "Sucesso ao realizar login",
+                                                Toast.LENGTH_SHORT).show();
+                                        finish();
+                                    } else {
+                                        Toast.makeText(LoginActivity.this, "E-mail não verificado. Gentileza verificar sua caixa de e-mail.",
+                                                Toast.LENGTH_SHORT).show();
+                                        //envia e-mail de verificacao
+                                        sendVerificationEmail();
+                                    }
                                 } else {
-                                    Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
-                                    startActivity(intent);
                                     Toast.makeText(LoginActivity.this, "Falha ao realizar login: " +
                                                     task.getException(),
                                             Toast.LENGTH_SHORT).show();
                                 }
-                                finish();
                             }
                         });
-
                 showProgress(true);
             }
         }
+    }
+
+    /**
+     * firebase envia e-mail de verificação
+     */
+    private void sendVerificationEmail()
+    {
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+
+        assert user != null;
+        user.sendEmailVerification()
+                .addOnCompleteListener(new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        if (task.isSuccessful()) {
+                            // email enviado
+                            FirebaseAuth.getInstance().signOut();
+                        }
+                        else
+                        {
+                            // email nao enviado
+                            //restart this activity
+                            overridePendingTransition(0, 0);
+                            finish();
+                            overridePendingTransition(0, 0);
+                            startActivity(getIntent());
+                        }
+                    }
+                });
+    }
+
+    /**
+     * verifica se o e-mail do usuário foi verificado pelo firebase
+     * @return boolean e-mail verified
+     */
+    private boolean checkIfEmailVerified()
+    {
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+
+        if(user != null) {
+            return user.isEmailVerified();
+        }
+        return false;
     }
 
     private boolean isEmailValid(String email) {
@@ -688,5 +658,83 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         };
 
         int ADDRESS = 0;
+    }
+
+    private void populateAutoComplete() {
+        try {
+            if (!mayRequestContacts()) {
+                return;
+            }
+            getLoaderManager().initLoader(0, null, this);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    private boolean mayRequestContacts() {
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) {
+            return true;
+        }
+        if (checkSelfPermission(READ_CONTACTS) == PackageManager.PERMISSION_GRANTED) {
+            return true;
+        }
+        if (shouldShowRequestPermissionRationale(READ_CONTACTS)) {
+            Snackbar.make(mEmailView, R.string.permission_rationale, Snackbar.LENGTH_INDEFINITE)
+                    .setAction(android.R.string.ok, new View.OnClickListener() {
+                        @Override
+                        @TargetApi(Build.VERSION_CODES.M)
+                        public void onClick(View v) {
+                            requestPermissions(new String[]{READ_CONTACTS}, REQUEST_READ_CONTACTS);
+                        }
+                    });
+        } else {
+            requestPermissions(new String[]{READ_CONTACTS}, REQUEST_READ_CONTACTS);
+        }
+        return false;
+    }
+
+    /**
+     * Callback received when a permissions request has been completed.
+     */
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions,
+                                           @NonNull int[] grantResults) {
+        try {
+            if (requestCode == REQUEST_READ_CONTACTS) {
+                if (grantResults.length == 1 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    populateAutoComplete();
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * Set up the {@link android.app.ActionBar}, if the API is available.
+     */
+    @SuppressLint("ObsoleteSdkInt")
+    @TargetApi(Build.VERSION_CODES.HONEYCOMB)
+    private void setupActionBar() {
+        // Show the Up button in the action bar.
+        try {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
+                Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    /*
+     * esconde teclado
+     * */
+    public static void hideKeyboard(Context context, View editText) {
+        try {
+            InputMethodManager imm = (InputMethodManager) context.getSystemService(Context.INPUT_METHOD_SERVICE);
+            imm.hideSoftInputFromWindow(editText.getWindowToken(), 0);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }
