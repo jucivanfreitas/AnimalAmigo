@@ -110,6 +110,7 @@
     <string name="desativarConta">Desativar Conta</string>
     <string name="facebook_app_id">314424992539028</string>
     <string name="fb_login_protocol_scheme">fb314424992539028</string>
+    <string name="google_web_client">401004222439-k032p84b3o9tp5rngjjqqeiodtflfa50.apps.googleusercontent.com</string>
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>

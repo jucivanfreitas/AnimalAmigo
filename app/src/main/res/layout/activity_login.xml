@@ -160,31 +160,52 @@
             </LinearLayout>
 
 
-            <Button
-                android:id="@+id/btnLogin"
-                style="?android:textAppearanceSmall"
+            <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
-                android:background="@drawable/bg_btn"
-                android:clickable="true"
-                android:elevation="50dp"
-                android:focusable="true"
-                android:foreground="?attr/selectableItemBackground"
-                android:shadowColor="@color/black_overlay"
-                android:shadowDy="@android:integer/config_mediumAnimTime"
-                android:text="@string/txt_entrar"
-                android:textColor="@color/common_google_signin_btn_text_dark_default"
-                android:textColorLink="@color/common_google_signin_btn_text_dark_default"
-                android:textStyle="bold" />
+                android:layout_height="match_parent"
+                android:orientation="vertical">
 
-            <com.facebook.login.widget.LoginButton
-                android:id="@+id/login_button"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal"
-                android:layout_marginTop="30dp"
-                android:layout_marginBottom="30dp" />
+                <Button
+                    android:id="@+id/btnLogin"
+                    style="?android:textAppearanceSmall"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    android:background="@drawable/bg_btn"
+                    android:clickable="true"
+                    android:elevation="50dp"
+                    android:focusable="true"
+                    android:foreground="?attr/selectableItemBackground"
+                    android:shadowColor="@color/black_overlay"
+                    android:shadowDy="@android:integer/config_mediumAnimTime"
+                    android:text="@string/txt_entrar"
+                    android:textColor="@color/common_google_signin_btn_text_dark_default"
+                    android:textColorLink="@color/common_google_signin_btn_text_dark_default"
+                    android:textStyle="bold" />
+
+                <com.facebook.login.widget.LoginButton
+                    android:id="@+id/login_button_facebook"
+                    style="@style/FacebookLoginButton"
+                    android:layout_marginTop="10dp"
+                    android:layout_width="250dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:elevation="2dp"
+                    android:gravity="center"
+                    android:textSize="15dp" />
+
+                <com.google.android.gms.common.SignInButton
+                    android:id="@+id/login_button_google"
+                    android:layout_marginTop="10dp"
+                    android:layout_width="258dp"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center"
+                    android:layout_weight="1"
+                    android:elevation="2dp"
+                    android:textColor="@color/backgroundcolor"
+
+                    android:textSize="15dp" />
+            </LinearLayout>
 
         </LinearLayout>
     </ScrollView>

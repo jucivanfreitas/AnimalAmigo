@@ -7,13 +7,11 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
-import android.support.v4.view.GravityCompat;
-import android.support.v4.widget.DrawerLayout;
-import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -33,6 +31,12 @@ import com.google.android.gms.ads.AdListener;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
 import com.google.android.gms.ads.MobileAds;
+import com.google.android.gms.auth.api.signin.GoogleSignIn;
+import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
+import com.google.android.gms.auth.api.signin.GoogleSignInClient;
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -159,8 +163,8 @@ public class AnunciosActivity extends AppCompatActivity implements NavigationVie
                 @Override
                 public void onAdFailedToLoad(int errorCode) {
                     // Code to be executed when an ad request fails.
-                    Toast.makeText(getApplicationContext(), "failed to load. " +
-                            adRequest.getContentUrl(), Toast.LENGTH_SHORT).show();
+                   // Toast.makeText(getApplicationContext(), "failed to load. " +
+                    //        adRequest.getContentUrl(), Toast.LENGTH_SHORT).show();
                 }
                 @Override
                 public void onAdOpened() {
@@ -258,12 +262,40 @@ public class AnunciosActivity extends AppCompatActivity implements NavigationVie
                 autenticacao.signOut();
                 LoginManager.getInstance().logOut(); //logout do facebook
                 invalidateOptionsMenu(); //invalida o menu e chama o onPrepare de novo
+
+                //google
+                // Configure sign-in to request the user's ID, email address, and basic
+                // profile. ID and basic profile are included in DEFAULT_SIGN_IN.
+                GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                        .requestEmail()
+                        .build();
+                GoogleSignInClient mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
+                mGoogleSignInClient.signOut()
+                        .addOnCompleteListener(this, new OnCompleteListener<Void>() {
+                            @Override
+                            public void onComplete(@NonNull Task<Void> task) {
+                                // ...
+                            }
+                        });
                 break;
         }
         if (id == R.id.action_settings) {
             return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+
+        // Verifica se há conta do google logada.
+        GoogleSignInAccount account = GoogleSignIn.getLastSignedInAccount(this);
+        if(account == null) {
+            Log.d("INFO40", "usuario nao logado com google");
+
+        }
+        //updateUI(account);
     }
 
     /**

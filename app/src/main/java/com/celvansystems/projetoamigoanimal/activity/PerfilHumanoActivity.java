@@ -19,6 +19,9 @@ import android.widget.Toast;
 
 import com.celvansystems.projetoamigoanimal.R;
 import com.celvansystems.projetoamigoanimal.helper.ConfiguracaoFirebase;
+import com.google.android.gms.auth.api.signin.GoogleSignIn;
+import com.google.android.gms.auth.api.signin.GoogleSignInClient;
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
@@ -242,10 +245,16 @@ public class PerfilHumanoActivity extends AppCompatActivity
 */
                             // TODO: 18/02/2019 inserir lógica para excluir todos os anuncios do usuario excluido
 
+                            //google sign in
+                            revokeAccess();
+
+                            //
                             Log.d("INFO3", "User account deleted.");
                             Toast.makeText(getApplicationContext(), "Usuário excluído com sucesso!", Toast.LENGTH_SHORT).show();
-                            startActivity(new Intent(getApplicationContext(), LoginActivity.class));
+                            startActivity(new Intent(getApplicationContext(), AnunciosActivity.class));
                             finish();
+
+
 
                         } else {
                             Log.d("INFO3", "User account not deleted.");
@@ -257,5 +266,20 @@ public class PerfilHumanoActivity extends AppCompatActivity
             retorno = true;
         }
         return retorno;
+    }
+
+    //google
+    private void revokeAccess() {
+        GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                .requestEmail()
+                .build();
+        GoogleSignInClient mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
+        mGoogleSignInClient.revokeAccess()
+                .addOnCompleteListener(this, new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                    }
+                });
+
     }
 }

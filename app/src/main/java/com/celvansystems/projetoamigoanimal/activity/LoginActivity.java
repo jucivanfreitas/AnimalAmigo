@@ -34,12 +34,19 @@ import android.widget.Toast;
 
 import com.celvansystems.projetoamigoanimal.R;
 import com.celvansystems.projetoamigoanimal.helper.ConfiguracaoFirebase;
+import com.celvansystems.projetoamigoanimal.helper.Constantes;
 import com.facebook.AccessToken;
 import com.facebook.CallbackManager;
 import com.facebook.FacebookCallback;
 import com.facebook.FacebookException;
 import com.facebook.login.LoginResult;
 import com.facebook.login.widget.LoginButton;
+import com.google.android.gms.auth.api.signin.GoogleSignIn;
+import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
+import com.google.android.gms.auth.api.signin.GoogleSignInClient;
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
+import com.google.android.gms.common.SignInButton;
+import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthCredential;
@@ -51,6 +58,7 @@ import com.google.firebase.auth.FirebaseAuthInvalidUserException;
 import com.google.firebase.auth.FirebaseAuthUserCollisionException;
 import com.google.firebase.auth.FirebaseAuthWeakPasswordException;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.auth.GoogleAuthProvider;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -69,7 +77,6 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
      */
     private static final int REQUEST_READ_CONTACTS = 0;
     private FirebaseAuth authentication;
-
     // UI references.
     private AutoCompleteTextView mEmailView;
     private EditText mPasswordView;
@@ -77,6 +84,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
     private View mLoginFormView;
     private Switch swtLoginCadastrar;
     private CallbackManager callbackManager;
+    private GoogleSignInClient mGoogleSignInClient;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -89,6 +97,8 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         inicializarComponentes();
 
         configuraLoginFacebook();
+
+        configuraLoginGoogle();
 
         populateAutoComplete();
     }
@@ -130,12 +140,20 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
     }
 
     /**
+     * ação do botao de login do google
+     */
+    private void signInGoogle() {
+        Intent signInIntent = mGoogleSignInClient.getSignInIntent();
+        startActivityForResult(signInIntent, Constantes.GOOGLE_REQUEST_CODE);
+    }
+
+    /**
      * método que configura o login por meio do facebook
      */
     private void configuraLoginFacebook(){
         callbackManager = CallbackManager.Factory.create();
 
-        LoginButton loginButton = findViewById(R.id.login_button);
+        LoginButton loginButton = findViewById(R.id.login_button_facebook);
         loginButton.setReadPermissions(Arrays.asList(
                 "email", "public_profile"));
 
@@ -156,8 +174,33 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
     }
 
     /**
+     * método que configura o login por meio do google
+     */
+    private void configuraLoginGoogle(){
+        //Google Login
+        SignInButton signInButton = findViewById(R.id.login_button_google);
+        signInButton.setSize(SignInButton.SIZE_WIDE);
+        signInButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                switch (v.getId()) {
+                    case R.id.login_button_google:
+                        signInGoogle();
+                        break;
+                }
+            }
+        });
+        // Configure Google Sign In
+        GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                .requestIdToken(getString(R.string.google_web_client))
+                .requestEmail()
+                .build();
+        mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
+
+    }
+    /**
      * método auxiliar para login por facebook
-     * @param token
+     * @param token token
      */
     private void handleFacebookAccessToken(AccessToken token) {
 
@@ -196,12 +239,83 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         if(currentUser!= null) {
             Log.d("INFO30", "usuario jah autenticado: " + currentUser.getEmail());
         }
+
+        // Verifica se há conta do google logada.
+        GoogleSignInAccount account = GoogleSignIn.getLastSignedInAccount(this);
+        if(account == null) {
+            Log.d("INFO40", "usuario nao logado com google");
+
+        } else {
+            Log.d("INFO40", "usuario logado com google");
+
+        }
     }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
         callbackManager.onActivityResult(requestCode, resultCode, data);
         callbackManager.onActivityResult(requestCode, resultCode, data);
+
+        // Result returned from launching the Intent from GoogleSignInClient.getSignInIntent(...);
+        if (requestCode == Constantes.GOOGLE_REQUEST_CODE) {
+
+            Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(data);
+            try {
+                // Google Sign In was successful, authenticate with Firebase
+                GoogleSignInAccount account = task.getResult(ApiException.class);
+                if(account!= null) {
+                    firebaseAuthWithGoogle(account);
+                }
+            } catch (ApiException e) {
+                // Google Sign In failed, update UI appropriately
+                e.printStackTrace();
+            }
+            handleSignInResult(task);
+        }
+    }
+
+    /**
+     * método que pega o resultado da tentativa de login do google
+     * @param completedTask task
+     */
+    private void handleSignInResult(Task<GoogleSignInAccount> completedTask) {
+        try {
+            GoogleSignInAccount account = completedTask.getResult(ApiException.class);
+            if(account!= null)
+                Log.d("INFO40", String.format("handle - logado pelo google %s", account.getDisplayName()));
+        } catch (ApiException e) {
+            Log.d("INFO40", "signInResult:failed code=" + e.getStatusCode());
+        }
+    }
+
+    /**
+     * método usado para fazer login no google com uma credential
+     * @param acct conta
+     */
+    private void firebaseAuthWithGoogle(GoogleSignInAccount acct) {
+        Log.d("INFO40", "firebaseAuthWithGoogle:" + acct.getId());
+
+        AuthCredential credential = GoogleAuthProvider.getCredential(acct.getIdToken(), null);
+        authentication.signInWithCredential(credential)
+                .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+                    @Override
+                    public void onComplete(@NonNull Task<AuthResult> task) {
+                        if (task.isSuccessful()) {
+
+                            FirebaseUser user = authentication.getCurrentUser();
+                            //direciona para a tela principal
+                            if(user!= null && user.getEmail()!= null) {
+                                Toast.makeText(LoginActivity.this, "Sucesso ao realizar login pelo google, " +
+                                                user.getEmail(),
+                                        Toast.LENGTH_SHORT).show();
+                            }
+                            startActivity(new Intent(getApplicationContext(), AnunciosActivity.class));
+                            finish();
+                        }
+                    }
+                });
     }
 
     private void populateAutoComplete() {
@@ -269,12 +383,6 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             e.printStackTrace();
         }
     }
-
-    /**
-     * Attempts to sign in or register the account specified by the login form.
-     * If there are form errors (invalid email, missing fields, etc.), the
-     * errors are presented and no actual login attempt is made.
-     */
 
     /*
      * esconde teclado
