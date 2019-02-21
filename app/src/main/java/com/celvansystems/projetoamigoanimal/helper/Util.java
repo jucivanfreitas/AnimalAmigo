@@ -1,6 +1,10 @@
 package com.celvansystems.projetoamigoanimal.helper;
 
 import android.content.Context;
+import android.support.design.widget.Snackbar;
+import android.view.Gravity;
+import android.view.View;
+import android.widget.TextView;
 
 import com.celvansystems.projetoamigoanimal.R;
 
@@ -148,5 +152,13 @@ public class Util {
         // configuraçao da data atual do Brasil
         Calendar cal = Calendar.getInstance();
         return( new SimpleDateFormat("yyyy/MM/dd HH:mm:ss").format(cal.getTime()));
+    }
+
+    public static void setSnackBar(View root, String snackTitle) {
+        Snackbar snackbar = Snackbar.make(root, snackTitle, Snackbar.LENGTH_SHORT);
+        snackbar.show();
+        View view = snackbar.getView();
+        TextView txtv = (TextView) view.findViewById(android.support.design.R.id.snackbar_text);
+        txtv.setGravity(Gravity.CENTER_HORIZONTAL);
     }
 }
