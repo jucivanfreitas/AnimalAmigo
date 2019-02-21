@@ -3,12 +3,12 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".fragment.CadProcuradoFragment">
+    tools:context=".fragment.NotificacoesFragment">
 
     <!-- TODO: Update blank fragment layout -->
     <TextView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:text="teste fragment cadasrtrar adoção" />
+        android:text="texto teste notificações fragment" />
 
 </FrameLayout>

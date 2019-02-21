@@ -3,12 +3,12 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".fragment.MessengerFragment">
+    tools:context=".fragment.ProcuradoFragment">
 
     <!-- TODO: Update blank fragment layout -->
     <TextView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:text="texto teste fragmente @string/messenger_send_button_text" />
+        android:text="teste fragment cadasrtrar adoção" />
 
 </FrameLayout>

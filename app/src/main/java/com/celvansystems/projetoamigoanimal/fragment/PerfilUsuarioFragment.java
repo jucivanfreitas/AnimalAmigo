@@ -29,17 +29,17 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.util.Objects;
 
-public class PerfilUserFragment extends Fragment {
+public class PerfilUsuarioFragment extends Fragment {
 
     private View view;
 
-    public PerfilUserFragment() {}
+    public PerfilUsuarioFragment() {}
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
-        view = inflater.inflate(R.layout.fragment_perfil_user, container, false);
+        view = inflater.inflate(R.layout.fragment_perfil_usuario, container, false);
         inicializarComponentes();
 
         return view;
