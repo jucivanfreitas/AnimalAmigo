@@ -26,6 +26,7 @@ import com.celvansystems.projetoamigoanimal.adapter.AdapterAnuncios;
 import com.celvansystems.projetoamigoanimal.helper.ConfiguracaoFirebase;
 import com.celvansystems.projetoamigoanimal.helper.Util;
 import com.celvansystems.projetoamigoanimal.model.Animal;
+import com.facebook.AccessToken;
 import com.facebook.login.LoginManager;
 import com.google.android.gms.ads.AdListener;
 import com.google.android.gms.ads.AdRequest;
@@ -302,9 +303,15 @@ public class AnunciosActivity extends AppCompatActivity implements NavigationVie
         if(account != null) {
             Log.d("INFO40", "Usuário logado com google");
             Util.setSnackBar(layout, "Usuário logado pelo google");
+        } else {
+            // Verifica se há conta do facebook logada
+            AccessToken token = AccessToken.getCurrentAccessToken();
+
+            if (token != null) {
+                Log.d("INFO40", "Usuário logado pelo facebook");
+                Util.setSnackBar(layout, "Usuário logado pelo facebook");
+            }
         }
-        //updateUI(account);
-        // TODO: 20/02/2019 verificar se logou com o facebook
     }
 
     /**

@@ -17,6 +17,7 @@ import com.celvansystems.projetoamigoanimal.R;
 import com.celvansystems.projetoamigoanimal.activity.AnunciosActivity;
 import com.celvansystems.projetoamigoanimal.helper.ConfiguracaoFirebase;
 import com.celvansystems.projetoamigoanimal.model.Animal;
+import com.facebook.login.LoginManager;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
@@ -26,30 +27,32 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.ValueEventListener;
 
-import static com.facebook.FacebookSdk.getApplicationContext;
+import java.util.Objects;
 
 public class PerfilUserFragment extends Fragment {
 
-    private FirebaseAuth autenticacao;
+    private View view;
 
-    public PerfilUserFragment() {
-        // Required empty public constructor
-    }
-
+    public PerfilUserFragment() {}
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
+        view = inflater.inflate(R.layout.fragment_perfil_user, container, false);
         inicializarComponentes();
 
-        return inflater.inflate(R.layout.fragment_perfil_user, container, false);
-
+        return view;
     }
 
+    /**
+     * configuracoes iniciais
+     */
     private void inicializarComponentes() {
-        autenticacao = ConfiguracaoFirebase.getFirebaseAutenticacao();
-        Button btnDesativarConta = getActivity().findViewById(R.id.btnEncerrarConta);
+
+        Toast.makeText(view.getContext(), "Iniciando componentes...", Toast.LENGTH_SHORT).show();
+
+        Button btnDesativarConta = view.findViewById(R.id.btnEncerrarConta);
 
         btnDesativarConta.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -59,17 +62,11 @@ public class PerfilUserFragment extends Fragment {
                 alertDesativarConta.setTitle("Tem certeza que deseja desativar sua conta? ");
                 alertDesativarConta.setMessage("Esta opção não poderá ser revertida.");
 
-                //final EditText input = new EditText(v.getContext());
-                //input.setHint("Digite sua senha");
-                //alertDesativarConta.setView(input);
-
                 alertDesativarConta.setPositiveButton("Sim", new DialogInterface.OnClickListener() {
 
                     public void onClick(DialogInterface dialog, int which) {
-                        // TODO: 18/02/2019 codigo para excluir conta do usuario e todos os seus anuncios
 
                         removerContaAtual();
-
                         dialog.dismiss();
                     }
                 });
@@ -89,45 +86,37 @@ public class PerfilUserFragment extends Fragment {
     }
 
     /**
-     * metodo que exclui o usuario atual
+     * metodo que exclui o usuario atual e todos os seus anuncios
      */
-    private boolean removerContaAtual(){
-        boolean retorno = false;
+    private void removerContaAtual(){
+
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
         final String usuarioId = ConfiguracaoFirebase.getIdUsuario();
         Log.d("INFO29", "usuario id: " + usuarioId);
-        Task<Void> task = user.delete()
+
+        //deleta todos os anuncios do usuario
+        deletarAnunciosUsuario(usuarioId);
+
+        LoginManager.getInstance().logOut();
+
+        //Deleta usuário
+        Objects.requireNonNull(user).delete()
                 .addOnCompleteListener(new OnCompleteListener<Void>() {
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {
                         if (task.isSuccessful()) {
 
-                            deletarAnunciosUsuario(usuarioId );
-
-                            // TODO: 18/02/2019 inserir lógica para excluir todos os anuncios do usuario excluido
-
-                            //google sign in
-                            // TODO: 21/02/2019 verificar se eh conta google ou facebook
-                            //revokeAccess();
-
-                            //
-                            Log.d("INFO3", "User account deleted.");
-                            Toast.makeText(getApplicationContext(), "Usuário excluído com sucesso!", Toast.LENGTH_SHORT).show();
-                            startActivity(new Intent(getApplicationContext(), AnunciosActivity.class));
-                            //finish();
-                            getActivity().getFragmentManager().popBackStack();
-
+                            Toast.makeText(view.getContext(), "Usuário excluído com sucesso!", Toast.LENGTH_SHORT).show();
+                            startActivity(new Intent(view.getContext(), AnunciosActivity.class));
+                            Toast.makeText(view.getContext(), "usuario excluido!", Toast.LENGTH_SHORT).show();
+                            Objects.requireNonNull(getActivity()).finish();
 
                         } else {
                             Log.d("INFO3", "User account not deleted.");
-                            Toast.makeText(getApplicationContext(), "Falha ao excluir usuário!", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(view.getContext(), "Falha ao excluir usuário!", Toast.LENGTH_SHORT).show();
                         }
                     }
                 });
-        if(task.isSuccessful()) {
-            retorno = true;
-        }
-        return retorno;
     }
 
     private void deletarAnunciosUsuario(final String usuarioId) {
@@ -140,7 +129,7 @@ public class PerfilUserFragment extends Fragment {
             anunciosPublicosRef.addValueEventListener(new ValueEventListener() {
 
                 @Override
-                public void onDataChange(DataSnapshot snapshot) {
+                public void onDataChange(@NonNull DataSnapshot snapshot) {
                     for(DataSnapshot animal: snapshot.getChildren()){
                         Log.d("INFO29", "passou2");
                         Animal anuncio = animal.getValue(Animal.class);
@@ -153,9 +142,8 @@ public class PerfilUserFragment extends Fragment {
                         }
                     }
                 }
-
                 @Override
-                public void onCancelled(DatabaseError databaseError) {
+                public void onCancelled(@NonNull DatabaseError databaseError) {
                     Log.d("INFO29", "passou5: nancelled: "+ databaseError.getMessage());
                     throw databaseError.toException();
                 }
@@ -165,22 +153,4 @@ public class PerfilUserFragment extends Fragment {
             e.printStackTrace();
         }
     }
-
-    // TODO: 21/02/2019 corrigir este metodo que tá dando erro no fragment
-    //google
-    /*private void revokeAccess() {
-        GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-                .requestEmail()
-                .build();
-        GoogleSignInClient mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
-        mGoogleSignInClient.revokeAccess()
-                .addOnCompleteListener(this, new OnCompleteListener<Void>() {
-                    @Override
-                    public void onComplete(@NonNull Task<Void> task) {
-                    }
-                });
-
-    }*/
-
-
 }
