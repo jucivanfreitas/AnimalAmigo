@@ -18,7 +18,6 @@ import android.provider.ContactsContract;
 import android.support.annotation.NonNull;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
-import android.text.TextUtils;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
@@ -66,7 +65,6 @@ import java.util.List;
 import java.util.Objects;
 
 import static android.Manifest.permission.READ_CONTACTS;
-
 /**
  * A login screen that offers login via email/password.
  */
@@ -330,194 +328,78 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
     @SuppressLint("MissingPermission")
     private void tentarLogin() {
 
+        //esconde o teclado
         hideKeyboard(getApplicationContext(), mPasswordView);
-        // Reset errors.
-        mEmailView.setError(null);
-        mPasswordView.setError(null);
 
         // Store values at the time of the login attempt.
         String email = mEmailView.getText().toString();
         String password = mPasswordView.getText().toString();
 
-        boolean cancel = false;
-        View focusView = null;
+        //cadastrando...
+        if (swtLoginCadastrar.isChecked()) {
 
+            authentication.createUserWithEmailAndPassword(email, password)
+                    .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+                        @Override
+                        public void onComplete(@NonNull Task<AuthResult> task) {
 
-        // checa se o e-mail é válido.
-        try {
-            if (TextUtils.isEmpty(email)) {
-                mEmailView.setError(getString(R.string.error_field_required));
-                focusView = mEmailView;
-                cancel = true;
-            } else if (!isEmailValid(email)) {
-                mEmailView.setError(getString(R.string.error_invalid_email));
-                focusView = mEmailView;
-                cancel = true;
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+                            if (task.isSuccessful()) {
 
-        // Check for a valid password, if the user entered one.
-        try {
-            if (TextUtils.isEmpty(password) && !isPasswordValid(password)) {
-                mPasswordView.setError(getString(R.string.error_invalid_password));
-                focusView = mPasswordView;
-                cancel = true;
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+                                Toast.makeText(LoginActivity.this, "Cadastro realizado. Acesse sua caixa de e-mails e valide sua conta.",
+                                        Toast.LENGTH_LONG).show();
+                                sendVerificationEmail();
 
-        if (cancel) {
-            // There was an error; don't attempt login and focus the first
-            // form field with an error.
-            focusView.requestFocus();
-
-            // se não há erro
+                                swtLoginCadastrar.setChecked(false);
+                            } else {
+                                String erroExcecao;
+                                try {
+                                    throw Objects.requireNonNull(task.getException());
+                                } catch (FirebaseAuthWeakPasswordException e) {
+                                    erroExcecao = "Digite uma senha mais forte";
+                                } catch (FirebaseAuthInvalidCredentialsException e) {
+                                    erroExcecao = "Digite um e-mail válido";
+                                } catch (FirebaseAuthUserCollisionException e) {
+                                    erroExcecao = "Conta já cadastrada. Realize seu login";
+                                } catch (FirebaseAuthInvalidUserException e) {
+                                    erroExcecao = "Usuário inexistente";
+                                } catch (Exception e) {
+                                    erroExcecao = "ao cadastrar usuário" + e.getMessage();
+                                    e.printStackTrace();
+                                }
+                                Toast.makeText(LoginActivity.this, "Erro: " + erroExcecao,
+                                        Toast.LENGTH_LONG).show();
+                            }
+                        }
+                    });
+            //logando...
         } else {
-            // Show a progress spinner, and kick off a background task to
-            // perform the user login attempt.
-/*
-            Usuario usuarioTemp = new Usuario();
-            usuarioTemp.setEmail(email);
-            // TODO: 16/02/2019 pegar dados gps
+            //direciona para a activity principal
+            authentication.signInWithEmailAndPassword(email, password)
+                    .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+                        @Override
+                        public void onComplete(@NonNull Task<AuthResult> task) {
+                            if (task.isSuccessful()) {
 
-            LocationManager locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
-
-            long tempo = 1000; //5 minutos
-            float distancia = 30; // 30 metros
-
-            String[] perm = new String[2];
-            perm[0] = permission.ACCESS_FINE_LOCATION;
-            perm[1] = permission.ACCESS_COARSE_LOCATION;
-
-            if (Permissoes.validarPermissoes(perm, this, 1)) {
-
-                locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, tempo, distancia, new LocationListener() {
-
-                    @Override
-                    public void onStatusChanged(String arg0, int arg1, Bundle arg2) {
-                        Toast.makeText(getApplicationContext(), "Status alterado", Toast.LENGTH_LONG).show();
-                    }
-
-                    @Override
-                    public void onProviderEnabled(String arg0) {
-                        Toast.makeText(getApplicationContext(), "Provider Habilitado", Toast.LENGTH_LONG).show();
-                    }
-
-                    @Override
-                    public void onProviderDisabled(String arg0) {
-                        Toast.makeText(getApplicationContext(), "Provider Desabilitado", Toast.LENGTH_LONG).show();
-                    }
-
-                    @Override
-                    public void onLocationChanged(Location location) {
-                        /*TextView numero = (TextView) findViewById(R.id.numero);
-                        TextView latitude = (TextView) findViewById(R.id.latitude);
-                        TextView longitude = (TextView) findViewById(R.id.longitude);
-                        TextView time = (TextView) findViewById(R.id.time);
-                        TextView acuracy = (TextView) findViewById(R.id.Acuracy);*/
-/*
-                        if (location != null) {
-                            locs.add(location);
-                            numero.setText("Número de posições travadas: " + locs.size());
-                            latitude.setText("Latitude: " + location.getLatitude());
-                            longitude.setText("Longitude: " + location.getLongitude());
-                            acuracy.setText("Precisão: " + location.getAccuracy() + "");
-
-                            SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
-                            time.setText("Data:" + sdf.format(location.getTime()));
-
-                        }*/
-     /*               }
-                }, null);
-            }
-
-
-            GPSTracker gps = new GPSTracker(this);
-
-            // GPS: localização do usuário
-            if (gps.canGetLocation()) {
-                // passa sua latitude e longitude para duas variaveis
-                Location local = gps.getLocation();
-
-                double latitude = gps.getLatitude();
-                double longitude = gps.getLongitude();
-
-                usuarioTemp.setLatitude(String.valueOf(latitude));
-                usuarioTemp.setLongitude(String.valueOf(longitude));
-
-                /*pode-se utilizar o metodo gps.getLocation.distanceTo para calcular distancia entre dois locais*/
-
-            // e mostra no Toast
-                /*Toast.makeText(getApplicationContext(), "Sua localização - \nLat: " + latitude + "\nLong: " + longitude, Toast.LENGTH_LONG).show();
-            }*/
-
-            if (swtLoginCadastrar.isChecked()) {
-
-                authentication.createUserWithEmailAndPassword(email, password)
-                        .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
-                            @Override
-                            public void onComplete(@NonNull Task<AuthResult> task) {
-
-                                if (task.isSuccessful()) {
-
-                                    Toast.makeText(LoginActivity.this, "Cadastro realizado. Acesse sua caixa de e-mails e valide sua conta.",
-                                            Toast.LENGTH_LONG).show();
-                                    sendVerificationEmail();
-
-                                    swtLoginCadastrar.setChecked(false);
-                                } else {
-                                    String erroExcecao;
-                                    try {
-                                        throw Objects.requireNonNull(task.getException());
-                                    } catch (FirebaseAuthWeakPasswordException e) {
-                                        erroExcecao = "Digite uma senha mais forte";
-                                    } catch (FirebaseAuthInvalidCredentialsException e) {
-                                        erroExcecao = "Digite um e-mail válido";
-                                    } catch (FirebaseAuthUserCollisionException e) {
-                                        erroExcecao = "Conta já cadastrada. Realize seu login";
-                                    } catch (FirebaseAuthInvalidUserException e) {
-                                        erroExcecao = "Usuário inexistente";
-                                    } catch (Exception e) {
-                                        erroExcecao = "ao cadastrar usuário" + e.getMessage();
-                                        e.printStackTrace();
-                                    }
-                                    Toast.makeText(LoginActivity.this, "Erro: " + erroExcecao,
-                                            Toast.LENGTH_LONG).show();
-                                }
-                            }
-                        });
-            } else {
-                //direciona para a activity principal
-                authentication.signInWithEmailAndPassword(email, password)
-                        .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
-                            @Override
-                            public void onComplete(@NonNull Task<AuthResult> task) {
-                                if (task.isSuccessful()) {
-
-                                    if(checkIfEmailVerified()) {
-                                        Intent intent = new Intent(getApplicationContext(), AnunciosActivity.class);
-                                        startActivity(intent);
-                                        Toast.makeText(LoginActivity.this, "Sucesso ao realizar login",
-                                                Toast.LENGTH_SHORT).show();
-                                        finish();
-                                    } else {
-                                        Toast.makeText(LoginActivity.this, "E-mail não verificado. Gentileza verificar sua caixa de e-mail.",
-                                                Toast.LENGTH_SHORT).show();
-                                        //envia e-mail de verificacao
-                                        sendVerificationEmail();
-                                    }
-                                } else {
-                                    Toast.makeText(LoginActivity.this, "Falha ao realizar login: " +
-                                                    task.getException(),
+                                if (checkIfEmailVerified()) {
+                                    Intent intent = new Intent(getApplicationContext(), AnunciosActivity.class);
+                                    startActivity(intent);
+                                    Toast.makeText(LoginActivity.this, "Sucesso ao realizar login",
                                             Toast.LENGTH_SHORT).show();
+                                    finish();
+                                } else {
+                                    Toast.makeText(LoginActivity.this, "E-mail não verificado. Gentileza verificar sua caixa de e-mail.",
+                                            Toast.LENGTH_SHORT).show();
+                                    //envia e-mail de verificacao
+                                    sendVerificationEmail();
                                 }
+                            } else {
+                                Toast.makeText(LoginActivity.this, "Falha ao realizar login: " +
+                                                task.getException(),
+                                        Toast.LENGTH_SHORT).show();
                             }
-                        });
-                showProgress(true);
-            }
+                        }
+                    });
+            showProgress(true);
         }
     }
 
@@ -540,7 +422,6 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                         else
                         {
                             // email nao enviado
-                            //restart this activity
                             overridePendingTransition(0, 0);
                             finish();
                             overridePendingTransition(0, 0);
@@ -551,7 +432,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
     }
 
     /**
-     * verifica se o e-mail do usuário foi verificado pelo firebase
+     * verifica se o e-mail do usuário foi validado pelo firebase
      * @return boolean e-mail verified
      */
     private boolean checkIfEmailVerified()
@@ -564,14 +445,9 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         return false;
     }
 
-    private boolean isEmailValid(String email) {
-
-        return email.contains("@") && email.contains(".");
-    }
-
-    private boolean isPasswordValid(String password) {
+    /*private boolean isPasswordValid(String password) {
         return password.length() > 4;
-    }
+    }*/
 
     /**
      * Shows the progress UI and hides the login form.
@@ -637,7 +513,6 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                 emails.add(cursor.getString(ProfileQuery.ADDRESS));
                 cursor.moveToNext();
             }
-
             addEmailsToAutoComplete(emails);
         } catch (Exception e){e.printStackTrace();}
     }
@@ -746,3 +621,78 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         }
     }
 }
+/*
+            Usuario usuarioTemp = new Usuario();
+            usuarioTemp.setEmail(email);
+            // TODO: 16/02/2019 pegar dados gps
+
+            LocationManager locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+
+            long tempo = 1000; //5 minutos
+            float distancia = 30; // 30 metros
+
+            String[] perm = new String[2];
+            perm[0] = permission.ACCESS_FINE_LOCATION;
+            perm[1] = permission.ACCESS_COARSE_LOCATION;
+
+            if (Permissoes.validarPermissoes(perm, this, 1)) {
+
+                locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, tempo, distancia, new LocationListener() {
+
+                    @Override
+                    public void onStatusChanged(String arg0, int arg1, Bundle arg2) {
+                        Toast.makeText(getApplicationContext(), "Status alterado", Toast.LENGTH_LONG).show();
+                    }
+
+                    @Override
+                    public void onProviderEnabled(String arg0) {
+                        Toast.makeText(getApplicationContext(), "Provider Habilitado", Toast.LENGTH_LONG).show();
+                    }
+
+                    @Override
+                    public void onProviderDisabled(String arg0) {
+                        Toast.makeText(getApplicationContext(), "Provider Desabilitado", Toast.LENGTH_LONG).show();
+                    }
+
+                    @Override
+                    public void onLocationChanged(Location location) {
+                        /*TextView numero = (TextView) findViewById(R.id.numero);
+                        TextView latitude = (TextView) findViewById(R.id.latitude);
+                        TextView longitude = (TextView) findViewById(R.id.longitude);
+                        TextView time = (TextView) findViewById(R.id.time);
+                        TextView acuracy = (TextView) findViewById(R.id.Acuracy);*/
+/*
+                        if (location != null) {
+                            locs.add(location);
+                            numero.setText("Número de posições travadas: " + locs.size());
+                            latitude.setText("Latitude: " + location.getLatitude());
+                            longitude.setText("Longitude: " + location.getLongitude());
+                            acuracy.setText("Precisão: " + location.getAccuracy() + "");
+
+                            SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
+                            time.setText("Data:" + sdf.format(location.getTime()));
+
+                        }*/
+     /*               }
+                }, null);
+            }
+
+
+            GPSTracker gps = new GPSTracker(this);
+
+            // GPS: localização do usuário
+            if (gps.canGetLocation()) {
+                // passa sua latitude e longitude para duas variaveis
+                Location local = gps.getLocation();
+
+                double latitude = gps.getLatitude();
+                double longitude = gps.getLongitude();
+
+                usuarioTemp.setLatitude(String.valueOf(latitude));
+                usuarioTemp.setLongitude(String.valueOf(longitude));
+
+                /*pode-se utilizar o metodo gps.getLocation.distanceTo para calcular distancia entre dois locais*/
+
+// e mostra no Toast
+                /*Toast.makeText(getApplicationContext(), "Sua localização - \nLat: " + latitude + "\nLong: " + longitude, Toast.LENGTH_LONG).show();
+            }*/
