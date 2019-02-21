@@ -9,6 +9,20 @@
     tools:showIn="@layout/app_bar_perfil_humano">
 
     <android.support.constraint.ConstraintLayout
+        android:id="@+id/view_pager"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/default_circle_indicator_fill_color"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:context=".activity.Main2Activity">
+
+    </android.support.constraint.ConstraintLayout>
+
+    <android.support.constraint.ConstraintLayout
         android:id="@+id/linearLayout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -151,16 +165,5 @@
         </ScrollView>
 
     </android.support.constraint.ConstraintLayout>
-
-    <fragment
-        android:id="@+id/fragment"
-        android:name="com.celvansystems.projetoamigoanimal.fragment.ContribuirFragment"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:layout_marginBottom="32dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
 
 </android.support.constraint.ConstraintLayout>

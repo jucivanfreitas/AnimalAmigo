@@ -6,6 +6,8 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -18,6 +20,12 @@ import android.widget.Button;
 import android.widget.Toast;
 
 import com.celvansystems.projetoamigoanimal.R;
+import com.celvansystems.projetoamigoanimal.fragment.CadProcuradoFragment;
+import com.celvansystems.projetoamigoanimal.fragment.ContribuirFragment;
+import com.celvansystems.projetoamigoanimal.fragment.MessengerFragment;
+import com.celvansystems.projetoamigoanimal.fragment.NotificationsFragment;
+import com.celvansystems.projetoamigoanimal.fragment.PerfilUserFragment;
+import com.celvansystems.projetoamigoanimal.fragment.SobreOAppFragment;
 import com.celvansystems.projetoamigoanimal.helper.ConfiguracaoFirebase;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
@@ -48,6 +56,16 @@ public class PerfilHumanoActivity extends AppCompatActivity
 
         NavigationView navigationView = findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+
+        //ativa uso de fragments
+        FragmentManager fragmentManager=getSupportFragmentManager();
+        FragmentTransaction fragmentTransaction =fragmentManager.beginTransaction();
+        fragmentTransaction.replace(R.id.view_pager, new PerfilUserFragment()).commit();
+
+
+
+
+
     }
 
     @Override
@@ -60,46 +78,37 @@ public class PerfilHumanoActivity extends AppCompatActivity
         }
     }
 
-   // @Override
- //   public boolean onCreateOptionsMenu(Menu menu) {
-  //      // Inflate the menu; this adds items to the action bar if it is present.
-  //      getMenuInflater().inflate(R.menu.perfil_humano, menu);
-    //    return true;
-   // }
 
-  //  @Override
-  //  public boolean onOptionsItemSelected(MenuItem item) {
-   //     // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-   //     int id = item.getItemId();
-
-   //     //noinspection SimplifiableIfStatement
-    //    if (id == R.id.action_settings) {
-      //      return true;
-  //      }
-
-    //    return super.onOptionsItemSelected(item);
-    //}
-
-    @SuppressWarnings("StatementWithEmptyBody")
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+
+        //substitui page view com o fragment selecionado
+
+        //implementa fragmento
+        FragmentManager fragmentManager=getSupportFragmentManager();
+        FragmentTransaction fragmentTransaction =fragmentManager.beginTransaction();
+
+
         // Handle navigation view item clicks here.
         int id = item.getItemId();
 
         if (id == R.id.nav_perfil) {
             // Handle the camera action
-     //       setContentView(R.layout.content_perfil_humano);
+            fragmentTransaction.replace(R.id.view_pager, new PerfilUserFragment()).commit();
+     //
 
-            Toast.makeText(getApplicationContext(), "falta implementar esta função de navegabilidade sobre o perfil humano"
+            Toast.makeText(getApplicationContext(), "foi aberto a fragment Perfil.." +
+                            " realizar proframação na fragment PerfilUser"
                     , Toast.LENGTH_SHORT).show();
         } else if (id == R.id.nav_config_notificacoes) {
+
+            fragmentTransaction.replace(R.id.view_pager, new NotificationsFragment()).commit();
 
         //    setContentView(R.layout.content_notifications);
             // TODO: 17/02/2019 programar ações da content_cotificações
             Toast.makeText(getApplicationContext(),
-                    "implementar content configuração de notificação",
+                    "implementar content configuração de notificação" +
+                            " na activity dentro da pasta fragment",
                     Toast.LENGTH_SHORT).show();
         } else if (id == R.id.nav_meus_anuncios) {
             //reuso da activit meus anuncios
@@ -111,7 +120,15 @@ public class PerfilHumanoActivity extends AppCompatActivity
 
         } else if (id == R.id.doacao) {
             // implementar funções na activit doação.
-            startActivity(new Intent(getApplicationContext(), DoacaoActivity.class));
+            fragmentTransaction.replace(R.id.view_pager, new ContribuirFragment()).commit();
+            Toast.makeText(getApplicationContext(),
+                    "implementar content  de doações " +
+                            " na activity dentro da pasta fragment." +
+                            "essa fragmente terá apelos afim de comover " +
+                            "o usuário a doar e links para " +
+                            "receber doação na activity doação"
+                    ,
+                    Toast.LENGTH_SHORT).show();
 
         } else if (id == R.id.nav_share_app) {
 
@@ -121,8 +138,11 @@ public class PerfilHumanoActivity extends AppCompatActivity
             // TODO: 17/02/2019 programar ação do botão compartilahar app on clic compartilhar para instalação do app
 
         } else if (id == R.id.nav_conversar) {
+
+            fragmentTransaction.replace(R.id.view_pager, new MessengerFragment()).commit();
             Toast.makeText(getApplicationContext(),
-                    "criar e implementar activity conversas resumida a envio e recebimento de mensagens, " +
+                    "criar e implementar fragment messenger com chat" +
+                            " resumida a envio e recebimento de mensagens, " +
                             "semelhante ao zap",
                     Toast.LENGTH_SHORT).show();
 
@@ -130,8 +150,10 @@ public class PerfilHumanoActivity extends AppCompatActivity
 
         }else if (id == R.id.nav_help) {
 
+            fragmentTransaction.replace(R.id.view_pager, new SobreOAppFragment()).commit();
             Toast.makeText(getApplicationContext(),
-                    "implementar content help sobre o APP",
+                    "implementar fragment help " +
+                            "sobre o APP",
                     Toast.LENGTH_SHORT).show();
 // TODO: 17/02/2019 imPlementar janela de ajudas sobre o app
        }else if (id == R.id.nav_sair) {
@@ -146,9 +168,18 @@ public class PerfilHumanoActivity extends AppCompatActivity
             finish();
 // TODO: 17/02/2019 imPlementar janela
         }else if (id == R.id.pet_procurado) {
+
+            fragmentTransaction.replace(R.id.view_pager, new CadProcuradoFragment()).commit();
             // TODO: 17/02/2019 programar activit cadastrar procurado
             Toast.makeText(getApplicationContext(),
-                    "implementar content cadastro de procurados",
+                    "implementar fragment cadastro de procurados" +
+                            "com objetivo de quem perdeu seu pet," +
+                            " oferecer recompensas a quem encontrar seu pet" +
+                            "ou não." +
+                            "os cadastros realizado nesta seçao, irão notificar" +
+                            "aqueles usuários proximos" +
+                            "afimde ajudar a achar o pet" +
+                            "perdido",
                     Toast.LENGTH_SHORT).show();
         }
 
