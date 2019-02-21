@@ -327,7 +327,7 @@ public class AnunciosActivity extends AppCompatActivity implements NavigationVie
 
         try {
             AlertDialog.Builder dialogEspecie = new AlertDialog.Builder(this);
-            dialogEspecie.setTitle("Selecione a espécie desejada");
+            dialogEspecie.setTitle(getString(R.string.selecione_especie));
 
             //configura o spinner
             @SuppressLint("InflateParams")
@@ -355,7 +355,7 @@ public class AnunciosActivity extends AppCompatActivity implements NavigationVie
                 }
             });
 
-            dialogEspecie.setNegativeButton("Cancelar", new DialogInterface.OnClickListener() {
+            dialogEspecie.setNegativeButton(getString(R.string.cancelar), new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
 
@@ -375,7 +375,7 @@ public class AnunciosActivity extends AppCompatActivity implements NavigationVie
 
         try {
             AlertDialog.Builder dialogCidade = new AlertDialog.Builder(this);
-            dialogCidade.setTitle("Selecione a cidade desejada");
+            dialogCidade.setTitle(getString(R.string.selecione_cidade));
 
             //configura o spinner
             @SuppressLint("InflateParams")
@@ -401,8 +401,8 @@ public class AnunciosActivity extends AppCompatActivity implements NavigationVie
             dialogCidade.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
-                    String filtroEstado = "Todos";
-                    String filtroCidade = "Todas";
+                    String filtroEstado = getString(R.string.todos);
+                    String filtroCidade = getString(R.string.todas);
                     String filtroEspecie;
 
                     if(spinnerEstado.getSelectedItem()!=null) {
@@ -420,7 +420,7 @@ public class AnunciosActivity extends AppCompatActivity implements NavigationVie
                 }
             });
 
-            dialogCidade.setNegativeButton("Cancelar", new DialogInterface.OnClickListener() {
+            dialogCidade.setNegativeButton(getString(R.string.cancelar), new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
 
@@ -452,10 +452,10 @@ public class AnunciosActivity extends AppCompatActivity implements NavigationVie
 
         try {
             ArrayList<String> cidadesLista = new ArrayList<>();
-            cidadesLista.add("Todas");
+            cidadesLista.add(getString(R.string.todas));
             String estadoSelecionado = spinnerEstado.getSelectedItem().toString();
 
-            if(!estadoSelecionado.equalsIgnoreCase("Todos")) {
+            if(!estadoSelecionado.equalsIgnoreCase(getString(R.string.todos))) {
                 cidadesLista = Util.getCidadesLista(estadoSelecionado, getApplicationContext());
             }
             adapterCidades = new ArrayAdapter<>(this, simple_spinner_item, cidadesLista);
@@ -472,13 +472,13 @@ public class AnunciosActivity extends AppCompatActivity implements NavigationVie
         try {
             dialog = new SpotsDialog.Builder()
                     .setContext(this)
-                    .setMessage("Procurando anúncios")
+                    .setMessage(R.string.procurando_anuncios)
                     .setCancelable(false)
                     .build();
             dialog.show();
 
             //cidade
-            if (cidade!=null && !cidade.equalsIgnoreCase("Todas")) {
+            if (cidade!=null && !cidade.equalsIgnoreCase(getString(R.string.todas))) {
                 btnCidade.setText(cidade);
             }
             //estado
@@ -507,23 +507,23 @@ public class AnunciosActivity extends AppCompatActivity implements NavigationVie
                             String textoBotaoEspecie = btnEspecie.getText().toString();
 
                             //sem filtro
-                            if((textoBotaoCidade.equalsIgnoreCase("Todas") ||
-                                    textoBotaoCidade.equalsIgnoreCase("Todos") ||
-                                    textoBotaoCidade.equalsIgnoreCase("Cidade")) && (
-                                    textoBotaoEspecie.equalsIgnoreCase("espécie") ||
-                                            textoBotaoEspecie.equalsIgnoreCase("Todas"))){
+                            if((textoBotaoCidade.equalsIgnoreCase(getString(R.string.todas)) ||
+                                    textoBotaoCidade.equalsIgnoreCase(getString(R.string.todos)) ||
+                                    textoBotaoCidade.equalsIgnoreCase(getString(R.string.cidade)) && (
+                                    textoBotaoEspecie.equalsIgnoreCase(getString(R.string.especie)) ||
+                                            textoBotaoEspecie.equalsIgnoreCase(getString(R.string.todas))))){
                                 //Log.d("INFO6: ", animal.getNome()+"/ "+animal.getCidade()+"/"+animal.getUf());
                                 listaAnuncios.add(animal);
 
                             } else {
                                 //Log.d("INFOBAD: ", animal.getCidade()+"/"+animal.getUf());
                                 //sem espécie
-                                if (textoBotaoEspecie.equalsIgnoreCase("espécie") ||
-                                        textoBotaoEspecie.equalsIgnoreCase("Todas")) {
+                                if (textoBotaoEspecie.equalsIgnoreCase(getString(R.string.especie)) ||
+                                        textoBotaoEspecie.equalsIgnoreCase(getString(R.string.todas))) {
 
-                                    if (textoBotaoCidade.equalsIgnoreCase("cidade") ||
-                                            textoBotaoCidade.equalsIgnoreCase("Todas") ||
-                                            textoBotaoCidade.equalsIgnoreCase("Todos")) {
+                                    if (textoBotaoCidade.equalsIgnoreCase(getString(R.string.cidade)) ||
+                                            textoBotaoCidade.equalsIgnoreCase(getString(R.string.todas)) ||
+                                            textoBotaoCidade.equalsIgnoreCase(getString(R.string.todos))) {
 
                                         listaAnuncios.add(animal);
 
@@ -546,9 +546,9 @@ public class AnunciosActivity extends AppCompatActivity implements NavigationVie
                                             //cidade
                                         } else {
 
-                                            if (textoBotaoCidade.equalsIgnoreCase("cidade") ||
-                                                    textoBotaoCidade.equalsIgnoreCase("Todas") ||
-                                                    textoBotaoCidade.equalsIgnoreCase("Todos")) {
+                                            if (textoBotaoCidade.equalsIgnoreCase(getString(R.string.cidade)) ||
+                                                    textoBotaoCidade.equalsIgnoreCase(getString(R.string.todas)) ||
+                                                    textoBotaoCidade.equalsIgnoreCase(getString(R.string.todos))) {
                                                 listaAnuncios.add(animal);
                                             } else if(textoBotaoCidade.equalsIgnoreCase(animal.getCidade())) {
                                                 listaAnuncios.add(animal);

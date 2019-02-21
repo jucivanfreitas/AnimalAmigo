@@ -98,7 +98,7 @@ public class DetalhesAnimalActivity extends AppCompatActivity {
                     // TODO: 10/02/2019 mudar getDonoanuncio para getTelefone
                     startActivity(i);
                 } else {
-                    Toast.makeText(getApplicationContext(), "Telefone não cadastrado.", Toast.LENGTH_LONG).show();
+                    Toast.makeText(getApplicationContext(), getString(R.string.telefone_nao_cadastrado), Toast.LENGTH_LONG).show();
                 }
             }
         });

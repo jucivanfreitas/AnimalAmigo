@@ -129,5 +129,36 @@
     <string name="sucesso_login">Sucesso ao realizar login.</string>
     <string name="email_nao_verificado">E-mail não verificado. Gentileza verificar sua caixa de e-mail.</string>
     <string name="falha_login">Falha ao realizar login:</string>
+    <string name="selecione_especie">Selecione a espécie desejada</string>
+    <string name="cancelar">Cancelar</string>
+    <string name="selecione_cidade">Selecione a cidade desejada</string>
+    <string name="todos">Todos</string>
+    <string name="todas">Todas</string>
+    <string name="procurando_anuncios">Procurando anúncios</string>
+    <string name="salvando_anuncio">Salvando anúncio</string>
+    <string name="sucesso_ao_fazer_upload">Sucesso ao fazer upload</string>
+    <string name="falha_upload">Falha ao fazer upload</string>
+    <string name="preencha_descricao">Preencha o campo descrição!</string>
+    <string name="preencha_cidade">Preencha o campo cidade!</string>
+    <string name="preencha_estado">Preencha o campo estado!</string>
+    <string name="preencha_raca">Preencha o campo raça!</string>
+    <string name="preencha_porte">Preencha o campo porte!</string>
+    <string name="preencha_idade">Preencha o campo idade!</string>
+    <string name="preencha_sexo">Preencha o campo sexo!</string>
+    <string name="preencha_especie">Preencha o campo especie!</string>
+    <string name="preencha_nome">Preencha o campo nome!</string>
+    <string name="selecione_foto">Selecione pelo menos uma foto!</string>
+    <string name="escolha">Escolha</string>
+    <string name="camera">Câmera</string>
+    <string name="galeria">Galeria</string>
+    <string name="permissoes_negadas">Permissões negadas</string>
+    <string name="necessario_aceitar_permissoes">Para utilizar o app é necessário aceitar as permissões</string>
+    <string name="confirmar">Confirmar</string>
+    <string name="telefone_nao_cadastrado">Telefone não cadastrado.</string>
+    <string name="anuncio_excluido">Anúncio excluído!</string>
+    <string name="fotos_excluidas">Fotos excluídas com sucesso</string>
+    <string name="falha_deletar_fotos">Falha ao deletar fotos</string>
+    <string name="procurando_anuncios">Procurando anúncios</string>
+    <string name="falha_carregar_anuncios">Falha ao carregar anúncios.</string>
 
 </resources>

@@ -89,7 +89,7 @@ public class MeusAnunciosActivity extends AppCompatActivity {
 
                 adapterMeusAnuncios.notifyDataSetChanged();
 
-                Toast.makeText(getApplicationContext(), "Anúncio excluído!", Toast.LENGTH_LONG).show();
+                Toast.makeText(getApplicationContext(), getString(R.string.anuncio_excluido), Toast.LENGTH_LONG).show();
             }
 
             @Override
@@ -120,12 +120,12 @@ public class MeusAnunciosActivity extends AppCompatActivity {
                 imagemAnimal.child(textoFoto).delete().addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
                     public void onSuccess(Void aVoid) {
-                        Toast.makeText(getApplicationContext(), "Fotos excluídas com sucesso", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getApplicationContext(), getString(R.string.fotos_excluidas), Toast.LENGTH_SHORT).show();
                     }
                 }).addOnFailureListener(new OnFailureListener() {
                     @Override
                     public void onFailure(@NonNull Exception exception) {
-                        Toast.makeText(getApplicationContext(), "Falha ao deletar fotos", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getApplicationContext(), getString(R.string.falha_deletar_fotos), Toast.LENGTH_SHORT).show();
                     }
                 });
             }
@@ -140,7 +140,7 @@ public class MeusAnunciosActivity extends AppCompatActivity {
         try {
             dialog = new SpotsDialog.Builder()
                     .setContext(this)
-                    .setMessage("Procurando anúncios")
+                    .setMessage(R.string.procurando_anuncios)
                     .setCancelable(false)
                     .build();
             dialog.show();
@@ -167,7 +167,7 @@ public class MeusAnunciosActivity extends AppCompatActivity {
 
                 @Override
                 public void onCancelled(@NonNull DatabaseError databaseError) {
-                    Toast.makeText(getApplicationContext(), "Falha ao carregar anúncios.", Toast.LENGTH_LONG).show();
+                    Toast.makeText(getApplicationContext(), getString(R.string.falha_carregar_anuncios), Toast.LENGTH_LONG).show();
                 }
             });
         } catch (Exception e){e.printStackTrace();}

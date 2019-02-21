@@ -86,6 +86,7 @@ public class CadastrarAnuncioActivity extends AppCompatActivity
      * Configuracoes iniciais
      */
     private void inicializarComponentes(){
+
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
@@ -98,9 +99,6 @@ public class CadastrarAnuncioActivity extends AppCompatActivity
         spnEstado = findViewById(R.id.spinner_cad_estado);
         spnCidade = findViewById(R.id.spinner_cad_cidade);
         edtDescricao = findViewById(R.id.editText_cad_descrição);
-        ////edtDescricao.setSingleLine(false);
-        //edtDescricao.setScroller(new Scroller(this));
-        //edtDescricao.setMaxLines(10);
         edtDescricao.setVerticalScrollBarEnabled(true);
         edtDescricao.setMovementMethod(new ScrollingMovementMethod());
         edtRaca = findViewById(R.id.edtRaca);
@@ -172,7 +170,7 @@ public class CadastrarAnuncioActivity extends AppCompatActivity
         try {
             dialog = new SpotsDialog.Builder()
                     .setContext(this)
-                    .setMessage("Salvando anúncio")
+                    .setMessage(R.string.salvando_anuncio)
                     .setCancelable(false)
                     .build();
             dialog.show();
@@ -233,12 +231,12 @@ public class CadastrarAnuncioActivity extends AppCompatActivity
                         if(totalFotos == listaURLFotos.size()){
                             animal.setFotos(listaURLFotos);
                             animal.salvar();
-                            exibirMensagem("Sucesso ao fazer upload");
+                            exibirMensagem(getString(R.string.sucesso_ao_fazer_upload));
                             dialog.dismiss();
                             finish();
                         }
                     } else {
-                        exibirMensagem("Falha ao fazer upload");
+                        exibirMensagem(getString(R.string.falha_upload));
                     }
                 }
             });
@@ -333,34 +331,34 @@ public class CadastrarAnuncioActivity extends AppCompatActivity
                                             if (!animal.getDescricao().isEmpty()) {
                                                 salvarAnuncio(animal);
                                             } else {
-                                                exibirMensagem("Preencha o campo descrição!");
+                                                exibirMensagem(getString(R.string.preencha_descricao));
                                             }
                                         } else {
-                                            exibirMensagem("Preencha o campo cidade!");
+                                            exibirMensagem(getString(R.string.preencha_cidade));
                                         }
                                     }else {
-                                        exibirMensagem("Preencha o campo estado!");
+                                        exibirMensagem(getString(R.string.preencha_estado));
                                     }
                                 }else {
-                                    exibirMensagem("Preencha o campo raça!");
+                                    exibirMensagem(getString(R.string.preencha_raca));
                                 }
                             }else {
-                                exibirMensagem("Preencha o campo porte!");
+                                exibirMensagem(getString(R.string.preencha_porte));
                             }
                         }else {
-                            exibirMensagem("Preencha o campo idade!");
+                            exibirMensagem(getString(R.string.preencha_idade));
                         }
                     }else {
-                        exibirMensagem("Preencha o campo sexo!");
+                        exibirMensagem(getString(R.string.preencha_sexo));
                     }
                 }else {
-                    exibirMensagem("Preencha o campo especie!");
+                    exibirMensagem(getString(R.string.preencha_especie));
                 }
             }else {
-                exibirMensagem("Preencha o campo nome!");
+                exibirMensagem(getString(R.string.preencha_nome));
             }
         } else {
-            exibirMensagem("Selecione ao menos uma foto!");
+            exibirMensagem(getString(R.string.selecione_foto));
         }
     }
 
@@ -403,12 +401,12 @@ public class CadastrarAnuncioActivity extends AppCompatActivity
         try {
 
             PickSetup setup = new PickSetup()
-                    .setTitle("Escolha")
+                    .setTitle(getString(R.string.escolha))
                     .setFlip(true)
                     .setMaxSize(500)
-                    .setCameraButtonText("Câmera")
-                    .setCancelText("Cancelar")
-                    .setGalleryButtonText("Galeria");
+                    .setCameraButtonText(getString(R.string.camera))
+                    .setCancelText(getString(R.string.cancelar))
+                    .setGalleryButtonText(getString(R.string.galeria));
             //.setTitleColor(yourColor)
             //.setBackgroundColor(yourColor)
             //.setProgressText(yourText)
@@ -518,10 +516,10 @@ public class CadastrarAnuncioActivity extends AppCompatActivity
 
         try {
             AlertDialog.Builder builder = new AlertDialog.Builder(this);
-            builder.setTitle("Permissões negadas");
-            builder.setMessage("Para utilizar o app é necessário aceitar as permissões");
+            builder.setTitle(getString(R.string.permissoes_negadas));
+            builder.setMessage(getString(R.string.necessario_aceitar_permissoes));
             builder.setCancelable(false);
-            builder.setPositiveButton("Confirmar", new DialogInterface.OnClickListener() {
+            builder.setPositiveButton(getString(R.string.confirmar), new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
                     finish();
