@@ -104,7 +104,7 @@ public class PerfilHumanoActivity extends AppCompatActivity
 
             fragmentTransaction.replace(R.id.view_pager, new NotificacoesFragment()).commit();
 
-            //    setContentView(R.layout.content_notifications);
+            //    setContentView(R.layout.content_notificacoes);
             // TODO: 17/02/2019 programar ações da content_cotificações
             Toast.makeText(getApplicationContext(),
                     "implementar content configuração de notificação" +

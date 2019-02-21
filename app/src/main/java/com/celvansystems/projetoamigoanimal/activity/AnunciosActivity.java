@@ -392,7 +392,7 @@ public class AnunciosActivity extends AppCompatActivity implements NavigationVie
 
             //configura o spinner
             @SuppressLint("InflateParams")
-            View viewSpinner = getLayoutInflater().inflate(R.layout.dialog_spinner, null);
+            View viewSpinner = getLayoutInflater().inflate(R.layout.dialog_spinner_cidade, null);
 
             ArrayList<String> estadosLista = Util.getEstadosLista(getApplicationContext());
 
