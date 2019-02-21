@@ -132,6 +132,14 @@ public class AnunciosActivity extends AppCompatActivity implements NavigationVie
             recyclerAnunciosPublicos.setAdapter(adapterAnuncios);
         } catch (Exception e){e.printStackTrace();}
 
+        try {
+            dialog = new SpotsDialog.Builder()
+                    .setContext(this)
+                    .setMessage("Procurando anúncios")
+                    .setCancelable(true)
+                    .build();
+        } catch (Exception e){e.printStackTrace();}
+
         //propagandas
         configuraAdMob();
     }
@@ -165,7 +173,7 @@ public class AnunciosActivity extends AppCompatActivity implements NavigationVie
                 @Override
                 public void onAdFailedToLoad(int errorCode) {
                     // Code to be executed when an ad request fails.
-                   // Toast.makeText(getApplicationContext(), "failed to load. " +
+                    // Toast.makeText(getApplicationContext(), "failed to load. " +
                     //        adRequest.getContentUrl(), Toast.LENGTH_SHORT).show();
                 }
                 @Override
@@ -194,14 +202,7 @@ public class AnunciosActivity extends AppCompatActivity implements NavigationVie
      */
     private void recuperarAnunciosPublicos(){
 
-        try {
-            dialog = new SpotsDialog.Builder()
-                    .setContext(this)
-                    .setMessage("Procurando anúncios")
-                    .setCancelable(false)
-                    .build();
-            dialog.show();
-        } catch (Exception e){e.printStackTrace();}
+        dialog.show();
 
         try {
             anunciosPublicosRef.addValueEventListener(new ValueEventListener() {
@@ -219,13 +220,18 @@ public class AnunciosActivity extends AppCompatActivity implements NavigationVie
 
                 @Override
                 public void onCancelled(@NonNull DatabaseError databaseError) {
-                    Toast.makeText(getApplicationContext(),
-                            "Falha ao acessar anúncios" + databaseError.getMessage(),
+                    Toast.makeText(AnunciosActivity.this,
+                            "Falha ao acessar anúncios. Verifique sua conexão à internet." + databaseError.getMessage(),
                             Toast.LENGTH_SHORT).show();
                     dialog.dismiss();
                 }
             });
-        } catch (Exception e){e.printStackTrace();}
+        } catch (Exception e){
+            e.printStackTrace();
+            dialog.dismiss();
+            Toast.makeText(AnunciosActivity.this,
+                    "Falha ao acessar anúncios. Verifique sua conexão à internet." + e.getMessage(),
+                    Toast.LENGTH_SHORT).show();}
     }
 
     @Override
@@ -470,11 +476,11 @@ public class AnunciosActivity extends AppCompatActivity implements NavigationVie
     public void recuperarAnunciosFiltro(final String estado, final String cidade, final String especie) {
 
         try {
-            dialog = new SpotsDialog.Builder()
+            /*dialog = new SpotsDialog.Builder()
                     .setContext(this)
                     .setMessage(R.string.procurando_anuncios)
-                    .setCancelable(false)
-                    .build();
+                    .setCancelable(true)
+                    .build();*/
             dialog.show();
 
             //cidade
@@ -510,8 +516,8 @@ public class AnunciosActivity extends AppCompatActivity implements NavigationVie
                             if((textoBotaoCidade.equalsIgnoreCase(getString(R.string.todas)) ||
                                     textoBotaoCidade.equalsIgnoreCase(getString(R.string.todos)) ||
                                     textoBotaoCidade.equalsIgnoreCase(getString(R.string.cidade)) && (
-                                    textoBotaoEspecie.equalsIgnoreCase(getString(R.string.especie)) ||
-                                            textoBotaoEspecie.equalsIgnoreCase(getString(R.string.todas))))){
+                                            textoBotaoEspecie.equalsIgnoreCase(getString(R.string.especie)) ||
+                                                    textoBotaoEspecie.equalsIgnoreCase(getString(R.string.todas))))){
                                 //Log.d("INFO6: ", animal.getNome()+"/ "+animal.getCidade()+"/"+animal.getUf());
                                 listaAnuncios.add(animal);
 

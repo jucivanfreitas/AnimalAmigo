@@ -27,6 +27,7 @@ import com.celvansystems.projetoamigoanimal.fragment.NotificationsFragment;
 import com.celvansystems.projetoamigoanimal.fragment.PerfilUserFragment;
 import com.celvansystems.projetoamigoanimal.fragment.SobreOAppFragment;
 import com.celvansystems.projetoamigoanimal.helper.ConfiguracaoFirebase;
+import com.celvansystems.projetoamigoanimal.model.Animal;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
@@ -34,6 +35,10 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.ValueEventListener;
 
 public class PerfilHumanoActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -61,11 +66,6 @@ public class PerfilHumanoActivity extends AppCompatActivity
         FragmentManager fragmentManager=getSupportFragmentManager();
         FragmentTransaction fragmentTransaction =fragmentManager.beginTransaction();
         fragmentTransaction.replace(R.id.view_pager, new PerfilUserFragment()).commit();
-
-
-
-
-
     }
 
     @Override
@@ -95,7 +95,7 @@ public class PerfilHumanoActivity extends AppCompatActivity
         if (id == R.id.nav_perfil) {
             // Handle the camera action
             fragmentTransaction.replace(R.id.view_pager, new PerfilUserFragment()).commit();
-     //
+            //
 
             Toast.makeText(getApplicationContext(), "foi aberto a fragment Perfil.." +
                             " realizar proframação na fragment PerfilUser"
@@ -104,7 +104,7 @@ public class PerfilHumanoActivity extends AppCompatActivity
 
             fragmentTransaction.replace(R.id.view_pager, new NotificationsFragment()).commit();
 
-        //    setContentView(R.layout.content_notifications);
+            //    setContentView(R.layout.content_notifications);
             // TODO: 17/02/2019 programar ações da content_cotificações
             Toast.makeText(getApplicationContext(),
                     "implementar content configuração de notificação" +
@@ -112,7 +112,7 @@ public class PerfilHumanoActivity extends AppCompatActivity
                     Toast.LENGTH_SHORT).show();
         } else if (id == R.id.nav_meus_anuncios) {
             //reuso da activit meus anuncios
-           startActivity(new Intent(getApplicationContext(),MeusAnunciosActivity.class));
+            startActivity(new Intent(getApplicationContext(),MeusAnunciosActivity.class));
 
 
         } else if (id == R.id.pet_adote) {
@@ -157,7 +157,7 @@ public class PerfilHumanoActivity extends AppCompatActivity
                             "sobre o APP",
                     Toast.LENGTH_SHORT).show();
 // TODO: 17/02/2019 imPlementar janela de ajudas sobre o app
-       }else if (id == R.id.nav_sair) {
+        }else if (id == R.id.nav_sair) {
 
             Toast.makeText(getApplicationContext(),
                     "Volte sempre, precisamos de você!!!",
@@ -211,8 +211,6 @@ public class PerfilHumanoActivity extends AppCompatActivity
                     public void onClick(DialogInterface dialog, int which) {
                         // TODO: 18/02/2019 codigo para excluir conta do usuario e todos os seus anuncios
 
-
-
                         removerContaAtual();
 
                         dialog.dismiss();
@@ -247,37 +245,12 @@ public class PerfilHumanoActivity extends AppCompatActivity
                     public void onComplete(@NonNull Task<Void> task) {
                         if (task.isSuccessful()) {
 
-                            /*try {
-                                //excluindo todos os anuncios do usuario removido
-                                DatabaseReference anunciosPublicosRef = ConfiguracaoFirebase.getFirebase()
-                                        .child("meus_animais");
-                                Log.d("INFO29", "passou1");
-                                anunciosPublicosRef.addListenerForSingleValueEvent(new ValueEventListener() {
-                                    @Override
-                                    public void onDataChange(DataSnapshot snapshot) {
-                                        for(DataSnapshot animal: snapshot.getChildren()){
-                                            Log.d("INFO29", "passou2");
-                                            Animal anuncio = animal.getValue(Animal.class);
-                                            if(anuncio != null && anuncio.getDonoAnuncio()!= null) {
-                                                Log.d("INFO29", "passou3");
-                                                if (anuncio.getDonoAnuncio().equalsIgnoreCase(usuarioId)) {
-                                                    Log.d("INFO29", "passou4");
-                                                    animal.getRef().removeValue();
-                                                }
-                                            }
-                                        }
-                                    }
+                            deletarAnunciosUsuario(usuarioId );
 
-                                    @Override
-                                    public void onCancelled(DatabaseError databaseError) {
-                                        throw databaseError.toException();
-                                    }
-                                });
-                            } catch (Exception e) {e.printStackTrace();}
-*/
                             // TODO: 18/02/2019 inserir lógica para excluir todos os anuncios do usuario excluido
 
                             //google sign in
+                            // TODO: 21/02/2019 verificar se eh conta google ou facebook
                             revokeAccess();
 
                             //
@@ -298,6 +271,42 @@ public class PerfilHumanoActivity extends AppCompatActivity
             retorno = true;
         }
         return retorno;
+    }
+
+    private void deletarAnunciosUsuario(final String usuarioId) {
+
+        try {
+            //excluindo todos os anuncios do usuario removido
+            DatabaseReference anunciosPublicosRef = ConfiguracaoFirebase.getFirebase()
+                    .child("meus_animais");
+            Log.d("INFO29", "passou1");
+            anunciosPublicosRef.addValueEventListener(new ValueEventListener() {
+
+                @Override
+                public void onDataChange(DataSnapshot snapshot) {
+                    for(DataSnapshot animal: snapshot.getChildren()){
+                        Log.d("INFO29", "passou2");
+                        Animal anuncio = animal.getValue(Animal.class);
+                        if(anuncio != null && anuncio.getDonoAnuncio()!= null) {
+                            Log.d("INFO29", "passou3: "+ anuncio.getDonoAnuncio());
+                            if (anuncio.getDonoAnuncio().equalsIgnoreCase(usuarioId)) {
+                                Log.d("INFO29", "passou4: animal removido: "+ anuncio.getIdAnimal());
+                                animal.getRef().removeValue();
+                            }
+                        }
+                    }
+                }
+
+                @Override
+                public void onCancelled(DatabaseError databaseError) {
+                    Log.d("INFO29", "passou5: nancelled: "+ databaseError.getMessage());
+                    throw databaseError.toException();
+                }
+            });
+        } catch (Exception e) {
+            Log.d("INFO29", "passou6: excecao!!!: " + e.getMessage());
+            e.printStackTrace();
+        }
     }
 
     //google

@@ -66,7 +66,6 @@ public class CadastrarAnuncioActivity extends AppCompatActivity
     private StorageReference storage;
     private int requisicao;
 
-
     //Permissoes
     private String[] permissoes = new String[]{
             Manifest.permission.READ_EXTERNAL_STORAGE,
@@ -245,13 +244,13 @@ public class CadastrarAnuncioActivity extends AppCompatActivity
 
     /**
      * metodo auxiliar para comprimir imagens que serao salvas do firebase storage
-     * @param selectedImage
-     * @return
+     * @param selectedImage imagem selecionada
+     * @return byte[]
      */
     public byte[] comprimirImagem (Uri selectedImage){
         byte[] byteArray = null;
         try {
-            InputStream imageStream = null;
+            InputStream imageStream;
 
             imageStream = getContentResolver().openInputStream(
                     selectedImage);
@@ -380,17 +379,15 @@ public class CadastrarAnuncioActivity extends AppCompatActivity
         switch ( v.getId() ){
             case R.id.imageCadastro1 :
                 requisicao = 1;
-                escolherImagem(1);
                 break;
             case R.id.imageCadastro2 :
                 requisicao = 2;
-                escolherImagem(2);
                 break;
             case R.id.imageCadastro3 :
                 requisicao = 3;
-                escolherImagem(3);
                 break;
         }
+        escolherImagem(requisicao);
     }
 
     /**
