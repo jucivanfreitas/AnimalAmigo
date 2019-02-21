@@ -40,6 +40,7 @@ public class PerfilUsuarioFragment extends Fragment {
                              Bundle savedInstanceState) {
 
         view = inflater.inflate(R.layout.fragment_perfil_usuario, container, false);
+
         inicializarComponentes();
 
         return view;

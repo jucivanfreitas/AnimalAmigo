@@ -10,16 +10,22 @@ import com.celvansystems.projetoamigoanimal.R;
 
 public class DoacaoFragment extends Fragment {
 
+    private View view;
 
-    public DoacaoFragment() {
-
-    }
+    public DoacaoFragment() {}
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
-        return inflater.inflate(R.layout.fragment_doacao, container, false);
+        view = inflater.inflate(R.layout.fragment_doacao, container, false);
+
+        inializaComponentes();
+
+        return view;
     }
 
+    private void inializaComponentes() {
+
+    }
 }

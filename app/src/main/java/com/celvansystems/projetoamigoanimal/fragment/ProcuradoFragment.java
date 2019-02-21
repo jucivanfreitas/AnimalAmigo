@@ -10,12 +10,19 @@ import com.celvansystems.projetoamigoanimal.R;
 
 public class ProcuradoFragment extends Fragment {
 
+    private View view;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        view = inflater.inflate(R.layout.fragment_procurado, container, false);
 
-        return inflater.inflate(R.layout.fragment_procurado, container, false);
+        inializaComponentes();
+
+        return view;
     }
 
+    private void inializaComponentes() {
 
+    }
 }

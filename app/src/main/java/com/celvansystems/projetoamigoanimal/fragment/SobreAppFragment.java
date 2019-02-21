@@ -10,16 +10,22 @@ import com.celvansystems.projetoamigoanimal.R;
 
 public class SobreAppFragment extends Fragment {
 
+    private View view;
 
-    public SobreAppFragment() {
-
-    }
+    public SobreAppFragment() {}
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
-        return inflater.inflate(R.layout.fragment_sobre_app, container, false);
+        view = inflater.inflate(R.layout.fragment_sobre_app, container, false);
+
+        inializaComponentes();
+
+        return view;
     }
 
+    private void inializaComponentes() {
+
+    }
 }

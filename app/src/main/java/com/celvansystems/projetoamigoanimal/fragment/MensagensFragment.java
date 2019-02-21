@@ -10,17 +10,22 @@ import com.celvansystems.projetoamigoanimal.R;
 
 public class MensagensFragment extends Fragment {
 
+    View view;
 
-    public MensagensFragment() {
-
-    }
-
+    public MensagensFragment() {}
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_mensagens, container, false);
+
+        view = inflater.inflate(R.layout.fragment_mensagens, container, false);
+
+        inializaComponentes();
+
+        return view;
     }
 
+    private void inializaComponentes() {
+
+    }
 }
