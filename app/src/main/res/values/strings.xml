@@ -134,7 +134,6 @@
     <string name="selecione_cidade">Selecione a cidade desejada</string>
     <string name="todos">Todos</string>
     <string name="todas">Todas</string>
-    <string name="procurando_anuncios">Procurando anúncios</string>
     <string name="salvando_anuncio">Salvando anúncio</string>
     <string name="sucesso_ao_fazer_upload">Sucesso ao fazer upload</string>
     <string name="falha_upload">Falha ao fazer upload</string>
@@ -160,5 +159,9 @@
     <string name="falha_deletar_fotos">Falha ao deletar fotos</string>
     <string name="procurando_anuncios">Procurando anúncios</string>
     <string name="falha_carregar_anuncios">Falha ao carregar anúncios.</string>
+    <string name="esqueci_senha">Esqueci minha senha</string>
+    <string name="email_enviado">Um e-mail foi enviado para você.</string>
+    <string name="email_senha_invalido">E-mail ou senha inválido!</string>
+    <string name="falha_enviar_email_recuperacao">Falha ao enviar e-mail de recuperação de senha.</string>
 
 </resources>

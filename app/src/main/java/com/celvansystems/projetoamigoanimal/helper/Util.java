@@ -1,5 +1,6 @@
 package com.celvansystems.projetoamigoanimal.helper;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.support.design.widget.Snackbar;
 import android.view.Gravity;
@@ -16,6 +17,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Calendar;
 
 public class Util {
@@ -45,17 +47,25 @@ public class Util {
         return estados;
     }
 
+    /**
+     * pega a lista dos estados
+     * @param ctx contexto
+     * @return lista de estados
+     */
     public static ArrayList<String> getEstadosLista(Context ctx){
 
         String [] estados = getEstadosJSON(ctx);
         ArrayList<String> estadosLista = new ArrayList<>();
         estadosLista.add("Todos");
-        for (String s: estados) {
-            estadosLista.add(s);
-        }
+        estadosLista.addAll(Arrays.asList(estados));
         return estadosLista;
     }
 
+    /**
+     * carrega o jason dos estados e cidades
+     * @param context contexto
+     * @return string
+     */
     private static String loadJSONFromAsset(Context context) {
         String json;
         try {
@@ -78,8 +88,11 @@ public class Util {
         return json;
     }
 
-    /*
-    /* usa o arquivo estados-cidades.json localizado na pasta assets
+    /**
+     * usa o arquivo estados-cidades.json localizado na pasta assets
+     * @param uf estado
+     * @param ctx contexto
+     * @return array de string
      */
     public static String[] getCidadesJSON(String uf, Context ctx){
 
@@ -122,14 +135,18 @@ public class Util {
         return cidades;
     }
 
+    /**
+     * lista de cidades de acordo com o estado
+     * @param uf estado
+     * @param ctx contexto
+     * @return lista de string
+     */
     public static ArrayList<String> getCidadesLista(String uf, Context ctx){
 
         String [] cidades = getCidadesJSON(uf, ctx);
         ArrayList<String> cidadesLista = new ArrayList<>();
         cidadesLista.add("Todas");
-        for (String s: cidades) {
-            cidadesLista.add(s);
-        }
+        cidadesLista.addAll(Arrays.asList(cidades));
         return cidadesLista;
     }
 
@@ -142,12 +159,11 @@ public class Util {
         String [] especies = ctx.getResources().getStringArray(R.array.especies);
         ArrayList<String> especiesLista = new ArrayList<>();
         especiesLista.add("Todas");
-        for (String s: especies) {
-            especiesLista.add(s);
-        }
+        especiesLista.addAll(Arrays.asList(especies));
         return especiesLista;
     }
 
+    @SuppressLint("SimpleDateFormat")
     public static String getDataAtualBrasil(){
         // configuraçao da data atual do Brasil
         Calendar cal = Calendar.getInstance();
@@ -155,10 +171,10 @@ public class Util {
     }
 
     public static void setSnackBar(View root, String snackTitle) {
-        Snackbar snackbar = Snackbar.make(root, snackTitle, Snackbar.LENGTH_SHORT);
+        Snackbar snackbar = Snackbar.make(root, snackTitle, Snackbar.LENGTH_LONG);
         snackbar.show();
         View view = snackbar.getView();
-        TextView txtv = (TextView) view.findViewById(android.support.design.R.id.snackbar_text);
+        TextView txtv = view.findViewById(android.support.design.R.id.snackbar_text);
         txtv.setGravity(Gravity.CENTER_HORIZONTAL);
     }
 }

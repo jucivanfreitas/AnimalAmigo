@@ -101,7 +101,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
 
         configuraLoginGoogle();
 
-        populateAutoComplete();
+        //populateAutoComplete();
     }
 
     private void inicializarComponentes() {
@@ -113,6 +113,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             mPasswordView = findViewById(R.id.txiPassword);
             Button btnLogin = findViewById(R.id.btnLogin);
             swtLoginCadastrar = findViewById(R.id.swtLoginCadastrar);
+            TextView txvEsqueciSenha = findViewById(R.id.txtEsqueciSenha);
 
             layout = findViewById(R.id.login_layout);
 
@@ -121,6 +122,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                 @Override
                 public void onClick(View v) {
                     startActivity(new Intent(getApplicationContext(), AnunciosActivity.class));
+                    finish();
                 }
             });
 
@@ -138,6 +140,16 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                 }
             });
 
+            txvEsqueciSenha.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if(mEmailView.getText()!= null &&
+                    !mEmailView.getText().toString().equalsIgnoreCase("")){
+                        enviarEmailRecuperacao(mEmailView.getText().toString());
+                    }
+                }
+            });
+
             btnLogin.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
@@ -148,6 +160,25 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    private void enviarEmailRecuperacao(String email) {
+        authentication.sendPasswordResetEmail(email)
+                .addOnCompleteListener(new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+
+                        if (task.isSuccessful()) {
+                            Toast.makeText(LoginActivity.this, getString(R.string.email_enviado), Toast.LENGTH_SHORT).show();
+                            Util.setSnackBar(layout, getString(R.string.email_enviado));
+
+                        } else {
+                            Toast.makeText(LoginActivity.this, Objects.requireNonNull(task.getException()).getMessage(),
+                                    Toast.LENGTH_SHORT).show();
+                            Util.setSnackBar(layout, getString(R.string.falha_enviar_email_recuperacao));
+                        }
+                    }
+                });
     }
 
     /**
@@ -162,6 +193,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
      * método que configura o login por meio do facebook
      */
     private void configuraLoginFacebook(){
+
         callbackManager = CallbackManager.Factory.create();
 
         LoginButton loginButton = findViewById(R.id.login_button_facebook);
@@ -348,6 +380,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
 
                                 Toast.makeText(LoginActivity.this, getString(R.string.cadastro_realizado),
                                         Toast.LENGTH_LONG).show();
+                                Util.setSnackBar(layout, getString(R.string.cadastro_realizado));
                                 sendVerificationEmail();
 
                                 swtLoginCadastrar.setChecked(false);
@@ -367,8 +400,9 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                                     erroExcecao = getString(R.string.falha_cadastro_usuario) + e.getMessage();
                                     e.printStackTrace();
                                 }
-                                Toast.makeText(LoginActivity.this, getString(R.string.erro) + erroExcecao,
-                                        Toast.LENGTH_LONG).show();
+                                //Toast.makeText(LoginActivity.this, getString(R.string.erro) + erroExcecao,
+                                //        Toast.LENGTH_LONG).show();
+                                Util.setSnackBar(layout, getString(R.string.erro) + erroExcecao);
                             }
                         }
                     });
@@ -393,14 +427,12 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                                             Toast.LENGTH_SHORT).show();
                                     //envia e-mail de verificacao
                                     sendVerificationEmail();
-                                    showProgress(false);
                                 }*/
                                 // TODO: 20/02/2019 a verificacao de e-mail termina aqui. Não deletar o código
                             } else {
-                                Toast.makeText(LoginActivity.this, getString(R.string.falha_login) +
-                                                task.getException(),
-                                        Toast.LENGTH_SHORT).show();
+                                Util.setSnackBar(layout, getString(R.string.email_senha_invalido));
                             }
+                            showProgress(false);
                         }
                     });
             showProgress(true);
