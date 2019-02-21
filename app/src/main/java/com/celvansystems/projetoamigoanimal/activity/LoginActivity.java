@@ -174,7 +174,6 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             }
             @Override
             public void onError(FacebookException exception) {
-                Log.d("INFO30", "facebook:onErrorHandle: eroo" + exception.getMessage());
             }
         });
     }
@@ -223,11 +222,11 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                                 startActivity(new Intent(getApplicationContext(), AnunciosActivity.class));
                                 finish();
 
-                                Toast.makeText(LoginActivity.this, "Sucesso ao realizar login pelo facebook",
+                                Toast.makeText(LoginActivity.this, getString(R.string.sucesso_login_facebook),
                                         Toast.LENGTH_SHORT).show();
                             } else {
 
-                                Toast.makeText(LoginActivity.this, "Authentication failed.",
+                                Toast.makeText(LoginActivity.this, getString(R.string.falha_login_facebook),
                                         Toast.LENGTH_SHORT).show();
                             }
                         } catch (Exception e) {
@@ -240,21 +239,16 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
     @Override
     public void onStart() {
         super.onStart();
-        // Check if user is signed in (non-null) and update UI accordingly.
-        FirebaseUser currentUser = authentication.getCurrentUser();
-        if(currentUser!= null) {
-            Log.d("INFO30", "usuario jah autenticado: " + currentUser.getEmail());
-        }
 
         // Verifica se há conta do google logada.
-        GoogleSignInAccount account = GoogleSignIn.getLastSignedInAccount(this);
+        /*GoogleSignInAccount account = GoogleSignIn.getLastSignedInAccount(this);
         if(account == null) {
             Log.d("INFO40", "usuario nao logado com google");
 
         } else {
             Log.d("INFO40", "usuario logado com google");
 
-        }
+        }*/
     }
 
     @Override
@@ -301,7 +295,6 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
      * @param acct conta
      */
     private void firebaseAuthWithGoogle(GoogleSignInAccount acct) {
-        Log.d("INFO40", "firebaseAuthWithGoogle:" + acct.getId());
 
         AuthCredential credential = GoogleAuthProvider.getCredential(acct.getIdToken(), null);
         authentication.signInWithCredential(credential)
@@ -313,7 +306,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                             FirebaseUser user = authentication.getCurrentUser();
                             //direciona para a tela principal
                             if(user!= null && user.getEmail()!= null) {
-                                Toast.makeText(LoginActivity.this, "Sucesso ao realizar login pelo google, " +
+                                Toast.makeText(LoginActivity.this, getString(R.string.sucesso_login_google) +
                                                 user.getEmail(),
                                         Toast.LENGTH_SHORT).show();
                             }
@@ -345,7 +338,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
 
                             if (task.isSuccessful()) {
 
-                                Toast.makeText(LoginActivity.this, "Cadastro realizado. Acesse sua caixa de e-mails e valide sua conta.",
+                                Toast.makeText(LoginActivity.this, getString(R.string.cadastro_realizado),
                                         Toast.LENGTH_LONG).show();
                                 sendVerificationEmail();
 
@@ -355,18 +348,18 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                                 try {
                                     throw Objects.requireNonNull(task.getException());
                                 } catch (FirebaseAuthWeakPasswordException e) {
-                                    erroExcecao = "Digite uma senha mais forte";
+                                    erroExcecao = getString(R.string.digite_senha_forte);
                                 } catch (FirebaseAuthInvalidCredentialsException e) {
-                                    erroExcecao = "Digite um e-mail válido";
+                                    erroExcecao = getString(R.string.digite_email_valido);
                                 } catch (FirebaseAuthUserCollisionException e) {
-                                    erroExcecao = "Conta já cadastrada. Realize seu login";
+                                    erroExcecao = getString(R.string.conta_cadastrada);
                                 } catch (FirebaseAuthInvalidUserException e) {
-                                    erroExcecao = "Usuário inexistente";
+                                    erroExcecao = getString(R.string.usuario_inexistente);
                                 } catch (Exception e) {
-                                    erroExcecao = "ao cadastrar usuário" + e.getMessage();
+                                    erroExcecao = getString(R.string.falha_cadastro_usuario) + e.getMessage();
                                     e.printStackTrace();
                                 }
-                                Toast.makeText(LoginActivity.this, "Erro: " + erroExcecao,
+                                Toast.makeText(LoginActivity.this, getString(R.string.erro) + erroExcecao,
                                         Toast.LENGTH_LONG).show();
                             }
                         }
@@ -384,11 +377,11 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                                 //if (checkIfEmailVerified()) {
                                     Intent intent = new Intent(getApplicationContext(), AnunciosActivity.class);
                                     startActivity(intent);
-                                    Toast.makeText(LoginActivity.this, "Sucesso ao realizar login",
+                                    Toast.makeText(LoginActivity.this, getString(R.string.sucesso_login),
                                             Toast.LENGTH_SHORT).show();
                                     finish();
                                 /*} else {
-                                    Toast.makeText(LoginActivity.this, "E-mail não verificado. Gentileza verificar sua caixa de e-mail.",
+                                    Toast.makeText(LoginActivity.this, getString(R.string.email_nao_verificado),
                                             Toast.LENGTH_SHORT).show();
                                     //envia e-mail de verificacao
                                     sendVerificationEmail();
@@ -396,7 +389,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                                 }*/
                                 // TODO: 20/02/2019 a verificacao de e-mail termina aqui. Não deletar o código
                             } else {
-                                Toast.makeText(LoginActivity.this, "Falha ao realizar login: " +
+                                Toast.makeText(LoginActivity.this, getString(R.string.falha_login) +
                                                 task.getException(),
                                         Toast.LENGTH_SHORT).show();
                             }
