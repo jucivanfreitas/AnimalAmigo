@@ -34,6 +34,7 @@ import android.widget.Toast;
 import com.celvansystems.projetoamigoanimal.R;
 import com.celvansystems.projetoamigoanimal.helper.ConfiguracaoFirebase;
 import com.celvansystems.projetoamigoanimal.helper.Constantes;
+import com.celvansystems.projetoamigoanimal.helper.Util;
 import com.facebook.AccessToken;
 import com.facebook.CallbackManager;
 import com.facebook.FacebookCallback;
@@ -83,6 +84,8 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
     private Switch swtLoginCadastrar;
     private CallbackManager callbackManager;
     private GoogleSignInClient mGoogleSignInClient;
+    private View layout;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -110,6 +113,8 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             mPasswordView = findViewById(R.id.txiPassword);
             Button btnLogin = findViewById(R.id.btnLogin);
             swtLoginCadastrar = findViewById(R.id.swtLoginCadastrar);
+
+            layout = findViewById(R.id.login_layout);
 
             TextView txtAnuncios = findViewById(R.id.txtAnuncios);
             txtAnuncios.setOnClickListener(new View.OnClickListener() {
@@ -222,12 +227,15 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                                 startActivity(new Intent(getApplicationContext(), AnunciosActivity.class));
                                 finish();
 
-                                Toast.makeText(LoginActivity.this, getString(R.string.sucesso_login_facebook),
-                                        Toast.LENGTH_SHORT).show();
+                                //Toast.makeText(LoginActivity.this, getString(R.string.sucesso_login_facebook),
+                                 //       Toast.LENGTH_SHORT).show();
+                                Util.setSnackBar(layout, getString(R.string.sucesso_login_facebook));
+
                             } else {
 
-                                Toast.makeText(LoginActivity.this, getString(R.string.falha_login_facebook),
-                                        Toast.LENGTH_SHORT).show();
+                                //Toast.makeText(LoginActivity.this, getString(R.string.falha_login_facebook),
+                                //        Toast.LENGTH_SHORT).show();
+                                Util.setSnackBar(layout, getString(R.string.falha_login_facebook));
                             }
                         } catch (Exception e) {
                             e.printStackTrace();

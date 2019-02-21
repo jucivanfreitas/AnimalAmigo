@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
+
 <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/login_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/bg_peb_cao_afago"
@@ -79,33 +81,33 @@
             <android.support.design.widget.TextInputLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                app:passwordToggleEnabled="true"
                 android:padding="3dp"
+                android:textColorHint="@color/cinza"
 
-                android:textColorHint="@color/cinza">
+                app:passwordToggleEnabled="true">
 
                 <EditText
                     android:id="@+id/txiPassword"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:imeActionLabel="@string/action_sign_in_short"
-                    android:textColor="@color/backgroundcolor"
-                    android:imeOptions="actionUnspecified"
+                    android:layout_marginBottom="5dp"
+                    android:autofillHints=""
                     android:background="@drawable/bg_caixa_txt"
+                    android:ems="10"
+                    android:hint="@string/prompt_password"
+                    android:imeActionId="6"
+                    android:imeActionLabel="@string/action_sign_in_short"
+                    android:imeOptions="actionUnspecified"
+                    android:inputType="textPassword"
+                    android:maxLines="1"
                     android:shadowColor="@color/common_google_signin_btn_text_light_default"
                     android:shadowDx="@android:integer/config_shortAnimTime"
                     android:text="@string/prompt_password"
-                    android:inputType="textPassword"
-                    android:maxLines="1"
-                    android:ems="10"
-                    android:hint="@string/prompt_password"
-                    android:textSize="16sp"
-                    android:layout_marginBottom="5dp"
-                    android:autofillHints=""
+                    android:textColor="@color/backgroundcolor"
                     android:textColorHint="@color/colorPrimary"
                     android:textColorLink="@color/colorPrimary"
-                    tools:targetApi="o"
-                    android:imeActionId="6"/>
+                    android:textSize="16sp"
+                    tools:targetApi="o" />
 
             </android.support.design.widget.TextInputLayout>
 
@@ -223,3 +225,4 @@
         app:layout_constraintTop_toBottomOf="@+id/login_form" />
 
 </android.support.constraint.ConstraintLayout>
+

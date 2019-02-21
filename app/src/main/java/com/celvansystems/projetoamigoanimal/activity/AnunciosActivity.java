@@ -62,6 +62,7 @@ public class AnunciosActivity extends AppCompatActivity implements NavigationVie
     private Spinner spinnerEstado;
     private Spinner spinnerCidade;
     private ArrayAdapter adapterCidades;
+    private View layout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -109,6 +110,7 @@ public class AnunciosActivity extends AppCompatActivity implements NavigationVie
 
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        layout = findViewById(R.id.anuncios_coordinatorlayout);
 
         try {
             autenticacao = ConfiguracaoFirebase.getFirebaseAutenticacao();
@@ -291,11 +293,12 @@ public class AnunciosActivity extends AppCompatActivity implements NavigationVie
 
         // Verifica se há conta do google logada.
         GoogleSignInAccount account = GoogleSignIn.getLastSignedInAccount(this);
-        if(account == null) {
-            Log.d("INFO40", "usuario nao logado com google");
-
+        if(account != null) {
+            Log.d("INFO40", "Usuário logado com google");
+            Util.setSnackBar(layout, "Usuário logado pelo google");
         }
         //updateUI(account);
+        // TODO: 20/02/2019 verificar se logou com o facebook
     }
 
     /**
