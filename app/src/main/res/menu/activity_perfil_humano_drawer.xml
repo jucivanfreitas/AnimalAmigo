@@ -19,7 +19,7 @@
         <item
             android:id="@+id/cad_pet"
             android:title="@string/cad_novo_animal">
-            <menu>
+            <group android:checkableBehavior="single">
                 <item
                     android:id="@+id/pet_adote"
                     android:icon="@drawable/ic_perfilpet"
@@ -38,8 +38,7 @@
                     android:title="@string/txt_sair" />
 
 
-            </menu>>
-
+            </group>
 
         </item>
 
@@ -47,17 +46,22 @@
 
     </group>
 
-    <item android:title="@string/comunication">
-        <menu>
+    <group android:checkableBehavior="single">
+
+    <item android:title="@string/comunication" >
+        <menu android:checkableBehavior="single">
             <item
+                android:checkableBehavior="single"
                 android:id="@+id/nav_share_app"
                 android:icon="@drawable/ic_menu_share"
                 android:title="@string/txt_compartilhar_app" />
             <item
+                android:checkableBehavior="single"
                 android:id="@+id/nav_conversar"
                 android:icon="@drawable/ic_conversa"
                 android:title="@string/txt_conversas" />
             <item
+                android:checkableBehavior="single"
                 android:id="@+id/nav_help"
                 android:icon="@android:drawable/ic_menu_help"
                 android:title="@string/txt_Sobre_App" />
@@ -66,5 +70,6 @@
 
 
     </item>
+    </group>
 
 </menu>

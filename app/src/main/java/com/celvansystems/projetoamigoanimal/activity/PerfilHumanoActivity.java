@@ -112,7 +112,8 @@ public class PerfilHumanoActivity extends AppCompatActivity
                     Toast.LENGTH_SHORT).show();
         } else if (id == R.id.nav_meus_anuncios) {
             //reuso da activit meus anuncios
-            startActivity(new Intent(getApplicationContext(),MeusAnunciosActivity.class));
+           startActivity(new Intent(getApplicationContext(),MeusAnunciosActivity.class));
+
 
         } else if (id == R.id.pet_adote) {
             //reuso da activity cadastrar anuncio
