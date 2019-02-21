@@ -380,18 +380,21 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                         public void onComplete(@NonNull Task<AuthResult> task) {
                             if (task.isSuccessful()) {
 
-                                if (checkIfEmailVerified()) {
+                                // TODO: 20/02/2019 habilitar verificacao de e-mail no final. Não deletar o código
+                                //if (checkIfEmailVerified()) {
                                     Intent intent = new Intent(getApplicationContext(), AnunciosActivity.class);
                                     startActivity(intent);
                                     Toast.makeText(LoginActivity.this, "Sucesso ao realizar login",
                                             Toast.LENGTH_SHORT).show();
                                     finish();
-                                } else {
+                                /*} else {
                                     Toast.makeText(LoginActivity.this, "E-mail não verificado. Gentileza verificar sua caixa de e-mail.",
                                             Toast.LENGTH_SHORT).show();
                                     //envia e-mail de verificacao
                                     sendVerificationEmail();
-                                }
+                                    showProgress(false);
+                                }*/
+                                // TODO: 20/02/2019 a verificacao de e-mail termina aqui. Não deletar o código
                             } else {
                                 Toast.makeText(LoginActivity.this, "Falha ao realizar login: " +
                                                 task.getException(),
