@@ -16,40 +16,42 @@
             android:id="@+id/nav_meus_anuncios"
             android:icon="@drawable/ic_menu_slideshow"
             android:title="@string/txt_meus_anuncios" />
-        <item
-            android:id="@+id/cad_pet"
-            android:title="@string/cad_novo_animal">
-            <group android:checkableBehavior="single">
-                <item
-                    android:id="@+id/pet_adote"
-                    android:icon="@drawable/ic_perfilpet"
-                    android:title="Para Adoção" />
-                <item
-                    android:id="@+id/pet_procurado"
-                    android:icon="@drawable/ic_procurar_pet"
-                    android:title="@string/txt_perdido" />
-
-                <item
-                    android:id="@+id/doacao"
-                    android:icon="@drawable/ic_ajudar_causa"
-                    android:title="@string/txt_ajudar" />
-                <item
-                    android:id="@+id/nav_sair"
-                    android:title="@string/txt_sair" />
-
-
-            </group>
-
-        </item>
-
 
 
     </group>
+    <item
+        android:id="@+id/cad_pet"
+        android:title="@string/cad_novo_animal">
+        <menu>
+        <group android:checkableBehavior="single">
+            <item
+                android:id="@+id/pet_adote"
+                android:icon="@drawable/ic_perfilpet"
+                android:title="Para Adoção" />
+            <item
+                android:id="@+id/pet_procurado"
+                android:icon="@drawable/ic_procurar_pet"
+                android:title="@string/txt_perdido" />
+
+            <item
+                android:id="@+id/doacao"
+                android:icon="@drawable/ic_ajudar_causa"
+                android:title="@string/txt_ajudar" />
+            <item
+                android:id="@+id/nav_sair"
+                android:title="@string/txt_sair" />
+
+
+        </group>
+        </menu>
+
+    </item>
 
     <group android:checkableBehavior="single">
 
     <item android:title="@string/comunication" >
         <menu android:checkableBehavior="single">
+            <group android:checkableBehavior="single">
             <item
                 android:checkableBehavior="single"
                 android:id="@+id/nav_share_app"
@@ -65,6 +67,7 @@
                 android:id="@+id/nav_help"
                 android:icon="@android:drawable/ic_menu_help"
                 android:title="@string/txt_Sobre_App" />
+            </group>
 
         </menu>
 
