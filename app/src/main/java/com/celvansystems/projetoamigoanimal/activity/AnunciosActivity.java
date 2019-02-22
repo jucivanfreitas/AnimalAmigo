@@ -31,6 +31,7 @@ import com.facebook.login.LoginManager;
 import com.google.android.gms.ads.AdListener;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
+import com.google.android.gms.ads.InterstitialAd;
 import com.google.android.gms.ads.MobileAds;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
@@ -64,6 +65,7 @@ public class AnunciosActivity extends AppCompatActivity implements NavigationVie
     private Spinner spinnerCidade;
     private ArrayAdapter adapterCidades;
     private View layout;
+    private InterstitialAd mInterstitialAd;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -158,6 +160,44 @@ public class AnunciosActivity extends AppCompatActivity implements NavigationVie
         //AdView
         try {
             //teste
+            mInterstitialAd = new InterstitialAd(this);
+            mInterstitialAd.setAdUnitId("ca-app-pub-3940256099942544/1033173712");
+            mInterstitialAd.loadAd(new AdRequest.Builder().build());
+            mInterstitialAd.show();
+            mInterstitialAd.setAdListener(new AdListener() {
+                @Override
+                public void onAdLoaded() {
+                    // Code to be executed when an ad finishes loading.
+                    Util.setSnackBar(layout, "intersticial loaded");
+                }
+
+                @Override
+                public void onAdFailedToLoad(int errorCode) {
+                    // Code to be executed when an ad request fails.
+                    Util.setSnackBar(layout, "intersticial failed");
+                }
+
+                @Override
+                public void onAdOpened() {
+                    // Code to be executed when the ad is displayed.
+                    Util.setSnackBar(layout, "intersticial opened");
+                }
+
+                @Override
+                public void onAdLeftApplication() {
+                    // Code to be executed when the user has left the app.
+                    Util.setSnackBar(layout, "intersticial on left");
+                }
+
+                @Override
+                public void onAdClosed() {
+                    // Load the next interstitial.
+                    Util.setSnackBar(layout, "intersticial closed");
+                    //mInterstitialAd.loadAd(new AdRequest.Builder().build());
+                }
+            });
+
+            //banner
             final AdRequest adRequest = new AdRequest.Builder().addTestDevice("33BE2250B43518CCDA7DE426D04EE231").build();
 
             final AdView adView = findViewById(R.id.adView);

@@ -30,6 +30,10 @@ import com.celvansystems.projetoamigoanimal.helper.Constantes;
 import com.celvansystems.projetoamigoanimal.helper.Permissoes;
 import com.celvansystems.projetoamigoanimal.helper.Util;
 import com.celvansystems.projetoamigoanimal.model.Animal;
+import com.google.android.gms.ads.AdListener;
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.InterstitialAd;
+import com.google.android.gms.ads.MobileAds;
 import com.google.android.gms.tasks.Continuation;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -65,6 +69,8 @@ public class CadastrarAnuncioActivity extends AppCompatActivity
     private AlertDialog dialog;
     private StorageReference storage;
     private int requisicao;
+    private View layout;
+    private InterstitialAd mInterstitialAd;
 
     //Permissoes
     private String[] permissoes = new String[]{
@@ -88,6 +94,8 @@ public class CadastrarAnuncioActivity extends AppCompatActivity
 
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
+        layout = findViewById(R.id.cadastrar_anuncio_layout);
 
         storage = ConfiguracaoFirebase.getFirebaseStorage();
 
@@ -142,6 +150,62 @@ public class CadastrarAnuncioActivity extends AppCompatActivity
                 validarDadosAnuncio(v);
             }
         });
+        //propagandas
+        configuraAdMob();
+    }
+
+    /**
+     * método que configura as propagandas via AdMob
+     */
+    private void configuraAdMob() {
+
+        //admob
+        //MobileAds.initialize(this, String.valueOf(R.string.app_id));
+        //teste do google
+        MobileAds.initialize(this, "ca-app-pub-3940256099942544~3347511713");
+
+        //AdView
+        try {
+            //teste
+            mInterstitialAd = new InterstitialAd(this);
+            mInterstitialAd.setAdUnitId("ca-app-pub-3940256099942544/1033173712");
+            mInterstitialAd.loadAd(new AdRequest.Builder().build());
+            mInterstitialAd.show();
+            mInterstitialAd.setAdListener(new AdListener() {
+                @Override
+                public void onAdLoaded() {
+                    // Code to be executed when an ad finishes loading.
+                    Util.setSnackBar(layout, "intersticial loaded");
+                }
+
+                @Override
+                public void onAdFailedToLoad(int errorCode) {
+                    // Code to be executed when an ad request fails.
+                    Util.setSnackBar(layout, "intersticial failed");
+                }
+
+                @Override
+                public void onAdOpened() {
+                    // Code to be executed when the ad is displayed.
+                    Util.setSnackBar(layout, "intersticial opened");
+                }
+
+                @Override
+                public void onAdLeftApplication() {
+                    // Code to be executed when the user has left the app.
+                    Util.setSnackBar(layout, "intersticial on left");
+                }
+
+                @Override
+                public void onAdClosed() {
+                    // Load the next interstitial.
+                    Util.setSnackBar(layout, "intersticial closed");
+                    //mInterstitialAd.loadAd(new AdRequest.Builder().build());
+                }
+            });
+
+
+        } catch (Exception e) {e.printStackTrace();}
     }
 
     /**
