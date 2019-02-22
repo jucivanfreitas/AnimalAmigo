@@ -6,6 +6,7 @@
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:clickable="true"
+    android:focusableInTouchMode="true"
     android:focusable="true"
     android:foreground="?attr/selectableItemBackground">
 
@@ -263,6 +264,8 @@
             android:ems="10"
             android:hint="@string/txt_comentar"
             android:inputType="textShortMessage|textAutoCorrect|textMultiLine|textPersonName|textCapSentences|textAutoComplete"
+            android:selectAllOnFocus="false"
+            android:singleLine="false"
             android:visibility="visible"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@+id/imageButton_comentar"
