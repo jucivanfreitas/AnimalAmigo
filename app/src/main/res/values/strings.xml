@@ -163,5 +163,6 @@
     <string name="email_enviado">Um e-mail foi enviado para você.</string>
     <string name="email_senha_invalido">E-mail ou senha inválido!</string>
     <string name="falha_enviar_email_recuperacao">Falha ao enviar e-mail de recuperação de senha.</string>
+    <string name="txt_modificar">Modificar</string>
 
 </resources>
