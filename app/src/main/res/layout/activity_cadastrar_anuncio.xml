@@ -5,6 +5,8 @@
     android:id="@+id/cadastrar_anuncio_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:focusableInTouchMode="true"
+    android:focusable="true"
     tools:context="com.celvansystems.projetoamigoanimal.activity.CadastrarAnuncioActivity">
 
     <android.support.design.widget.AppBarLayout
