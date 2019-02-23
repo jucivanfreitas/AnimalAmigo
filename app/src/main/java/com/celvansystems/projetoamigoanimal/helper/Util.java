@@ -167,7 +167,7 @@ public class Util {
     public static String getDataAtualBrasil(){
         // configuraçao da data atual do Brasil
         Calendar cal = Calendar.getInstance();
-        return( new SimpleDateFormat("yyyy/MM/dd HH:mm:ss").format(cal.getTime()));
+        return( new SimpleDateFormat("dd/MM/yyyy HH:mm").format(cal.getTime()));
     }
 
     public static void setSnackBar(View root, String snackTitle) {
