@@ -185,6 +185,7 @@
                     android:clickable="true"
                     android:elevation="50dp"
                     android:focusable="true"
+                    android:foreground="?attr/selectableItemBackground"
                     android:shadowColor="@color/black_overlay"
                     android:shadowDy="@android:integer/config_mediumAnimTime"
                     android:text="@string/txt_entrar"

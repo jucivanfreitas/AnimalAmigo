@@ -169,6 +169,7 @@ public class AnunciosActivity extends AppCompatActivity implements NavigationVie
                 public void onAdLoaded() {
                     // Code to be executed when an ad finishes loading.
                     Util.setSnackBar(layout, "intersticial loaded");
+                    mInterstitialAd.show();
                 }
 
                 @Override
@@ -198,7 +199,9 @@ public class AnunciosActivity extends AppCompatActivity implements NavigationVie
             });
 
             //banner
-            final AdRequest adRequest = new AdRequest.Builder().addTestDevice("33BE2250B43518CCDA7DE426D04EE231").build();
+            final AdRequest adRequest = new AdRequest.Builder()
+                    .addTestDevice("33BE2250B43518CCDA7DE426D04EE231")
+                    .build();
 
             final AdView adView = findViewById(R.id.adView);
             //final AdRequest adRequest = new AdRequest.Builder().build();
