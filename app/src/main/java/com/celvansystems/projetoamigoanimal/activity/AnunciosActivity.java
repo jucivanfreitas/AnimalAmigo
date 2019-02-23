@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -66,6 +67,7 @@ public class AnunciosActivity extends AppCompatActivity implements NavigationVie
     private ArrayAdapter adapterCidades;
     private View layout;
     private InterstitialAd mInterstitialAd;
+    private SwipeRefreshLayout swipeRefreshLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -143,6 +145,16 @@ public class AnunciosActivity extends AppCompatActivity implements NavigationVie
                     .build();
         } catch (Exception e){e.printStackTrace();}
 
+        swipeRefreshLayout = findViewById(R.id.swipeRefreshLayout);
+        swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                // Refresh items
+                recuperarAnunciosPublicos();
+                swipeRefreshLayout.setRefreshing(false);
+            }
+        });
+
         //propagandas
         configuraAdMob();
     }
@@ -169,7 +181,8 @@ public class AnunciosActivity extends AppCompatActivity implements NavigationVie
                 public void onAdLoaded() {
                     // Code to be executed when an ad finishes loading.
                     Util.setSnackBar(layout, "intersticial loaded");
-                    mInterstitialAd.show();
+                    // TODO: 23/02/2019 definir se mostra ou nao intersticial nos anuncios
+                    //mInterstitialAd.show();
                 }
 
                 @Override
