@@ -176,6 +176,7 @@ public class CadastrarAnuncioActivity extends AppCompatActivity
                 public void onAdLoaded() {
                     // Code to be executed when an ad finishes loading.
                     Util.setSnackBar(layout, "intersticial loaded");
+                    mInterstitialAd.show();
                 }
 
                 @Override
