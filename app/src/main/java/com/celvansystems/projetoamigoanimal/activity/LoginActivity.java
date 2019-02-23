@@ -121,7 +121,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             txtAnuncios.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    startActivity(new Intent(getApplicationContext(), AnunciosActivity.class));
+                    startActivity(new Intent(getApplicationContext(), PerfilHumanoActivity.class));
                     finish();
                 }
             });
