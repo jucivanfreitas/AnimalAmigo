@@ -20,6 +20,8 @@ import android.widget.Button;
 import android.widget.Toast;
 
 import com.celvansystems.projetoamigoanimal.R;
+import com.celvansystems.projetoamigoanimal.fragment.AnunciosFragment;
+import com.celvansystems.projetoamigoanimal.fragment.CadastrarAnuncioFragment;
 import com.celvansystems.projetoamigoanimal.fragment.ProcuradoFragment;
 import com.celvansystems.projetoamigoanimal.fragment.DoacaoFragment;
 import com.celvansystems.projetoamigoanimal.fragment.MensagensFragment;
@@ -65,7 +67,7 @@ public class PerfilHumanoActivity extends AppCompatActivity
         //ativa uso de fragments
         FragmentManager fragmentManager=getSupportFragmentManager();
         FragmentTransaction fragmentTransaction =fragmentManager.beginTransaction();
-        fragmentTransaction.replace(R.id.view_pager, new PerfilUsuarioFragment()).commit();
+        fragmentTransaction.replace(R.id.view_pager, new AnunciosFragment()).commit();
     }
 
     @Override
@@ -115,9 +117,16 @@ public class PerfilHumanoActivity extends AppCompatActivity
             startActivity(new Intent(getApplicationContext(),MeusAnunciosActivity.class));
 
 
-        } else if (id == R.id.pet_adote) {
+        } else if (id == R.id.pet_cad) {
+            // fragment pet_cad cadastrar anuncio
+            fragmentTransaction.replace(R.id.view_pager, new CadastrarAnuncioFragment()).commit();
+
+
+        }
+        else if (id == R.id.pet_adote) {
             //reuso da activity cadastrar anuncio
-            startActivity(new Intent(getApplicationContext(), CadastrarAnuncioActivity.class));
+            fragmentTransaction.replace(R.id.view_pager, new AnunciosFragment()).commit();
+
 
         } else if (id == R.id.doacao) {
             // implementar funções na activit doação.

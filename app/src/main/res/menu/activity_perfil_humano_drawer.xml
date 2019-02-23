@@ -26,8 +26,13 @@
         <group android:checkableBehavior="single">
             <item
                 android:id="@+id/pet_adote"
+                android:icon="@drawable/ic_man_carrying_a_dog_with_a_belt_to_walk"
+                android:title="Adotar Pet" />
+
+            <item
+                android:id="@+id/pet_cad"
                 android:icon="@drawable/ic_perfilpet"
-                android:title="Para Adoção" />
+                android:title="Cadastrar Pet" />
             <item
                 android:id="@+id/pet_procurado"
                 android:icon="@drawable/ic_procurar_pet"
