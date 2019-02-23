@@ -27,16 +27,16 @@
             <item
                 android:id="@+id/pet_adote"
                 android:icon="@drawable/ic_man_carrying_a_dog_with_a_belt_to_walk"
-                android:title="Adotar Pet" />
+                android:title="@string/adotar_pet" />
 
-            <item
-                android:id="@+id/pet_cad"
-                android:icon="@drawable/ic_perfilpet"
-                android:title="Cadastrar Pet" />
             <item
                 android:id="@+id/pet_procurado"
                 android:icon="@drawable/ic_procurar_pet"
                 android:title="@string/txt_perdido" />
+            <item
+                android:id="@+id/pet_cad"
+                android:icon="@drawable/ic_perfilpet"
+                android:title="@string/cadastrar_pet" />
 
             <item
                 android:id="@+id/doacao"

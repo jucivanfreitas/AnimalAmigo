@@ -164,5 +164,7 @@
     <string name="email_senha_invalido">E-mail ou senha inválido!</string>
     <string name="falha_enviar_email_recuperacao">Falha ao enviar e-mail de recuperação de senha.</string>
     <string name="txt_modificar">Modificar</string>
+    <string name="adotar_pet">Adotar Pet</string>
+    <string name="cadastrar_pet">Cadastrar Pet</string>
 
 </resources>
