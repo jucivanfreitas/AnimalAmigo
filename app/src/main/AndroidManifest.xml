@@ -25,7 +25,7 @@
 
         <activity
             android:name=".activity.PerfilHumanoActivity"
-            android:label="@string/title_activity_perfil_humano"
+            android:label="@string/nome_app"
             android:theme="@style/AppTheme.NoActionBar.navheader"/>
 
         <provider
