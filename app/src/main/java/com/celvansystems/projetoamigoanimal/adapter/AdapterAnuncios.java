@@ -58,6 +58,7 @@ public class AdapterAnuncios extends RecyclerView.Adapter<AdapterAnuncios.MyView
                 myViewHolder.idade.setText(anuncio.getIdade());
                 myViewHolder.cidade.setText(anuncio.getCidade());
 
+
                 //verifica se o animal foi curtido pelo usuario atual
                 try {
                     if (isCurtido(anuncio)) {
@@ -169,10 +170,10 @@ public class AdapterAnuncios extends RecyclerView.Adapter<AdapterAnuncios.MyView
                     anuncioCurtidasRef.addOnCompleteListener(new OnCompleteListener<Void>() {
                         @Override
                         public void onComplete(@NonNull Task<Void> task) {
-                            if (anuncio.getCurtidas() != null) {
+                            /*if (anuncio.getCurtidas() != null) {
                                 /*Toast.makeText(myViewHolder.itemView.getContext(), anuncio.getCurtidas().size() +
-                                        " curtida(s)", Toast.LENGTH_LONG).show();*/
-                            }
+                                        " curtida(s)", Toast.LENGTH_LONG).show();
+                            }*/
                         }
                     });
                 }

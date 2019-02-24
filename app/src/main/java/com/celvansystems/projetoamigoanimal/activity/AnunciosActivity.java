@@ -66,7 +66,6 @@ public class AnunciosActivity extends AppCompatActivity implements NavigationVie
     private Spinner spinnerCidade;
     private ArrayAdapter adapterCidades;
     private View layout;
-    private InterstitialAd mInterstitialAd;
     private SwipeRefreshLayout swipeRefreshLayout;
 
     @Override
@@ -105,7 +104,7 @@ public class AnunciosActivity extends AppCompatActivity implements NavigationVie
 
         //configurações iniciais
         inicializarComponentes();
-        recuperarAnunciosPublicos();
+
     }
 
     /**
@@ -119,22 +118,30 @@ public class AnunciosActivity extends AppCompatActivity implements NavigationVie
 
         try {
             autenticacao = ConfiguracaoFirebase.getFirebaseAutenticacao();
+
             anunciosPublicosRef = ConfiguracaoFirebase.getFirebase()
                     .child("meus_animais");
+
         } catch (Exception e){e.printStackTrace();}
 
-        RecyclerView recyclerAnunciosPublicos;
-        recyclerAnunciosPublicos = findViewById(R.id.recyclerAnuncios);
+        RecyclerView recyclerAnunciosPublicos = findViewById(R.id.recyclerAnuncios);
+        recyclerAnunciosPublicos.setItemAnimator(null);
+
         btnCidade = findViewById(R.id.btnCidade);
         btnEspecie = findViewById(R.id.btnEspecie);
 
         //configurar recyclerview
         try {
-            recyclerAnunciosPublicos.setLayoutManager(new LinearLayoutManager(this));
+            RecyclerView.LayoutManager lm = new LinearLayoutManager(this);
+
+            recyclerAnunciosPublicos.setLayoutManager(lm);
+
             recyclerAnunciosPublicos.setHasFixedSize(true);
 
             adapterAnuncios = new AdapterAnuncios(listaAnuncios);
+
             recyclerAnunciosPublicos.setAdapter(adapterAnuncios);
+
         } catch (Exception e){e.printStackTrace();}
 
         try {
@@ -145,13 +152,12 @@ public class AnunciosActivity extends AppCompatActivity implements NavigationVie
                     .build();
         } catch (Exception e){e.printStackTrace();}
 
+        //refresh
         swipeRefreshLayout = findViewById(R.id.swipeRefreshLayout);
         swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                // Refresh items
-                recuperarAnunciosPublicos();
-                swipeRefreshLayout.setRefreshing(false);
+                refreshRecyclerAnuncios();
             }
         });
 
@@ -159,99 +165,15 @@ public class AnunciosActivity extends AppCompatActivity implements NavigationVie
         configuraAdMob();
     }
 
-    /**
-     * método que configura as propagandas via AdMob
-     */
-    private void configuraAdMob() {
+    private boolean isListaAnunciosPopulada(){
+        return listaAnuncios.size() > 0;
+    }
 
-        //admob
-        //MobileAds.initialize(this, String.valueOf(R.string.app_id));
-        //teste do google
-        MobileAds.initialize(this, "ca-app-pub-3940256099942544~3347511713");
-
-        //AdView
-        try {
-            //teste
-            mInterstitialAd = new InterstitialAd(this);
-            mInterstitialAd.setAdUnitId("ca-app-pub-3940256099942544/1033173712");
-            mInterstitialAd.loadAd(new AdRequest.Builder().build());
-            mInterstitialAd.show();
-            mInterstitialAd.setAdListener(new AdListener() {
-                @Override
-                public void onAdLoaded() {
-                    // Code to be executed when an ad finishes loading.
-                    Util.setSnackBar(layout, "intersticial loaded");
-                    // TODO: 23/02/2019 definir se mostra ou nao intersticial nos anuncios
-                    //mInterstitialAd.show();
-                }
-
-                @Override
-                public void onAdFailedToLoad(int errorCode) {
-                    // Code to be executed when an ad request fails.
-                    Util.setSnackBar(layout, "intersticial failed");
-                }
-
-                @Override
-                public void onAdOpened() {
-                    // Code to be executed when the ad is displayed.
-                    Util.setSnackBar(layout, "intersticial opened");
-                }
-
-                @Override
-                public void onAdLeftApplication() {
-                    // Code to be executed when the user has left the app.
-                    Util.setSnackBar(layout, "intersticial on left");
-                }
-
-                @Override
-                public void onAdClosed() {
-                    // Load the next interstitial.
-                    Util.setSnackBar(layout, "intersticial closed");
-                    //mInterstitialAd.loadAd(new AdRequest.Builder().build());
-                }
-            });
-
-            //banner
-            final AdRequest adRequest = new AdRequest.Builder()
-                    .addTestDevice("33BE2250B43518CCDA7DE426D04EE231")
-                    .build();
-
-            final AdView adView = findViewById(R.id.adView);
-            //final AdRequest adRequest = new AdRequest.Builder().build();
-            adView.loadAd(adRequest);
-
-            adView.setAdListener(new AdListener() {
-                @Override
-                public void onAdLoaded() {
-                    // Code to be executed when an ad finishes loading.
-                    Toast.makeText(getApplicationContext(), "loaded. " +
-                            adRequest.getContentUrl(), Toast.LENGTH_SHORT).show();
-                }
-                @Override
-                public void onAdFailedToLoad(int errorCode) {
-                    // Code to be executed when an ad request fails.
-                    // Toast.makeText(getApplicationContext(), "failed to load. " +
-                    //        adRequest.getContentUrl(), Toast.LENGTH_SHORT).show();
-                }
-                @Override
-                public void onAdOpened() {
-                    // Code to be executed when an ad opens an overlay that
-                    // covers the screen.
-                    Toast.makeText(getApplicationContext(), "opened", Toast.LENGTH_SHORT).show();
-                }
-                @Override
-                public void onAdLeftApplication() {
-                    // Code to be executed when the user has left the app.
-                    Toast.makeText(getApplicationContext(), "left", Toast.LENGTH_SHORT).show();
-                }
-                @Override
-                public void onAdClosed() {
-                    // Code to be executed when when the user is about to return.
-                    // to the app after tapping on an ad.
-                    Toast.makeText(getApplicationContext(), "closed", Toast.LENGTH_SHORT).show();
-                }
-            });
-        } catch (Exception e) {e.printStackTrace();}
+    private void refreshRecyclerAnuncios(){
+        // Refresh items
+        listaAnuncios.clear();
+        recuperarAnunciosPublicos();
+        swipeRefreshLayout.setRefreshing(false);
     }
 
     /**
@@ -265,14 +187,21 @@ public class AnunciosActivity extends AppCompatActivity implements NavigationVie
             anunciosPublicosRef.addValueEventListener(new ValueEventListener() {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                    listaAnuncios.clear();
-                    for(DataSnapshot animais: dataSnapshot.getChildren()){
-                        listaAnuncios.add(animais.getValue(Animal.class));
-                    }
-                    Collections.reverse(listaAnuncios);
-                    adapterAnuncios.notifyDataSetChanged();
 
-                    dialog.dismiss();
+                    //se a lista de anuncios estiver vazia
+                    if (!isListaAnunciosPopulada()) {
+
+                        for (DataSnapshot animais : dataSnapshot.getChildren()) {
+                            Animal animal = animais.getValue(Animal.class);
+                            listaAnuncios.add(animal);
+                        }
+
+                        Collections.reverse(listaAnuncios);
+
+                        adapterAnuncios.notifyDataSetChanged();
+
+                        dialog.dismiss();
+                    }
                 }
 
                 @Override
@@ -368,6 +297,8 @@ public class AnunciosActivity extends AppCompatActivity implements NavigationVie
                 Util.setSnackBar(layout, "Usuário logado pelo facebook");
             }
         }
+
+        recuperarAnunciosPublicos();
     }
 
     /**
@@ -584,6 +515,7 @@ public class AnunciosActivity extends AppCompatActivity implements NavigationVie
                                 //Log.d("INFO6: ", animal.getNome()+"/ "+animal.getCidade()+"/"+animal.getUf());
                                 listaAnuncios.add(animal);
 
+
                             } else {
                                 //Log.d("INFOBAD: ", animal.getCidade()+"/"+animal.getUf());
                                 //sem espécie
@@ -645,10 +577,102 @@ public class AnunciosActivity extends AppCompatActivity implements NavigationVie
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
         //DRAWER
-
-
-
-
         return false;
     }
+
+    /**
+     * método que configura as propagandas via AdMob
+     */
+    private void configuraAdMob() {
+
+        //admob
+        //MobileAds.initialize(this, String.valueOf(R.string.app_id));
+        //teste do google
+        MobileAds.initialize(this, "ca-app-pub-3940256099942544~3347511713");
+
+        //AdView
+        try {
+            //teste
+            InterstitialAd mInterstitialAd = new InterstitialAd(this);
+            mInterstitialAd.setAdUnitId("ca-app-pub-3940256099942544/1033173712");
+            mInterstitialAd.loadAd(new AdRequest.Builder().build());
+            mInterstitialAd.show();
+            mInterstitialAd.setAdListener(new AdListener() {
+                @Override
+                public void onAdLoaded() {
+                    // Code to be executed when an ad finishes loading.
+                    Util.setSnackBar(layout, "intersticial loaded");
+                    // TODO: 23/02/2019 definir se mostra ou nao intersticial nos anuncios
+                    //mInterstitialAd.show();
+                }
+
+                @Override
+                public void onAdFailedToLoad(int errorCode) {
+                    // Code to be executed when an ad request fails.
+                    Util.setSnackBar(layout, "intersticial failed");
+                }
+
+                @Override
+                public void onAdOpened() {
+                    // Code to be executed when the ad is displayed.
+                    Util.setSnackBar(layout, "intersticial opened");
+                }
+
+                @Override
+                public void onAdLeftApplication() {
+                    // Code to be executed when the user has left the app.
+                    Util.setSnackBar(layout, "intersticial on left");
+                }
+
+                @Override
+                public void onAdClosed() {
+                    // Load the next interstitial.
+                    Util.setSnackBar(layout, "intersticial closed");
+                    //mInterstitialAd.loadAd(new AdRequest.Builder().build());
+                }
+            });
+
+            //banner
+            final AdRequest adRequest = new AdRequest.Builder()
+                    .addTestDevice("33BE2250B43518CCDA7DE426D04EE231")
+                    .build();
+
+            final AdView adView = findViewById(R.id.adView);
+            //final AdRequest adRequest = new AdRequest.Builder().build();
+            adView.loadAd(adRequest);
+
+            adView.setAdListener(new AdListener() {
+                @Override
+                public void onAdLoaded() {
+                    // Code to be executed when an ad finishes loading.
+                    Toast.makeText(getApplicationContext(), "loaded. " +
+                            adRequest.getContentUrl(), Toast.LENGTH_SHORT).show();
+                }
+                @Override
+                public void onAdFailedToLoad(int errorCode) {
+                    // Code to be executed when an ad request fails.
+                    // Toast.makeText(getApplicationContext(), "failed to load. " +
+                    //        adRequest.getContentUrl(), Toast.LENGTH_SHORT).show();
+                }
+                @Override
+                public void onAdOpened() {
+                    // Code to be executed when an ad opens an overlay that
+                    // covers the screen.
+                    Toast.makeText(getApplicationContext(), "opened", Toast.LENGTH_SHORT).show();
+                }
+                @Override
+                public void onAdLeftApplication() {
+                    // Code to be executed when the user has left the app.
+                    Toast.makeText(getApplicationContext(), "left", Toast.LENGTH_SHORT).show();
+                }
+                @Override
+                public void onAdClosed() {
+                    // Code to be executed when when the user is about to return.
+                    // to the app after tapping on an ad.
+                    Toast.makeText(getApplicationContext(), "closed", Toast.LENGTH_SHORT).show();
+                }
+            });
+        } catch (Exception e) {e.printStackTrace();}
+    }
+
 }
