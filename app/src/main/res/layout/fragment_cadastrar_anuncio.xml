@@ -1,14 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".fragment.CadastrarAnuncioFragment">
 
     <!-- TODO: Update blank fragment layout -->
-    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
-        xmlns:tools="http://schemas.android.com/tools"
+    <LinearLayout
         android:id="@+id/constraintLayout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -30,39 +29,52 @@
 
                 <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="100dp"
+                    android:layout_height="200dp"
                     android:layout_marginLeft="8dp"
                     android:layout_marginRight="8dp"
                     android:layout_marginBottom="8dp"
                     android:background="@drawable/bg_caixa_txt"
                     android:orientation="horizontal"
-                    android:padding="8dp">
+                    android:padding="4dp"
+                    android:baselineAligned="false">
 
-                    <ImageView
-                        android:id="@+id/imageCadastro1"
-                        android:layout_width="0dp"
-                        android:layout_height="75dp"
-                        android:layout_margin="8dp"
-                        android:layout_weight="1"
-                        android:contentDescription="@string/todo"
-                        app:srcCompat="@drawable/padrao" />
+                    <HorizontalScrollView
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1">
 
-                    <ImageView
-                        android:id="@+id/imageCadastro2"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_margin="0dp"
-                        android:layout_weight="1"
-                        android:contentDescription="@string/todo"
-                        app:srcCompat="@drawable/padrao" />
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:orientation="horizontal">
 
-                    <ImageView
-                        android:id="@+id/imageCadastro3"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:contentDescription="@string/todo"
-                        app:srcCompat="@drawable/padrao" />
+                            <ImageView
+                                android:id="@+id/imageCadastro1"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:contentDescription="@string/todo"
+                                app:srcCompat="@drawable/padrao" />
+
+                            <ImageView
+                                android:id="@+id/imageCadastro2"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_margin="0dp"
+                                android:layout_weight="1"
+                                android:contentDescription="@string/todo"
+                                app:srcCompat="@drawable/padrao" />
+
+                            <ImageView
+                                android:id="@+id/imageCadastro3"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:contentDescription="@string/todo"
+                                app:srcCompat="@drawable/padrao" />
+                        </LinearLayout>
+                    </HorizontalScrollView>
+
                 </LinearLayout>
 
 
