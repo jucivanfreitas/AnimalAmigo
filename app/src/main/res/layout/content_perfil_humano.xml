@@ -2,6 +2,7 @@
 <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/constraint_perfil_humano"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
@@ -49,8 +50,6 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">
             <!--ads:adUnitId="@string/banner_id"-->
-            ads:layout_anchorGravity="bottom|center">
-
             <!--ads:layout_anchor="@+id/include"-->
 
         </com.google.android.gms.ads.AdView>

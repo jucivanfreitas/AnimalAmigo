@@ -29,7 +29,13 @@ import com.celvansystems.projetoamigoanimal.fragment.NotificacoesFragment;
 import com.celvansystems.projetoamigoanimal.fragment.PerfilUsuarioFragment;
 import com.celvansystems.projetoamigoanimal.fragment.SobreAppFragment;
 import com.celvansystems.projetoamigoanimal.helper.ConfiguracaoFirebase;
+import com.celvansystems.projetoamigoanimal.helper.Util;
 import com.celvansystems.projetoamigoanimal.model.Animal;
+import com.google.android.gms.ads.AdListener;
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdView;
+import com.google.android.gms.ads.InterstitialAd;
+import com.google.android.gms.ads.MobileAds;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
@@ -46,6 +52,8 @@ public class PerfilHumanoActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
     private FirebaseAuth autenticacao;
+    private View layout;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -68,6 +76,9 @@ public class PerfilHumanoActivity extends AppCompatActivity
         FragmentManager fragmentManager=getSupportFragmentManager();
         FragmentTransaction fragmentTransaction =fragmentManager.beginTransaction();
         fragmentTransaction.replace(R.id.view_pager, new AnunciosFragment()).commit();
+
+        //propagandas
+        configuraAdMob();
     }
 
     @Override
@@ -203,6 +214,8 @@ public class PerfilHumanoActivity extends AppCompatActivity
         autenticacao = ConfiguracaoFirebase.getFirebaseAutenticacao();
         Button btnDesativarConta = findViewById(R.id.btnEncerrarConta);
 
+        layout = findViewById(R.id.constraint_perfil_humano);
+
         btnDesativarConta.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -331,5 +344,101 @@ public class PerfilHumanoActivity extends AppCompatActivity
                     }
                 });
 
+    }
+
+    /**
+     * método que configura as propagandas via AdMob
+     */
+    private void configuraAdMob() {
+
+        //admob
+        //MobileAds.initialize(this, String.valueOf(R.string.app_id));
+        //teste do google
+        MobileAds.initialize(getApplicationContext(), "ca-app-pub-3940256099942544~3347511713");
+        Log.d("INFO50", "configurando admob");
+        //AdView
+        try {
+            //teste
+            InterstitialAd mInterstitialAd = new InterstitialAd(this);
+            mInterstitialAd.setAdUnitId("ca-app-pub-3940256099942544/1033173712");
+            mInterstitialAd.loadAd(new AdRequest.Builder().build());
+            mInterstitialAd.show();
+            mInterstitialAd.setAdListener(new AdListener() {
+                @Override
+                public void onAdLoaded() {
+                    // Code to be executed when an ad finishes loading.
+                    Util.setSnackBar(layout, "intersticial loaded");
+                    Log.d("INFO50", "intersticial loaded");
+                    // TODO: 23/02/2019 definir se mostra ou nao intersticial nos anuncios
+                    //mInterstitialAd.show();
+                }
+
+                @Override
+                public void onAdFailedToLoad(int errorCode) {
+                    // Code to be executed when an ad request fails.
+                    Util.setSnackBar(layout, "intersticial failed");
+                }
+
+                @Override
+                public void onAdOpened() {
+                    // Code to be executed when the ad is displayed.
+                    Util.setSnackBar(layout, "intersticial opened");
+                }
+
+                @Override
+                public void onAdLeftApplication() {
+                    // Code to be executed when the user has left the app.
+                    Util.setSnackBar(layout, "intersticial on left");
+                }
+
+                @Override
+                public void onAdClosed() {
+                    // Load the next interstitial.
+                    Util.setSnackBar(layout, "intersticial closed");
+                    //mInterstitialAd.loadAd(new AdRequest.Builder().build());
+                }
+            });
+
+            //banner
+            final AdRequest adRequest = new AdRequest.Builder()
+                    .addTestDevice("33BE2250B43518CCDA7DE426D04EE231")
+                    .build();
+
+            final AdView adView = findViewById(R.id.adView2);
+            //final AdRequest adRequest = new AdRequest.Builder().build();
+            adView.loadAd(adRequest);
+
+            adView.setAdListener(new AdListener() {
+                @Override
+                public void onAdLoaded() {
+                    // Code to be executed when an ad finishes loading.
+                    Toast.makeText(getApplicationContext(), "loaded. " +
+                            adRequest.getContentUrl(), Toast.LENGTH_SHORT).show();
+                }
+                @Override
+                public void onAdFailedToLoad(int errorCode) {
+                    // Code to be executed when an ad request fails.
+                    // Toast.makeText(this, "failed to load. " +
+                    //        adRequest.getContentUrl(), Toast.LENGTH_SHORT).show();
+                }
+                @Override
+                public void onAdOpened() {
+                    // Code to be executed when an ad opens an overlay that
+                    // covers the screen.
+                    Toast.makeText(getApplicationContext(), "opened", Toast.LENGTH_SHORT).show();
+                }
+                @Override
+                public void onAdLeftApplication() {
+                    // Code to be executed when the user has left the app.
+                    Toast.makeText(getApplicationContext(), "left", Toast.LENGTH_SHORT).show();
+                }
+                @Override
+                public void onAdClosed() {
+                    // Code to be executed when when the user is about to return.
+                    // to the app after tapping on an ad.
+                    Toast.makeText(getApplicationContext(), "closed", Toast.LENGTH_SHORT).show();
+                }
+            });
+        } catch (Exception e) {e.printStackTrace();}
     }
 }
