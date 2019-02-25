@@ -14,7 +14,7 @@ import android.widget.Button;
 import android.widget.Toast;
 
 import com.celvansystems.projetoamigoanimal.R;
-import com.celvansystems.projetoamigoanimal.activity.AnunciosActivity;
+import com.celvansystems.projetoamigoanimal.activity.PerfilHumanoActivity;
 import com.celvansystems.projetoamigoanimal.helper.ConfiguracaoFirebase;
 import com.celvansystems.projetoamigoanimal.model.Animal;
 import com.facebook.login.LoginManager;
@@ -108,7 +108,7 @@ public class PerfilUsuarioFragment extends Fragment {
                         if (task.isSuccessful()) {
 
                             Toast.makeText(view.getContext(), "Usuário excluído com sucesso!", Toast.LENGTH_SHORT).show();
-                            startActivity(new Intent(view.getContext(), AnunciosActivity.class));
+                            startActivity(new Intent(view.getContext(), PerfilHumanoActivity.class));
                             Toast.makeText(view.getContext(), "usuario excluido!", Toast.LENGTH_SHORT).show();
                             Objects.requireNonNull(getActivity()).finish();
 

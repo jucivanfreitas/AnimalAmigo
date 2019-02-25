@@ -27,7 +27,10 @@
             android:name=".activity.PerfilHumanoActivity"
             android:label="@string/nome_app"
             android:theme="@style/AppTheme.NoActionBar.navheader">
-
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
         </activity>
 
         <provider
@@ -69,7 +72,7 @@
 
         <activity
             android:name=".activity.DetalhesAnimalActivity"
-            android:parentActivityName=".activity.AnunciosActivity" />
+            android:parentActivityName=".activity.PerfilHumanoActivity" />
         <activity
             android:name=".activity.CadastrarAnuncioActivity"
             android:label="@string/title_activity_cadastrar_anuncio"
@@ -82,31 +85,20 @@
         <activity
             android:name=".activity.MeusAnunciosActivity"
             android:label="@string/txt_meus_anuncios"
-            android:parentActivityName=".activity.AnunciosActivity"
+            android:parentActivityName=".activity.PerfilHumanoActivity"
             android:theme="@style/AppTheme.NoActionBar">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.celvansystems.projetoamigoanimal.activity.AnunciosActivity" />
+                android:value="com.celvansystems.projetoamigoanimal.activity.PerfilHumanoActivity" />
         </activity>
         <activity
             android:name=".activity.LoginActivity"
             android:label="@string/title_activity_login"
             android:windowSoftInputMode="adjustPan"
-        android:parentActivityName=".activity.AnunciosActivity">
+        android:parentActivityName=".activity.PerfilHumanoActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.celvansystems.projetoamigoanimal.activity.AnunciosActivity" />
-
-        </activity>
-        <activity
-            android:name=".activity.AnunciosActivity"
-            android:label="@string/nome_app"
-            android:theme="@style/AppTheme.NoActionBar">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-                <action android:name="android.intent.action.VIEW" />
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
+                android:value="com.celvansystems.projetoamigoanimal.activity.PerfilHumanoActivity" />
 
         </activity>
         <activity

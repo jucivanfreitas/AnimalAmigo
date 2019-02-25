@@ -182,6 +182,7 @@ public class PerfilHumanoActivity extends AppCompatActivity
             Toast.makeText(getApplicationContext(),
                     "Volte sempre, precisamos de você!!!",
                     Toast.LENGTH_SHORT).show();
+            startActivity(new Intent(getApplicationContext(),LoginActivity.class));
 
             autenticacao.signOut();
             invalidateOptionsMenu(); //invalida o menu e chama o onPrepare de novo
@@ -278,7 +279,7 @@ public class PerfilHumanoActivity extends AppCompatActivity
                             //
                             Log.d("INFO3", "User account deleted.");
                             Toast.makeText(getApplicationContext(), "Usuário excluído com sucesso!", Toast.LENGTH_SHORT).show();
-                            startActivity(new Intent(getApplicationContext(), AnunciosActivity.class));
+                            startActivity(new Intent(getApplicationContext(), PerfilHumanoActivity.class));
                             finish();
 
 
