@@ -10,9 +10,10 @@
     tools:context=".fragment.AnunciosFragment">
 
 
-    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    <android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto"
         xmlns:tools="http://schemas.android.com/tools"
+        android:id="@+id/coordinator_layout_anuncios"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
@@ -37,7 +38,6 @@
                 android:layout_weight="2"
                 android:backgroundTint="@color/lightgray"
                 android:elevation="10dp"
-                android:onClick="filtraPorCidade"
                 android:shadowColor="@color/common_google_signin_btn_text_dark_focused"
                 android:shadowDx="@android:integer/config_shortAnimTime"
                 android:text="@string/cidade"
@@ -63,7 +63,6 @@
                 android:layout_weight="2"
                 android:backgroundTint="@color/lightgray"
                 android:elevation="10dp"
-                android:onClick="filtraPorEspecie"
                 android:shadowColor="@color/common_google_signin_btn_text_dark_focused"
                 android:shadowDx="@android:integer/config_mediumAnimTime"
                 android:text="@string/especie"
@@ -72,13 +71,41 @@
                 tools:ignore="OnClick" />
         </LinearLayout>
 
-        <android.support.v7.widget.RecyclerView
-            android:id="@+id/recyclerAnuncios"
+        <android.support.v4.widget.SwipeRefreshLayout
+            android:id="@+id/swipeRefreshLayout"
             android:layout_width="match_parent"
-            android:layout_height="match_parent" />
+            android:layout_height="match_parent">
 
-    </LinearLayout>
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/recyclerAnuncios"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
+        </android.support.v4.widget.SwipeRefreshLayout>
 
 
+
+    </android.support.design.widget.CoordinatorLayout>
+
+    <RelativeLayout
+        android:id="@+id/layout_relative_banner"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <com.google.android.gms.ads.AdView xmlns:ads="http://schemas.android.com/apk/res-auto"
+            android:id="@+id/adView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"
+            android:layout_marginBottom="0dp"
+            android:visibility="visible"
+            ads:adSize="BANNER"
+            ads:adUnitId="ca-app-pub-3940256099942544/6300978111">
+            <!--ads:adUnitId="@string/banner_id"-->
+            <!--ads:layout_anchorGravity="bottom|center"-->
+            <!--ads:layout_anchor="@+id/include"-->
+        </com.google.android.gms.ads.AdView>
+
+    </RelativeLayout>
 
 </FrameLayout>

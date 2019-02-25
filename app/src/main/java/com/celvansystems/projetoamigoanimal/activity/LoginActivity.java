@@ -257,7 +257,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                             if (task.isSuccessful()) {
 
                                 //direciona para a tela principal
-                                startActivity(new Intent(getApplicationContext(), AnunciosActivity.class));
+                                startActivity(new Intent(getApplicationContext(), PerfilHumanoActivity.class));
                                 finish();
 
                                 //Toast.makeText(LoginActivity.this, getString(R.string.sucesso_login_facebook),
@@ -351,7 +351,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                                                 user.getEmail(),
                                         Toast.LENGTH_SHORT).show();
                             }
-                            startActivity(new Intent(getApplicationContext(), AnunciosActivity.class));
+                            startActivity(new Intent(getApplicationContext(), PerfilHumanoActivity.class));
                             finish();
                         }
                     }
@@ -418,7 +418,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
 
                                 // TODO: 20/02/2019 habilitar verificacao de e-mail no final. Não deletar o código
                                 //if (checkIfEmailVerified()) {
-                                    Intent intent = new Intent(getApplicationContext(), AnunciosActivity.class);
+                                    Intent intent = new Intent(getApplicationContext(), PerfilHumanoActivity.class);
                                     startActivity(intent);
                                     Toast.makeText(LoginActivity.this, getString(R.string.sucesso_login),
                                             Toast.LENGTH_SHORT).show();

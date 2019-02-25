@@ -26,7 +26,9 @@
         <activity
             android:name=".activity.PerfilHumanoActivity"
             android:label="@string/nome_app"
-            android:theme="@style/AppTheme.NoActionBar.navheader"/>
+            android:theme="@style/AppTheme.NoActionBar.navheader">
+
+        </activity>
 
         <provider
             android:name="android.support.v4.content.FileProvider"
@@ -94,17 +96,17 @@
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.celvansystems.projetoamigoanimal.activity.AnunciosActivity" />
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
         </activity>
         <activity
             android:name=".activity.AnunciosActivity"
             android:label="@string/nome_app"
             android:theme="@style/AppTheme.NoActionBar">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-                <action android:name="android.intent.action.VIEW" />
 
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
         </activity>
         <activity
             android:name="com.google.android.gms.ads.AdActivity"

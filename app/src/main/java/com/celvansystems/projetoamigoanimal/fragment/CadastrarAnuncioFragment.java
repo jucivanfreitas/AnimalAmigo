@@ -14,17 +14,24 @@ import com.celvansystems.projetoamigoanimal.R;
  */
 public class CadastrarAnuncioFragment extends Fragment {
 
+    private View view;
 
     public CadastrarAnuncioFragment() {
         // Required empty public constructor
     }
 
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_cadastrar_anuncio, container, false);
+        view =  inflater.inflate(R.layout.fragment_cadastrar_anuncio, container, false);
+
+        inializaComponentes();
+
+        return view;
     }
 
+    private void inializaComponentes() {
+
+    }
 }
