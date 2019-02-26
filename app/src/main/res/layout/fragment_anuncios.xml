@@ -18,7 +18,7 @@
         android:layout_height="match_parent"
         android:orientation="vertical"
         app:layout_behavior="@string/appbar_scrolling_view_behavior"
-        tools:context=".activity.AnunciosActivity"
+        tools:context=".activity.MainActivity"
         tools:showIn="@layout/fragment_anuncios">
 
         <LinearLayout
@@ -90,6 +90,23 @@
         android:id="@+id/layout_relative_banner"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
+
+        <android.support.design.widget.FloatingActionButton
+            android:id="@+id/fabcadastrar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center|center_horizontal"
+            android:layout_marginEnd="150dp"
+            android:layout_marginBottom="6dp"
+            android:clickable="true"
+            android:elevation="50dp"
+            android:focusable="true"
+            android:foreground="?attr/selectableItemBackground"
+            android:foregroundGravity="clip_horizontal|center"
+            app:elevation="15dp"
+            app:layout_anchor="@+id/include"
+            app:layout_anchorGravity="bottom|center"
+            app:srcCompat="@drawable/ic_add_black_24dp" />
 
         <com.google.android.gms.ads.AdView xmlns:ads="http://schemas.android.com/apk/res-auto"
             android:id="@+id/adView"

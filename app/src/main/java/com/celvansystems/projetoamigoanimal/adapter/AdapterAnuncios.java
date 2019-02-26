@@ -60,27 +60,7 @@ public class AdapterAnuncios extends RecyclerView.Adapter<AdapterAnuncios.MyView
 
 
                 //verifica se o animal foi curtido pelo usuario atual
-                try {
-                    if (isCurtido(anuncio)) {
-                        myViewHolder.imvCurtirAnuncio.setImageResource(R.drawable.ic_coracao_vermelho_24dp);
-                    } else {
-                        myViewHolder.imvCurtirAnuncio.setImageResource(R.drawable.ic_coracao_branco_24dp);
-                    }
-                    if (anuncio.getCurtidas() != null) {
-                        int numeroCurtidas = anuncio.getCurtidas().size();
-                        if (numeroCurtidas == 1) {
-                            myViewHolder.textViewCurtidas.setText(R.string.curtida);
-                        } else if (numeroCurtidas > 1) {
-                            myViewHolder.textViewCurtidas.setText(R.string.curtidas);
-                        }
-
-                        myViewHolder.numeroCurtidas.setText(String.valueOf(numeroCurtidas));
-
-                    } else {
-                        myViewHolder.numeroCurtidas.setText("");
-                        myViewHolder.textViewCurtidas.setText("");
-                    }
-                } catch (Exception e) {e.printStackTrace();}
+                atualizaCurtidas(anuncio, myViewHolder);
 
                 //pega a primeira imagem cadastrada
                 List<String> urlFotos = anuncio.getFotos();
@@ -131,6 +111,30 @@ public class AdapterAnuncios extends RecyclerView.Adapter<AdapterAnuncios.MyView
         }
     }
 
+    private void atualizaCurtidas(Animal anuncio, MyViewHolder myViewHolder) {
+        try {
+            if (isCurtido(anuncio)) {
+                myViewHolder.imvCurtirAnuncio.setImageResource(R.drawable.ic_coracao_vermelho_24dp);
+            } else {
+                myViewHolder.imvCurtirAnuncio.setImageResource(R.drawable.ic_coracao_branco_24dp);
+            }
+            if (anuncio.getCurtidas() != null) {
+                int numeroCurtidas = anuncio.getCurtidas().size();
+                if (numeroCurtidas == 1) {
+                    myViewHolder.textViewCurtidas.setText(R.string.curtida);
+                } else if (numeroCurtidas > 1) {
+                    myViewHolder.textViewCurtidas.setText(R.string.curtidas);
+                }
+
+                myViewHolder.numeroCurtidas.setText(String.valueOf(numeroCurtidas));
+
+            } else {
+                myViewHolder.numeroCurtidas.setText("");
+                myViewHolder.textViewCurtidas.setText("");
+            }
+        } catch (Exception e) {e.printStackTrace();}
+    }
+
     /**
      * Método auxiliar que processa a curtida do usuários
      * @param ctx contexto
@@ -174,6 +178,7 @@ public class AdapterAnuncios extends RecyclerView.Adapter<AdapterAnuncios.MyView
                                 /*Toast.makeText(myViewHolder.itemView.getContext(), anuncio.getCurtidas().size() +
                                         " curtida(s)", Toast.LENGTH_LONG).show();
                             }*/
+                            atualizaCurtidas(anuncio, (MyViewHolder) myViewHolder);
                         }
                     });
                 }

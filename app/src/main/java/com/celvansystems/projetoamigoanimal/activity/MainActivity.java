@@ -24,6 +24,7 @@ import com.celvansystems.projetoamigoanimal.fragment.AnunciosFragment;
 import com.celvansystems.projetoamigoanimal.fragment.CadastrarAnuncioFragment;
 import com.celvansystems.projetoamigoanimal.fragment.DoacaoFragment;
 import com.celvansystems.projetoamigoanimal.fragment.MensagensFragment;
+import com.celvansystems.projetoamigoanimal.fragment.MeusAnunciosFragment;
 import com.celvansystems.projetoamigoanimal.fragment.NotificacoesFragment;
 import com.celvansystems.projetoamigoanimal.fragment.PerfilUsuarioFragment;
 import com.celvansystems.projetoamigoanimal.fragment.ProcuradoFragment;
@@ -126,7 +127,7 @@ public class MainActivity extends AppCompatActivity
                     Toast.LENGTH_SHORT).show();
         } else if (id == R.id.nav_meus_anuncios) {
             //reuso da activit meus anuncios
-            startActivity(new Intent(getApplicationContext(),MeusAnunciosActivity.class));
+            fragmentTransaction.replace(R.id.view_pager, new MeusAnunciosFragment()).commit();
 
 
         } else if (id == R.id.pet_cad) {

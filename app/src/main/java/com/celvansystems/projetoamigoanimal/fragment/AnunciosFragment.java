@@ -6,6 +6,7 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
@@ -72,7 +73,11 @@ public class AnunciosFragment extends Fragment {
     /**
      * inicializa os componentes da view
      */
+    @SuppressLint("RestrictedApi")
     private void inicializarComponentes(){
+
+        FloatingActionButton fabCadastrar = view.findViewById(R.id.fabcadastrar);
+        fabCadastrar.setVisibility(View.GONE);
 
         try {
             anunciosPublicosRef = ConfiguracaoFirebase.getFirebase()

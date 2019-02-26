@@ -1,19 +1,26 @@
-package com.celvansystems.projetoamigoanimal.activity;
+package com.celvansystems.projetoamigoanimal.fragment;
 
+
+import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
-import android.support.v7.app.AppCompatActivity;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.Toolbar;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.Toast;
 
 import com.celvansystems.projetoamigoanimal.R;
+import com.celvansystems.projetoamigoanimal.activity.DetalhesAnimalActivity;
 import com.celvansystems.projetoamigoanimal.adapter.AdapterMeusAnuncios;
 import com.celvansystems.projetoamigoanimal.helper.ConfiguracaoFirebase;
 import com.celvansystems.projetoamigoanimal.helper.RecyclerItemClickListener;
@@ -33,24 +40,31 @@ import java.util.Objects;
 
 import dmax.dialog.SpotsDialog;
 
-public class MeusAnunciosActivity extends AppCompatActivity {
+/**
+ * A simple {@link Fragment} subclass.
+ */
+public class MeusAnunciosFragment extends Fragment {
 
-    private RecyclerView recyclerAnuncios;
     private List<Animal> anuncios = new ArrayList<>();
     private AdapterMeusAnuncios adapterMeusAnuncios;
     private DatabaseReference anuncioUsuarioRef;
     private StorageReference storage;
+    private View viewFragment;
+    private SwipeRefreshLayout swipeRefreshLayout;
+
 
     private AlertDialog dialog;
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_meus_anuncios);
+    public MeusAnunciosFragment() {}
 
+    @Override
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+
+        viewFragment =  inflater.inflate(R.layout.fragment_anuncios, container, false);
         inicializarComponentes();
 
-
+        return viewFragment;
     }
 
     /**
@@ -73,12 +87,12 @@ public class MeusAnunciosActivity extends AppCompatActivity {
                 imagemAnimal.child(textoFoto).delete().addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
                     public void onSuccess(Void aVoid) {
-                        Toast.makeText(getApplicationContext(), getString(R.string.fotos_excluidas), Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getContext(), getString(R.string.fotos_excluidas), Toast.LENGTH_SHORT).show();
                     }
                 }).addOnFailureListener(new OnFailureListener() {
                     @Override
                     public void onFailure(@NonNull Exception exception) {
-                        Toast.makeText(getApplicationContext(), getString(R.string.falha_deletar_fotos), Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getContext(), getString(R.string.falha_deletar_fotos), Toast.LENGTH_SHORT).show();
                     }
                 });
             }
@@ -92,7 +106,7 @@ public class MeusAnunciosActivity extends AppCompatActivity {
 
         try {
             dialog = new SpotsDialog.Builder()
-                    .setContext(this)
+                    .setContext(getContext())
                     .setMessage(R.string.procurando_anuncios)
                     .setCancelable(false)
                     .build();
@@ -120,7 +134,7 @@ public class MeusAnunciosActivity extends AppCompatActivity {
 
                 @Override
                 public void onCancelled(@NonNull DatabaseError databaseError) {
-                    Toast.makeText(getApplicationContext(), getString(R.string.falha_carregar_anuncios), Toast.LENGTH_LONG).show();
+                    Toast.makeText(getContext(), getString(R.string.falha_carregar_anuncios), Toast.LENGTH_LONG).show();
                 }
             });
         } catch (Exception e){e.printStackTrace();}
@@ -129,25 +143,24 @@ public class MeusAnunciosActivity extends AppCompatActivity {
     /**
      * inicializa os componentes da view
      */
+    @SuppressLint("RestrictedApi")
     private void inicializarComponentes(){
-
-        Toolbar toolbar = findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
 
         storage = ConfiguracaoFirebase.getFirebaseStorage();
 
-        FloatingActionButton fabCadastrar = findViewById(R.id.fabcadastrar);
+        FloatingActionButton fabCadastrar = viewFragment.findViewById(R.id.fabcadastrar);
+        fabCadastrar.setVisibility(View.VISIBLE);
 
         fabCadastrar.setOnClickListener(new View.OnClickListener() {
 
             public void onClick(View view) {
-                //startActivity(new Intent(getApplicationContext(), CadastrarAnuncioActivity.class));
+                FragmentManager fragmentManager= Objects.requireNonNull(getActivity()).getSupportFragmentManager();
+                FragmentTransaction fragmentTransaction =fragmentManager.beginTransaction();
+                fragmentTransaction.replace(R.id.view_pager, new CadastrarAnuncioFragment()).commit();
             }
         });
 
-        Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
-
-        recyclerAnuncios = findViewById(R.id.recycle_meus_anuncios);
+        RecyclerView recyclerAnuncios = viewFragment.findViewById(R.id.recyclerAnuncios);
 
         // configuracoes iniciais
         try {
@@ -157,7 +170,10 @@ public class MeusAnunciosActivity extends AppCompatActivity {
 
         //configurar recyclerview
         try {
-            recyclerAnuncios.setLayoutManager(new LinearLayoutManager(this));
+            RecyclerView.LayoutManager lm = new LinearLayoutManager(viewFragment.getContext());
+
+            recyclerAnuncios.setLayoutManager(lm);
+            //recyclerAnuncios.setLayoutManager(new LinearLayoutManager(getContext()));
             recyclerAnuncios.setHasFixedSize(true);
 
             adapterMeusAnuncios = new AdapterMeusAnuncios(anuncios);
@@ -169,7 +185,7 @@ public class MeusAnunciosActivity extends AppCompatActivity {
 
         //adiciona evento de clique
         recyclerAnuncios.addOnItemTouchListener(new RecyclerItemClickListener(
-                this, recyclerAnuncios, new RecyclerItemClickListener.OnItemClickListener() {
+                getContext(), recyclerAnuncios, new RecyclerItemClickListener.OnItemClickListener() {
             @Override
             public void onItemClick(View view, int position) {
                 Animal anuncioSelecionado = anuncios.get(position);
@@ -188,7 +204,7 @@ public class MeusAnunciosActivity extends AppCompatActivity {
 
                 adapterMeusAnuncios.notifyDataSetChanged();
 
-                Toast.makeText(getApplicationContext(), getString(R.string.anuncio_excluido), Toast.LENGTH_LONG).show();
+                Toast.makeText(getContext(), getString(R.string.anuncio_excluido), Toast.LENGTH_LONG).show();
             }
 
             @Override
@@ -197,5 +213,22 @@ public class MeusAnunciosActivity extends AppCompatActivity {
             }
         }
         ));
+        //refresh
+        swipeRefreshLayout = viewFragment.findViewById(R.id.swipeRefreshLayout);
+        swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                refreshRecyclerAnuncios();
+            }
+        });
+    }
+
+    private void refreshRecyclerAnuncios(){
+        // Refresh items
+        Toast.makeText(getContext(), "refreshing anuncios", Toast.LENGTH_LONG).show();
+
+        anuncios.clear();
+        recuperarAnuncios();
+        swipeRefreshLayout.setRefreshing(false);
     }
 }
