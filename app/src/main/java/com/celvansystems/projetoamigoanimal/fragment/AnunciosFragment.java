@@ -28,7 +28,6 @@ import com.celvansystems.projetoamigoanimal.model.Animal;
 import com.facebook.AccessToken;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
-import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -59,14 +58,12 @@ public class AnunciosFragment extends Fragment {
     private SwipeRefreshLayout swipeRefreshLayout;
     private View view;
 
-    public AnunciosFragment() {
-        // Required empty public constructor
-    }
+    public AnunciosFragment() {}
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
+
         view =  inflater.inflate(R.layout.fragment_anuncios, container, false);
         inicializarComponentes();
 
@@ -78,13 +75,9 @@ public class AnunciosFragment extends Fragment {
      */
     private void inicializarComponentes(){
 
-        //Toolbar toolbar = view.findViewById(R.id.toolbar);
-        //setSupportActionBar(toolbar);
         layout = view.findViewById(R.id.coordinator_layout_anuncios);
 
         try {
-            FirebaseAuth autenticacao = ConfiguracaoFirebase.getFirebaseAutenticacao();
-
             anunciosPublicosRef = ConfiguracaoFirebase.getFirebase()
                     .child("meus_animais");
 
@@ -139,12 +132,9 @@ public class AnunciosFragment extends Fragment {
                 refreshRecyclerAnuncios();
             }
         });
-
-
     }
 
     private boolean isListaAnunciosPopulada(){
-        Toast.makeText(view.getContext(), "lista populada", Toast.LENGTH_LONG).show();
         return listaAnuncios.size() > 0;
     }
 
@@ -181,11 +171,9 @@ public class AnunciosFragment extends Fragment {
                         }
 
                         Collections.reverse(listaAnuncios);
-
                         adapterAnuncios.notifyDataSetChanged();
 
                         dialog.dismiss();
-                        //Util.setSnackBar(layout, "passou total");
                         Log.d("INFO50", "passou total");
                     }
                 }
@@ -202,9 +190,7 @@ public class AnunciosFragment extends Fragment {
             });
         } catch (Exception e){
             e.printStackTrace();
-            Log.d("INFO50", "excecao "+ e.getMessage());
             dialog.dismiss();
-            Util.setSnackBar(layout, "passou erro");
 
             Toast.makeText(view.getContext(),
                     "Falha ao acessar anúncios. Verifique sua conexão à internet." + e.getMessage(),
@@ -219,29 +205,23 @@ public class AnunciosFragment extends Fragment {
         GoogleSignInAccount account = GoogleSignIn.getLastSignedInAccount(view.getContext());
         if(account != null) {
             Log.d("INFO40", "Usuário logado com google");
-            Util.setSnackBar(layout, "Usuário logado pelo google");
+            //Util.setSnackBar(layout, "Usuário logado pelo google");
         } else {
             // Verifica se há conta do facebook logada
             AccessToken token = AccessToken.getCurrentAccessToken();
 
             if (token != null) {
                 Log.d("INFO40", "Usuário logado pelo facebook");
-                Util.setSnackBar(layout, "Usuário logado pelo facebook");
+                //Util.setSnackBar(layout, "Usuário logado pelo facebook");
             }
         }
-
+        // TODO: 26/02/2019 apenas se o usuario estiver logado
         recuperarAnunciosPublicos();
-
     }
 
    public void recuperarAnunciosFiltro(final String estado, final String cidade, final String especie) {
 
         try {
-            /*dialog = new SpotsDialog.Builder()
-                    .setContext(this)
-                    .setMessage(R.string.procurando_anuncios)
-                    .setCancelable(true)
-                    .build();*/
             dialog.show();
 
             //cidade
@@ -266,7 +246,6 @@ public class AnunciosFragment extends Fragment {
                     for (DataSnapshot animais : dataSnapshot.getChildren()) {
 
                         Animal animal = animais.getValue(Animal.class);
-                        //Log.d("INFO5: ", animal.getCidade()+"/"+animal.getUf());
 
                         if (animal != null) {
 
@@ -279,12 +258,9 @@ public class AnunciosFragment extends Fragment {
                                     textoBotaoCidade.equalsIgnoreCase(getString(R.string.cidade)) && (
                                             textoBotaoEspecie.equalsIgnoreCase(getString(R.string.especie)) ||
                                                     textoBotaoEspecie.equalsIgnoreCase(getString(R.string.todas))))){
-                                //Log.d("INFO6: ", animal.getNome()+"/ "+animal.getCidade()+"/"+animal.getUf());
                                 listaAnuncios.add(animal);
 
-
                             } else {
-                                //Log.d("INFOBAD: ", animal.getCidade()+"/"+animal.getUf());
                                 //sem espécie
                                 if (textoBotaoEspecie.equalsIgnoreCase(getString(R.string.especie)) ||
                                         textoBotaoEspecie.equalsIgnoreCase(getString(R.string.todas))) {
@@ -340,8 +316,6 @@ public class AnunciosFragment extends Fragment {
             });
         } catch (Exception e){e.printStackTrace();}
     }
-
-
 
     /**
      * filtra por espécie
@@ -442,7 +416,6 @@ public class AnunciosFragment extends Fragment {
                     }
 
                     filtroEspecie = btnEspecie.getText().toString();
-
                     recuperarAnunciosFiltro(filtroEstado, filtroCidade, filtroEspecie);
                 }
             });
@@ -467,7 +440,6 @@ public class AnunciosFragment extends Fragment {
                         e.printStackTrace();
                     }
                 }
-
                 @Override
                 public void onNothingSelected(AdapterView<?> parent) {
                 }
@@ -493,5 +465,4 @@ public class AnunciosFragment extends Fragment {
 
         } catch (Exception e){e.printStackTrace();}
     }
-
 }

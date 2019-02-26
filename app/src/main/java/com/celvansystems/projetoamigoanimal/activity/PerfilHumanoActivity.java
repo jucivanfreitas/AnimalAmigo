@@ -22,15 +22,16 @@ import android.widget.Toast;
 import com.celvansystems.projetoamigoanimal.R;
 import com.celvansystems.projetoamigoanimal.fragment.AnunciosFragment;
 import com.celvansystems.projetoamigoanimal.fragment.CadastrarAnuncioFragment;
-import com.celvansystems.projetoamigoanimal.fragment.ProcuradoFragment;
 import com.celvansystems.projetoamigoanimal.fragment.DoacaoFragment;
 import com.celvansystems.projetoamigoanimal.fragment.MensagensFragment;
 import com.celvansystems.projetoamigoanimal.fragment.NotificacoesFragment;
 import com.celvansystems.projetoamigoanimal.fragment.PerfilUsuarioFragment;
+import com.celvansystems.projetoamigoanimal.fragment.ProcuradoFragment;
 import com.celvansystems.projetoamigoanimal.fragment.SobreAppFragment;
 import com.celvansystems.projetoamigoanimal.helper.ConfiguracaoFirebase;
 import com.celvansystems.projetoamigoanimal.helper.Util;
 import com.celvansystems.projetoamigoanimal.model.Animal;
+import com.facebook.login.LoginManager;
 import com.google.android.gms.ads.AdListener;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
@@ -182,9 +183,11 @@ public class PerfilHumanoActivity extends AppCompatActivity
             Toast.makeText(getApplicationContext(),
                     "Volte sempre, precisamos de você!!!",
                     Toast.LENGTH_SHORT).show();
-            startActivity(new Intent(getApplicationContext(),LoginActivity.class));
+            startActivity(new Intent(this,LoginActivity.class));
 
             autenticacao.signOut();
+            LoginManager.getInstance().logOut();
+
             invalidateOptionsMenu(); //invalida o menu e chama o onPrepare de novo
             // TODO: 17/02/2019 implementar a função de invalidade do menu para retorno ao menus de usuarios não logado 
             finish();
@@ -368,7 +371,6 @@ public class PerfilHumanoActivity extends AppCompatActivity
                 @Override
                 public void onAdLoaded() {
                     // Code to be executed when an ad finishes loading.
-                    Util.setSnackBar(layout, "intersticial loaded");
                     Log.d("INFO50", "intersticial loaded");
                     // TODO: 23/02/2019 definir se mostra ou nao intersticial nos anuncios
                     //mInterstitialAd.show();
@@ -413,8 +415,6 @@ public class PerfilHumanoActivity extends AppCompatActivity
                 @Override
                 public void onAdLoaded() {
                     // Code to be executed when an ad finishes loading.
-                    Toast.makeText(getApplicationContext(), "loaded. " +
-                            adRequest.getContentUrl(), Toast.LENGTH_SHORT).show();
                 }
                 @Override
                 public void onAdFailedToLoad(int errorCode) {

@@ -1,6 +1,5 @@
 package com.celvansystems.projetoamigoanimal.fragment;
 
-
 import android.Manifest;
 import android.app.AlertDialog;
 import android.content.Context;
@@ -87,14 +86,12 @@ public class CadastrarAnuncioFragment extends Fragment
     };
 
 
-    public CadastrarAnuncioFragment() {
-        // Required empty public constructor
-    }
+    public CadastrarAnuncioFragment() {}
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
+
         viewFragment =  inflater.inflate(R.layout.fragment_cadastrar_anuncio, container, false);
 
         inicializarComponentes();
@@ -107,12 +104,9 @@ public class CadastrarAnuncioFragment extends Fragment
      */
     private void inicializarComponentes(){
 
-        
-
-        layout = viewFragment.findViewById(R.id.cadastrar_anuncio_layout);
-
         storage = ConfiguracaoFirebase.getFirebaseStorage();
 
+        layout = viewFragment.findViewById(R.id.cadastrar_anuncio_layout);
         spnEspecie = viewFragment.findViewById(R.id.spinner_cad_Especie);
         spnSexo = viewFragment.findViewById(R.id.spinner_cad_Sexo);
         spnIdade = viewFragment.findViewById(R.id.spinner_cad_idade);
@@ -127,10 +121,10 @@ public class CadastrarAnuncioFragment extends Fragment
 
         Button btnCadastrarAnuncio = viewFragment.findViewById(R.id.btnCadAnuncio);
 
+        //imageviews
         imagem1 = viewFragment.findViewById(R.id.imageCad1);
         imagem2 = viewFragment.findViewById(R.id.imageCad2);
         imagem3 = viewFragment.findViewById(R.id.imageCad3);
-
         imagem1.setOnClickListener(this);
         imagem2.setOnClickListener(this);
         imagem3.setOnClickListener(this);
@@ -144,7 +138,6 @@ public class CadastrarAnuncioFragment extends Fragment
 
                 setAdapterSpinnerCidades();
             }
-
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
             }
@@ -185,7 +178,6 @@ public class CadastrarAnuncioFragment extends Fragment
             mInterstitialAd.setAdListener(new AdListener() {
                 @Override
                 public void onAdLoaded() {
-                    // Code to be executed when an ad finishes loading.
                     //Util.setSnackBar(layout, "intersticial loaded");
                     // TODO: 23/02/2019 descomentar proxima linha
                     //mInterstitialAd.show();
@@ -216,8 +208,6 @@ public class CadastrarAnuncioFragment extends Fragment
                     //mInterstitialAd.loadAd(new AdRequest.Builder().build());
                 }
             });
-
-
         } catch (Exception e) {e.printStackTrace();}
     }
 
@@ -485,8 +475,7 @@ public class CadastrarAnuncioFragment extends Fragment
                     .setMaxSize(500)
                     .setCameraButtonText(getString(R.string.camera))
                     .setCancelText(getString(R.string.cancelar))
-                    .setGalleryButtonText(getString(R.string.galeria))
-                    ;
+                    .setGalleryButtonText(getString(R.string.galeria));
 
             //.setTitleColor(yourColor)
             //.setBackgroundColor(yourColor)
@@ -532,7 +521,6 @@ public class CadastrarAnuncioFragment extends Fragment
                             exibirMensagem("cancelado");
                         }
                     }).show(Objects.requireNonNull(getActivity()).getSupportFragmentManager());
-
         }catch (Exception e){e.printStackTrace();}
     }
 
@@ -608,7 +596,7 @@ public class CadastrarAnuncioFragment extends Fragment
             builder.setPositiveButton(getString(R.string.confirmar), new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
-                    //getActivity().finish();
+                    //todo: implementar
                 }
             });
             AlertDialog dialog = builder.create();
@@ -628,5 +616,3 @@ public class CadastrarAnuncioFragment extends Fragment
         } catch (Exception e){e.printStackTrace();}
     }
 }
-
-
