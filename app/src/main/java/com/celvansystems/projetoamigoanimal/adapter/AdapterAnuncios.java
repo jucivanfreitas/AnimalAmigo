@@ -174,10 +174,6 @@ public class AdapterAnuncios extends RecyclerView.Adapter<AdapterAnuncios.MyView
                     anuncioCurtidasRef.addOnCompleteListener(new OnCompleteListener<Void>() {
                         @Override
                         public void onComplete(@NonNull Task<Void> task) {
-                            /*if (anuncio.getCurtidas() != null) {
-                                /*Toast.makeText(myViewHolder.itemView.getContext(), anuncio.getCurtidas().size() +
-                                        " curtida(s)", Toast.LENGTH_LONG).show();
-                            }*/
                             atualizaCurtidas(anuncio, (MyViewHolder) myViewHolder);
                         }
                     });

@@ -49,8 +49,6 @@ public class AdapterMeusAnuncios extends RecyclerView.Adapter<AdapterMeusAnuncio
             String urlCapa = urlFotos.get(0);
 
             Picasso.get().load(urlCapa).into(myViewHolder.foto);
-
-
         }
     }
 

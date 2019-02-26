@@ -136,6 +136,7 @@ public class AnunciosFragment extends Fragment {
         });
     }
 
+
     private boolean isListaAnunciosPopulada(){
         return listaAnuncios.size() > 0;
     }
@@ -225,6 +226,25 @@ public class AnunciosFragment extends Fragment {
     public void onResume(){
         super.onResume();
         refreshRecyclerAnuncios();
+
+        if(getView() == null){
+            return;
+        }
+
+        /*getView().setFocusableInTouchMode(true);
+        getView().requestFocus();
+        getView().setOnKeyListener(new View.OnKeyListener() {
+            @Override
+            public boolean onKey(View v, int keyCode, KeyEvent event) {
+
+                if (event.getAction() == KeyEvent.ACTION_UP && keyCode == KeyEvent.KEYCODE_BACK){
+
+
+                    return true;
+                }
+                return false;
+            }
+        });*/
     }
 
     /**

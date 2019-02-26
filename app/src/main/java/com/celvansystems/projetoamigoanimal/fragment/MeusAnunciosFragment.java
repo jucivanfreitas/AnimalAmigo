@@ -223,6 +223,33 @@ public class MeusAnunciosFragment extends Fragment {
         });
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+
+        if(getView() == null){
+            return;
+        }
+
+        // açao de voltar
+        /*getView().setFocusableInTouchMode(true);
+        getView().requestFocus();
+        getView().setOnKeyListener(new View.OnKeyListener() {
+            @Override
+            public boolean onKey(View v, int keyCode, KeyEvent event) {
+
+                if (event.getAction() == KeyEvent.ACTION_UP && keyCode == KeyEvent.KEYCODE_BACK){
+
+                    FragmentManager fragmentManager= Objects.requireNonNull(getActivity()).getSupportFragmentManager();
+                    FragmentTransaction fragmentTransaction =fragmentManager.beginTransaction();
+                    fragmentTransaction.replace(R.id.view_pager, new AnunciosFragment()).commit();
+                    return true;
+                }
+                return false;
+            }
+        });*/
+    }
+
     private void refreshRecyclerAnuncios(){
         // Refresh items
         Toast.makeText(getContext(), "refreshing anuncios", Toast.LENGTH_LONG).show();

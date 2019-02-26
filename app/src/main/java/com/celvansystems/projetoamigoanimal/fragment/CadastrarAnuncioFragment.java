@@ -382,6 +382,33 @@ public class CadastrarAnuncioFragment extends Fragment
         return retorno;
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+
+        if(getView() == null){
+            return;
+        }
+
+        // açao de voltar
+        /*getView().setFocusableInTouchMode(true);
+        getView().requestFocus();
+        getView().setOnKeyListener(new View.OnKeyListener() {
+            @Override
+            public boolean onKey(View v, int keyCode, KeyEvent event) {
+
+                if (event.getAction() == KeyEvent.ACTION_UP && keyCode == KeyEvent.KEYCODE_BACK){
+
+                    FragmentManager fragmentManager= Objects.requireNonNull(getActivity()).getSupportFragmentManager();
+                    FragmentTransaction fragmentTransaction =fragmentManager.beginTransaction();
+                    fragmentTransaction.replace(R.id.view_pager, new AnunciosFragment()).addToBackStack("tag").commit();
+                    return true;
+                }
+                return false;
+            }
+        });*/
+    }
+
     /**
      * valida o preenchimento dos dados pelo usuário
      */

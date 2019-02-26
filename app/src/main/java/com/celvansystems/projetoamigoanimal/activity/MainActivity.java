@@ -109,7 +109,7 @@ public class MainActivity extends AppCompatActivity
 
         if (id == R.id.nav_perfil) {
             // Handle the camera action
-            fragmentTransaction.replace(R.id.view_pager, new PerfilUsuarioFragment()).commit();
+            fragmentTransaction.replace(R.id.view_pager, new PerfilUsuarioFragment()).addToBackStack("tag").commit();
             //
 
             Toast.makeText(getApplicationContext(), "foi aberto a fragment Perfil.." +
@@ -117,7 +117,7 @@ public class MainActivity extends AppCompatActivity
                     , Toast.LENGTH_SHORT).show();
         } else if (id == R.id.nav_config_notificacoes) {
 
-            fragmentTransaction.replace(R.id.view_pager, new NotificacoesFragment()).commit();
+            fragmentTransaction.replace(R.id.view_pager, new NotificacoesFragment()).addToBackStack("tag").commit();
 
             //    setContentView(R.layout.content_notificacoes);
             // TODO: 17/02/2019 programar ações da content_cotificações
@@ -127,23 +127,23 @@ public class MainActivity extends AppCompatActivity
                     Toast.LENGTH_SHORT).show();
         } else if (id == R.id.nav_meus_anuncios) {
             //reuso da activit meus anuncios
-            fragmentTransaction.replace(R.id.view_pager, new MeusAnunciosFragment()).commit();
+            fragmentTransaction.replace(R.id.view_pager, new MeusAnunciosFragment()).addToBackStack("tag").commit();
 
 
         } else if (id == R.id.pet_cad) {
             // fragment pet_cad cadastrar anuncio
-            fragmentTransaction.replace(R.id.view_pager, new CadastrarAnuncioFragment()).commit();
+            fragmentTransaction.replace(R.id.view_pager, new CadastrarAnuncioFragment()).addToBackStack("tag").commit();
 
 
         }
         else if (id == R.id.pet_adote) {
             //reuso da activity cadastrar anuncio
-            fragmentTransaction.replace(R.id.view_pager, new AnunciosFragment()).commit();
+            fragmentTransaction.replace(R.id.view_pager, new AnunciosFragment()).addToBackStack("tag").commit();
 
 
         } else if (id == R.id.doacao) {
             // implementar funções na activit doação.
-            fragmentTransaction.replace(R.id.view_pager, new DoacaoFragment()).commit();
+            fragmentTransaction.replace(R.id.view_pager, new DoacaoFragment()).addToBackStack("tag").commit();
             Toast.makeText(getApplicationContext(),
                     "implementar content  de doações " +
                             " na activity dentro da pasta fragment." +
@@ -162,7 +162,7 @@ public class MainActivity extends AppCompatActivity
 
         } else if (id == R.id.nav_conversar) {
 
-            fragmentTransaction.replace(R.id.view_pager, new MensagensFragment()).commit();
+            fragmentTransaction.replace(R.id.view_pager, new MensagensFragment()).addToBackStack("tag").commit();
             Toast.makeText(getApplicationContext(),
                     "criar e implementar fragment messenger com chat" +
                             " resumida a envio e recebimento de mensagens, " +
@@ -173,7 +173,7 @@ public class MainActivity extends AppCompatActivity
 
         }else if (id == R.id.nav_help) {
 
-            fragmentTransaction.replace(R.id.view_pager, new SobreAppFragment()).commit();
+            fragmentTransaction.replace(R.id.view_pager, new SobreAppFragment()).addToBackStack("tag").commit();
             Toast.makeText(getApplicationContext(),
                     "implementar fragment help " +
                             "sobre o APP",
@@ -195,7 +195,7 @@ public class MainActivity extends AppCompatActivity
 // TODO: 17/02/2019 imPlementar janela
         }else if (id == R.id.pet_procurado) {
 
-            fragmentTransaction.replace(R.id.view_pager, new ProcuradoFragment()).commit();
+            fragmentTransaction.replace(R.id.view_pager, new ProcuradoFragment()).addToBackStack("tag").commit();
             // TODO: 17/02/2019 programar activit cadastrar procurado
             Toast.makeText(getApplicationContext(),
                     "implementar fragment cadastro de procurados" +
