@@ -70,7 +70,6 @@ public class CadastrarAnuncioActivity extends AppCompatActivity
     private StorageReference storage;
     private int requisicao;
     private View layout;
-    private InterstitialAd mInterstitialAd;
 
     //Permissoes
     private String[] permissoes = new String[]{
@@ -167,7 +166,7 @@ public class CadastrarAnuncioActivity extends AppCompatActivity
         //AdView
         try {
             //teste
-            mInterstitialAd = new InterstitialAd(this);
+            InterstitialAd mInterstitialAd = new InterstitialAd(this);
             mInterstitialAd.setAdUnitId("ca-app-pub-3940256099942544/1033173712");
             mInterstitialAd.loadAd(new AdRequest.Builder().build());
             mInterstitialAd.show();
@@ -442,6 +441,8 @@ public class CadastrarAnuncioActivity extends AppCompatActivity
     @Override
     public void onClick(View v) {
 
+        requisicao = 1;
+
         switch ( v.getId() ){
             case R.id.imageCadastro1 :
                 requisicao = 1;
@@ -452,6 +453,7 @@ public class CadastrarAnuncioActivity extends AppCompatActivity
             case R.id.imageCadastro3 :
                 requisicao = 3;
                 break;
+
         }
         escolherImagem(requisicao);
     }

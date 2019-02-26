@@ -58,7 +58,6 @@ public class AnunciosFragment extends Fragment {
     private View layout;
     private SwipeRefreshLayout swipeRefreshLayout;
     private View view;
-    private FirebaseAuth autenticacao;
 
     public AnunciosFragment() {
         // Required empty public constructor
@@ -84,7 +83,7 @@ public class AnunciosFragment extends Fragment {
         layout = view.findViewById(R.id.coordinator_layout_anuncios);
 
         try {
-            autenticacao = ConfiguracaoFirebase.getFirebaseAutenticacao();
+            FirebaseAuth autenticacao = ConfiguracaoFirebase.getFirebaseAutenticacao();
 
             anunciosPublicosRef = ConfiguracaoFirebase.getFirebase()
                     .child("meus_animais");
@@ -175,8 +174,10 @@ public class AnunciosFragment extends Fragment {
 
                         for (DataSnapshot animais : dataSnapshot.getChildren()) {
                             Animal animal = animais.getValue(Animal.class);
-                            Log.d("INFO50", animal.getNome());
-                            listaAnuncios.add(animal);
+                            if (animal != null) {
+                                Log.d("INFO50", animal.getNome());
+                                listaAnuncios.add(animal);
+                            }
                         }
 
                         Collections.reverse(listaAnuncios);
@@ -184,7 +185,7 @@ public class AnunciosFragment extends Fragment {
                         adapterAnuncios.notifyDataSetChanged();
 
                         dialog.dismiss();
-                        Util.setSnackBar(layout, "passou total");
+                        //Util.setSnackBar(layout, "passou total");
                         Log.d("INFO50", "passou total");
                     }
                 }

@@ -2,6 +2,7 @@
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/frame_layout_cad_anuncio"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".fragment.CadastrarAnuncioFragment">
@@ -34,9 +35,9 @@
                     android:layout_marginRight="8dp"
                     android:layout_marginBottom="8dp"
                     android:background="@drawable/bg_caixa_txt"
+                    android:baselineAligned="false"
                     android:orientation="horizontal"
-                    android:padding="4dp"
-                    android:baselineAligned="false">
+                    android:padding="4dp">
 
                     <HorizontalScrollView
                         android:layout_width="wrap_content"
@@ -49,15 +50,16 @@
                             android:orientation="horizontal">
 
                             <ImageView
-                                android:id="@+id/imageCadastro1"
+                                android:id="@+id/imageCad1"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:layout_weight="1"
                                 android:contentDescription="@string/todo"
+                                android:onClick="onClick"
                                 app:srcCompat="@drawable/padrao" />
 
                             <ImageView
-                                android:id="@+id/imageCadastro2"
+                                android:id="@+id/imageCad2"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:layout_margin="0dp"
@@ -66,7 +68,7 @@
                                 app:srcCompat="@drawable/padrao" />
 
                             <ImageView
-                                android:id="@+id/imageCadastro3"
+                                android:id="@+id/imageCad3"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:layout_weight="1"
@@ -246,7 +248,7 @@
                             android:scrollbars="vertical" />
 
                         <Button
-                            android:id="@+id/btnCadastrarAnuncio"
+                            android:id="@+id/btnCadAnuncio"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="8dp"
@@ -254,6 +256,7 @@
                             android:clickable="true"
                             android:elevation="25dp"
                             android:foreground="?attr/selectableItemBackground"
+                            android:onClick="validarDadosAnuncio"
                             android:shadowColor="@color/black_overlay"
                             android:shadowDx="@android:integer/config_shortAnimTime"
                             android:text="@string/cadastrar_anuncio"
