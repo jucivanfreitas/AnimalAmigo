@@ -54,7 +54,6 @@ public class AnunciosFragment extends Fragment {
     private Spinner spinnerEstado;
     private Spinner spinnerCidade;
     private ArrayAdapter adapterCidades;
-    private View layout;
     private SwipeRefreshLayout swipeRefreshLayout;
     private View view;
 
@@ -74,8 +73,6 @@ public class AnunciosFragment extends Fragment {
      * inicializa os componentes da view
      */
     private void inicializarComponentes(){
-
-        layout = view.findViewById(R.id.coordinator_layout_anuncios);
 
         try {
             anunciosPublicosRef = ConfiguracaoFirebase.getFirebase()
@@ -216,9 +213,21 @@ public class AnunciosFragment extends Fragment {
             }
         }
         // TODO: 26/02/2019 apenas se o usuario estiver logado
-        recuperarAnunciosPublicos();
+        //refreshRecyclerAnuncios();
     }
 
+    @Override
+    public void onResume(){
+        super.onResume();
+        refreshRecyclerAnuncios();
+    }
+
+    /**
+     * filtro dos anuncioos
+     * @param estado uf
+     * @param cidade cidade
+     * @param especie especie
+     */
    public void recuperarAnunciosFiltro(final String estado, final String cidade, final String especie) {
 
         try {

@@ -188,7 +188,7 @@ public class MeusAnunciosActivity extends AppCompatActivity {
         fabCadastrar.setOnClickListener(new View.OnClickListener() {
 
             public void onClick(View view) {
-                startActivity(new Intent(getApplicationContext(), CadastrarAnuncioActivity.class));
+                //startActivity(new Intent(getApplicationContext(), CadastrarAnuncioActivity.class));
             }
         });
 

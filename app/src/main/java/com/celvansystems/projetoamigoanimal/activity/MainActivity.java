@@ -49,7 +49,7 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.ValueEventListener;
 
-public class PerfilHumanoActivity extends AppCompatActivity
+public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
     private FirebaseAuth autenticacao;
@@ -282,7 +282,7 @@ public class PerfilHumanoActivity extends AppCompatActivity
                             //
                             Log.d("INFO3", "User account deleted.");
                             Toast.makeText(getApplicationContext(), "Usuário excluído com sucesso!", Toast.LENGTH_SHORT).show();
-                            startActivity(new Intent(getApplicationContext(), PerfilHumanoActivity.class));
+                            startActivity(new Intent(getApplicationContext(), MainActivity.class));
                             finish();
 
 

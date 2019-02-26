@@ -106,7 +106,8 @@ public class CadastrarAnuncioFragment extends Fragment
 
         storage = ConfiguracaoFirebase.getFirebaseStorage();
 
-        layout = viewFragment.findViewById(R.id.cadastrar_anuncio_layout);
+        layout = viewFragment.findViewById(R.id.constraintLayout_cadastrar);
+
         spnEspecie = viewFragment.findViewById(R.id.spinner_cad_Especie);
         spnSexo = viewFragment.findViewById(R.id.spinner_cad_Sexo);
         spnIdade = viewFragment.findViewById(R.id.spinner_cad_idade);

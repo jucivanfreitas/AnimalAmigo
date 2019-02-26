@@ -24,7 +24,7 @@
         android:theme="@style/AppTheme">
 
         <activity
-            android:name=".activity.PerfilHumanoActivity"
+            android:name=".activity.MainActivity"
             android:label="@string/nome_app"
             android:theme="@style/AppTheme.NoActionBar.navheader">
             <intent-filter>
@@ -72,33 +72,24 @@
 
         <activity
             android:name=".activity.DetalhesAnimalActivity"
-            android:parentActivityName=".activity.PerfilHumanoActivity" />
-        <activity
-            android:name=".activity.CadastrarAnuncioActivity"
-            android:label="@string/title_activity_cadastrar_anuncio"
-            android:parentActivityName=".activity.MeusAnunciosActivity"
-            android:theme="@style/AppTheme.NoActionBar">
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.celvansystems.projetoamigoanimal.activity.MeusAnunciosActivity" />
-        </activity>
+            android:parentActivityName=".activity.MainActivity" />
         <activity
             android:name=".activity.MeusAnunciosActivity"
             android:label="@string/txt_meus_anuncios"
-            android:parentActivityName=".activity.PerfilHumanoActivity"
+            android:parentActivityName=".activity.MainActivity"
             android:theme="@style/AppTheme.NoActionBar">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.celvansystems.projetoamigoanimal.activity.PerfilHumanoActivity" />
+                android:value="com.celvansystems.projetoamigoanimal.activity.MainActivity" />
         </activity>
         <activity
             android:name=".activity.LoginActivity"
             android:label="@string/title_activity_login"
             android:windowSoftInputMode="adjustPan"
-        android:parentActivityName=".activity.PerfilHumanoActivity">
+        android:parentActivityName=".activity.MainActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.celvansystems.projetoamigoanimal.activity.PerfilHumanoActivity" />
+                android:value="com.celvansystems.projetoamigoanimal.activity.MainActivity" />
 
         </activity>
         <activity
