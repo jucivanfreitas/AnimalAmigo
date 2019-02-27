@@ -25,7 +25,6 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Spinner;
-import android.widget.Toast;
 
 import com.celvansystems.projetoamigoanimal.R;
 import com.celvansystems.projetoamigoanimal.helper.ConfiguracaoFirebase;
@@ -298,16 +297,18 @@ public class CadastrarAnuncioFragment extends Fragment
                         if(totalFotos == listaURLFotos.size()){
                             animal.setFotos(listaURLFotos);
                             animal.salvar();
-                            exibirMensagem(getString(R.string.sucesso_ao_fazer_upload));
+                            Util.setSnackBar(layout, getString(R.string.sucesso_ao_fazer_upload));
+                            // exibirMensagem(getString(R.string.sucesso_ao_fazer_upload));
                             dialog.dismiss();
 
                             //redireciona para AnunciosFragment
                             FragmentManager fragmentManager= Objects.requireNonNull(getActivity()).getSupportFragmentManager();
                             FragmentTransaction fragmentTransaction =fragmentManager.beginTransaction();
-                            fragmentTransaction.replace(R.id.view_pager, new AnunciosFragment()).commit();
+                            fragmentTransaction.replace(R.id.view_pager, new MeusAnunciosFragment()).commit();
                         }
                     } else {
-                        exibirMensagem(getString(R.string.falha_upload));
+                        Util.setSnackBar(layout, getString(R.string.falha_upload));
+                        //exibirMensagem(getString(R.string.falha_upload));
                     }
                 }
             });
@@ -386,12 +387,12 @@ public class CadastrarAnuncioFragment extends Fragment
     public void onResume() {
         super.onResume();
 
-        if(getView() == null){
+       /* if(getView() == null){
             return;
         }
 
         // açao de voltar
-        /*getView().setFocusableInTouchMode(true);
+        getView().setFocusableInTouchMode(true);
         getView().requestFocus();
         getView().setOnKeyListener(new View.OnKeyListener() {
             @Override
@@ -418,63 +419,30 @@ public class CadastrarAnuncioFragment extends Fragment
 
         if( listaFotosRecuperadas.size() != 0 ){
             if( !animal.getNome().isEmpty() ){
-                if( !animal.getEspecie().isEmpty() ){
-                    if( !animal.getSexo().isEmpty() ){
-                        if( !animal.getIdade().isEmpty() ){
-                            if( !animal.getPorte().isEmpty() ){
-                                if( !animal.getRaca().isEmpty() ){
-                                    if( !animal.getUf().isEmpty() ) {
-                                        if (!animal.getCidade().isEmpty()) {
-                                            if (!animal.getDescricao().isEmpty()) {
-                                                salvarAnuncio(animal);
-                                            } else {
-                                                exibirMensagem(getString(R.string.preencha_descricao));
-                                            }
-                                        } else {
-                                            exibirMensagem(getString(R.string.preencha_cidade));
-                                        }
-                                    }else {
-                                        exibirMensagem(getString(R.string.preencha_estado));
-                                    }
-                                }else {
-                                    exibirMensagem(getString(R.string.preencha_raca));
-                                }
-                            }else {
-                                exibirMensagem(getString(R.string.preencha_porte));
-                            }
-                        }else {
-                            exibirMensagem(getString(R.string.preencha_idade));
-                        }
-                    }else {
-                        exibirMensagem(getString(R.string.preencha_sexo));
+                if( !animal.getRaca().isEmpty() ){
+                    if (!animal.getDescricao().isEmpty()) {
+                        salvarAnuncio(animal);
+                    } else {
+                        Util.setSnackBar(layout, getString(R.string.preencha_descricao));
                     }
                 }else {
-                    exibirMensagem(getString(R.string.preencha_especie));
+                    Util.setSnackBar(layout, getString(R.string.preencha_raca));
                 }
             }else {
-                exibirMensagem(getString(R.string.preencha_nome));
+                Util.setSnackBar(layout, getString(R.string.preencha_nome));
             }
         } else {
-            exibirMensagem(getString(R.string.selecione_foto));
+            Util.setSnackBar(layout, getString(R.string.selecione_foto));
         }
     }
 
     /**
-     * exibe um Toast
-     * @param mensagem string
-     */
-    private void exibirMensagem(String mensagem){
-        Toast.makeText(getContext(), mensagem, Toast.LENGTH_SHORT).show();
-    }
-
-    /**
-     *
+     * clique das fotos
      * @param v view
      */
     @Override
     public void onClick(View v) {
 
-        exibirMensagem("onclick chamado: ");
         requisicao = 1;
 
         switch ( v.getId() ){
@@ -492,7 +460,7 @@ public class CadastrarAnuncioFragment extends Fragment
     }
 
     /**
-     *
+     * ImagePick
      */
     public void escolherImagem(){
         try {
@@ -500,7 +468,7 @@ public class CadastrarAnuncioFragment extends Fragment
             PickSetup setup = new PickSetup()
                     .setTitle(getString(R.string.escolha))
                     .setFlip(true)
-                    .setMaxSize(500)
+                    .setMaxSize(Constantes.PICK_MAX_SIZE)
                     .setCameraButtonText(getString(R.string.camera))
                     .setCancelText(getString(R.string.cancelar))
                     .setGalleryButtonText(getString(R.string.galeria));
@@ -546,7 +514,7 @@ public class CadastrarAnuncioFragment extends Fragment
                     .setOnPickCancel(new IPickCancel() {
                         @Override
                         public void onCancelClick() {
-                            exibirMensagem("cancelado");
+
                         }
                     }).show(Objects.requireNonNull(getActivity()).getSupportFragmentManager());
         }catch (Exception e){e.printStackTrace();}

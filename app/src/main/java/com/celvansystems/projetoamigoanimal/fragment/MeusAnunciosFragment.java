@@ -18,13 +18,13 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.LinearLayout;
-import android.widget.Toast;
 
 import com.celvansystems.projetoamigoanimal.R;
 import com.celvansystems.projetoamigoanimal.activity.DetalhesAnimalActivity;
 import com.celvansystems.projetoamigoanimal.adapter.AdapterMeusAnuncios;
 import com.celvansystems.projetoamigoanimal.helper.ConfiguracaoFirebase;
 import com.celvansystems.projetoamigoanimal.helper.RecyclerItemClickListener;
+import com.celvansystems.projetoamigoanimal.helper.Util;
 import com.celvansystems.projetoamigoanimal.model.Animal;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -52,7 +52,7 @@ public class MeusAnunciosFragment extends Fragment {
     private StorageReference storage;
     private View viewFragment;
     private SwipeRefreshLayout swipeRefreshLayout;
-    private LinearLayout linearLayoutBotoes;
+    private View layout;
 
 
     private AlertDialog dialog;
@@ -89,12 +89,15 @@ public class MeusAnunciosFragment extends Fragment {
                 imagemAnimal.child(textoFoto).delete().addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
                     public void onSuccess(Void aVoid) {
-                        Toast.makeText(getContext(), getString(R.string.fotos_excluidas), Toast.LENGTH_SHORT).show();
+
+                        Util.setSnackBar(layout,  getString(R.string.fotos_excluidas));
+
                     }
                 }).addOnFailureListener(new OnFailureListener() {
                     @Override
                     public void onFailure(@NonNull Exception exception) {
-                        Toast.makeText(getContext(), getString(R.string.falha_deletar_fotos), Toast.LENGTH_SHORT).show();
+
+                        Util.setSnackBar(layout,  getString(R.string.falha_deletar_fotos));
                     }
                 });
             }
@@ -136,7 +139,7 @@ public class MeusAnunciosFragment extends Fragment {
 
                 @Override
                 public void onCancelled(@NonNull DatabaseError databaseError) {
-                    Toast.makeText(getContext(), getString(R.string.falha_carregar_anuncios), Toast.LENGTH_LONG).show();
+                    Util.setSnackBar(layout, getString(R.string.falha_carregar_anuncios));
                 }
             });
         } catch (Exception e){e.printStackTrace();
@@ -146,13 +149,15 @@ public class MeusAnunciosFragment extends Fragment {
     /**
      * inicializa os componentes da view
      */
-    @SuppressLint("RestrictedApi")
+    @SuppressLint({"RestrictedApi", "CutPasteId"})
     private void inicializarComponentes(){
+
+        layout = viewFragment.findViewById(R.id.swipeRefreshLayout);
 
         storage = ConfiguracaoFirebase.getFirebaseStorage();
 
         //esconde os botoes de cidade e especie
-        linearLayoutBotoes = viewFragment.findViewById(R.id.linearLayoutBotoes);
+        LinearLayout linearLayoutBotoes = viewFragment.findViewById(R.id.linearLayoutBotoes);
         linearLayoutBotoes.setVisibility(View.GONE);
 
         //fab
@@ -211,7 +216,7 @@ public class MeusAnunciosFragment extends Fragment {
 
                 adapterMeusAnuncios.notifyDataSetChanged();
 
-                Toast.makeText(getContext(), getString(R.string.anuncio_excluido), Toast.LENGTH_LONG).show();
+                Util.setSnackBar(layout,  getString(R.string.anuncio_excluido));
             }
 
             @Override
@@ -234,7 +239,7 @@ public class MeusAnunciosFragment extends Fragment {
     public void onResume() {
         super.onResume();
 
-        if(getView() == null){
+        /*if(getView() == null){
             return;
         }
 
@@ -259,7 +264,7 @@ public class MeusAnunciosFragment extends Fragment {
 
     private void refreshRecyclerAnuncios(){
         // Refresh items
-        Toast.makeText(getContext(), "refreshing anuncios", Toast.LENGTH_LONG).show();
+        Util.setSnackBar(layout,  getString(R.string.atualizando_pets));
 
         anuncios.clear();
         recuperarAnuncios();
