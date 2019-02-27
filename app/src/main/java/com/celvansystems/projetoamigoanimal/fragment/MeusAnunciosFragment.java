@@ -139,7 +139,8 @@ public class MeusAnunciosFragment extends Fragment {
                     Toast.makeText(getContext(), getString(R.string.falha_carregar_anuncios), Toast.LENGTH_LONG).show();
                 }
             });
-        } catch (Exception e){e.printStackTrace();}
+        } catch (Exception e){e.printStackTrace();
+        }
     }
 
     /**
