@@ -57,6 +57,8 @@ public class AnunciosFragment extends Fragment {
     private ArrayAdapter adapterCidades;
     private SwipeRefreshLayout swipeRefreshLayout;
     private View view;
+    private View layout;
+
 
     public AnunciosFragment() {}
 
@@ -75,6 +77,8 @@ public class AnunciosFragment extends Fragment {
      */
     @SuppressLint("RestrictedApi")
     private void inicializarComponentes(){
+
+        layout = view.findViewById(R.id.swipeRefreshLayout);
 
         FloatingActionButton fabCadastrar = view.findViewById(R.id.fabcadastrar);
         fabCadastrar.setVisibility(View.GONE);
@@ -143,7 +147,7 @@ public class AnunciosFragment extends Fragment {
 
     private void refreshRecyclerAnuncios(){
         // Refresh items
-        Toast.makeText(view.getContext(), "refreshing anuncios", Toast.LENGTH_LONG).show();
+        Util.setSnackBar(layout, "Atualizando pets...");
 
         listaAnuncios.clear();
         recuperarAnunciosPublicos();
@@ -218,8 +222,6 @@ public class AnunciosFragment extends Fragment {
                 //Util.setSnackBar(layout, "Usuário logado pelo facebook");
             }
         }
-        // TODO: 26/02/2019 apenas se o usuario estiver logado
-        //refreshRecyclerAnuncios();
     }
 
     @Override

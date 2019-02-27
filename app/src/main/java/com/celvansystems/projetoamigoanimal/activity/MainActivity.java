@@ -15,6 +15,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.celvansystems.projetoamigoanimal.R;
@@ -37,6 +38,7 @@ import com.google.android.gms.ads.AdView;
 import com.google.android.gms.ads.InterstitialAd;
 import com.google.android.gms.ads.MobileAds;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
@@ -62,7 +64,6 @@ public class MainActivity extends AppCompatActivity
 
         inicializarComponentes();
 
-
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
@@ -78,11 +79,30 @@ public class MainActivity extends AppCompatActivity
 
         habilitaOpcoesNav();
 
+
         //propagandas
         configuraAdMob();
         configuraInterstitialAdTimer(Constantes.DELAY_INTERSTITIAL, Constantes.TIME_INTERSTITIAL);
     }
 
+    private void carregaDadosUsuario() {
+
+        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+        View headerView = navigationView.getHeaderView(0);
+        TextView navUsername = (TextView) headerView.findViewById(R.id.textview_nome_humano);
+        TextView navEmail = (TextView) headerView.findViewById(R.id.textView_email_cadastrado);
+
+        FirebaseUser user = autenticacao.getCurrentUser();
+
+        if(user != null) {
+            navUsername.setText(user.getDisplayName());
+            navEmail.setText(user.getEmail());
+        } else {
+            navUsername.setText("Usuário");
+            navEmail.setText("E-mail");
+        }
+
+    }
     /**
      * configuracao da exibicao de intersticial periodico
      */
@@ -132,13 +152,13 @@ public class MainActivity extends AppCompatActivity
 
             nav_minha_conta.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
 
-                    @Override
-                    public boolean onMenuItemClick(MenuItem item) {
-                        fragmentTransaction = fragmentManager.beginTransaction();
-                        fragmentTransaction.replace(R.id.view_pager, new PerfilUsuarioFragment()).addToBackStack("tag").commit();
-                        return false;
-                    }
-                });
+                @Override
+                public boolean onMenuItemClick(MenuItem item) {
+                    fragmentTransaction = fragmentManager.beginTransaction();
+                    fragmentTransaction.replace(R.id.view_pager, new PerfilUsuarioFragment()).addToBackStack("tag").commit();
+                    return false;
+                }
+            });
 
             nav_config_notificacoes.setEnabled(true);
             nav_meus_anuncios.setEnabled(true);
@@ -181,19 +201,15 @@ public class MainActivity extends AppCompatActivity
     @Override
     protected void onResume() {
         super.onResume();
-
-
+        carregaDadosUsuario();
     }
 
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
 
-        //substitui page view com o fragment selecionado
-
         //implementa fragmento
         FragmentManager fragmentManager=getSupportFragmentManager();
         FragmentTransaction fragmentTransaction =fragmentManager.beginTransaction();
-
 
         // Handle navigation view item clicks here.
         int id = item.getItemId();
@@ -201,11 +217,10 @@ public class MainActivity extends AppCompatActivity
         if (id == R.id.nav_minha_conta) {
             // Handle the camera action
             fragmentTransaction.replace(R.id.view_pager, new PerfilUsuarioFragment()).addToBackStack("tag").commit();
-            //
 
             Toast.makeText(getApplicationContext(), "foi aberto a fragment Perfil.." +
-                            " realizar proframação na fragment PerfilUser"
-                    , Toast.LENGTH_SHORT).show();
+                    " realizar proframação na fragment PerfilUser", Toast.LENGTH_SHORT).show();
+
         } else if (id == R.id.nav_config_notificacoes) {
 
             fragmentTransaction.replace(R.id.view_pager, new NotificacoesFragment()).addToBackStack("tag").commit();
@@ -219,19 +234,13 @@ public class MainActivity extends AppCompatActivity
         } else if (id == R.id.nav_meus_anuncios) {
             //reuso da activit meus anuncios
             fragmentTransaction.replace(R.id.view_pager, new MeusAnunciosFragment()).addToBackStack("tag").commit();
-
-
         } else if (id == R.id.pet_cad) {
             // fragment pet_cad cadastrar anuncio
             fragmentTransaction.replace(R.id.view_pager, new CadastrarAnuncioFragment()).addToBackStack("tag").commit();
-
-
         }
         else if (id == R.id.pet_adote) {
             //reuso da activity cadastrar anuncio
             fragmentTransaction.replace(R.id.view_pager, new AnunciosFragment()).addToBackStack("tag").commit();
-
-
         } else if (id == R.id.doacao) {
             // implementar funções na activit doação.
             fragmentTransaction.replace(R.id.view_pager, new DoacaoFragment()).addToBackStack("tag").commit();
@@ -240,8 +249,7 @@ public class MainActivity extends AppCompatActivity
                             " na activity dentro da pasta fragment." +
                             "essa fragmente terá apelos afim de comover " +
                             "o usuário a doar e links para " +
-                            "receber doação na activity doação"
-                    ,
+                            "receber doação na activity doação",
                     Toast.LENGTH_SHORT).show();
 
         } else if (id == R.id.nav_share_app) {
@@ -269,7 +277,7 @@ public class MainActivity extends AppCompatActivity
                     "implementar fragment help " +
                             "sobre o APP",
                     Toast.LENGTH_SHORT).show();
-// TODO: 17/02/2019 imPlementar janela de ajudas sobre o app
+            // TODO: 17/02/2019 imPlementar janela de ajudas sobre o app
         }else if (id == R.id.nav_sair) {
 
             Toast.makeText(getApplicationContext(),
@@ -299,8 +307,6 @@ public class MainActivity extends AppCompatActivity
                             "perdido",
                     Toast.LENGTH_SHORT).show();
         }
-
-
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
