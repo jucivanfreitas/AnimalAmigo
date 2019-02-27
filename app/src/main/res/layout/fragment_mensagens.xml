@@ -19,7 +19,7 @@
             android:layout_marginStart="8dp"
             android:layout_marginTop="8dp"
             android:layout_marginEnd="8dp"
-            android:text="texto teste fragmente @string/messenge @string/txt_conversas nesta tela teremos o menu de bate papo, com todas as conversas exibidas em recycle view.. as mensagens serão arivadas após clic nas conversar , que abrirá uma tela de conversa particular."
+            android:text='texto teste fragmente @string/messenge @string/txt_conversas nesta tela teremos o menu de bate papo, com todas as conversas exibidas em recycle view.. as mensagens serão arivadas após clic nas conversar , que abrirá uma tela de conversa particular. "Conversasfragment.xml'
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
