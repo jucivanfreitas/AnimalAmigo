@@ -74,7 +74,8 @@
         <android.support.v4.widget.SwipeRefreshLayout
             android:id="@+id/swipeRefreshLayout"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            android:layout_marginTop="50dp">
 
             <android.support.v7.widget.RecyclerView
                 android:id="@+id/recyclerAnuncios"
@@ -89,7 +90,8 @@
     <RelativeLayout
         android:id="@+id/layout_relative_banner"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:layout_marginTop="50dp">
 
         <android.support.design.widget.FloatingActionButton
             android:id="@+id/fabcadastrar"
