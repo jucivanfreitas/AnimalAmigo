@@ -13,10 +13,12 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.Layout;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import com.celvansystems.projetoamigoanimal.R;
@@ -40,6 +42,8 @@ import java.util.Objects;
 
 import dmax.dialog.SpotsDialog;
 
+import static com.celvansystems.projetoamigoanimal.R.id.linearLayout2;
+
 /**
  * A simple {@link Fragment} subclass.
  */
@@ -51,9 +55,7 @@ public class MeusAnunciosFragment extends Fragment {
     private StorageReference storage;
     private View viewFragment;
     private SwipeRefreshLayout swipeRefreshLayout;
-
-
-    private AlertDialog dialog;
+        private AlertDialog dialog;
 
     public MeusAnunciosFragment() {}
 
@@ -63,6 +65,7 @@ public class MeusAnunciosFragment extends Fragment {
 
         viewFragment =  inflater.inflate(R.layout.fragment_anuncios, container, false);
         inicializarComponentes();
+
 
         return viewFragment;
     }
@@ -147,11 +150,10 @@ public class MeusAnunciosFragment extends Fragment {
     private void inicializarComponentes(){
 
         storage = ConfiguracaoFirebase.getFirebaseStorage();
-
         FloatingActionButton fabCadastrar = viewFragment.findViewById(R.id.fabcadastrar);
         fabCadastrar.setVisibility(View.VISIBLE);
 
-        fabCadastrar.setOnClickListener(new View.OnClickListener() {
+                fabCadastrar.setOnClickListener(new View.OnClickListener() {
 
             public void onClick(View view) {
                 FragmentManager fragmentManager= Objects.requireNonNull(getActivity()).getSupportFragmentManager();
