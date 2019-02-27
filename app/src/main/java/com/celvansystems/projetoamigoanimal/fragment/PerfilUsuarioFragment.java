@@ -11,6 +11,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.celvansystems.projetoamigoanimal.R;
@@ -31,7 +33,18 @@ import java.util.Objects;
 
 public class PerfilUsuarioFragment extends Fragment {
 
-    private View view;
+    private View viewFragment;
+    private ImageView imvPerfil;
+    private TextView txvNomeHumano;
+    private TextView txvEmail;
+    private TextView txvIdade;
+    private TextView txvCidade;
+    private TextView txvEstado;
+    private TextView txvPais;
+    private TextView txvTelefone;
+    private TextView txvSexo;
+    private TextView txvResumo;
+    private TextView txvPerfilHumano;
 
     public PerfilUsuarioFragment() {}
 
@@ -39,11 +52,11 @@ public class PerfilUsuarioFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
-        view = inflater.inflate(R.layout.fragment_perfil_usuario, container, false);
+        viewFragment = inflater.inflate(R.layout.fragment_perfil_usuario, container, false);
 
         inicializarComponentes();
 
-        return view;
+        return viewFragment;
     }
 
     /**
@@ -51,9 +64,24 @@ public class PerfilUsuarioFragment extends Fragment {
      */
     private void inicializarComponentes() {
 
-        Toast.makeText(view.getContext(), "Iniciando componentes...", Toast.LENGTH_SHORT).show();
+        imvPerfil = viewFragment.findViewById(R.id.imageView_perfil);
+        txvNomeHumano = viewFragment.findViewById(R.id.textview_nome_humano);
+        txvEmail = viewFragment.findViewById(R.id.textView_email_cadastrado);
+        txvIdade = viewFragment.findViewById(R.id.textView_idade);
+        txvCidade = viewFragment.findViewById(R.id.textView_cidade);
+        txvEstado = viewFragment.findViewById(R.id.textView_estado);
+        txvPais = viewFragment.findViewById(R.id.textView_pais);
+        txvTelefone = viewFragment.findViewById(R.id.textView_telefone);
+        txvSexo = viewFragment.findViewById(R.id.textView_sexo);
+        txvResumo = viewFragment.findViewById(R.id.textView_resumo);
+        txvPerfilHumano = viewFragment.findViewById(R.id.textView_perfil_humano);
 
-        Button btnDesativarConta = view.findViewById(R.id.btnEncerrarConta);
+        //Preenchendo os campos do Fragment com dados do usuario
+        txvEmail.setText(getEmailUsuario());
+
+        Toast.makeText(viewFragment.getContext(), "Iniciando componentes...", Toast.LENGTH_SHORT).show();
+
+        Button btnDesativarConta = viewFragment.findViewById(R.id.btnEncerrarConta);
 
         btnDesativarConta.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -107,19 +135,23 @@ public class PerfilUsuarioFragment extends Fragment {
                     public void onComplete(@NonNull Task<Void> task) {
                         if (task.isSuccessful()) {
 
-                            Toast.makeText(view.getContext(), "Usuário excluído com sucesso!", Toast.LENGTH_SHORT).show();
-                            startActivity(new Intent(view.getContext(), MainActivity.class));
-                            Toast.makeText(view.getContext(), "usuario excluido!", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(viewFragment.getContext(), "Usuário excluído com sucesso!", Toast.LENGTH_SHORT).show();
+                            startActivity(new Intent(viewFragment.getContext(), MainActivity.class));
+                            Toast.makeText(viewFragment.getContext(), "usuario excluido!", Toast.LENGTH_SHORT).show();
                             Objects.requireNonNull(getActivity()).finish();
 
                         } else {
                             Log.d("INFO3", "User account not deleted.");
-                            Toast.makeText(view.getContext(), "Falha ao excluir usuário!", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(viewFragment.getContext(), "Falha ao excluir usuário!", Toast.LENGTH_SHORT).show();
                         }
                     }
                 });
     }
 
+    /**
+     * apaga todos os anuncios de um usuario
+     * @param usuarioId id
+     */
     private void deletarAnunciosUsuario(final String usuarioId) {
 
         try {
@@ -153,5 +185,10 @@ public class PerfilUsuarioFragment extends Fragment {
             Log.d("INFO29", "passou6: excecao!!!: " + e.getMessage());
             e.printStackTrace();
         }
+    }
+
+    private String getEmailUsuario(){
+        FirebaseAuth autenticacao = ConfiguracaoFirebase.getFirebaseAutenticacao();
+        return Objects.requireNonNull(autenticacao.getCurrentUser()).getEmail();
     }
 }
