@@ -247,6 +247,8 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
      */
     private void handleFacebookAccessToken(AccessToken token) {
 
+        showProgress(true);
+
         AuthCredential credential = FacebookAuthProvider.getCredential(token.getToken());
 
         authentication.signInWithCredential(credential)
@@ -257,13 +259,12 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                             if (task.isSuccessful()) {
 
                                 //direciona para a tela principal
-                                startActivity(new Intent(getApplicationContext(), MainActivity.class));
+                                startActivity(new Intent(LoginActivity.this, MainActivity.class));
                                 finish();
 
                                 //Toast.makeText(LoginActivity.this, getString(R.string.sucesso_login_facebook),
                                  //       Toast.LENGTH_SHORT).show();
                                 Util.setSnackBar(layout, getString(R.string.sucesso_login_facebook));
-
                             } else {
 
                                 //Toast.makeText(LoginActivity.this, getString(R.string.falha_login_facebook),
@@ -273,8 +274,10 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                         } catch (Exception e) {
                             e.printStackTrace();
                         }
+                        showProgress(false);
                     }
                 });
+
     }
 
     @Override
@@ -337,6 +340,8 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
      */
     private void firebaseAuthWithGoogle(GoogleSignInAccount acct) {
 
+        showProgress(true);
+
         AuthCredential credential = GoogleAuthProvider.getCredential(acct.getIdToken(), null);
         authentication.signInWithCredential(credential)
                 .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
@@ -354,6 +359,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                             startActivity(new Intent(getApplicationContext(), MainActivity.class));
                             finish();
                         }
+                        showProgress(false);
                     }
                 });
     }
