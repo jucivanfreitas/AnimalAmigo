@@ -46,7 +46,6 @@ public class MainActivity extends AppCompatActivity
     private FragmentManager fragmentManager;
     private FragmentTransaction fragmentTransaction;
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -56,7 +55,6 @@ public class MainActivity extends AppCompatActivity
         inicializarComponentes();
 
         fragmentManager=getSupportFragmentManager();
-        fragmentTransaction =fragmentManager.beginTransaction();
 
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
@@ -67,7 +65,7 @@ public class MainActivity extends AppCompatActivity
         navigationView = findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
-
+        fragmentTransaction = fragmentManager.beginTransaction();
         fragmentTransaction.replace(R.id.view_pager, new AnunciosFragment()).commit();
 
         //propagandas
@@ -97,8 +95,9 @@ public class MainActivity extends AppCompatActivity
             nav_minha_conta.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
                 @Override
                 public boolean onMenuItemClick(MenuItem item) {
+                    fragmentTransaction =fragmentManager.beginTransaction();
                     fragmentTransaction.replace(R.id.view_pager, new PerfilUsuarioFragment()).addToBackStack("tag").commit();
-                    return true;
+                    return false;
                 }
             });
             nav_config_notificacoes.setEnabled(true);
@@ -116,7 +115,7 @@ public class MainActivity extends AppCompatActivity
                 public boolean onMenuItemClick(MenuItem item) {
                     startActivity(new Intent(MainActivity.this, LoginActivity.class));
                     finish();
-                    return true;
+                    return false;
                 }
             });
             nav_config_notificacoes.setEnabled(false);
