@@ -37,6 +37,10 @@ import com.google.android.gms.ads.InterstitialAd;
 import com.google.android.gms.ads.MobileAds;
 import com.google.firebase.auth.FirebaseAuth;
 
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
+
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
@@ -45,16 +49,18 @@ public class MainActivity extends AppCompatActivity
     private NavigationView navigationView;
     private FragmentManager fragmentManager;
     private FragmentTransaction fragmentTransaction;
+    private InterstitialAd mInterstitialAd;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
         inicializarComponentes();
 
-        fragmentManager=getSupportFragmentManager();
 
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
@@ -65,13 +71,43 @@ public class MainActivity extends AppCompatActivity
         navigationView = findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
+        fragmentManager = getSupportFragmentManager();
         fragmentTransaction = fragmentManager.beginTransaction();
         fragmentTransaction.replace(R.id.view_pager, new AnunciosFragment()).commit();
 
+        habilitaOpcoesNav();
+
         //propagandas
         configuraAdMob();
+        configuraInterstitialAdTimer(60, 120);
+    }
 
-        habilitaOpcoesNav();
+    /**
+     * configuracao da exibicao de intersticial periodico
+     */
+    private void configuraInterstitialAdTimer(int delay, int segundos) {
+
+
+        prepareAd();
+        ScheduledExecutorService scheduler =
+                Executors.newSingleThreadScheduledExecutor();
+        scheduler.scheduleAtFixedRate(new Runnable() {
+
+
+            public void run() {
+
+                runOnUiThread(new Runnable() {
+                    public void run() {
+                        if (mInterstitialAd.isLoaded()) {
+                            mInterstitialAd.show();
+                        } else {
+                        }
+                        prepareAd();
+                    }
+                });
+
+            }
+        }, delay, segundos, TimeUnit.SECONDS);
     }
 
     private void habilitaOpcoesNav() {
@@ -92,14 +128,18 @@ public class MainActivity extends AppCompatActivity
 
         if(ConfiguracaoFirebase.isUsuarioLogado()){
             nav_minha_conta.setEnabled(true);
+            nav_minha_conta.setTitle(R.string.txt_minha_conta);
+
             nav_minha_conta.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
-                @Override
-                public boolean onMenuItemClick(MenuItem item) {
-                    fragmentTransaction =fragmentManager.beginTransaction();
-                    fragmentTransaction.replace(R.id.view_pager, new PerfilUsuarioFragment()).addToBackStack("tag").commit();
-                    return false;
-                }
-            });
+
+                    @Override
+                    public boolean onMenuItemClick(MenuItem item) {
+                        fragmentTransaction = fragmentManager.beginTransaction();
+                        fragmentTransaction.replace(R.id.view_pager, new PerfilUsuarioFragment()).addToBackStack("tag").commit();
+                        return false;
+                    }
+                });
+
             nav_config_notificacoes.setEnabled(true);
             nav_meus_anuncios.setEnabled(true);
             nav_pet_cad.setEnabled(true);
@@ -115,7 +155,7 @@ public class MainActivity extends AppCompatActivity
                 public boolean onMenuItemClick(MenuItem item) {
                     startActivity(new Intent(MainActivity.this, LoginActivity.class));
                     finish();
-                    return false;
+                    return true;
                 }
             });
             nav_config_notificacoes.setEnabled(false);
@@ -363,5 +403,12 @@ public class MainActivity extends AppCompatActivity
                 }
             });
         } catch (Exception e) {e.printStackTrace();}
+    }
+
+    public void  prepareAd(){
+
+        mInterstitialAd = new InterstitialAd(this);
+        mInterstitialAd.setAdUnitId("ca-app-pub-3940256099942544/1033173712");
+        mInterstitialAd.loadAd(new AdRequest.Builder().build());
     }
 }

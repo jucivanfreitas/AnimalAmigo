@@ -188,7 +188,10 @@ public class PerfilUsuarioFragment extends Fragment {
     }
 
     private String getEmailUsuario(){
-        FirebaseAuth autenticacao = ConfiguracaoFirebase.getFirebaseAutenticacao();
-        return Objects.requireNonNull(autenticacao.getCurrentUser()).getEmail();
+        if(ConfiguracaoFirebase.isUsuarioLogado()) {
+            FirebaseAuth autenticacao = ConfiguracaoFirebase.getFirebaseAutenticacao();
+            return Objects.requireNonNull(autenticacao.getCurrentUser()).getEmail();
+        }
+        return "";
     }
 }
