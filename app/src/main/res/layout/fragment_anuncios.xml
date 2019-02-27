@@ -10,12 +10,54 @@
     tools:context=".fragment.AnunciosFragment">
 
 
+    <android.support.constraint.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <android.support.v4.widget.SwipeRefreshLayout
+            android:id="@+id/swipeRefreshLayout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/recyclerAnuncios"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
+        </android.support.v4.widget.SwipeRefreshLayout>
+
+        <android.support.design.widget.FloatingActionButton
+            android:id="@+id/fabcadastrar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center|center_horizontal"
+            android:layout_marginStart="8dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginBottom="8dp"
+            android:clickable="true"
+            android:elevation="50dp"
+            android:focusable="true"
+            android:foreground="?attr/selectableItemBackground"
+            android:foregroundGravity="clip_horizontal|center"
+            app:elevation="15dp"
+            app:layout_anchor="@+id/include"
+            app:layout_anchorGravity="bottom|center"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:srcCompat="@drawable/ic_add_black_24dp" />
+
+    </android.support.constraint.ConstraintLayout>
+
     <android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto"
         xmlns:tools="http://schemas.android.com/tools"
         android:id="@+id/coordinator_layout_anuncios"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_alignParentStart="true"
         android:orientation="vertical"
         app:layout_behavior="@string/appbar_scrolling_view_behavior"
         tools:context=".activity.MainActivity"
@@ -27,7 +69,8 @@
             android:layout_marginTop="0dp"
             android:background="@drawable/bg_branco_gradient"
             android:elevation="20dp"
-            android:orientation="horizontal">
+            android:orientation="horizontal"
+            android:visibility="gone">
 
             <android.support.v7.widget.AppCompatButton
                 android:id="@+id/btnCidade"
@@ -71,19 +114,6 @@
                 tools:ignore="OnClick" />
         </LinearLayout>
 
-        <android.support.v4.widget.SwipeRefreshLayout
-            android:id="@+id/swipeRefreshLayout"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_marginTop="50dp">
-
-            <android.support.v7.widget.RecyclerView
-                android:id="@+id/recyclerAnuncios"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent" />
-        </android.support.v4.widget.SwipeRefreshLayout>
-
-
 
     </android.support.design.widget.CoordinatorLayout>
 
@@ -93,22 +123,11 @@
         android:layout_height="match_parent"
         android:layout_marginTop="50dp">
 
-        <android.support.design.widget.FloatingActionButton
-            android:id="@+id/fabcadastrar"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center|center_horizontal"
-            android:layout_marginEnd="150dp"
-            android:layout_marginBottom="6dp"
-            android:clickable="true"
-            android:elevation="50dp"
-            android:focusable="true"
-            android:foreground="?attr/selectableItemBackground"
-            android:foregroundGravity="clip_horizontal|center"
-            app:elevation="15dp"
-            app:layout_anchor="@+id/include"
-            app:layout_anchorGravity="bottom|center"
-            app:srcCompat="@drawable/ic_add_black_24dp" />
+        <android.support.constraint.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+        </android.support.constraint.ConstraintLayout>
 
         <com.google.android.gms.ads.AdView xmlns:ads="http://schemas.android.com/apk/res-auto"
             android:id="@+id/adView"
@@ -117,7 +136,7 @@
             android:layout_alignParentBottom="true"
             android:layout_centerHorizontal="true"
             android:layout_marginBottom="0dp"
-            android:visibility="visible"
+            android:visibility="gone"
             ads:adSize="BANNER"
             ads:adUnitId="ca-app-pub-3940256099942544/6300978111">
             <!--ads:adUnitId="@string/banner_id"-->
