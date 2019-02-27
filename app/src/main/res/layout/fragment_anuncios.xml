@@ -15,7 +15,7 @@
         android:layout_height="match_parent">
 
         <LinearLayout
-            android:id="@+id/linearLayout2"
+            android:id="@+id/linearLayoutBotoes"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@drawable/bg_branco_gradient"

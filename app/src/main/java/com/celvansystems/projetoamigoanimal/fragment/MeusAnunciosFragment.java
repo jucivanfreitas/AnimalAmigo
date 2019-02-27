@@ -17,6 +17,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import com.celvansystems.projetoamigoanimal.R;
@@ -51,6 +52,7 @@ public class MeusAnunciosFragment extends Fragment {
     private StorageReference storage;
     private View viewFragment;
     private SwipeRefreshLayout swipeRefreshLayout;
+    private LinearLayout linearLayoutBotoes;
 
 
     private AlertDialog dialog;
@@ -148,15 +150,19 @@ public class MeusAnunciosFragment extends Fragment {
 
         storage = ConfiguracaoFirebase.getFirebaseStorage();
 
+        //esconde os botoes de cidade e especie
+        linearLayoutBotoes = viewFragment.findViewById(R.id.linearLayoutBotoes);
+        linearLayoutBotoes.setVisibility(View.GONE);
+
+        //fab
         FloatingActionButton fabCadastrar = viewFragment.findViewById(R.id.fabcadastrar);
         fabCadastrar.setVisibility(View.VISIBLE);
-
         fabCadastrar.setOnClickListener(new View.OnClickListener() {
 
             public void onClick(View view) {
                 FragmentManager fragmentManager= Objects.requireNonNull(getActivity()).getSupportFragmentManager();
                 FragmentTransaction fragmentTransaction =fragmentManager.beginTransaction();
-                fragmentTransaction.replace(R.id.view_pager, new CadastrarAnuncioFragment()).commit();
+                fragmentTransaction.replace(R.id.view_pager, new CadastrarAnuncioFragment()).addToBackStack("tag").commit();
             }
         });
 
