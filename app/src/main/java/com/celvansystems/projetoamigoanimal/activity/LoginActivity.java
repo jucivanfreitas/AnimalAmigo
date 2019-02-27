@@ -143,9 +143,13 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             txvEsqueciSenha.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+                    hideKeyboard(LoginActivity.this, mEmailView);
                     if(mEmailView.getText()!= null &&
-                            !mEmailView.getText().toString().equalsIgnoreCase("")){
+                            !mEmailView.getText().toString().equalsIgnoreCase("")  &&
+                            mEmailView.getText().toString().contains("@")){
                         enviarEmailRecuperacao(mEmailView.getText().toString());
+                    } else {
+                        Util.setSnackBar(layout, "Preencha seu e-mail!");
                     }
                 }
             });
@@ -173,9 +177,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                             Util.setSnackBar(layout, getString(R.string.email_enviado));
 
                         } else {
-                            Toast.makeText(LoginActivity.this, Objects.requireNonNull(task.getException()).getMessage(),
-                                    Toast.LENGTH_SHORT).show();
-                            Util.setSnackBar(layout, getString(R.string.falha_enviar_email_recuperacao));
+                            Util.setSnackBar(layout, getString(R.string.nao_foi_possivel_email));
                         }
                     }
                 });

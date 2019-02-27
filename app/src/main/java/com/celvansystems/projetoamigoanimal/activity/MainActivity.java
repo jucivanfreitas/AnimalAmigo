@@ -28,6 +28,7 @@ import com.celvansystems.projetoamigoanimal.fragment.PerfilUsuarioFragment;
 import com.celvansystems.projetoamigoanimal.fragment.ProcuradoFragment;
 import com.celvansystems.projetoamigoanimal.fragment.SobreAppFragment;
 import com.celvansystems.projetoamigoanimal.helper.ConfiguracaoFirebase;
+import com.celvansystems.projetoamigoanimal.helper.Constantes;
 import com.celvansystems.projetoamigoanimal.helper.Util;
 import com.facebook.login.LoginManager;
 import com.google.android.gms.ads.AdListener;
@@ -79,7 +80,7 @@ public class MainActivity extends AppCompatActivity
 
         //propagandas
         configuraAdMob();
-        configuraInterstitialAdTimer(60, 120);
+        configuraInterstitialAdTimer(Constantes.DELAY_INTERSTITIAL, Constantes.TIME_INTERSTITIAL);
     }
 
     /**

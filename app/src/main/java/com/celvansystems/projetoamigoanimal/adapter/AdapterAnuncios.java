@@ -9,6 +9,8 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -16,7 +18,9 @@ import android.widget.Toast;
 import com.celvansystems.projetoamigoanimal.R;
 import com.celvansystems.projetoamigoanimal.activity.DetalhesAnimalActivity;
 import com.celvansystems.projetoamigoanimal.helper.ConfiguracaoFirebase;
+import com.celvansystems.projetoamigoanimal.helper.Util;
 import com.celvansystems.projetoamigoanimal.model.Animal;
+import com.celvansystems.projetoamigoanimal.model.Comentario;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.database.DatabaseReference;
@@ -25,6 +29,7 @@ import com.squareup.picasso.Picasso;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+
 public class AdapterAnuncios extends RecyclerView.Adapter<AdapterAnuncios.MyViewHolder>
         implements Serializable {
 
@@ -91,11 +96,12 @@ public class AdapterAnuncios extends RecyclerView.Adapter<AdapterAnuncios.MyView
                 });
 
                 //acao de clique no botao comentar anuncio
-                myViewHolder.imvComentarAnuncio.setOnClickListener(new View.OnClickListener() {
+                myViewHolder.imbComentarAnuncio.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        // TODO: 13/02/2019 inserir comentário no anuncio
 
+                        comentarAnuncio (myViewHolder,
+                                anuncio);
                     }
                 });
 
@@ -108,6 +114,41 @@ public class AdapterAnuncios extends RecyclerView.Adapter<AdapterAnuncios.MyView
                     }
                 });
             }
+        }
+    }
+
+    /**
+     * metodo que insere comentarios no firebase
+     * @param myViewHolder myviewholder
+     * @param anuncio animal
+     */
+    private void comentarAnuncio(final MyViewHolder myViewHolder, final Animal anuncio) {
+
+        if (ConfiguracaoFirebase.isUsuarioLogado()) {
+
+            DatabaseReference comentarioRef = ConfiguracaoFirebase.getFirebase()
+                    .child("meus_animais")
+                    .child(anuncio.getIdAnimal())
+                    .child("comentarios");
+
+            String texto = myViewHolder.edtComentar.getText().toString();
+            String idUsuario = ConfiguracaoFirebase.getIdUsuario();
+            Comentario coment = new Comentario(idUsuario, texto, Util.getDataAtualBrasil());
+
+            Task<Void> inserirComentarioRef = comentarioRef
+                    .push().setValue(coment);
+
+            inserirComentarioRef.addOnCompleteListener(new OnCompleteListener<Void>() {
+                @Override
+                public void onComplete(@NonNull Task<Void> task) {
+
+                    Util.setSnackBar(myViewHolder.layout, "Comentário inserido!");
+                    myViewHolder.edtComentar.setText(null);
+                }
+            });
+
+        } else {
+            Toast.makeText(myViewHolder.itemView.getContext(), "Usuário não logado!", Toast.LENGTH_LONG).show();
         }
     }
 
@@ -240,7 +281,10 @@ public class AdapterAnuncios extends RecyclerView.Adapter<AdapterAnuncios.MyView
         TextView numeroCurtidas;
         TextView textViewCurtidas;
         ImageView foto;
-        ImageView imvCompartilharAnuncio, imvComentarAnuncio, imvCurtirAnuncio;
+        ImageView imvCompartilharAnuncio, imvCurtirAnuncio;
+        ImageButton imbComentarAnuncio;
+        EditText edtComentar;
+        private View layout;
 
         MyViewHolder(View itemView) {
             super(itemView);
@@ -252,11 +296,13 @@ public class AdapterAnuncios extends RecyclerView.Adapter<AdapterAnuncios.MyView
             cidade = itemView.findViewById(R.id.textCidadePrincipal);
             numeroCurtidas = itemView.findViewById(R.id.txv_num_curtidas);
             textViewCurtidas = itemView.findViewById(R.id.textViewCurtidas);
+            layout = itemView.findViewById(R.id.constraintLayout_comentar);
 
             //curtir, comentar e compartilhar anuncio da tela principal
             imvCompartilharAnuncio = itemView.findViewById(R.id.imv_compartilhar_anuncio);
-            imvComentarAnuncio = itemView.findViewById(R.id.imv_comentar_anuncio);
+            imbComentarAnuncio = itemView.findViewById(R.id.imageButton_comentar);
             imvCurtirAnuncio = itemView.findViewById(R.id.imv_curtir_anuncio);
+            edtComentar = itemView.findViewById(R.id.editText_comentar);
         }
     }
 }

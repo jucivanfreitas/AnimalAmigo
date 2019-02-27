@@ -96,7 +96,6 @@
             android:foreground="?attr/selectableItemBackground"
             android:foregroundGravity="clip_horizontal|center"
             app:elevation="15dp"
-            app:layout_anchor="@+id/include"
             app:layout_anchorGravity="bottom|center"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"

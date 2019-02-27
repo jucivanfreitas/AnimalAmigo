@@ -23,6 +23,9 @@ public class Animal implements Serializable {
     private String dataCadastro;
     private List<String> fotos;
     private List<String> curtidas;
+    private List<Comentario> listaComentarios;
+
+    //private HashMap<String, Comentario> comentarios;
 
     public Animal (){
 
@@ -42,7 +45,6 @@ public class Animal implements Serializable {
     public void salvar(){
 
         try {
-            String idUsuario = ConfiguracaoFirebase.getIdUsuario();
             DatabaseReference animalRef = ConfiguracaoFirebase.getFirebase()
                     .child("meus_animais");
 
@@ -58,8 +60,6 @@ public class Animal implements Serializable {
     public void remover(){
 
         try {
-            String idUsuario = ConfiguracaoFirebase.getIdUsuario();
-
             DatabaseReference animalRef = ConfiguracaoFirebase.getFirebase()
                     .child("meus_animais")
                     .child(getIdAnimal());
@@ -178,5 +178,21 @@ public class Animal implements Serializable {
 
     public void setCurtidas(List<String> curtidas) {
         this.curtidas = curtidas;
+    }
+
+    /*public HashMap<String, Comentario> getComentarios() {
+        return comentarios;
+    }
+
+    public void setComentarios(HashMap<String, Comentario> comentarios) {
+        this.comentarios = comentarios;
+    }*/
+
+    public List<Comentario> getListaComentarios() {
+        return listaComentarios;
+    }
+
+    public void setListaComentarios(List<Comentario> listaComentarios) {
+        this.listaComentarios = listaComentarios;
     }
 }

@@ -275,6 +275,7 @@
     </android.support.constraint.ConstraintLayout>
 
     <android.support.v7.widget.RecyclerView
+        android:id="@+id/recyclerComentarios"
         android:layout_width="0dp"
         android:layout_height="100dp"
         app:layout_constraintEnd_toEndOf="parent"
