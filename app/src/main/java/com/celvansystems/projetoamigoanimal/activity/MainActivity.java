@@ -93,7 +93,6 @@ public class MainActivity extends AppCompatActivity
                 Executors.newSingleThreadScheduledExecutor();
         scheduler.scheduleAtFixedRate(new Runnable() {
 
-
             public void run() {
 
                 runOnUiThread(new Runnable() {
