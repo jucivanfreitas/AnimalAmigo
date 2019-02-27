@@ -144,7 +144,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                 @Override
                 public void onClick(View v) {
                     if(mEmailView.getText()!= null &&
-                    !mEmailView.getText().toString().equalsIgnoreCase("")){
+                            !mEmailView.getText().toString().equalsIgnoreCase("")){
                         enviarEmailRecuperacao(mEmailView.getText().toString());
                     }
                 }
@@ -261,14 +261,8 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                                 //direciona para a tela principal
                                 startActivity(new Intent(LoginActivity.this, MainActivity.class));
                                 finish();
-
-                                //Toast.makeText(LoginActivity.this, getString(R.string.sucesso_login_facebook),
-                                 //       Toast.LENGTH_SHORT).show();
                                 Util.setSnackBar(layout, getString(R.string.sucesso_login_facebook));
                             } else {
-
-                                //Toast.makeText(LoginActivity.this, getString(R.string.falha_login_facebook),
-                                //        Toast.LENGTH_SHORT).show();
                                 Util.setSnackBar(layout, getString(R.string.falha_login_facebook));
                             }
                         } catch (Exception e) {
@@ -277,7 +271,6 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                         showProgress(false);
                     }
                 });
-
     }
 
     @Override
@@ -424,11 +417,11 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
 
                                 // TODO: 20/02/2019 habilitar verificacao de e-mail no final. Não deletar o código
                                 //if (checkIfEmailVerified()) {
-                                    Intent intent = new Intent(getApplicationContext(), MainActivity.class);
-                                    startActivity(intent);
-                                    Toast.makeText(LoginActivity.this, getString(R.string.sucesso_login),
-                                            Toast.LENGTH_SHORT).show();
-                                    finish();
+                                Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+                                startActivity(intent);
+                                Toast.makeText(LoginActivity.this, getString(R.string.sucesso_login),
+                                        Toast.LENGTH_SHORT).show();
+                                finish();
                                 /*} else {
                                     Toast.makeText(LoginActivity.this, getString(R.string.email_nao_verificado),
                                             Toast.LENGTH_SHORT).show();
