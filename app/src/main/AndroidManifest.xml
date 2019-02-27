@@ -44,9 +44,6 @@
                 android:resource="@xml/picker_provider_paths" />
         </provider>
 
-        <activity android:name=".activity.DoacaoActivity" />
-        <activity android:name=".activity.PerfisActivity" />
-
         <meta-data
             android:name="com.google.android.gms.ads.APPLICATION_ID"
             android:value="ca-app-pub-3940256099942544~3347511713" />
@@ -73,15 +70,6 @@
         <activity
             android:name=".activity.DetalhesAnimalActivity"
             android:parentActivityName=".activity.MainActivity" />
-        <activity
-            android:name=".activity.MeusAnunciosActivity"
-            android:label="@string/txt_meus_anuncios"
-            android:parentActivityName=".activity.MainActivity"
-            android:theme="@style/AppTheme.NoActionBar">
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.celvansystems.projetoamigoanimal.activity.MainActivity" />
-        </activity>
         <activity
             android:name=".activity.LoginActivity"
             android:label="@string/title_activity_login"
