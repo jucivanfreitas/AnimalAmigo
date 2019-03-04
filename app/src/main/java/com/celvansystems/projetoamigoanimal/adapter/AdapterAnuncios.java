@@ -69,19 +69,9 @@ public class AdapterAnuncios extends RecyclerView.Adapter<AdapterAnuncios.MyView
                 myViewHolder.cidade.setText(anuncio.getCidade());
 
                 //comentarios
-                myViewHolder.textViewTodosComentarios.setVisibility(View.GONE);
-                if(anuncio.getListaComentarios()!= null) {
-                    int qtdeComentarios = anuncio.getListaComentarios().size();
-                    if(qtdeComentarios > 1) {
-                        myViewHolder.textViewTodosComentarios.setVisibility(View.VISIBLE);
-                        myViewHolder.textViewTodosComentarios.setText("Ver todos os " + qtdeComentarios + " comentários");
-                    } else if (qtdeComentarios == 1) {
-                        myViewHolder.textViewTodosComentarios.setVisibility(View.VISIBLE);
-                        myViewHolder.textViewTodosComentarios.setText("Ver " + qtdeComentarios + " comentário");
-                    }
-                }
+                atualizaComentarios(anuncio.getListaComentarios().size(), anuncio, myViewHolder);
 
-                //verifica se o animal foi curtido pelo usuario atual
+                //curtidas
                 atualizaCurtidas(anuncio, myViewHolder);
 
                 //pega a primeira imagem cadastrada
@@ -169,33 +159,38 @@ public class AdapterAnuncios extends RecyclerView.Adapter<AdapterAnuncios.MyView
             String idUsuario = ConfiguracaoFirebase.getIdUsuario();
             final Comentario coment = new Comentario(idUsuario, texto, Util.getDataAtualBrasil());
 
-            Task<Void> inserirComentarioRef = comentarioRef
-                    .push().setValue(coment);
+            if(Util.validaTexto(texto)){
+                Task<Void> inserirComentarioRef = comentarioRef
+                        .push().setValue(coment);
 
-            inserirComentarioRef.addOnCompleteListener(new OnCompleteListener<Void>() {
-                @Override
-                public void onComplete(@NonNull Task<Void> task) {
+                inserirComentarioRef.addOnCompleteListener(new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
 
-                    Util.setSnackBar(myViewHolder.layout, "Comentário inserido!");
-                    comentarioRef.addListenerForSingleValueEvent(new ValueEventListener() {
-                        @Override
-                        public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                            // get total available quest
-                            int size = (int) dataSnapshot.getChildrenCount();
-                            atualizaComentarios(size, anuncio, myViewHolder);
-                        }
-                        @Override
-                        public void onCancelled(@NonNull DatabaseError databaseError) {
+                        Util.setSnackBar(myViewHolder.layout, "Comentário inserido!");
+                        comentarioRef.addListenerForSingleValueEvent(new ValueEventListener() {
+                            @Override
+                            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                                // get total available quest
+                                int size = (int) dataSnapshot.getChildrenCount();
+                                atualizaComentarios(size, anuncio, myViewHolder);
+                            }
 
-                        }
-                    });
+                            @Override
+                            public void onCancelled(@NonNull DatabaseError databaseError) {
 
-                    myViewHolder.edtComentar.setText(null);
-                }
-            });
+                            }
+                        });
+
+                        myViewHolder.edtComentar.setText(null);
+                    }
+                });
+            } else {
+                Util.setSnackBar(myViewHolder.layout, "Comentário inválido!");
+            }
 
         } else {
-            Toast.makeText(myViewHolder.itemView.getContext(), "Usuário não logado!", Toast.LENGTH_LONG).show();
+            Util.setSnackBar(myViewHolder.layout, "Usuário não logado!");
         }
     }
 
@@ -235,7 +230,7 @@ public class AdapterAnuncios extends RecyclerView.Adapter<AdapterAnuncios.MyView
                 }
                 myViewHolder.textViewTodosComentarios.setVisibility(View.VISIBLE);
             } else {
-                myViewHolder.textViewTodosComentarios.setVisibility(View.INVISIBLE);
+                myViewHolder.textViewTodosComentarios.setVisibility(View.GONE);
             }
 
         } catch (Exception e) {e.printStackTrace();}

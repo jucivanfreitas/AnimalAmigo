@@ -177,4 +177,10 @@ public class Util {
         TextView txtv = view.findViewById(android.support.design.R.id.snackbar_text);
         txtv.setGravity(Gravity.CENTER_HORIZONTAL);
     }
+
+    public static boolean validaTexto(String texto){
+        return (texto != null && !texto.equalsIgnoreCase("")
+                && !texto.trim().equals("null") && texto.trim()
+                .length() > 0 && !texto.isEmpty());
+    }
 }
