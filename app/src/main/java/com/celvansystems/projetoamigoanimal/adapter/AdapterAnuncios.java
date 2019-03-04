@@ -55,7 +55,6 @@ public class AdapterAnuncios extends RecyclerView.Adapter<AdapterAnuncios.MyView
         return new MyViewHolder(item);
     }
 
-    @SuppressLint("SetTextI18n")
     @Override
     public void onBindViewHolder(@NonNull final MyViewHolder myViewHolder, @SuppressLint("RecyclerView") int i) {
 
@@ -75,10 +74,10 @@ public class AdapterAnuncios extends RecyclerView.Adapter<AdapterAnuncios.MyView
                     int qtdeComentarios = anuncio.getListaComentarios().size();
                     if(qtdeComentarios > 1) {
                         myViewHolder.textViewTodosComentarios.setVisibility(View.VISIBLE);
-                        myViewHolder.textViewTodosComentarios.setText(String.valueOf(R.string.ver_todos_os) + qtdeComentarios + R.string.comentarios);
+                        myViewHolder.textViewTodosComentarios.setText("Ver todos os " + qtdeComentarios + " comentários");
                     } else if (qtdeComentarios == 1) {
                         myViewHolder.textViewTodosComentarios.setVisibility(View.VISIBLE);
-                        myViewHolder.textViewTodosComentarios.setText(anuncio.getListaComentarios().get(0).getTexto());
+                        myViewHolder.textViewTodosComentarios.setText("Ver " + qtdeComentarios + " comentário");
                     }
                 }
 
@@ -224,16 +223,15 @@ public class AdapterAnuncios extends RecyclerView.Adapter<AdapterAnuncios.MyView
         } catch (Exception e) {e.printStackTrace();}
     }
 
-    @SuppressLint("SetTextI18n")
     private void atualizaComentarios(int size, Animal anuncio, MyViewHolder myViewHolder) {
         try {
 
             if (anuncio.getListaComentarios() != null) {
                 if(size > 1) {
                     myViewHolder.textViewTodosComentarios.setText(
-                            String.valueOf(R.string.ver_todos_os) + size + R.string.comentarios);
+                            ("Ver todos os "+size+" comentários"));
                 } else if (size == 1) {
-                    myViewHolder.textViewTodosComentarios.setText(String.valueOf(R.string.ver) + size + R.string.comentario);
+                    myViewHolder.textViewTodosComentarios.setText("Ver " + size + " comentário");
                 }
                 myViewHolder.textViewTodosComentarios.setVisibility(View.VISIBLE);
             } else {
