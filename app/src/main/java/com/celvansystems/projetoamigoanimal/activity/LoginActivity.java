@@ -402,8 +402,6 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                                     erroExcecao = getString(R.string.falha_cadastro_usuario) + e.getMessage();
                                     e.printStackTrace();
                                 }
-                                //Toast.makeText(LoginActivity.this, getString(R.string.erro) + erroExcecao,
-                                //        Toast.LENGTH_LONG).show();
                                 Util.setSnackBar(layout, getString(R.string.erro) + erroExcecao);
                             }
                         }

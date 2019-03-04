@@ -194,5 +194,10 @@
     <string name="nao_foi_possivel_email">Não foi possível enviar o e-mail de recuperaçã de senha.</string>
     <string name="atualizando_pets">Atualizando Pets...</string>
     <string name="bg_pegadas">Pegadas</string>
+    <string name="interAdTestId">ca-app-pub-3940256099942544/1033173712</string>
+    <string name="mobileadsIdTeste">ca-app-pub-3940256099942544~3347511713</string>
+    <string name="testeDeviceId">33BE2250B43518CCDA7DE426D04EE231</string>
+    <string name="imageButton_comentar_description">Botão para enviar comentário</string>
+    <string name="editTextComentar_description">Campo para inserir um comentário</string>
 
 </resources>

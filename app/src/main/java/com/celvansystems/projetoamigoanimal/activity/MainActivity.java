@@ -53,6 +53,7 @@ public class MainActivity extends AppCompatActivity
     private FragmentManager fragmentManager;
     private FragmentTransaction fragmentTransaction;
     private InterstitialAd mInterstitialAd;
+    private AdView adView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -199,9 +200,28 @@ public class MainActivity extends AppCompatActivity
     }
 
     @Override
+    protected void onPause() {
+        if(adView!=null){
+            adView.pause();
+        }
+        super.onPause();
+    }
+
+    @Override
     protected void onResume() {
         super.onResume();
+        if(adView!=null){
+            adView.resume();
+        }
         carregaDadosUsuario();
+    }
+
+    @Override
+    protected void onDestroy() {
+        if(adView!=null){
+            adView.destroy();
+        }
+        super.onDestroy();
     }
 
     @Override
@@ -326,8 +346,8 @@ public class MainActivity extends AppCompatActivity
         //admob
         //MobileAds.initialize(this, String.valueOf(R.string.app_id));
         //teste do google
-        MobileAds.initialize(getApplicationContext(), "ca-app-pub-3940256099942544~3347511713");
-        Log.d("INFO50", "configurando admob");
+        MobileAds.initialize(getApplicationContext(), getString(R.string.mobileadsIdTeste));
+
         //AdView
         try {
             //teste
@@ -366,16 +386,17 @@ public class MainActivity extends AppCompatActivity
                 public void onAdClosed() {
                     // Load the next interstitial.
                     Util.setSnackBar(layout, "intersticial closed");
+                    prepareAd();
                     //mInterstitialAd.loadAd(new AdRequest.Builder().build());
                 }
             });
 
-            //banner
+            //banner teste
             final AdRequest adRequest = new AdRequest.Builder()
-                    .addTestDevice("33BE2250B43518CCDA7DE426D04EE231")
+                    .addTestDevice(getString(R.string.testeDeviceId))
                     .build();
 
-            final AdView adView = findViewById(R.id.adView2);
+            adView = findViewById(R.id.adView2);
             //final AdRequest adRequest = new AdRequest.Builder().build();
             adView.loadAd(adRequest);
 
@@ -394,18 +415,18 @@ public class MainActivity extends AppCompatActivity
                 public void onAdOpened() {
                     // Code to be executed when an ad opens an overlay that
                     // covers the screen.
-                    Toast.makeText(getApplicationContext(), "opened", Toast.LENGTH_SHORT).show();
+                    //Toast.makeText(getApplicationContext(), "opened", Toast.LENGTH_SHORT).show();
                 }
                 @Override
                 public void onAdLeftApplication() {
                     // Code to be executed when the user has left the app.
-                    Toast.makeText(getApplicationContext(), "left", Toast.LENGTH_SHORT).show();
+                    //Toast.makeText(getApplicationContext(), "left", Toast.LENGTH_SHORT).show();
                 }
                 @Override
                 public void onAdClosed() {
                     // Code to be executed when when the user is about to return.
                     // to the app after tapping on an ad.
-                    Toast.makeText(getApplicationContext(), "closed", Toast.LENGTH_SHORT).show();
+                    //Toast.makeText(getApplicationContext(), "closed", Toast.LENGTH_SHORT).show();
                 }
             });
         } catch (Exception e) {e.printStackTrace();}
@@ -414,7 +435,7 @@ public class MainActivity extends AppCompatActivity
     public void  prepareAd(){
 
         mInterstitialAd = new InterstitialAd(this);
-        mInterstitialAd.setAdUnitId("ca-app-pub-3940256099942544/1033173712");
+        mInterstitialAd.setAdUnitId(getString(R.string.interAdTestId));
         mInterstitialAd.loadAd(new AdRequest.Builder().build());
     }
 }

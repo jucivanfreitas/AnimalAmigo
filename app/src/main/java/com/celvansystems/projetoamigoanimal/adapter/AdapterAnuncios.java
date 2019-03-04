@@ -55,6 +55,7 @@ public class AdapterAnuncios extends RecyclerView.Adapter<AdapterAnuncios.MyView
     public void onBindViewHolder(@NonNull final MyViewHolder myViewHolder, @SuppressLint("RecyclerView") int i) {
 
         if(anuncios != null) {
+
             final Animal anuncio = anuncios.get(i);
 
             if(anuncio != null) {
@@ -62,7 +63,17 @@ public class AdapterAnuncios extends RecyclerView.Adapter<AdapterAnuncios.MyView
                 myViewHolder.nome.setText(anuncio.getNome());
                 myViewHolder.idade.setText(anuncio.getIdade());
                 myViewHolder.cidade.setText(anuncio.getCidade());
-
+                if(anuncio.getListaComentarios()!= null) {
+                    int qtdeComentarios = anuncio.getListaComentarios().size();
+                    if(qtdeComentarios > 1) {
+                        myViewHolder.textViewTodosComentarios.setText("Ver todos os " + qtdeComentarios + " comentários");
+                    } else if (qtdeComentarios == 1) {
+                        myViewHolder.textViewTodosComentarios.setText(anuncio.getListaComentarios().get(0).getTexto());
+                    }
+                    myViewHolder.textViewTodosComentarios.setVisibility(View.VISIBLE);
+                } else {
+                    myViewHolder.textViewTodosComentarios.setVisibility(View.GONE);
+                }
 
                 //verifica se o animal foi curtido pelo usuario atual
                 atualizaCurtidas(anuncio, myViewHolder);
@@ -113,6 +124,15 @@ public class AdapterAnuncios extends RecyclerView.Adapter<AdapterAnuncios.MyView
                         compartilharAnuncio(myViewHolder.itemView.getContext(), anuncio);
                     }
                 });
+
+                //visibilidade do campo comentário
+                if(ConfiguracaoFirebase.isUsuarioLogado()) {
+                    myViewHolder.edtComentar.setVisibility(View.VISIBLE);
+                    myViewHolder.imbComentarAnuncio.setVisibility(View.VISIBLE);
+                } else {
+                    myViewHolder.edtComentar.setVisibility(View.INVISIBLE);
+                    myViewHolder.imbComentarAnuncio.setVisibility(View.INVISIBLE);
+                }
             }
         }
     }
@@ -133,7 +153,7 @@ public class AdapterAnuncios extends RecyclerView.Adapter<AdapterAnuncios.MyView
 
             String texto = myViewHolder.edtComentar.getText().toString();
             String idUsuario = ConfiguracaoFirebase.getIdUsuario();
-            Comentario coment = new Comentario(idUsuario, texto, Util.getDataAtualBrasil());
+            final Comentario coment = new Comentario(idUsuario, texto, Util.getDataAtualBrasil());
 
             Task<Void> inserirComentarioRef = comentarioRef
                     .push().setValue(coment);
@@ -143,6 +163,15 @@ public class AdapterAnuncios extends RecyclerView.Adapter<AdapterAnuncios.MyView
                 public void onComplete(@NonNull Task<Void> task) {
 
                     Util.setSnackBar(myViewHolder.layout, "Comentário inserido!");
+                    /*List<Comentario> listaComentarios = anuncio.getListaComentarios();
+
+                    if(listaComentarios!= null){
+                        listaComentarios = new ArrayList<>();
+                    }
+                    listaComentarios.add(coment);
+
+                    anuncio.setListaComentarios(listaComentarios);*/
+                    atualizaComentarios(anuncio, myViewHolder);
                     myViewHolder.edtComentar.setText(null);
                 }
             });
@@ -172,6 +201,16 @@ public class AdapterAnuncios extends RecyclerView.Adapter<AdapterAnuncios.MyView
             } else {
                 myViewHolder.numeroCurtidas.setText("");
                 myViewHolder.textViewCurtidas.setText("");
+            }
+        } catch (Exception e) {e.printStackTrace();}
+    }
+
+    private void atualizaComentarios(Animal anuncio, MyViewHolder myViewHolder) {
+        try {
+            // parei aqui ajeitando ....
+            if (anuncio.getListaComentarios() != null) {
+                int qtdeComentarios = anuncio.getListaComentarios().size() + 1;
+                myViewHolder.textViewTodosComentarios.setText("Ver todos os " + qtdeComentarios + " comentários");
             }
         } catch (Exception e) {e.printStackTrace();}
     }
@@ -280,11 +319,12 @@ public class AdapterAnuncios extends RecyclerView.Adapter<AdapterAnuncios.MyView
         TextView cidade;
         TextView numeroCurtidas;
         TextView textViewCurtidas;
+        TextView textViewTodosComentarios;
         ImageView foto;
         ImageView imvCompartilharAnuncio, imvCurtirAnuncio;
         ImageButton imbComentarAnuncio;
         EditText edtComentar;
-        private View layout;
+        View layout;
 
         MyViewHolder(View itemView) {
             super(itemView);
@@ -296,6 +336,7 @@ public class AdapterAnuncios extends RecyclerView.Adapter<AdapterAnuncios.MyView
             cidade = itemView.findViewById(R.id.textCidadePrincipal);
             numeroCurtidas = itemView.findViewById(R.id.txv_num_curtidas);
             textViewCurtidas = itemView.findViewById(R.id.textViewCurtidas);
+            textViewTodosComentarios = itemView.findViewById(R.id.ttv_todos_comentarios);
             layout = itemView.findViewById(R.id.constraintLayout_comentar);
 
             //curtir, comentar e compartilhar anuncio da tela principal

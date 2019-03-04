@@ -26,6 +26,7 @@ import com.celvansystems.projetoamigoanimal.adapter.AdapterAnuncios;
 import com.celvansystems.projetoamigoanimal.helper.ConfiguracaoFirebase;
 import com.celvansystems.projetoamigoanimal.helper.Util;
 import com.celvansystems.projetoamigoanimal.model.Animal;
+import com.celvansystems.projetoamigoanimal.model.Comentario;
 import com.facebook.AccessToken;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
@@ -37,6 +38,7 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Objects;
 
 import dmax.dialog.SpotsDialog;
 
@@ -172,7 +174,21 @@ public class AnunciosFragment extends Fragment {
                         for (DataSnapshot animais : dataSnapshot.getChildren()) {
                             Animal animal = animais.getValue(Animal.class);
                             if (animal != null) {
-                                Log.d("INFO50", animal.getNome());
+                                Log.d("INFO37:",animais.child("comentarios").getChildrenCount()+" : qtde: " + animal.getNome());
+
+                                List<Comentario> comentsList = new ArrayList<>();
+                                for (DataSnapshot comentarios: animais.child("comentarios").getChildren()) {
+                                    Comentario coment = new Comentario();
+
+                                    Log.d("INFO37: ", "comentarios " + animal.getNome());
+                                    if(comentarios!= null) {
+                                        coment.setDatahora(Objects.requireNonNull(comentarios.child("datahora").getValue()).toString());
+                                        coment.setTexto(Objects.requireNonNull(comentarios.child("texto").getValue()).toString());
+                                        coment.setUsuarioId(Objects.requireNonNull(comentarios.child("usuarioId").getValue()).toString());
+                                        comentsList.add(coment);
+                                    }
+                                }
+                                animal.setListaComentarios(comentsList);
                                 listaAnuncios.add(animal);
                             }
                         }
