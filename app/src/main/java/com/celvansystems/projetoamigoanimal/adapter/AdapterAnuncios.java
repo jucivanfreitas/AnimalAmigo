@@ -16,6 +16,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.celvansystems.projetoamigoanimal.R;
+import com.celvansystems.projetoamigoanimal.activity.ComentariosActivity;
 import com.celvansystems.projetoamigoanimal.activity.DetalhesAnimalActivity;
 import com.celvansystems.projetoamigoanimal.helper.ConfiguracaoFirebase;
 import com.celvansystems.projetoamigoanimal.helper.Util;
@@ -23,7 +24,10 @@ import com.celvansystems.projetoamigoanimal.model.Animal;
 import com.celvansystems.projetoamigoanimal.model.Comentario;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.ValueEventListener;
 import com.squareup.picasso.Picasso;
 
 import java.io.Serializable;
@@ -51,6 +55,7 @@ public class AdapterAnuncios extends RecyclerView.Adapter<AdapterAnuncios.MyView
         return new MyViewHolder(item);
     }
 
+    @SuppressLint("SetTextI18n")
     @Override
     public void onBindViewHolder(@NonNull final MyViewHolder myViewHolder, @SuppressLint("RecyclerView") int i) {
 
@@ -63,16 +68,18 @@ public class AdapterAnuncios extends RecyclerView.Adapter<AdapterAnuncios.MyView
                 myViewHolder.nome.setText(anuncio.getNome());
                 myViewHolder.idade.setText(anuncio.getIdade());
                 myViewHolder.cidade.setText(anuncio.getCidade());
+
+                //comentarios
+                myViewHolder.textViewTodosComentarios.setVisibility(View.GONE);
                 if(anuncio.getListaComentarios()!= null) {
                     int qtdeComentarios = anuncio.getListaComentarios().size();
                     if(qtdeComentarios > 1) {
-                        myViewHolder.textViewTodosComentarios.setText("Ver todos os " + qtdeComentarios + " comentários");
+                        myViewHolder.textViewTodosComentarios.setVisibility(View.VISIBLE);
+                        myViewHolder.textViewTodosComentarios.setText(String.valueOf(R.string.ver_todos_os) + qtdeComentarios + R.string.comentarios);
                     } else if (qtdeComentarios == 1) {
+                        myViewHolder.textViewTodosComentarios.setVisibility(View.VISIBLE);
                         myViewHolder.textViewTodosComentarios.setText(anuncio.getListaComentarios().get(0).getTexto());
                     }
-                    myViewHolder.textViewTodosComentarios.setVisibility(View.VISIBLE);
-                } else {
-                    myViewHolder.textViewTodosComentarios.setVisibility(View.GONE);
                 }
 
                 //verifica se o animal foi curtido pelo usuario atual
@@ -125,6 +132,14 @@ public class AdapterAnuncios extends RecyclerView.Adapter<AdapterAnuncios.MyView
                     }
                 });
 
+                myViewHolder.textViewTodosComentarios.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Intent comentariosIntent = new Intent(v.getContext(), ComentariosActivity.class);
+                        comentariosIntent.putExtra("anuncioSelecionado", anuncio);
+                        v.getContext().startActivity(comentariosIntent);
+                    }
+                });
                 //visibilidade do campo comentário
                 if(ConfiguracaoFirebase.isUsuarioLogado()) {
                     myViewHolder.edtComentar.setVisibility(View.VISIBLE);
@@ -146,7 +161,7 @@ public class AdapterAnuncios extends RecyclerView.Adapter<AdapterAnuncios.MyView
 
         if (ConfiguracaoFirebase.isUsuarioLogado()) {
 
-            DatabaseReference comentarioRef = ConfiguracaoFirebase.getFirebase()
+            final DatabaseReference comentarioRef = ConfiguracaoFirebase.getFirebase()
                     .child("meus_animais")
                     .child(anuncio.getIdAnimal())
                     .child("comentarios");
@@ -163,15 +178,19 @@ public class AdapterAnuncios extends RecyclerView.Adapter<AdapterAnuncios.MyView
                 public void onComplete(@NonNull Task<Void> task) {
 
                     Util.setSnackBar(myViewHolder.layout, "Comentário inserido!");
-                    /*List<Comentario> listaComentarios = anuncio.getListaComentarios();
+                    comentarioRef.addListenerForSingleValueEvent(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                            // get total available quest
+                            int size = (int) dataSnapshot.getChildrenCount();
+                            atualizaComentarios(size, anuncio, myViewHolder);
+                        }
+                        @Override
+                        public void onCancelled(@NonNull DatabaseError databaseError) {
 
-                    if(listaComentarios!= null){
-                        listaComentarios = new ArrayList<>();
-                    }
-                    listaComentarios.add(coment);
+                        }
+                    });
 
-                    anuncio.setListaComentarios(listaComentarios);*/
-                    atualizaComentarios(anuncio, myViewHolder);
                     myViewHolder.edtComentar.setText(null);
                 }
             });
@@ -205,13 +224,22 @@ public class AdapterAnuncios extends RecyclerView.Adapter<AdapterAnuncios.MyView
         } catch (Exception e) {e.printStackTrace();}
     }
 
-    private void atualizaComentarios(Animal anuncio, MyViewHolder myViewHolder) {
+    @SuppressLint("SetTextI18n")
+    private void atualizaComentarios(int size, Animal anuncio, MyViewHolder myViewHolder) {
         try {
-            // parei aqui ajeitando ....
+
             if (anuncio.getListaComentarios() != null) {
-                int qtdeComentarios = anuncio.getListaComentarios().size() + 1;
-                myViewHolder.textViewTodosComentarios.setText("Ver todos os " + qtdeComentarios + " comentários");
+                if(size > 1) {
+                    myViewHolder.textViewTodosComentarios.setText(
+                            String.valueOf(R.string.ver_todos_os) + size + R.string.comentarios);
+                } else if (size == 1) {
+                    myViewHolder.textViewTodosComentarios.setText(String.valueOf(R.string.ver) + size + R.string.comentario);
+                }
+                myViewHolder.textViewTodosComentarios.setVisibility(View.VISIBLE);
+            } else {
+                myViewHolder.textViewTodosComentarios.setVisibility(View.INVISIBLE);
             }
+
         } catch (Exception e) {e.printStackTrace();}
     }
 
@@ -337,6 +365,7 @@ public class AdapterAnuncios extends RecyclerView.Adapter<AdapterAnuncios.MyView
             numeroCurtidas = itemView.findViewById(R.id.txv_num_curtidas);
             textViewCurtidas = itemView.findViewById(R.id.textViewCurtidas);
             textViewTodosComentarios = itemView.findViewById(R.id.ttv_todos_comentarios);
+
             layout = itemView.findViewById(R.id.constraintLayout_comentar);
 
             //curtir, comentar e compartilhar anuncio da tela principal

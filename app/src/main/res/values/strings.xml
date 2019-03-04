@@ -199,5 +199,9 @@
     <string name="testeDeviceId">33BE2250B43518CCDA7DE426D04EE231</string>
     <string name="imageButton_comentar_description">Botão para enviar comentário</string>
     <string name="editTextComentar_description">Campo para inserir um comentário</string>
+    <string name="ver_todos_os">Ver todos os</string>
+    <string name="comentarios">comentários</string>
+    <string name="comentario">comentário</string>
+    <string name="ver">Ver</string>
 
 </resources>

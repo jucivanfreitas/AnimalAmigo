@@ -1,6 +1,8 @@
 package com.celvansystems.projetoamigoanimal.model;
 
-public class Comentario {
+import java.io.Serializable;
+
+public class Comentario  implements Serializable {
 
     private String usuarioId;
     private String texto;
