@@ -40,6 +40,7 @@ public class AdapterAnuncios extends RecyclerView.Adapter<AdapterAnuncios.MyView
         implements Serializable {
 
     private List<Animal> anuncios;
+    //private Animal anuncioComentado;
 
     /**
      * construtor
@@ -54,6 +55,7 @@ public class AdapterAnuncios extends RecyclerView.Adapter<AdapterAnuncios.MyView
     public MyViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
 
         View item = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.adapter_anuncios, viewGroup, false);
+
         return new MyViewHolder(item);
     }
 
@@ -63,7 +65,7 @@ public class AdapterAnuncios extends RecyclerView.Adapter<AdapterAnuncios.MyView
         if(anuncios != null) {
 
             final Animal anuncio = anuncios.get(i);
-
+            //anuncioComentado = anuncio;
             if(anuncio != null) {
                 myViewHolder.dataCadastro.setText(anuncio.getDataCadastro());
                 myViewHolder.nome.setText(anuncio.getNome());
@@ -71,7 +73,38 @@ public class AdapterAnuncios extends RecyclerView.Adapter<AdapterAnuncios.MyView
                 myViewHolder.cidade.setText(anuncio.getCidade());
 
                 //comentarios
-                atualizaComentarios(anuncio.getListaComentarios().size(), anuncio, myViewHolder);
+                DatabaseReference comentarioRef = ConfiguracaoFirebase.getFirebase()
+                        .child("meus_animais")
+                        .child(anuncio.getIdAnimal())
+                        .child("comentarios");
+
+                comentarioRef.addValueEventListener(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                        int size = (int)dataSnapshot.getChildrenCount();
+                        atualizaComentarios(size, anuncio, myViewHolder);
+
+                        List<Comentario> comentsList = new ArrayList<>();
+                        for (DataSnapshot comentarios: dataSnapshot.getChildren()) {
+                            Comentario coment = new Comentario();
+
+                            if(comentarios!= null) {
+                                coment.setDatahora(Objects.requireNonNull(comentarios.child("datahora").getValue()).toString());
+                                coment.setTexto(Objects.requireNonNull(comentarios.child("texto").getValue()).toString());
+                                Usuario usuario = new Usuario();
+                                usuario.setNome(Objects.requireNonNull(comentarios.child("usuario").child("nome").getValue()).toString());
+                                // TODO: 05/03/2019 concluir atributos de usuario apos activity para cadastro de usuario
+                                //usuario.setFoto(ConfiguracaoFirebase.getFirebaseAutenticacao().getCurrentUser().getPhotoUrl().toString());
+                                coment.setUsuario(usuario);
+                                comentsList.add(coment);
+                            }
+                        }
+                        anuncio.setListaComentarios(comentsList);
+                    }
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError databaseError) {
+                    }
+                });
 
                 //curtidas
                 atualizaCurtidas(anuncio, myViewHolder);
@@ -160,14 +193,15 @@ public class AdapterAnuncios extends RecyclerView.Adapter<AdapterAnuncios.MyView
 
             String texto = myViewHolder.edtComentar.getText().toString();
             String nomeUsuario = Objects.requireNonNull(ConfiguracaoFirebase.getFirebaseAutenticacao().getCurrentUser()).getDisplayName();
-            String foto = ConfiguracaoFirebase.getFirebaseAutenticacao().getCurrentUser().getPhotoUrl().toString();
             Usuario usuario = new Usuario();
+
+            if(ConfiguracaoFirebase.getFirebaseAutenticacao().getCurrentUser().getPhotoUrl() != null) {
+                usuario.setFoto(ConfiguracaoFirebase.getFirebaseAutenticacao().getCurrentUser().getPhotoUrl().toString());
+            }
             if(nomeUsuario!=null) {
                 usuario.setNome(nomeUsuario);
             }
-            if(foto != null) {
-                usuario.setFoto(foto);
-            }
+
             final Comentario coment = new Comentario(usuario, texto, Util.getDataAtualBrasil());
 
             if(Util.validaTexto(texto)){
@@ -184,7 +218,10 @@ public class AdapterAnuncios extends RecyclerView.Adapter<AdapterAnuncios.MyView
                             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                                 // get total available quest
                                 int size = (int) dataSnapshot.getChildrenCount();
-                                atualizaComentarios(size, anuncio, myViewHolder);
+                                //atualizaComentarios(size, anuncio, myViewHolder);
+                                //List<Comentario> comentariosTemp = anuncio.getListaComentarios();
+                                //comentariosTemp.add(coment);
+                                //anuncioComentado.setListaComentarios(comentariosTemp);
                             }
 
                             @Override
@@ -241,6 +278,7 @@ public class AdapterAnuncios extends RecyclerView.Adapter<AdapterAnuncios.MyView
                 }
                 myViewHolder.textViewTodosComentarios.setVisibility(View.VISIBLE);
             } else {
+                myViewHolder.textViewTodosComentarios.setText(null);
                 myViewHolder.textViewTodosComentarios.setVisibility(View.GONE);
             }
 

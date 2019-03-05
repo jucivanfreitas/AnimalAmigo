@@ -187,7 +187,8 @@ public class AnunciosFragment extends Fragment {
                                         coment.setTexto(Objects.requireNonNull(comentarios.child("texto").getValue()).toString());
                                         Usuario usuario = new Usuario();
                                         usuario.setNome(Objects.requireNonNull(comentarios.child("usuario").child("nome").getValue()).toString());
-                                        //usuario.setFoto();
+                                        // TODO: 05/03/2019 concluir atributos de usuario apos activity para cadastro de usuario
+                                        //usuario.setFoto(ConfiguracaoFirebase.getFirebaseAutenticacao().getCurrentUser().getPhotoUrl().toString());
                                         coment.setUsuario(usuario);
                                         comentsList.add(coment);
                                     }

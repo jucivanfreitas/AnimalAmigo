@@ -34,6 +34,7 @@ public class AdapterComentarios extends RecyclerView.Adapter<AdapterComentarios.
     public MyViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
 
         View item = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.dialog_comentario_fotos, viewGroup, false);
+
         return new MyViewHolder(item);
     }
 
@@ -76,9 +77,6 @@ public class AdapterComentarios extends RecyclerView.Adapter<AdapterComentarios.
         TextView ttvDataHora;
         TextView ttvNomeUsuario;
         ImageView fotousuario;
-
-        //ImageButton imbComentar;
-        //EditText edtComentar;
 
         private View layout;
 
