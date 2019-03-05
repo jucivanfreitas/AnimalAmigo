@@ -18,7 +18,10 @@ import com.celvansystems.projetoamigoanimal.model.Comentario;
 import com.celvansystems.projetoamigoanimal.model.Usuario;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -31,7 +34,7 @@ public class ComentariosActivity extends AppCompatActivity {
     private List<Comentario> listaComentarios = new ArrayList<>();
     private EditText edtComentario;
     private ImageButton imbComentario;
-
+    private RecyclerView recyclercomentarios;
     private View layout;
 
     @Override
@@ -45,7 +48,7 @@ public class ComentariosActivity extends AppCompatActivity {
 
         layout = findViewById(R.id.constraint_comentarios);
 
-        RecyclerView recyclercomentarios = findViewById(R.id.recyclerComentarios);
+        recyclercomentarios = findViewById(R.id.recyclerComentarios);
         recyclercomentarios.setItemAnimator(null);
         anuncioSelecionado = (Animal) getIntent().getSerializableExtra("anuncioSelecionado");
 
@@ -77,7 +80,7 @@ public class ComentariosActivity extends AppCompatActivity {
      * metodo que insere comentarios no firebase
      * @param anuncio animal
      */
-    private void comentarAnuncio(Animal anuncio) {
+    private void comentarAnuncio(final Animal anuncio) {
 
         if (ConfiguracaoFirebase.isUsuarioLogado()) {
 
@@ -97,6 +100,7 @@ public class ComentariosActivity extends AppCompatActivity {
                 usuario.setNome(nomeUsuario);
             }
 
+
             final Comentario coment = new Comentario(usuario, texto, Util.getDataAtualBrasil());
 
             if(Util.validaTexto(texto)){
@@ -110,14 +114,42 @@ public class ComentariosActivity extends AppCompatActivity {
                         Util.setSnackBar(layout, "Comentário inserido!");
                         edtComentario.setText(null);
 
+                        //////////////////////////
+                        comentarioRef.addValueEventListener(new ValueEventListener() {
+                            @Override
+                            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                                List<Comentario> comentsList = new ArrayList<>();
+                                for (DataSnapshot comentarios: dataSnapshot.getChildren()) {
+                                    Comentario coment = new Comentario();
+                                    if(comentarios!= null) {
+                                        coment.setDatahora(Objects.requireNonNull(comentarios.child("datahora").getValue()).toString());
+                                        coment.setTexto(Objects.requireNonNull(comentarios.child("texto").getValue()).toString());
+                                        Usuario usuario = new Usuario();
+                                        usuario.setNome(Objects.requireNonNull(comentarios.child("usuario").child("nome").getValue()).toString());
+                                        // TODO: 05/03/2019 concluir atributos de usuario apos activity para cadastro de usuario
+                                        //usuario.setFoto(ConfiguracaoFirebase.getFirebaseAutenticacao().getCurrentUser().getPhotoUrl().toString());
+                                        coment.setUsuario(usuario);
+                                        comentsList.add(coment);
+                                    }
+                                }
+
+                                adapterComentarios = new AdapterComentarios(comentsList);
+                                recyclercomentarios.setAdapter(adapterComentarios);
+                                adapterComentarios.notifyDataSetChanged();
+                            }
+                            @Override
+                            public void onCancelled(@NonNull DatabaseError databaseError) {
+                            }
+                        });
+                        /////////////////////////
                     }
                 });
             } else {
                 Util.setSnackBar(layout, "Comentário inválido!");
             }
-
         } else {
             Util.setSnackBar(layout, "Usuário não logado!");
         }
     }
+
 }
