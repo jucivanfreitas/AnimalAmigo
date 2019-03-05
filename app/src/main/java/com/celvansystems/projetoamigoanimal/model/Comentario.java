@@ -4,24 +4,25 @@ import java.io.Serializable;
 
 public class Comentario  implements Serializable {
 
-    private String usuarioId;
+    private Usuario usuario;
     private String texto;
     private String datahora;
 
-    public Comentario(){}
+    public Comentario() {
+    }
 
-    public Comentario(String usuarioId, String texto, String datahora) {
-        this.usuarioId = usuarioId;
+    public Comentario(Usuario usuario, String texto, String datahora) {
+        this.usuario = usuario;
         this.texto = texto;
         this.datahora = datahora;
     }
 
-    public String getUsuarioId() {
-        return usuarioId;
+    public Usuario getUsuario() {
+        return usuario;
     }
 
-    public void setUsuarioId(String usuarioId) {
-        this.usuarioId = usuarioId;
+    public void setUsuario(Usuario usuario) {
+        this.usuario = usuario;
     }
 
     public String getTexto() {
@@ -40,3 +41,4 @@ public class Comentario  implements Serializable {
         this.datahora = datahora;
     }
 }
+

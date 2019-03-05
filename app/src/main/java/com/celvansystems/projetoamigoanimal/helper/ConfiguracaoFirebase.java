@@ -1,12 +1,11 @@
 package com.celvansystems.projetoamigoanimal.helper;
 
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
-
-import java.util.Objects;
 
 public class ConfiguracaoFirebase {
 
@@ -16,7 +15,14 @@ public class ConfiguracaoFirebase {
 
     //retorna o Id do usuario
     public static String getIdUsuario(){
-        return Objects.requireNonNull(getFirebaseAutenticacao().getCurrentUser()).getUid();
+
+        String retorno = null;
+        FirebaseUser usuario = getFirebaseAutenticacao().getCurrentUser();
+
+        if(usuario != null) {
+            retorno = usuario.getUid();
+        }
+        return retorno;
     }
 
     //este metodo irá buscar informação se usuario está ou não logado

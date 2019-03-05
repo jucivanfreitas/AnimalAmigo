@@ -22,6 +22,7 @@ import com.celvansystems.projetoamigoanimal.helper.ConfiguracaoFirebase;
 import com.celvansystems.projetoamigoanimal.helper.Util;
 import com.celvansystems.projetoamigoanimal.model.Animal;
 import com.celvansystems.projetoamigoanimal.model.Comentario;
+import com.celvansystems.projetoamigoanimal.model.Usuario;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.database.DataSnapshot;
@@ -33,6 +34,7 @@ import com.squareup.picasso.Picasso;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 public class AdapterAnuncios extends RecyclerView.Adapter<AdapterAnuncios.MyViewHolder>
         implements Serializable {
@@ -124,6 +126,7 @@ public class AdapterAnuncios extends RecyclerView.Adapter<AdapterAnuncios.MyView
                 myViewHolder.textViewTodosComentarios.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
+
                         Intent comentariosIntent = new Intent(v.getContext(), ComentariosActivity.class);
                         comentariosIntent.putExtra("anuncioSelecionado", anuncio);
                         v.getContext().startActivity(comentariosIntent);
@@ -156,8 +159,16 @@ public class AdapterAnuncios extends RecyclerView.Adapter<AdapterAnuncios.MyView
                     .child("comentarios");
 
             String texto = myViewHolder.edtComentar.getText().toString();
-            String idUsuario = ConfiguracaoFirebase.getIdUsuario();
-            final Comentario coment = new Comentario(idUsuario, texto, Util.getDataAtualBrasil());
+            String nomeUsuario = Objects.requireNonNull(ConfiguracaoFirebase.getFirebaseAutenticacao().getCurrentUser()).getDisplayName();
+            String foto = ConfiguracaoFirebase.getFirebaseAutenticacao().getCurrentUser().getPhotoUrl().toString();
+            Usuario usuario = new Usuario();
+            if(nomeUsuario!=null) {
+                usuario.setNome(nomeUsuario);
+            }
+            if(foto != null) {
+                usuario.setFoto(foto);
+            }
+            final Comentario coment = new Comentario(usuario, texto, Util.getDataAtualBrasil());
 
             if(Util.validaTexto(texto)){
                 Task<Void> inserirComentarioRef = comentarioRef
