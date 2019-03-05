@@ -267,6 +267,7 @@ public class AnunciosFragment extends Fragment {
                 return false;
             }
         });*/
+
     }
 
     /**
