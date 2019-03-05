@@ -27,6 +27,7 @@ import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -81,6 +82,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
     private EditText mPasswordView;
     private View mProgressView;
     private View mLoginFormView;
+    private ImageView mImageBg_color;
     private Switch swtLoginCadastrar;
     private CallbackManager callbackManager;
     private GoogleSignInClient mGoogleSignInClient;
@@ -110,6 +112,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             mEmailView = findViewById(R.id.txiEmail);
             mLoginFormView = findViewById(R.id.login_form);
             mProgressView = findViewById(R.id.login_progress);
+            mImageBg_color =findViewById(R.id.imageViewbg_color);
             mPasswordView = findViewById(R.id.txiPassword);
             Button btnLogin = findViewById(R.id.btnLogin);
             swtLoginCadastrar = findViewById(R.id.swtLoginCadastrar);
@@ -271,6 +274,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                             e.printStackTrace();
                         }
                         showProgress(false);
+                        mImageBg_color.setVisibility(View.INVISIBLE);
                     }
                 });
     }
@@ -336,6 +340,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
     private void firebaseAuthWithGoogle(GoogleSignInAccount acct) {
 
         showProgress(true);
+        mImageBg_color.setVisibility(View.GONE);
 
         AuthCredential credential = GoogleAuthProvider.getCredential(acct.getIdToken(), null);
         authentication.signInWithCredential(credential)
@@ -355,6 +360,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                             finish();
                         }
                         showProgress(false);
+                        mImageBg_color.setVisibility(View.INVISIBLE);
                     }
                 });
     }
@@ -372,6 +378,8 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
 
         //cadastrando...
         if (swtLoginCadastrar.isChecked()) {
+
+
 
             authentication.createUserWithEmailAndPassword(email, password)
                     .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
@@ -433,9 +441,12 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                                 Util.setSnackBar(layout, getString(R.string.email_senha_invalido));
                             }
                             showProgress(false);
+                            mImageBg_color.setVisibility(View.INVISIBLE);
+
                         }
                     });
             showProgress(true);
+            mImageBg_color.setVisibility(View.VISIBLE);
         }
     }
 

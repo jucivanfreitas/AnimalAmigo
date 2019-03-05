@@ -184,7 +184,7 @@ public class AnunciosFragment extends Fragment {
                                     if(comentarios!= null) {
                                         coment.setDatahora(Objects.requireNonNull(comentarios.child("datahora").getValue()).toString());
                                         coment.setTexto(Objects.requireNonNull(comentarios.child("texto").getValue()).toString());
-                                        coment.setUsuarioId(Objects.requireNonNull(comentarios.child("usuarioId").getValue()).toString());
+//                                        coment.setUsuarioId(Objects.requireNonNull(comentarios.child("usuarioId").getValue()).toString());
                                         comentsList.add(coment);
                                     }
                                 }
