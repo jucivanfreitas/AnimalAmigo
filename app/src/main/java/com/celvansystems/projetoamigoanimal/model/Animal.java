@@ -25,8 +25,6 @@ public class Animal implements Serializable {
     private List<String> curtidas;
     private List<Comentario> listaComentarios;
 
-    //private HashMap<String, Comentario> comentarios;
-
     public Animal (){
 
         try {
@@ -179,14 +177,6 @@ public class Animal implements Serializable {
     public void setCurtidas(List<String> curtidas) {
         this.curtidas = curtidas;
     }
-
-    /*public HashMap<String, Comentario> getComentarios() {
-        return comentarios;
-    }
-
-    public void setComentarios(HashMap<String, Comentario> comentarios) {
-        this.comentarios = comentarios;
-    }*/
 
     public List<Comentario> getListaComentarios() {
         return listaComentarios;

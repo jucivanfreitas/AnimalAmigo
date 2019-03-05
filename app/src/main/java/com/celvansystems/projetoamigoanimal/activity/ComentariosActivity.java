@@ -31,9 +31,7 @@ public class ComentariosActivity extends AppCompatActivity {
 
     private Animal anuncioSelecionado;
     private AdapterComentarios adapterComentarios;
-    private List<Comentario> listaComentarios = new ArrayList<>();
     private EditText edtComentario;
-    private ImageButton imbComentario;
     private RecyclerView recyclercomentarios;
     private View layout;
 
@@ -55,9 +53,9 @@ public class ComentariosActivity extends AppCompatActivity {
         if(anuncioSelecionado != null){
 
             //comentarios
-            listaComentarios = anuncioSelecionado.getListaComentarios();
+            List<Comentario> listaComentarios = anuncioSelecionado.getListaComentarios();
             edtComentario = findViewById(R.id.editTextComentarAnuncio);
-            imbComentario = findViewById(R.id.imageButton_comentarAnuncio);
+            ImageButton imbComentario = findViewById(R.id.imageButton_comentarAnuncio);
             imbComentario.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -100,7 +98,6 @@ public class ComentariosActivity extends AppCompatActivity {
                 usuario.setNome(nomeUsuario);
             }
 
-
             final Comentario coment = new Comentario(usuario, texto, Util.getDataAtualBrasil());
 
             if(Util.validaTexto(texto)){
@@ -113,43 +110,41 @@ public class ComentariosActivity extends AppCompatActivity {
 
                         Util.setSnackBar(layout, "Comentário inserido!");
                         edtComentario.setText(null);
-
-                        //////////////////////////
-                        comentarioRef.addValueEventListener(new ValueEventListener() {
-                            @Override
-                            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                                List<Comentario> comentsList = new ArrayList<>();
-                                for (DataSnapshot comentarios: dataSnapshot.getChildren()) {
-                                    Comentario coment = new Comentario();
-                                    if(comentarios!= null) {
-                                        coment.setDatahora(Objects.requireNonNull(comentarios.child("datahora").getValue()).toString());
-                                        coment.setTexto(Objects.requireNonNull(comentarios.child("texto").getValue()).toString());
-                                        Usuario usuario = new Usuario();
-                                        usuario.setNome(Objects.requireNonNull(comentarios.child("usuario").child("nome").getValue()).toString());
-                                        // TODO: 05/03/2019 concluir atributos de usuario apos activity para cadastro de usuario
-                                        //usuario.setFoto(ConfiguracaoFirebase.getFirebaseAutenticacao().getCurrentUser().getPhotoUrl().toString());
-                                        coment.setUsuario(usuario);
-                                        comentsList.add(coment);
-                                    }
-                                }
-
-                                adapterComentarios = new AdapterComentarios(comentsList);
-                                recyclercomentarios.setAdapter(adapterComentarios);
-                                adapterComentarios.notifyDataSetChanged();
-                            }
-                            @Override
-                            public void onCancelled(@NonNull DatabaseError databaseError) {
-                            }
-                        });
-                        /////////////////////////
                     }
                 });
             } else {
                 Util.setSnackBar(layout, "Comentário inválido!");
             }
+
+            //Update do RecyclerView
+            comentarioRef.addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                    List<Comentario> comentsList = new ArrayList<>();
+                    for (DataSnapshot comentarios: dataSnapshot.getChildren()) {
+                        Comentario coment = new Comentario();
+                        if(comentarios!= null) {
+                            coment.setDatahora(Objects.requireNonNull(comentarios.child("datahora").getValue()).toString());
+                            coment.setTexto(Objects.requireNonNull(comentarios.child("texto").getValue()).toString());
+                            Usuario usuario = new Usuario();
+                            usuario.setNome(Objects.requireNonNull(comentarios.child("usuario").child("nome").getValue()).toString());
+                            // TODO: 05/03/2019 concluir atributos de usuario apos activity para cadastro de usuario
+                            //usuario.setFoto(ConfiguracaoFirebase.getFirebaseAutenticacao().getCurrentUser().getPhotoUrl().toString());
+                            coment.setUsuario(usuario);
+                            comentsList.add(coment);
+                        }
+                    }
+                    adapterComentarios = new AdapterComentarios(comentsList);
+                    recyclercomentarios.setAdapter(adapterComentarios);
+                    adapterComentarios.notifyDataSetChanged();
+                }
+                @Override
+                public void onCancelled(@NonNull DatabaseError databaseError) {
+                }
+            });
+            //Fim do update do Recycler
         } else {
             Util.setSnackBar(layout, "Usuário não logado!");
         }
     }
-
 }

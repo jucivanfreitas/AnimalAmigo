@@ -127,44 +127,7 @@ public class AdapterAnuncios extends RecyclerView.Adapter<AdapterAnuncios.MyView
                         }
                     });
                 }
-                //acao de clique no botao curtir anuncio
-                myViewHolder.imvCurtirAnuncio.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-
-                        curtirAnuncio(myViewHolder.itemView.getContext(), myViewHolder,
-                                anuncio, myViewHolder.imvCurtirAnuncio);
-                    }
-                });
-
-                //acao de clique no botao comentar anuncio
-                myViewHolder.imbComentarAnuncio.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-
-                        comentarAnuncio (myViewHolder,
-                                anuncio);
-                    }
-                });
-
-                //acao de clique no botao compartilhar anuncio
-                myViewHolder.imvCompartilharAnuncio.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-
-                        compartilharAnuncio(myViewHolder.itemView.getContext(), anuncio);
-                    }
-                });
-
-                myViewHolder.textViewTodosComentarios.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-
-                        Intent comentariosIntent = new Intent(v.getContext(), ComentariosActivity.class);
-                        comentariosIntent.putExtra("anuncioSelecionado", anuncio);
-                        v.getContext().startActivity(comentariosIntent);
-                    }
-                });
+                configuraAcoes(myViewHolder, anuncio);
                 //visibilidade do campo comentário
                 if(ConfiguracaoFirebase.isUsuarioLogado()) {
                     myViewHolder.edtComentar.setVisibility(View.VISIBLE);
@@ -175,6 +138,47 @@ public class AdapterAnuncios extends RecyclerView.Adapter<AdapterAnuncios.MyView
                 }
             }
         }
+    }
+
+    private void configuraAcoes(final MyViewHolder myViewHolder, final Animal anuncio) {
+        //acao de clique no botao curtir anuncio
+        myViewHolder.imvCurtirAnuncio.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                curtirAnuncio(myViewHolder.itemView.getContext(), myViewHolder,
+                        anuncio, myViewHolder.imvCurtirAnuncio);
+            }
+        });
+
+        //acao de clique no botao comentar anuncio
+        myViewHolder.imbComentarAnuncio.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                comentarAnuncio (myViewHolder,
+                        anuncio);
+            }
+        });
+
+        //acao de clique no botao compartilhar anuncio
+        myViewHolder.imvCompartilharAnuncio.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                compartilharAnuncio(myViewHolder.itemView.getContext(), anuncio);
+            }
+        });
+
+        myViewHolder.textViewTodosComentarios.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                Intent comentariosIntent = new Intent(v.getContext(), ComentariosActivity.class);
+                comentariosIntent.putExtra("anuncioSelecionado", anuncio);
+                v.getContext().startActivity(comentariosIntent);
+            }
+        });
     }
 
     /**
@@ -213,23 +217,6 @@ public class AdapterAnuncios extends RecyclerView.Adapter<AdapterAnuncios.MyView
                     public void onComplete(@NonNull Task<Void> task) {
 
                         Util.setSnackBar(myViewHolder.layout, "Comentário inserido!");
-                        comentarioRef.addListenerForSingleValueEvent(new ValueEventListener() {
-                            @Override
-                            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                                // get total available quest
-                                int size = (int) dataSnapshot.getChildrenCount();
-                                //atualizaComentarios(size, anuncio, myViewHolder);
-                                //List<Comentario> comentariosTemp = anuncio.getListaComentarios();
-                                //comentariosTemp.add(coment);
-                                //anuncioComentado.setListaComentarios(comentariosTemp);
-                            }
-
-                            @Override
-                            public void onCancelled(@NonNull DatabaseError databaseError) {
-
-                            }
-                        });
-
                         myViewHolder.edtComentar.setText(null);
                     }
                 });
