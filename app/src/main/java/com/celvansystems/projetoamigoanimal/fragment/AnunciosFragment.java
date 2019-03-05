@@ -27,6 +27,7 @@ import com.celvansystems.projetoamigoanimal.helper.ConfiguracaoFirebase;
 import com.celvansystems.projetoamigoanimal.helper.Util;
 import com.celvansystems.projetoamigoanimal.model.Animal;
 import com.celvansystems.projetoamigoanimal.model.Comentario;
+import com.celvansystems.projetoamigoanimal.model.Usuario;
 import com.facebook.AccessToken;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
@@ -184,7 +185,10 @@ public class AnunciosFragment extends Fragment {
                                     if(comentarios!= null) {
                                         coment.setDatahora(Objects.requireNonNull(comentarios.child("datahora").getValue()).toString());
                                         coment.setTexto(Objects.requireNonNull(comentarios.child("texto").getValue()).toString());
-                                        coment.setUsuarioId(Objects.requireNonNull(comentarios.child("usuarioId").getValue()).toString());
+                                        Usuario usuario = new Usuario();
+                                        usuario.setNome(Objects.requireNonNull(comentarios.child("usuario").child("nome").getValue()).toString());
+                                        //usuario.setFoto();
+                                        coment.setUsuario(usuario);
                                         comentsList.add(coment);
                                     }
                                 }
