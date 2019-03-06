@@ -11,7 +11,6 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -29,7 +28,6 @@ import com.celvansystems.projetoamigoanimal.fragment.PerfilUsuarioFragment;
 import com.celvansystems.projetoamigoanimal.fragment.ProcuradoFragment;
 import com.celvansystems.projetoamigoanimal.fragment.SobreAppFragment;
 import com.celvansystems.projetoamigoanimal.helper.ConfiguracaoFirebase;
-import com.celvansystems.projetoamigoanimal.helper.Constantes;
 import com.celvansystems.projetoamigoanimal.helper.Util;
 import com.facebook.login.LoginManager;
 import com.google.android.gms.ads.AdListener;
@@ -39,10 +37,6 @@ import com.google.android.gms.ads.InterstitialAd;
 import com.google.android.gms.ads.MobileAds;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-
-import java.util.concurrent.Executors;
-import java.util.concurrent.ScheduledExecutorService;
-import java.util.concurrent.TimeUnit;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -60,10 +54,23 @@ public class MainActivity extends AppCompatActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        inicializarComponentes();
+
+        habilitaOpcoesNav();
+
+        //Propagandas
+        configuraAdMob();
+        //configuraInterstitialAdTimer(Constantes.DELAY_INTERSTITIAL, Constantes.TIME_INTERSTITIAL);
+    }
+
+    private void inicializarComponentes(){
+
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        inicializarComponentes();
+        autenticacao = ConfiguracaoFirebase.getFirebaseAutenticacao();
+
+        layout = findViewById(R.id.constraint_perfil_humano);
 
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
@@ -77,13 +84,6 @@ public class MainActivity extends AppCompatActivity
         fragmentManager = getSupportFragmentManager();
         fragmentTransaction = fragmentManager.beginTransaction();
         fragmentTransaction.replace(R.id.view_pager, new AnunciosFragment()).commit();
-
-        habilitaOpcoesNav();
-
-
-        //propagandas
-        configuraAdMob();
-        configuraInterstitialAdTimer(Constantes.DELAY_INTERSTITIAL, Constantes.TIME_INTERSTITIAL);
     }
 
     private void carregaDadosUsuario() {
@@ -99,18 +99,18 @@ public class MainActivity extends AppCompatActivity
             navUsername.setText(user.getDisplayName());
             navEmail.setText(user.getEmail());
         } else {
-            navUsername.setText("Usuário");
-            navEmail.setText("E-mail");
+            navUsername.setText(getString(R.string.usuario));
+            navEmail.setText(getString(R.string.email));
         }
 
     }
     /**
      * configuracao da exibicao de intersticial periodico
      */
-    private void configuraInterstitialAdTimer(int delay, int segundos) {
+    /*private void configuraInterstitialAdTimer(int delay, int segundos) {
 
 
-        prepareAd();
+        prepareInterstitialAd();
         ScheduledExecutorService scheduler =
                 Executors.newSingleThreadScheduledExecutor();
         scheduler.scheduleAtFixedRate(new Runnable() {
@@ -123,13 +123,13 @@ public class MainActivity extends AppCompatActivity
                         if (mInterstitialAd.isLoaded()) {
                             mInterstitialAd.show();
                         }
-                        prepareAd();
+                        prepareInterstitialAd();
                     }
                 });
 
             }
         }, delay, segundos, TimeUnit.SECONDS);
-    }
+    }*/
 
     private void habilitaOpcoesNav() {
 
@@ -248,12 +248,15 @@ public class MainActivity extends AppCompatActivity
             //    setContentView(R.layout.content_notificacoes);
             // TODO: 17/02/2019 programar ações da content_cotificações
             Toast.makeText(getApplicationContext(),
-                    "implementar content configuração de notificação" +
-                            " na activity dentro da pasta fragment",
+                    "implementar content configuração de notificação na activity dentro da pasta fragment",
                     Toast.LENGTH_SHORT).show();
+
         } else if (id == R.id.nav_meus_anuncios) {
+
             //reuso da activit meus anuncios
             fragmentTransaction.replace(R.id.view_pager, new MeusAnunciosFragment()).addToBackStack("tag").commit();
+            mostraInterstitialAd();
+
         } else if (id == R.id.pet_cad) {
             // fragment pet_cad cadastrar anuncio
             fragmentTransaction.replace(R.id.view_pager, new CadastrarAnuncioFragment()).addToBackStack("tag").commit();
@@ -305,6 +308,8 @@ public class MainActivity extends AppCompatActivity
                     Toast.LENGTH_SHORT).show();
             startActivity(new Intent(this,LoginActivity.class));
 
+            mostraInterstitialAd();
+
             autenticacao.signOut();
             LoginManager.getInstance().logOut();
 
@@ -332,11 +337,6 @@ public class MainActivity extends AppCompatActivity
         return true;
     }
 
-    private void inicializarComponentes(){
-        autenticacao = ConfiguracaoFirebase.getFirebaseAutenticacao();
-
-        layout = findViewById(R.id.constraint_perfil_humano);
-    }
 
     /**
      * método que configura as propagandas via AdMob
@@ -354,14 +354,14 @@ public class MainActivity extends AppCompatActivity
             InterstitialAd mInterstitialAd = new InterstitialAd(this);
             mInterstitialAd.setAdUnitId("ca-app-pub-3940256099942544/1033173712");
             mInterstitialAd.loadAd(new AdRequest.Builder().build());
-            mInterstitialAd.show();
+            if(mInterstitialAd.isLoaded()) {
+                mInterstitialAd.show();
+            }
             mInterstitialAd.setAdListener(new AdListener() {
                 @Override
                 public void onAdLoaded() {
                     // Code to be executed when an ad finishes loading.
-                    Log.d("INFO50", "intersticial loaded");
                     // TODO: 23/02/2019 definir se mostra ou nao intersticial nos anuncios
-                    //mInterstitialAd.show();
                 }
 
                 @Override
@@ -386,19 +386,21 @@ public class MainActivity extends AppCompatActivity
                 public void onAdClosed() {
                     // Load the next interstitial.
                     Util.setSnackBar(layout, "intersticial closed");
-                    prepareAd();
-                    //mInterstitialAd.loadAd(new AdRequest.Builder().build());
+                    prepareInterstitialAd();
                 }
             });
+
+            prepareInterstitialAd();
 
             //banner teste
             final AdRequest adRequest = new AdRequest.Builder()
                     .addTestDevice(getString(R.string.testeDeviceId))
                     .build();
 
-            adView = findViewById(R.id.adView2);
+            adView = findViewById(R.id.banner_main);
             //final AdRequest adRequest = new AdRequest.Builder().build();
             adView.loadAd(adRequest);
+
 
             adView.setAdListener(new AdListener() {
                 @Override
@@ -432,10 +434,20 @@ public class MainActivity extends AppCompatActivity
         } catch (Exception e) {e.printStackTrace();}
     }
 
-    public void  prepareAd(){
+    private void prepareInterstitialAd(){
 
         mInterstitialAd = new InterstitialAd(this);
         mInterstitialAd.setAdUnitId(getString(R.string.interAdTestId));
         mInterstitialAd.loadAd(new AdRequest.Builder().build());
+    }
+
+    private void mostraInterstitialAd(){
+        if(mInterstitialAd==null) {
+            prepareInterstitialAd();
+        }
+        if (mInterstitialAd.isLoaded()) {
+            mInterstitialAd.show();
+        }
+        prepareInterstitialAd();
     }
 }

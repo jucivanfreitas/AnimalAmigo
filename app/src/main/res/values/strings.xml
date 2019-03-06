@@ -205,6 +205,8 @@
     <string name="ver">Ver</string>
     <string name="comentarios_titulo">Comentários</string>
     <string name="texto_perfil_humano_fragment">texto perfil humano fragment</string>
+    <string name="usuario">Usuário</string>
+    <string name="email">E-mail</string>
 
 
 </resources>
