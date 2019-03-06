@@ -22,8 +22,10 @@
         android:roundIcon="@mipmap/ic_launcher_pegada_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".activity.ComentariosActivity"
-            android:parentActivityName=".activity.MainActivity"></activity>
+        <activity android:name=".activity.ComplementoLoginActivity"></activity>
+        <activity
+            android:name=".activity.ComentariosActivity"
+            android:parentActivityName=".activity.MainActivity" />
         <activity
             android:name=".activity.MainActivity"
             android:label="@string/nome_app"

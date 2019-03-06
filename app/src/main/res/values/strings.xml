@@ -207,6 +207,10 @@
     <string name="texto_perfil_humano_fragment">texto perfil humano fragment</string>
     <string name="usuario">Usuário</string>
     <string name="email">E-mail</string>
+    <string name="txt_nome_completo">Nome Completo</string>
+    <string name="txt_telefone">Telefone para contato</string>
+    <string name="txt_nascimento">Data de Nascimento</string>
+    <string name="txt_ocupação">Qual sua profissão?</string>
 
 
 </resources>
