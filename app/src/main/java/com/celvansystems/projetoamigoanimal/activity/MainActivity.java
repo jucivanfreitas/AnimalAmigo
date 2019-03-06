@@ -86,6 +86,7 @@ public class MainActivity extends AppCompatActivity
         fragmentTransaction.replace(R.id.view_pager, new AnunciosFragment()).commit();
     }
 
+
     private void carregaDadosUsuario() {
 
         NavigationView navigationView = findViewById(R.id.nav_view);

@@ -47,7 +47,8 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/divider"
-        app:srcCompat="@drawable/ic_share_black_24dp" />
+        app:srcCompat="@drawable/ic_share_black_24dp"
+        android:contentDescription="TODO" />
 
     <ImageView
         android:id="@+id/imageView3"
@@ -57,7 +58,8 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:srcCompat="@drawable/bg_img_card_gradient" />
+        app:srcCompat="@drawable/bg_img_card_gradient"
+        android:contentDescription="TODO" />
 
     <ImageView
         android:id="@+id/btn_edit_perfil_animal"
@@ -71,7 +73,8 @@
         app:layout_constraintEnd_toEndOf="@+id/btn_perfil_compartilhar"
         app:layout_constraintStart_toStartOf="@+id/btn_perfil_compartilhar"
         app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/ic_more_vert_black_24dp" />
+        app:srcCompat="@drawable/ic_more_vert_black_24dp"
+        android:contentDescription="TODO" />
 
     <TextView
         android:id="@+id/txv_nome"

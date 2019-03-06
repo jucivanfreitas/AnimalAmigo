@@ -26,13 +26,10 @@ import com.celvansystems.projetoamigoanimal.helper.ConfiguracaoFirebase;
 import com.celvansystems.projetoamigoanimal.helper.RecyclerItemClickListener;
 import com.celvansystems.projetoamigoanimal.helper.Util;
 import com.celvansystems.projetoamigoanimal.model.Animal;
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.ValueEventListener;
-import com.google.firebase.storage.StorageReference;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -49,7 +46,6 @@ public class MeusAnunciosFragment extends Fragment {
     private List<Animal> anuncios = new ArrayList<>();
     private AdapterMeusAnuncios adapterMeusAnuncios;
     private DatabaseReference anuncioUsuarioRef;
-    private StorageReference storage;
     private View viewFragment;
     private SwipeRefreshLayout swipeRefreshLayout;
     private View layout;
@@ -69,44 +65,6 @@ public class MeusAnunciosFragment extends Fragment {
         return viewFragment;
     }
 
-    /**
-     * metodo auxilicar que apaga as fotos de um animal
-     * @param anuncio animal
-     */
-    private void apagarFotosStorage (Animal anuncio){
-
-        try {
-            StorageReference imagemAnimal = storage
-                    .child("imagens")
-                    .child("animais")
-                    .child(anuncio.getIdAnimal());
-
-            int numFotos = anuncio.getFotos().size();
-
-            for (int i = 0; i < numFotos; i++) {
-                String textoFoto = "imagem" + i;
-
-                imagemAnimal.child(textoFoto).delete().addOnSuccessListener(new OnSuccessListener<Void>() {
-                    @Override
-                    public void onSuccess(Void aVoid) {
-
-                        Util.setSnackBar(layout,  getString(R.string.fotos_excluidas));
-
-                    }
-                }).addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception exception) {
-
-                        Util.setSnackBar(layout,  getString(R.string.falha_deletar_fotos));
-                    }
-                });
-            }
-        } catch (Exception e) {e.printStackTrace();}
-    }
-
-    /**
-     * recupera os anuncios do usuario que estiver logado
-     */
     private void recuperarAnuncios(){
 
         try {
@@ -154,8 +112,6 @@ public class MeusAnunciosFragment extends Fragment {
 
         layout = viewFragment.findViewById(R.id.swipeRefreshLayout);
 
-        storage = ConfiguracaoFirebase.getFirebaseStorage();
-
         //esconde os botoes de cidade e especie
         LinearLayout linearLayoutBotoes = viewFragment.findViewById(R.id.linearLayoutBotoes);
         linearLayoutBotoes.setVisibility(View.GONE);
@@ -185,7 +141,6 @@ public class MeusAnunciosFragment extends Fragment {
             RecyclerView.LayoutManager lm = new LinearLayoutManager(viewFragment.getContext());
 
             recyclerAnuncios.setLayoutManager(lm);
-            //recyclerAnuncios.setLayoutManager(new LinearLayoutManager(getContext()));
             recyclerAnuncios.setHasFixedSize(true);
 
             adapterMeusAnuncios = new AdapterMeusAnuncios(anuncios);
@@ -211,8 +166,6 @@ public class MeusAnunciosFragment extends Fragment {
 
                 Animal anuncioSelecionado = anuncios.get(position);
                 anuncioSelecionado.remover();
-
-                apagarFotosStorage(anuncioSelecionado);
 
                 adapterMeusAnuncios.notifyDataSetChanged();
 

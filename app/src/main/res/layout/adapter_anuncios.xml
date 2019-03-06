@@ -187,7 +187,7 @@
             app:layout_constraintGuide_begin="273dp" />
 
         <ImageView
-            android:id="@+id/imageView_opcoes_do_anuncio"
+            android:id="@+id/imb_mais_opcoes_anuncio"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"

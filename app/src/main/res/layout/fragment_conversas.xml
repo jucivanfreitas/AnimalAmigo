@@ -47,11 +47,11 @@
             android:inputType="textShortMessage|textAutoCorrect|textWebEditText|textMultiLine|textPersonName|text|textAutoComplete|textCapWords"
             android:text="Name"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@+id/imageView_opcoes_do_anuncio"
+            app:layout_constraintEnd_toStartOf="@+id/imb_mais_opcoes_anuncio"
             app:layout_constraintStart_toStartOf="parent" />
 
         <ImageView
-            android:id="@+id/imageView_opcoes_do_anuncio"
+            android:id="@+id/imb_mais_opcoes_anuncio"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="8dp"

@@ -101,6 +101,7 @@ public class ComentariosActivity extends AppCompatActivity {
                 usuario.setFoto(ConfiguracaoFirebase.getFirebaseAutenticacao().getCurrentUser().getPhotoUrl().toString());
             }
             if(nomeUsuario!=null) {
+                usuario.setId(ConfiguracaoFirebase.getIdUsuario());
                 usuario.setNome(nomeUsuario);
             }
 

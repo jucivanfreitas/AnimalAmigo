@@ -77,13 +77,17 @@ public class CadastrarAnuncioFragment extends Fragment
     private int requisicao;
     private View layout;
     private View viewFragment;
+    private Animal anuncio;
+    private Button btnCadastrarAnuncio;
+    private ArrayAdapter<String> adapterEspecies, adapterIdades;
+    private ArrayAdapter<String> adapterCidades, adapterSexos;
+    private ArrayAdapter<String> adapterEstados, adapterPortes;
 
     //Permissoes
     private String[] permissoes = new String[]{
             Manifest.permission.READ_EXTERNAL_STORAGE,
             Manifest.permission.CAMERA
     };
-
 
     public CadastrarAnuncioFragment() {}
 
@@ -92,10 +96,45 @@ public class CadastrarAnuncioFragment extends Fragment
                              Bundle savedInstanceState) {
 
         viewFragment =  inflater.inflate(R.layout.fragment_cadastrar_anuncio, container, false);
+        Bundle bundle = this.getArguments();
 
         inicializarComponentes();
 
+        if(bundle != null){
+            anuncio = (Animal) bundle.getSerializable("anuncioSelecionado");
+            btnCadastrarAnuncio.setText("Atualizar cadastro");
+            preencheCampos(anuncio);
+        }
         return viewFragment;
+    }
+
+    private void preencheCampos(Animal anuncio) {
+
+        edtNome.setText(anuncio.getNome());
+        edtRaca.setText(anuncio.getRaca());
+        edtDescricao.setText(anuncio.getDescricao());
+
+        int spinnerPosition = adapterEspecies.getPosition(anuncio.getEspecie());
+        spnEspecie.setSelection(spinnerPosition);
+
+        spinnerPosition = adapterSexos.getPosition(anuncio.getSexo());
+        spnSexo.setSelection(spinnerPosition);
+
+        spinnerPosition = adapterIdades.getPosition(anuncio.getIdade());
+        spnIdade.setSelection(spinnerPosition);
+
+        spinnerPosition = adapterPortes.getPosition(anuncio.getPorte());
+        spnPorte.setSelection(spinnerPosition);
+
+        spinnerPosition = adapterEstados.getPosition(anuncio.getUf());
+        spnEstado.setSelection(spinnerPosition);
+
+        setAdapterSpinnerCidades();
+        spinnerPosition = adapterCidades.getPosition(anuncio.getCidade());
+        spnCidade.setSelection(spinnerPosition);
+
+        List<String> listaFotos = anuncio.getFotos();
+
     }
 
     /**
@@ -119,7 +158,7 @@ public class CadastrarAnuncioFragment extends Fragment
         edtRaca = viewFragment.findViewById(R.id.edtRaca);
         edtNome = viewFragment.findViewById(R.id.editText_cad_NomeAnimal);
 
-        Button btnCadastrarAnuncio = viewFragment.findViewById(R.id.btnCadAnuncio);
+        btnCadastrarAnuncio = viewFragment.findViewById(R.id.btnCadAnuncio);
 
         //imageviews
         imagem1 = viewFragment.findViewById(R.id.imageCad1);
@@ -142,7 +181,6 @@ public class CadastrarAnuncioFragment extends Fragment
             public void onNothingSelected(AdapterView<?> parent) {
             }
         });
-
         //Validar permissões
         Permissoes.validarPermissoes(permissoes, getActivity(), 1);
 
@@ -159,65 +197,13 @@ public class CadastrarAnuncioFragment extends Fragment
     }
 
     /**
-     * método que configura as propagandas via AdMob
-     */
-    private void configuraAdMob() {
-
-        //admob
-        //MobileAds.initialize(this, String.valueOf(R.string.app_id));
-        //teste do google
-        MobileAds.initialize(getContext(), "ca-app-pub-3940256099942544~3347511713");
-
-        //AdView
-        try {
-            //teste
-            InterstitialAd mInterstitialAd = new InterstitialAd(Objects.requireNonNull(getContext()));
-            mInterstitialAd.setAdUnitId("ca-app-pub-3940256099942544/1033173712");
-            mInterstitialAd.loadAd(new AdRequest.Builder().build());
-            mInterstitialAd.show();
-            mInterstitialAd.setAdListener(new AdListener() {
-                @Override
-                public void onAdLoaded() {
-                    //Util.setSnackBar(layout, "intersticial loaded");
-                    // TODO: 23/02/2019 descomentar proxima linha
-                    //mInterstitialAd.show();
-                }
-
-                @Override
-                public void onAdFailedToLoad(int errorCode) {
-                    // Code to be executed when an ad request fails.
-                    Util.setSnackBar(layout, "intersticial failed");
-                }
-
-                @Override
-                public void onAdOpened() {
-                    // Code to be executed when the ad is displayed.
-                    Util.setSnackBar(layout, "intersticial opened");
-                }
-
-                @Override
-                public void onAdLeftApplication() {
-                    // Code to be executed when the user has left the app.
-                    Util.setSnackBar(layout, "intersticial on left");
-                }
-
-                @Override
-                public void onAdClosed() {
-                    // Load the next interstitial.
-                    Util.setSnackBar(layout, "intersticial closed");
-                    //mInterstitialAd.loadAd(new AdRequest.Builder().build());
-                }
-            });
-        } catch (Exception e) {e.printStackTrace();}
-    }
-
-    /**
      * Configura o adapter do spinner Cidades
      */
     public void setAdapterSpinnerCidades(){
 
         try {
-            ArrayAdapter adapterCidades = new ArrayAdapter<>(Objects.requireNonNull(getContext()), simple_spinner_item, Util.getCidadesJSON(spnEstado.getSelectedItem().toString(), getContext()));
+            adapterCidades = new ArrayAdapter<>(Objects.requireNonNull(getContext()), simple_spinner_item,
+                    Util.getCidadesJSON(spnEstado.getSelectedItem().toString(), getContext()));
             adapterCidades.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 
             spnCidade.setAdapter(adapterCidades);
@@ -533,14 +519,14 @@ public class CadastrarAnuncioFragment extends Fragment
 
         //especies
         try {
-            ArrayAdapter<String> adapterEspecies = new ArrayAdapter<>(getContext(), android.R.layout.simple_spinner_item, especies);
+            adapterEspecies = new ArrayAdapter<>(getContext(), android.R.layout.simple_spinner_item, especies);
             adapterEspecies.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
             spnEspecie.setAdapter(adapterEspecies);
         } catch (Exception e){e.printStackTrace();}
 
         //sexos
         try {
-            ArrayAdapter<String> adapterSexos = new ArrayAdapter<>(getContext(), android.R.layout.simple_spinner_item, sexos);
+            adapterSexos = new ArrayAdapter<>(getContext(), android.R.layout.simple_spinner_item, sexos);
 
             adapterSexos.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
             spnSexo.setAdapter(adapterSexos);
@@ -548,21 +534,21 @@ public class CadastrarAnuncioFragment extends Fragment
 
         /* idades */
         try{
-            ArrayAdapter<String> adapterIdades = new ArrayAdapter<>(getContext(), android.R.layout.simple_spinner_item, idades);
+            adapterIdades = new ArrayAdapter<>(getContext(), android.R.layout.simple_spinner_item, idades);
             adapterIdades.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
             spnIdade.setAdapter(adapterIdades);
         } catch (Exception e){e.printStackTrace();}
 
         /* portes */
         try {
-            ArrayAdapter<String> adapterPortes = new ArrayAdapter<>(getContext(), android.R.layout.simple_spinner_item, portes);
+            adapterPortes = new ArrayAdapter<>(getContext(), android.R.layout.simple_spinner_item, portes);
             adapterPortes.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
             spnPorte.setAdapter(adapterPortes);
         } catch (Exception e){e.printStackTrace();}
 
         /*estados*/
         try {
-            ArrayAdapter<String> adapterEstados = new ArrayAdapter<>(getContext(), android.R.layout.simple_spinner_item, estados);
+            adapterEstados = new ArrayAdapter<>(getContext(), android.R.layout.simple_spinner_item, estados);
             adapterEstados.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
             spnEstado.setAdapter(adapterEstados);
         } catch (Exception e){e.printStackTrace();}
@@ -611,4 +597,59 @@ public class CadastrarAnuncioFragment extends Fragment
             imm.hideSoftInputFromWindow(editText.getWindowToken(), 0);
         } catch (Exception e){e.printStackTrace();}
     }
+
+    /**
+     * método que configura as propagandas via AdMob
+     */
+    private void configuraAdMob() {
+
+        //admob
+        //MobileAds.initialize(this, String.valueOf(R.string.app_id));
+        //teste do google
+        MobileAds.initialize(getContext(), "ca-app-pub-3940256099942544~3347511713");
+
+        //AdView
+        try {
+            //teste
+            InterstitialAd mInterstitialAd = new InterstitialAd(Objects.requireNonNull(getContext()));
+            mInterstitialAd.setAdUnitId("ca-app-pub-3940256099942544/1033173712");
+            mInterstitialAd.loadAd(new AdRequest.Builder().build());
+            mInterstitialAd.show();
+            mInterstitialAd.setAdListener(new AdListener() {
+                @Override
+                public void onAdLoaded() {
+                    //Util.setSnackBar(layout, "intersticial loaded");
+                    // TODO: 23/02/2019 descomentar proxima linha
+                    //mInterstitialAd.show();
+                }
+
+                @Override
+                public void onAdFailedToLoad(int errorCode) {
+                    // Code to be executed when an ad request fails.
+                    Util.setSnackBar(layout, "intersticial failed");
+                }
+
+                @Override
+                public void onAdOpened() {
+                    // Code to be executed when the ad is displayed.
+                    Util.setSnackBar(layout, "intersticial opened");
+                }
+
+                @Override
+                public void onAdLeftApplication() {
+                    // Code to be executed when the user has left the app.
+                    Util.setSnackBar(layout, "intersticial on left");
+                }
+
+                @Override
+                public void onAdClosed() {
+                    // Load the next interstitial.
+                    Util.setSnackBar(layout, "intersticial closed");
+                    //mInterstitialAd.loadAd(new AdRequest.Builder().build());
+                }
+            });
+        } catch (Exception e) {e.printStackTrace();}
+    }
+
+
 }

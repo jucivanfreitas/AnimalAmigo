@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/menu_new_content_facebook"
+        android:orderInCategory="100"
+        android:title="A" />
+
+    <item
+        android:id="@+id/menu_new_content_twitter"
+        android:orderInCategory="200"
+        android:title="B" />
+</menu>

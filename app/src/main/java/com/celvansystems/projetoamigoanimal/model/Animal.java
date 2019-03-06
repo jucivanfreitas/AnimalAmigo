@@ -1,8 +1,13 @@
 package com.celvansystems.projetoamigoanimal.model;
 
+import android.support.annotation.NonNull;
+
 import com.celvansystems.projetoamigoanimal.helper.ConfiguracaoFirebase;
 import com.celvansystems.projetoamigoanimal.helper.Util;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.storage.StorageReference;
 
 import java.io.Serializable;
 import java.util.List;
@@ -24,6 +29,8 @@ public class Animal implements Serializable {
     private List<String> fotos;
     private List<String> curtidas;
     private List<Comentario> listaComentarios;
+
+    boolean retorno;
 
     public Animal (){
 
@@ -62,8 +69,47 @@ public class Animal implements Serializable {
                     .child("meus_animais")
                     .child(getIdAnimal());
 
-            animalRef.removeValue();
+            animalRef.removeValue().addOnSuccessListener(new OnSuccessListener<Void>() {
+                @Override
+                public void onSuccess(Void aVoid) {
+                    apagarFotosStorage();
+                }
+            });
         } catch (Exception e){e.printStackTrace();}
+    }
+
+    /**
+     * metodo auxilicar que apaga as fotos de um animal
+     */
+    public boolean apagarFotosStorage (){
+
+        retorno = false;
+        try {
+            StorageReference storage = ConfiguracaoFirebase.getFirebaseStorage();
+            StorageReference imagemAnimal = storage
+                    .child("imagens")
+                    .child("animais")
+                    .child(getIdAnimal());
+
+            int numFotos = getFotos().size();
+
+            for (int i = 0; i < numFotos; i++) {
+                String textoFoto = "imagem" + i;
+
+                imagemAnimal.child(textoFoto).delete().addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+                        retorno = true;
+                    }
+                }).addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception exception) {
+                        retorno=false;
+                    }
+                });
+            }
+        } catch (Exception e) {e.printStackTrace();}
+        return retorno;
     }
 
     public String getIdAnimal() {
