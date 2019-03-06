@@ -33,11 +33,16 @@ public class AdapterComentarios extends RecyclerView.Adapter<AdapterComentarios.
     @Override
     public MyViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
 
-        View item = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.dialog_comentario_fotos, viewGroup, false);
+        View item = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.adapter_comentarios_activity, viewGroup, false);
 
         return new MyViewHolder(item);
     }
 
+    /**
+     * Bind
+     * @param myViewHolder myViewHolder
+     * @param i anuncio
+     */
     @Override
     public void onBindViewHolder(@NonNull final MyViewHolder myViewHolder, @SuppressLint("RecyclerView") int i) {
 

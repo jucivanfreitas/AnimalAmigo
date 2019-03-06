@@ -67,80 +67,125 @@ public class AdapterAnuncios extends RecyclerView.Adapter<AdapterAnuncios.MyView
             final Animal anuncio = anuncios.get(i);
             //anuncioComentado = anuncio;
             if(anuncio != null) {
-                myViewHolder.dataCadastro.setText(anuncio.getDataCadastro());
-                myViewHolder.nome.setText(anuncio.getNome());
-                myViewHolder.idade.setText(anuncio.getIdade());
-                myViewHolder.cidade.setText(anuncio.getCidade());
 
-                //comentarios
-                DatabaseReference comentarioRef = ConfiguracaoFirebase.getFirebase()
-                        .child("meus_animais")
-                        .child(anuncio.getIdAnimal())
-                        .child("comentarios");
-
-                comentarioRef.addValueEventListener(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                        int size = (int)dataSnapshot.getChildrenCount();
-                        atualizaComentarios(size, anuncio, myViewHolder);
-
-                        List<Comentario> comentsList = new ArrayList<>();
-                        for (DataSnapshot comentarios: dataSnapshot.getChildren()) {
-                            Comentario coment = new Comentario();
-
-                            if(comentarios!= null) {
-                                coment.setDatahora(Objects.requireNonNull(comentarios.child("datahora").getValue()).toString());
-                                coment.setTexto(Objects.requireNonNull(comentarios.child("texto").getValue()).toString());
-                                Usuario usuario = new Usuario();
-                                usuario.setNome(Objects.requireNonNull(comentarios.child("usuario").child("nome").getValue()).toString());
-                                // TODO: 05/03/2019 concluir atributos de usuario apos activity para cadastro de usuario
-                                //usuario.setFoto(ConfiguracaoFirebase.getFirebaseAutenticacao().getCurrentUser().getPhotoUrl().toString());
-                                coment.setUsuario(usuario);
-                                comentsList.add(coment);
-                            }
-                        }
-                        anuncio.setListaComentarios(comentsList);
-                    }
-                    @Override
-                    public void onCancelled(@NonNull DatabaseError databaseError) {
-                    }
-                });
+                configuraViewHolder(anuncio, myViewHolder);
+                configuraComentarios(anuncio, myViewHolder);
 
                 //curtidas
                 atualizaCurtidas(anuncio, myViewHolder);
-
-                //pega a primeira imagem cadastrada
-                List<String> urlFotos = anuncio.getFotos();
-
-                if(urlFotos != null && urlFotos.size() > 0) {
-                    String urlCapa = urlFotos.get(0);
-
-                    Picasso.get().load(urlCapa).into(myViewHolder.foto);
-
-                    // ação de clique na foto do anuncio
-                    myViewHolder.foto.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            Intent detalhesIntent = new Intent(v.getContext(), DetalhesAnimalActivity.class);
-                            detalhesIntent.putExtra("anuncioSelecionado", anuncio);
-                            v.getContext().startActivity(detalhesIntent);
-                        }
-                    });
-                }
+                //Foto do anúncio
+                configuraFotoAnuncio(anuncio, myViewHolder);
+                //Acoes dos botoes
                 configuraAcoes(myViewHolder, anuncio);
-                //visibilidade do campo comentário
-                if(ConfiguracaoFirebase.isUsuarioLogado()) {
-                    myViewHolder.edtComentar.setVisibility(View.VISIBLE);
-                    myViewHolder.imbComentarAnuncio.setVisibility(View.VISIBLE);
-                } else {
-                    myViewHolder.edtComentar.setVisibility(View.INVISIBLE);
-                    myViewHolder.imbComentarAnuncio.setVisibility(View.INVISIBLE);
-                }
+                //Texto da quantidade de comentarios
+                confuguraVisibilidadeCampoComentario(anuncio, myViewHolder);
             }
         }
     }
 
+    /**
+     * auxiliar que preenche campos com dados do anuncio
+     * @param anuncio animal
+     * @param myViewHolder myViewHolder
+     */
+    private void configuraViewHolder(Animal anuncio, MyViewHolder myViewHolder) {
+        myViewHolder.dataCadastro.setText(anuncio.getDataCadastro());
+        myViewHolder.nome.setText(anuncio.getNome());
+        myViewHolder.idade.setText(anuncio.getIdade());
+        myViewHolder.cidade.setText(anuncio.getCidade());}
+
+    /**
+     * auxiliar que configura os comentarios
+     * @param anuncio animal
+     * @param myViewHolder myViewHolder
+     */
+    private void configuraComentarios(final Animal anuncio, final MyViewHolder myViewHolder) {
+        //comentarios
+        DatabaseReference comentarioRef = ConfiguracaoFirebase.getFirebase()
+                .child("meus_animais")
+                .child(anuncio.getIdAnimal())
+                .child("comentarios");
+
+        comentarioRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                int size = (int)dataSnapshot.getChildrenCount();
+                atualizaComentarios(size, anuncio, myViewHolder);
+
+                List<Comentario> comentsList = new ArrayList<>();
+                for (DataSnapshot comentarios: dataSnapshot.getChildren()) {
+                    Comentario coment = new Comentario();
+
+                    if(comentarios!= null) {
+                        coment.setDatahora(Objects.requireNonNull(comentarios.child("datahora").getValue()).toString());
+                        coment.setTexto(Objects.requireNonNull(comentarios.child("texto").getValue()).toString());
+                        Usuario usuario = new Usuario();
+                        usuario.setNome(Objects.requireNonNull(comentarios.child("usuario").child("nome").getValue()).toString());
+                        // TODO: 05/03/2019 concluir atributos de usuario apos activity para cadastro de usuario
+                        //usuario.setFoto(ConfiguracaoFirebase.getFirebaseAutenticacao().getCurrentUser().getPhotoUrl().toString());
+                        coment.setUsuario(usuario);
+                        comentsList.add(coment);
+                    }
+                }
+                anuncio.setListaComentarios(comentsList);
+            }
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+            }
+        });}
+
+    /**
+     * auxiliar que configura a foto do anuncio
+     * @param anuncio animal
+     * @param myViewHolder myViewHolder
+     */
+    private void configuraFotoAnuncio(final Animal anuncio, MyViewHolder myViewHolder) {
+        //pega a primeira imagem cadastrada
+        List<String> urlFotos = anuncio.getFotos();
+
+        if(urlFotos != null && urlFotos.size() > 0) {
+            String urlCapa = urlFotos.get(0);
+
+            Picasso.get().load(urlCapa).into(myViewHolder.foto);
+
+            // ação de clique na foto do anuncio
+            myViewHolder.foto.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent detalhesIntent = new Intent(v.getContext(), DetalhesAnimalActivity.class);
+                    detalhesIntent.putExtra("anuncioSelecionado", anuncio);
+                    v.getContext().startActivity(detalhesIntent);
+                }
+            });
+        }
+    }
+
+    /**
+     * configura visibilidade do texto quantidade de comentarios
+     * @param anuncio animal
+     * @param myViewHolder myViewHolder
+     */
+    private void confuguraVisibilidadeCampoComentario(Animal anuncio, MyViewHolder myViewHolder) {
+        //visibilidade do campo comentário
+        if(ConfiguracaoFirebase.isUsuarioLogado()) {
+            myViewHolder.edtComentar.setVisibility(View.VISIBLE);
+            myViewHolder.imbComentarAnuncio.setVisibility(View.VISIBLE);
+        } else {
+            myViewHolder.edtComentar.setVisibility(View.GONE);
+            myViewHolder.imbComentarAnuncio.setVisibility(View.GONE);
+        }
+        if(anuncio.getListaComentarios().size() == 0) {
+            myViewHolder.textViewTodosComentarios.setText(null);
+        }
+    }
+
+    /**
+     * configura acoes do elementos da tela
+     * @param myViewHolder myViewHolder
+     * @param anuncio animal
+     */
     private void configuraAcoes(final MyViewHolder myViewHolder, final Animal anuncio) {
+
         //acao de clique no botao curtir anuncio
         myViewHolder.imvCurtirAnuncio.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -148,6 +193,15 @@ public class AdapterAnuncios extends RecyclerView.Adapter<AdapterAnuncios.MyView
 
                 curtirAnuncio(myViewHolder.itemView.getContext(), myViewHolder,
                         anuncio, myViewHolder.imvCurtirAnuncio);
+            }
+        });
+
+        myViewHolder.imvComentarAnuncio.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent comentariosIntent = new Intent(v.getContext(), ComentariosActivity.class);
+                comentariosIntent.putExtra("anuncioSelecionado", anuncio);
+                v.getContext().startActivity(comentariosIntent);
             }
         });
 
@@ -359,6 +413,7 @@ public class AdapterAnuncios extends RecyclerView.Adapter<AdapterAnuncios.MyView
         }
         return retorno;
     }
+
     @Override
     public int getItemCount() {
 
@@ -366,7 +421,7 @@ public class AdapterAnuncios extends RecyclerView.Adapter<AdapterAnuncios.MyView
     }
 
     /**
-     *
+     * MyViewHolder
      */
     class MyViewHolder extends RecyclerView.ViewHolder {
 
@@ -378,7 +433,7 @@ public class AdapterAnuncios extends RecyclerView.Adapter<AdapterAnuncios.MyView
         TextView textViewCurtidas;
         TextView textViewTodosComentarios;
         ImageView foto;
-        ImageView imvCompartilharAnuncio, imvCurtirAnuncio;
+        ImageView imvCompartilharAnuncio, imvCurtirAnuncio, imvComentarAnuncio;
         ImageButton imbComentarAnuncio;
         EditText edtComentar;
         View layout;
@@ -386,6 +441,7 @@ public class AdapterAnuncios extends RecyclerView.Adapter<AdapterAnuncios.MyView
         MyViewHolder(View itemView) {
             super(itemView);
 
+            //elementos
             dataCadastro = itemView.findViewById(R.id.textDataCadastro);
             nome = itemView.findViewById(R.id.txv_nome);
             idade = itemView.findViewById(R.id.textIdade);
@@ -395,11 +451,13 @@ public class AdapterAnuncios extends RecyclerView.Adapter<AdapterAnuncios.MyView
             textViewCurtidas = itemView.findViewById(R.id.textViewCurtidas);
             textViewTodosComentarios = itemView.findViewById(R.id.ttv_todos_comentarios);
 
+            //Para a snackBar
             layout = itemView.findViewById(R.id.constraintLayout_comentar);
 
             //curtir, comentar e compartilhar anuncio da tela principal
             imvCompartilharAnuncio = itemView.findViewById(R.id.imv_compartilhar_anuncio);
             imbComentarAnuncio = itemView.findViewById(R.id.imageButton_comentar);
+            imvComentarAnuncio = itemView.findViewById(R.id.imv_comentar_anuncio);
             imvCurtirAnuncio = itemView.findViewById(R.id.imv_curtir_anuncio);
             edtComentar = itemView.findViewById(R.id.editText_comentar);
         }

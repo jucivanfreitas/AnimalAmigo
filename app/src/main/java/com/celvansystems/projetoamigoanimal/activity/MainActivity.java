@@ -88,10 +88,10 @@ public class MainActivity extends AppCompatActivity
 
     private void carregaDadosUsuario() {
 
-        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+        NavigationView navigationView = findViewById(R.id.nav_view);
         View headerView = navigationView.getHeaderView(0);
-        TextView navUsername = (TextView) headerView.findViewById(R.id.textview_nome_humano);
-        TextView navEmail = (TextView) headerView.findViewById(R.id.textView_email_cadastrado);
+        TextView navUsername = headerView.findViewById(R.id.textview_nome_humano);
+        TextView navEmail = headerView.findViewById(R.id.textView_email_cadastrado);
 
         FirebaseUser user = autenticacao.getCurrentUser();
 
@@ -119,9 +119,9 @@ public class MainActivity extends AppCompatActivity
 
                 runOnUiThread(new Runnable() {
                     public void run() {
+
                         if (mInterstitialAd.isLoaded()) {
                             mInterstitialAd.show();
-                        } else {
                         }
                         prepareAd();
                     }
@@ -350,7 +350,7 @@ public class MainActivity extends AppCompatActivity
 
         //AdView
         try {
-            //teste
+            //teste Interstitial
             InterstitialAd mInterstitialAd = new InterstitialAd(this);
             mInterstitialAd.setAdUnitId("ca-app-pub-3940256099942544/1033173712");
             mInterstitialAd.loadAd(new AdRequest.Builder().build());
