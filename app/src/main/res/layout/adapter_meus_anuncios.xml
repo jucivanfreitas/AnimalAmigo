@@ -8,6 +8,7 @@
     android:layout_height="250dp"
     android:layout_marginBottom="49dp"
     android:clickable="true"
+    android:focusableInTouchMode="true"
     android:focusable="true"
     android:foreground="?attr/selectableItemBackground">
 
@@ -17,6 +18,7 @@
         android:layout_width="match_parent"
         android:layout_height="250dp"
         android:contentDescription="TODO"
+        android:elevation="2dp"
         android:scaleType="centerCrop"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -28,14 +30,13 @@
         tools:layout_conversion_absoluteHeight="124dp"
         tools:layout_conversion_absoluteWidth="150dp" />
 
-
     <ImageView
         android:id="@+id/btn_perfil_compartilhar"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="8dp"
         android:background="@drawable/btn_compartilhar"
-        android:clickable="true"
+        android:contentDescription="TODO"
         android:elevation="40dp"
         android:focusable="true"
         android:foreground="?attr/selectableItemBackground"
@@ -47,40 +48,45 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/divider"
-        app:srcCompat="@drawable/ic_share_black_24dp"
-        android:contentDescription="TODO" />
-
-    <ImageView
-        android:id="@+id/imageView3"
-        android:layout_width="0dp"
-        android:layout_height="150dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:srcCompat="@drawable/bg_img_card_gradient"
-        android:contentDescription="TODO" />
+        app:srcCompat="@drawable/ic_share_black_24dp" />
 
     <ImageView
         android:id="@+id/imv_mais_opcoes_meus_anuncios"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:foreground="?attr/selectableItemBackground"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
-        android:clickable="true"
-        android:contentDescription="TODO"
-        android:elevation="35dp"
-        android:focusable="true"
+        android:contentDescription="@string/todo"
+        android:elevation="40dp"
+
+
+
+        android:padding="24dp"
         app:layout_constraintEnd_toEndOf="@+id/btn_perfil_compartilhar"
         app:layout_constraintStart_toStartOf="@+id/btn_perfil_compartilhar"
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/ic_more_vert_black_24dp" />
+
+
+    <ImageView
+        android:id="@+id/imageView3"
+        android:layout_width="0dp"
+        android:layout_height="150dp"
+        android:contentDescription="TODO"
+        android:elevation="4dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:srcCompat="@drawable/bg_img_card_gradient" />
 
     <TextView
         android:id="@+id/txv_nome_meus_anuncios"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
+        android:elevation="5dp"
         android:text="@string/anuncios"
         android:textColor="@color/colorPrimaryDark"
         android:textSize="24sp"
@@ -95,6 +101,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:layout_marginBottom="8dp"
+        android:elevation="5dp"
         android:text="@string/anuncios"
         android:textColor="@color/colorAccent"
         android:textSize="14sp"
@@ -109,6 +116,7 @@
         android:layout_width="wrap_content"
         android:layout_height="0dp"
         android:layout_marginBottom="4dp"
+        android:elevation="5dp"
         android:text="@android:string/dialog_alert_title"
         android:textColor="@color/colorAccent"
         android:textSize="14sp"
@@ -124,6 +132,7 @@
         android:layout_height="wrap_content"
         android:layout_marginEnd="16dp"
         android:layout_marginBottom="4dp"
+        android:elevation="5dp"
         android:text="@android:string/dialog_alert_title"
         android:textColor="@color/colorAccent"
         android:textSize="12sp"
