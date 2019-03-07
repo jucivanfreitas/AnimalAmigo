@@ -3,24 +3,20 @@ package com.celvansystems.projetoamigoanimal.fragment;
 
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
-import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.LinearLayout;
 
 import com.celvansystems.projetoamigoanimal.R;
-import com.celvansystems.projetoamigoanimal.activity.DetalhesAnimalActivity;
 import com.celvansystems.projetoamigoanimal.adapter.AdapterMeusAnuncios;
 import com.celvansystems.projetoamigoanimal.helper.ConfiguracaoFirebase;
 import com.celvansystems.projetoamigoanimal.helper.RecyclerItemClickListener;
@@ -47,7 +43,7 @@ public class MeusAnunciosFragment extends Fragment {
     private AdapterMeusAnuncios adapterMeusAnuncios;
     private DatabaseReference anuncioUsuarioRef;
     private View viewFragment;
-    private SwipeRefreshLayout swipeRefreshLayout;
+    //private SwipeRefreshLayout swipeRefreshLayout;
     private View layout;
 
 
@@ -59,7 +55,7 @@ public class MeusAnunciosFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
-        viewFragment =  inflater.inflate(R.layout.fragment_anuncios, container, false);
+        viewFragment =  inflater.inflate(R.layout.fragment_meus_anuncios, container, false);
         inicializarComponentes();
 
         return viewFragment;
@@ -110,11 +106,11 @@ public class MeusAnunciosFragment extends Fragment {
     @SuppressLint({"RestrictedApi", "CutPasteId"})
     private void inicializarComponentes(){
 
-        layout = viewFragment.findViewById(R.id.swipeRefreshLayout);
+        layout = viewFragment.findViewById(R.id.frame_layout_meus_anuncios_fragment);
 
         //esconde os botoes de cidade e especie
-        LinearLayout linearLayoutBotoes = viewFragment.findViewById(R.id.linearLayoutBotoes);
-        linearLayoutBotoes.setVisibility(View.GONE);
+        //LinearLayout linearLayoutBotoes = viewFragment.findViewById(R.id.linearLayoutBotoes);
+        //linearLayoutBotoes.setVisibility(View.GONE);
 
         //fab
         FloatingActionButton fabCadastrar = viewFragment.findViewById(R.id.fabcadastrar);
@@ -128,7 +124,7 @@ public class MeusAnunciosFragment extends Fragment {
             }
         });
 
-        RecyclerView recyclerAnuncios = viewFragment.findViewById(R.id.recyclerAnuncios);
+        RecyclerView recyclerMeusAnuncios = viewFragment.findViewById(R.id.recyclerMeusAnuncios);
 
         // configuracoes iniciais
         try {
@@ -140,52 +136,53 @@ public class MeusAnunciosFragment extends Fragment {
         try {
             RecyclerView.LayoutManager lm = new LinearLayoutManager(viewFragment.getContext());
 
-            recyclerAnuncios.setLayoutManager(lm);
-            recyclerAnuncios.setHasFixedSize(true);
+            recyclerMeusAnuncios.setLayoutManager(lm);
+            recyclerMeusAnuncios.setHasFixedSize(true);
 
             adapterMeusAnuncios = new AdapterMeusAnuncios(anuncios);
-            recyclerAnuncios.setAdapter(adapterMeusAnuncios);
+            recyclerMeusAnuncios.setAdapter(adapterMeusAnuncios);
         } catch (Exception e){e.printStackTrace();}
 
         //recupera anuncios para o usuario
         recuperarAnuncios();
 
         //adiciona evento de clique
-        recyclerAnuncios.addOnItemTouchListener(new RecyclerItemClickListener(
-                getContext(), recyclerAnuncios, new RecyclerItemClickListener.OnItemClickListener() {
+        recyclerMeusAnuncios.addOnItemTouchListener(new RecyclerItemClickListener(
+                getContext(), recyclerMeusAnuncios, new RecyclerItemClickListener.OnItemClickListener() {
             @Override
             public void onItemClick(View view, int position) {
+                /*
                 Animal anuncioSelecionado = anuncios.get(position);
                 Intent detalhesIntent = new Intent(view.getContext(), DetalhesAnimalActivity.class);
                 detalhesIntent.putExtra("anuncioSelecionado", anuncioSelecionado);
                 view.getContext().startActivity(detalhesIntent);
+                */
             }
 
             @Override
             public void onLongItemClick(View view, int position) {
 
-                Animal anuncioSelecionado = anuncios.get(position);
+                /*Animal anuncioSelecionado = anuncios.get(position);
                 anuncioSelecionado.remover();
 
                 adapterMeusAnuncios.notifyDataSetChanged();
 
-                Util.setSnackBar(layout,  getString(R.string.anuncio_excluido));
+                Util.setSnackBar(layout,  getString(R.string.anuncio_excluido));*/
             }
 
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-
             }
         }
         ));
         //refresh
-        swipeRefreshLayout = viewFragment.findViewById(R.id.swipeRefreshLayout);
+        /*swipeRefreshLayout = viewFragment.findViewById(R.id.swipeRefreshLayout);
         swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
                 refreshRecyclerAnuncios();
             }
-        });
+        });*/
     }
 
     @Override
@@ -221,6 +218,7 @@ public class MeusAnunciosFragment extends Fragment {
 
         anuncios.clear();
         recuperarAnuncios();
-        swipeRefreshLayout.setRefreshing(false);
+        //swipeRefreshLayout.setRefreshing(false);
     }
 }
+    

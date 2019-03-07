@@ -6,7 +6,6 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
-import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
@@ -62,7 +61,6 @@ public class AnunciosFragment extends Fragment {
     private View view;
     private View layout;
 
-
     public AnunciosFragment() {}
 
     @Override
@@ -83,8 +81,8 @@ public class AnunciosFragment extends Fragment {
 
         layout = view.findViewById(R.id.swipeRefreshLayout);
 
-        FloatingActionButton fabCadastrar = view.findViewById(R.id.fabcadastrar);
-        fabCadastrar.setVisibility(View.GONE);
+        //FloatingActionButton fabCadastrar = view.findViewById(R.id.fabcadastrar);
+        //fabCadastrar.setVisibility(View.GONE);
 
         try {
             anunciosPublicosRef = ConfiguracaoFirebase.getFirebase()

@@ -62,22 +62,22 @@
         android:contentDescription="TODO" />
 
     <ImageView
-        android:id="@+id/btn_edit_perfil_animal"
+        android:id="@+id/imv_mais_opcoes_meus_anuncios"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
         android:clickable="true"
+        android:contentDescription="TODO"
         android:elevation="35dp"
         android:focusable="true"
         app:layout_constraintEnd_toEndOf="@+id/btn_perfil_compartilhar"
         app:layout_constraintStart_toStartOf="@+id/btn_perfil_compartilhar"
         app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/ic_more_vert_black_24dp"
-        android:contentDescription="TODO" />
+        app:srcCompat="@drawable/ic_more_vert_black_24dp" />
 
     <TextView
-        android:id="@+id/txv_nome"
+        android:id="@+id/txv_nome_meus_anuncios"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
@@ -90,7 +90,7 @@
         tools:layout_conversion_absoluteWidth="197dp" />
 
     <TextView
-        android:id="@+id/textIdade"
+        android:id="@+id/textIdade_meus_anuncios"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
@@ -99,13 +99,13 @@
         android:textColor="@color/colorAccent"
         android:textSize="14sp"
         android:textStyle="normal"
-        app:layout_constraintBottom_toTopOf="@+id/textCidadePrincipal"
+        app:layout_constraintBottom_toTopOf="@+id/textCidadePrincipal_meus_anuncios"
         app:layout_constraintStart_toStartOf="parent"
         tools:layout_conversion_absoluteHeight="19dp"
         tools:layout_conversion_absoluteWidth="197dp" />
 
     <TextView
-        android:id="@+id/textCidadePrincipal"
+        android:id="@+id/textCidadePrincipal_meus_anuncios"
         android:layout_width="wrap_content"
         android:layout_height="0dp"
         android:layout_marginBottom="4dp"
@@ -114,7 +114,7 @@
         android:textSize="14sp"
         android:textStyle="normal"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="@+id/textIdade"
+        app:layout_constraintStart_toStartOf="@+id/textIdade_meus_anuncios"
         tools:layout_conversion_absoluteHeight="24dp"
         tools:layout_conversion_absoluteWidth="197dp" />
 
@@ -128,7 +128,7 @@
         android:textColor="@color/colorAccent"
         android:textSize="12sp"
         android:textStyle="normal"
-        app:layout_constraintBottom_toBottomOf="@+id/txv_nome"
+        app:layout_constraintBottom_toBottomOf="@+id/txv_nome_meus_anuncios"
         app:layout_constraintEnd_toEndOf="parent"
         tools:layout_conversion_absoluteHeight="24dp"
         tools:layout_conversion_absoluteWidth="197dp" />
@@ -143,7 +143,7 @@
         android:background="@drawable/bg_btn"
         android:elevation="35dp"
         android:visibility="visible"
-        app:layout_constraintBottom_toTopOf="@+id/textIdade"
+        app:layout_constraintBottom_toTopOf="@+id/textIdade_meus_anuncios"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
 

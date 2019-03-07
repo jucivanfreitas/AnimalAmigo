@@ -176,7 +176,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                     public void onComplete(@NonNull Task<Void> task) {
 
                         if (task.isSuccessful()) {
-                            Toast.makeText(LoginActivity.this, getString(R.string.email_enviado), Toast.LENGTH_SHORT).show();
+                            //Toast.makeText(LoginActivity.this, getString(R.string.email_enviado), Toast.LENGTH_SHORT).show();
                             Util.setSnackBar(layout, getString(R.string.email_enviado));
 
                         } else {
@@ -355,6 +355,8 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                                 Toast.makeText(LoginActivity.this, getString(R.string.sucesso_login_google) +
                                                 user.getEmail(),
                                         Toast.LENGTH_SHORT).show();
+                                //Util.setSnackBar();
+                                // TODO: 06/03/2019 setSnackBar passando mensagem
                             }
                             startActivity(new Intent(getApplicationContext(), MainActivity.class));
                             finish();
@@ -388,8 +390,8 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
 
                             if (task.isSuccessful()) {
 
-                                Toast.makeText(LoginActivity.this, getString(R.string.cadastro_realizado),
-                                        Toast.LENGTH_LONG).show();
+                                //Toast.makeText(LoginActivity.this, getString(R.string.cadastro_realizado),
+                                 //       Toast.LENGTH_LONG).show();
                                 Util.setSnackBar(layout, getString(R.string.cadastro_realizado));
                                 sendVerificationEmail();
 
@@ -429,6 +431,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                                 startActivity(intent);
                                 Toast.makeText(LoginActivity.this, getString(R.string.sucesso_login),
                                         Toast.LENGTH_SHORT).show();
+                                // TODO: 06/03/2019 setSnackBar passando mensagem pra Main
                                 finish();
                                 /*} else {
                                     Toast.makeText(LoginActivity.this, getString(R.string.email_nao_verificado),

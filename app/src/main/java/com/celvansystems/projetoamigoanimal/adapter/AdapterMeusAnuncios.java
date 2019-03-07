@@ -1,6 +1,12 @@
 package com.celvansystems.projetoamigoanimal.adapter;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
+import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -10,9 +16,14 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.celvansystems.projetoamigoanimal.R;
+import com.celvansystems.projetoamigoanimal.fragment.AnunciosFragment;
+import com.celvansystems.projetoamigoanimal.fragment.CadastrarAnuncioFragment;
+import com.celvansystems.projetoamigoanimal.helper.ConfiguracaoFirebase;
+import com.celvansystems.projetoamigoanimal.helper.Util;
 import com.celvansystems.projetoamigoanimal.model.Animal;
 import com.squareup.picasso.Picasso;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class AdapterMeusAnuncios extends RecyclerView.Adapter<AdapterMeusAnuncios.MyViewHolder> {
@@ -31,12 +42,25 @@ public class AdapterMeusAnuncios extends RecyclerView.Adapter<AdapterMeusAnuncio
         return new MyViewHolder(item);
     }
 
+
+    private void configuracoesMaisOpcoes(Animal anuncio, AdapterMeusAnuncios.MyViewHolder myViewHolder) {
+
+        if(ConfiguracaoFirebase.isUsuarioLogado()) {
+            myViewHolder.imvMaisOpcoesMeusAnuncios.setVisibility(View.VISIBLE);
+        } else {
+            myViewHolder.imvMaisOpcoesMeusAnuncios.setVisibility(View.GONE);
+        }
+    }
+
     @Override
-    public void onBindViewHolder(@NonNull MyViewHolder myViewHolder, int i) {
+    public void onBindViewHolder(@NonNull final MyViewHolder myViewHolder, int i) {
 
         Log.d("INFO1"," "+ i);
 
         final Animal anuncio = anuncios.get(i);
+
+        configuracoesMaisOpcoes(anuncio, myViewHolder);
+
         myViewHolder.dataCadastro.setText(anuncio.getDataCadastro());
         myViewHolder.nome.setText(anuncio.getNome());
         myViewHolder.idade.setText(anuncio.getIdade());
@@ -50,6 +74,59 @@ public class AdapterMeusAnuncios extends RecyclerView.Adapter<AdapterMeusAnuncio
 
             Picasso.get().load(urlCapa).into(myViewHolder.foto);
         }
+
+        myViewHolder.imvMaisOpcoesMeusAnuncios.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                List<String> opcoesLista = new ArrayList<>();
+
+                    if(ConfiguracaoFirebase.getIdUsuario().equalsIgnoreCase(anuncio.getDonoAnuncio())){
+                        opcoesLista.add("Editar");
+                        opcoesLista.add("Remover");
+
+                    } else {
+                        opcoesLista.add("Denunciar");
+                    }
+
+                final String[] opcoes = new String[opcoesLista.size()];
+
+                for (int i=0; i<opcoesLista.size(); i++){
+                    opcoes[i]=opcoesLista.get(i);
+                }
+
+                AlertDialog.Builder builder = new AlertDialog.Builder(myViewHolder.itemView.getContext());
+                builder.setItems(opcoes, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        if ("Editar".equals(opcoes[which])){
+
+                            Bundle data = new Bundle();
+                            data.putSerializable("anuncioSelecionado", anuncio);
+
+                            CadastrarAnuncioFragment cadFragment = new CadastrarAnuncioFragment();
+                            cadFragment.setArguments(data);
+
+                            AppCompatActivity activity = (AppCompatActivity) myViewHolder.itemView.getContext();
+                            FragmentManager fragmentManager=activity.getSupportFragmentManager();
+                            FragmentTransaction fragmentTransaction =fragmentManager.beginTransaction();
+                            fragmentTransaction.replace(R.id.view_pager, cadFragment).addToBackStack("tag").commit();
+                        }
+                        else if ("Remover".equals(opcoes[which])){
+                            anuncio.remover();
+                            AppCompatActivity activity = (AppCompatActivity) myViewHolder.itemView.getContext();
+                            FragmentManager fragmentManager=activity.getSupportFragmentManager();
+                            FragmentTransaction fragmentTransaction =fragmentManager.beginTransaction();
+                            fragmentTransaction.replace(R.id.view_pager, new AnunciosFragment()).addToBackStack(null).commit();
+                            Util.setSnackBar(myViewHolder.layout, "Remover");
+                        }
+                        else if ("Denunciar".equals(opcoes[which])){
+                            Util.setSnackBar(myViewHolder.layout, "Denunciar");
+                        }
+                    }
+                });
+                builder.show();
+            }
+        });
     }
 
     @Override
@@ -65,15 +142,21 @@ public class AdapterMeusAnuncios extends RecyclerView.Adapter<AdapterMeusAnuncio
         TextView idade;
         TextView cidade;
         ImageView foto;
+        ImageView imvMaisOpcoesMeusAnuncios;
+        View layout;
 
         MyViewHolder(View itemView) {
             super(itemView);
 
             dataCadastro = itemView.findViewById(R.id.textDataCadastro);
-            nome = itemView.findViewById(R.id.txv_nome);
-            idade = itemView.findViewById(R.id.textIdade);
+            nome = itemView.findViewById(R.id.txv_nome_meus_anuncios);
+            idade = itemView.findViewById(R.id.textIdade_meus_anuncios);
             foto = itemView.findViewById(R.id.imganun);
-            cidade = itemView.findViewById(R.id.textCidadePrincipal);
+            cidade = itemView.findViewById(R.id.textCidadePrincipal_meus_anuncios);
+            imvMaisOpcoesMeusAnuncios = itemView.findViewById(R.id.imv_mais_opcoes_meus_anuncios);
+
+            //Para a snackBar
+            layout = itemView.findViewById(R.id.swipeRefreshLayout);
         }
     }
 }

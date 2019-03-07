@@ -8,9 +8,9 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.celvansystems.projetoamigoanimal.R;
+import com.celvansystems.projetoamigoanimal.helper.Util;
 import com.celvansystems.projetoamigoanimal.model.Animal;
 import com.squareup.picasso.Picasso;
 import com.synnapps.carouselview.CarouselView;
@@ -30,6 +30,7 @@ public class DetalhesAnimalActivity extends AppCompatActivity {
     private TextView textCidade;
     private TextView textRaca;
     private TextView textDescricao;
+    private View layout;
 
     private Animal anuncioSelecionado;
 
@@ -75,7 +76,7 @@ public class DetalhesAnimalActivity extends AppCompatActivity {
     private void inicializarComponentes() {
 
         carouselView = findViewById(R.id.carouselView);
-        textNome = findViewById(R.id.txv_nome);
+        textNome = findViewById(R.id.txv_nome_meus_anuncios);
         textEspecie = findViewById(R.id.txv_especie);
         textGenero = findViewById(R.id.txv_genero);
         textIdade = findViewById(R.id.txv_idade);
@@ -85,6 +86,7 @@ public class DetalhesAnimalActivity extends AppCompatActivity {
         textRaca = findViewById(R.id.txv_raca);
         textDescricao = findViewById(R.id.txv_descricao);
 
+        layout = findViewById(R.id.linear_layout_detalhes_animal);
         Button btnVerTelefone = findViewById(R.id.btnVerTelefone);
 
         btnVerTelefone.setOnClickListener(new View.OnClickListener() {
@@ -98,7 +100,7 @@ public class DetalhesAnimalActivity extends AppCompatActivity {
                     // TODO: 10/02/2019 mudar getDonoanuncio para getTelefone
                     startActivity(i);
                 } else {
-                    Toast.makeText(getApplicationContext(), getString(R.string.telefone_nao_cadastrado), Toast.LENGTH_LONG).show();
+                    Util.setSnackBar(layout, getString(R.string.telefone_nao_cadastrado));
                 }
             }
         });

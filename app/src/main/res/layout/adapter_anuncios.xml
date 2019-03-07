@@ -27,7 +27,7 @@
         app:layout_constraintTop_toTopOf="parent">
 
         <TextView
-            android:id="@+id/txv_nome"
+            android:id="@+id/txv_nome_meus_anuncios"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
@@ -136,7 +136,7 @@
             app:srcCompat="@drawable/bg_img_card_gradient" />
 
         <TextView
-            android:id="@+id/textIdade"
+            android:id="@+id/textIdade_meus_anuncios"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
@@ -151,7 +151,7 @@
             tools:layout_conversion_absoluteWidth="197dp" />
 
         <TextView
-            android:id="@+id/textCidadePrincipal"
+            android:id="@+id/textCidadePrincipal_meus_anuncios"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
@@ -160,7 +160,7 @@
             android:textColor="@color/colorAccent"
             android:textSize="14sp"
             android:textStyle="normal"
-            app:layout_constraintBottom_toTopOf="@+id/textIdade"
+            app:layout_constraintBottom_toTopOf="@+id/textIdade_meus_anuncios"
             app:layout_constraintStart_toStartOf="parent"
             tools:layout_conversion_absoluteHeight="24dp"
             tools:layout_conversion_absoluteWidth="197dp" />

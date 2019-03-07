@@ -430,6 +430,7 @@ public class MainActivity extends AppCompatActivity
                     // Code to be executed when when the user is about to return.
                     // to the app after tapping on an ad.
                     //Toast.makeText(getApplicationContext(), "closed", Toast.LENGTH_SHORT).show();
+                    adView.loadAd(adRequest);
                 }
             });
         } catch (Exception e) {e.printStackTrace();}
