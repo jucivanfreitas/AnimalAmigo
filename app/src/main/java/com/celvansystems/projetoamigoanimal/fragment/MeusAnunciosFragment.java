@@ -14,12 +14,10 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 
 import com.celvansystems.projetoamigoanimal.R;
 import com.celvansystems.projetoamigoanimal.adapter.AdapterMeusAnuncios;
 import com.celvansystems.projetoamigoanimal.helper.ConfiguracaoFirebase;
-import com.celvansystems.projetoamigoanimal.helper.RecyclerItemClickListener;
 import com.celvansystems.projetoamigoanimal.helper.Util;
 import com.celvansystems.projetoamigoanimal.model.Animal;
 import com.google.firebase.database.DataSnapshot;
@@ -113,7 +111,7 @@ public class MeusAnunciosFragment extends Fragment {
         //linearLayoutBotoes.setVisibility(View.GONE);
 
         //fab
-        FloatingActionButton fabCadastrar = viewFragment.findViewById(R.id.fabcadastrar);
+        FloatingActionButton fabCadastrar = viewFragment.findViewById(R.id.fabcadastrar_meus_anuncios);
         fabCadastrar.setVisibility(View.VISIBLE);
         fabCadastrar.setOnClickListener(new View.OnClickListener() {
 
@@ -147,7 +145,8 @@ public class MeusAnunciosFragment extends Fragment {
         recuperarAnuncios();
 
         //adiciona evento de clique
-        recyclerMeusAnuncios.addOnItemTouchListener(new RecyclerItemClickListener(
+
+        /*recyclerMeusAnuncios.addOnItemTouchListener(new RecyclerItemClickListener(
                 getContext(), recyclerMeusAnuncios, new RecyclerItemClickListener.OnItemClickListener() {
             @Override
             public void onItemClick(View view, int position) {
@@ -157,7 +156,7 @@ public class MeusAnunciosFragment extends Fragment {
                 detalhesIntent.putExtra("anuncioSelecionado", anuncioSelecionado);
                 view.getContext().startActivity(detalhesIntent);
                 */
-            }
+            /*}
 
             @Override
             public void onLongItemClick(View view, int position) {
@@ -168,13 +167,13 @@ public class MeusAnunciosFragment extends Fragment {
                 adapterMeusAnuncios.notifyDataSetChanged();
 
                 Util.setSnackBar(layout,  getString(R.string.anuncio_excluido));*/
-            }
+            /*}
 
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
             }
         }
-        ));
+        ));*/
         //refresh
         /*swipeRefreshLayout = viewFragment.findViewById(R.id.swipeRefreshLayout);
         swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
