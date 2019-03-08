@@ -176,7 +176,7 @@ public class AdapterAnuncios extends RecyclerView.Adapter<AdapterAnuncios.MyView
             myViewHolder.edtComentar.setVisibility(View.GONE);
             myViewHolder.imbComentarAnuncio.setVisibility(View.GONE);
         }
-        if(anuncio.getListaComentarios().size() == 0) {
+        if(anuncio.getListaComentarios()!=null && anuncio.getListaComentarios().size() == 0) {
             myViewHolder.textViewTodosComentarios.setText(null);
         }
     }

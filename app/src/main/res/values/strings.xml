@@ -68,8 +68,13 @@
     </string-array>
 
     <string-array name="especies">
-        <item>Cachorro</item>
+        <item>Cão</item>
         <item>Gato</item>
+        <item>Cavalo</item>
+        <item>Coelho</item>
+        <item>Ave</item>
+        <item>Réptil</item>
+        <item>Peixe</item>
         <item>Outro</item>
     </string-array>
 

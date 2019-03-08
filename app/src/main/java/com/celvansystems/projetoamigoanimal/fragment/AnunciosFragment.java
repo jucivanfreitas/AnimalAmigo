@@ -18,15 +18,12 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.Spinner;
-import android.widget.Toast;
 
 import com.celvansystems.projetoamigoanimal.R;
 import com.celvansystems.projetoamigoanimal.adapter.AdapterAnuncios;
 import com.celvansystems.projetoamigoanimal.helper.ConfiguracaoFirebase;
 import com.celvansystems.projetoamigoanimal.helper.Util;
 import com.celvansystems.projetoamigoanimal.model.Animal;
-import com.celvansystems.projetoamigoanimal.model.Comentario;
-import com.celvansystems.projetoamigoanimal.model.Usuario;
 import com.facebook.AccessToken;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
@@ -38,7 +35,6 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.Objects;
 
 import dmax.dialog.SpotsDialog;
 
@@ -80,9 +76,6 @@ public class AnunciosFragment extends Fragment {
     private void inicializarComponentes(){
 
         layout = view.findViewById(R.id.swipeRefreshLayout);
-
-        //FloatingActionButton fabCadastrar = view.findViewById(R.id.fabcadastrar);
-        //fabCadastrar.setVisibility(View.GONE);
 
         try {
             anunciosPublicosRef = ConfiguracaoFirebase.getFirebase()
@@ -146,19 +139,60 @@ public class AnunciosFragment extends Fragment {
         return listaAnuncios.size() > 0;
     }
 
+    /**
+     * Refesh dos anuncios
+     */
     private void refreshRecyclerAnuncios(){
         // Refresh items
         Util.setSnackBar(layout, "Atualizando pets...");
 
         listaAnuncios.clear();
-        recuperarAnunciosPublicos();
+
+        String cidadeTexto = btnCidade.getText().toString();
+        String especieTexto = btnEspecie.getText().toString();
+
+        boolean filtrandoEspecie=false, filtrandoEstado=false, filtrandoCidade = false;
+
+        if(especieTexto.equals("cidade") || especieTexto.equals("Todas")) {
+            filtrandoEspecie = true;
+        }
+        if(cidadeTexto.length() == 2) {
+            filtrandoEstado = true;
+        } else if((!cidadeTexto.equalsIgnoreCase("Todas")
+                && !cidadeTexto.equalsIgnoreCase("Todos")
+                && !cidadeTexto.equalsIgnoreCase("cidade") && !filtrandoEstado)){
+            filtrandoCidade = true;
+        }
+
+        if (filtrandoEspecie) {
+            if (!filtrandoEstado && !filtrandoCidade){
+                recuperarAnunciosFiltro(null, null, especieTexto);
+            } else {
+                if(filtrandoEstado) {
+                    recuperarAnunciosFiltro(cidadeTexto, null, especieTexto);
+                } else {
+                    recuperarAnunciosFiltro(null, cidadeTexto, especieTexto);
+                }
+            }
+        } else {
+            if (!filtrandoEstado && !filtrandoCidade){
+                recuperarAnunciosFiltro(null, null, null);
+            } else {
+                if(filtrandoEstado) {
+                    recuperarAnunciosFiltro(cidadeTexto, null, null);
+                } else {
+                    recuperarAnunciosFiltro(null, cidadeTexto, null);
+                }
+            }
+        }
+
         swipeRefreshLayout.setRefreshing(false);
     }
 
     /**
      * exibe os anúncios públicos
      */
-    private void recuperarAnunciosPublicos(){
+    /*private void recuperarAnunciosPublicos(){
 
         dialog.show();
 
@@ -221,7 +255,7 @@ public class AnunciosFragment extends Fragment {
             Toast.makeText(view.getContext(),
                     "Falha ao acessar anúncios. Verifique sua conexão à internet." + e.getMessage(),
                     Toast.LENGTH_SHORT).show();}
-    }
+    }*/
 
     @Override
     public void onStart() {
@@ -275,7 +309,7 @@ public class AnunciosFragment extends Fragment {
      * @param cidade cidade
      * @param especie especie
      */
-   public void recuperarAnunciosFiltro(final String estado, final String cidade, final String especie) {
+    public void recuperarAnunciosFiltro(final String estado, final String cidade, final String especie) {
 
         try {
             dialog.show();
@@ -297,73 +331,79 @@ public class AnunciosFragment extends Fragment {
 
                 @Override
                 public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                    listaAnuncios.clear();
 
-                    for (DataSnapshot animais : dataSnapshot.getChildren()) {
+                    //se a lista de anuncios estiver vazia
+                    if (!isListaAnunciosPopulada()) {
 
-                        Animal animal = animais.getValue(Animal.class);
+                        listaAnuncios.clear();
 
-                        if (animal != null) {
+                        for (DataSnapshot animais : dataSnapshot.getChildren()) {
 
-                            String textoBotaoCidade = btnCidade.getText().toString();
-                            String textoBotaoEspecie = btnEspecie.getText().toString();
+                            Animal animal = animais.getValue(Animal.class);
 
-                            //sem filtro
-                            if((textoBotaoCidade.equalsIgnoreCase(getString(R.string.todas)) ||
-                                    textoBotaoCidade.equalsIgnoreCase(getString(R.string.todos)) ||
-                                    textoBotaoCidade.equalsIgnoreCase(getString(R.string.cidade)) && (
-                                            textoBotaoEspecie.equalsIgnoreCase(getString(R.string.especie)) ||
-                                                    textoBotaoEspecie.equalsIgnoreCase(getString(R.string.todas))))){
-                                listaAnuncios.add(animal);
+                            if (animal != null) {
 
-                            } else {
-                                //sem espécie
-                                if (textoBotaoEspecie.equalsIgnoreCase(getString(R.string.especie)) ||
-                                        textoBotaoEspecie.equalsIgnoreCase(getString(R.string.todas))) {
+                                String textoBotaoCidade = btnCidade.getText().toString();
+                                String textoBotaoEspecie = btnEspecie.getText().toString();
 
-                                    if (textoBotaoCidade.equalsIgnoreCase(getString(R.string.cidade)) ||
-                                            textoBotaoCidade.equalsIgnoreCase(getString(R.string.todas)) ||
-                                            textoBotaoCidade.equalsIgnoreCase(getString(R.string.todos))) {
+                                //sem filtro
+                                if ((textoBotaoCidade.equalsIgnoreCase(getString(R.string.todas)) ||
+                                        textoBotaoCidade.equalsIgnoreCase(getString(R.string.todos)) ||
+                                        textoBotaoCidade.equalsIgnoreCase(getString(R.string.cidade)) && (
+                                                textoBotaoEspecie.equalsIgnoreCase(getString(R.string.especie)) ||
+                                                        textoBotaoEspecie.equalsIgnoreCase(getString(R.string.todas))))) {
+                                    listaAnuncios.add(animal);
 
-                                        listaAnuncios.add(animal);
-
-                                    } else {
-                                        if (textoBotaoCidade.equalsIgnoreCase(animal.getCidade()) ||
-                                                textoBotaoCidade.equalsIgnoreCase(animal.getUf())) {
-                                            listaAnuncios.add(animal);
-                                        }
-                                    }
-                                    //com espécie
                                 } else {
-                                    if (textoBotaoEspecie.equalsIgnoreCase(animal.getEspecie())) {
+                                    //sem espécie
+                                    if (textoBotaoEspecie.equalsIgnoreCase(getString(R.string.especie)) ||
+                                            textoBotaoEspecie.equalsIgnoreCase(getString(R.string.todas))) {
 
-                                        //estado
-                                        if (textoBotaoCidade.length()== 2) {
+                                        if (textoBotaoCidade.equalsIgnoreCase(getString(R.string.cidade)) ||
+                                                textoBotaoCidade.equalsIgnoreCase(getString(R.string.todas)) ||
+                                                textoBotaoCidade.equalsIgnoreCase(getString(R.string.todos))) {
 
-                                            if(textoBotaoCidade.equalsIgnoreCase(animal.getUf())) {
+                                            listaAnuncios.add(animal);
+
+                                        } else {
+                                            if (textoBotaoCidade.equalsIgnoreCase(animal.getCidade()) ||
+                                                    textoBotaoCidade.equalsIgnoreCase(animal.getUf())) {
                                                 listaAnuncios.add(animal);
                                             }
-                                            //cidade
-                                        } else {
+                                        }
+                                        //com espécie
+                                    } else {
+                                        if (textoBotaoEspecie.equalsIgnoreCase(animal.getEspecie())) {
 
-                                            if (textoBotaoCidade.equalsIgnoreCase(getString(R.string.cidade)) ||
-                                                    textoBotaoCidade.equalsIgnoreCase(getString(R.string.todas)) ||
-                                                    textoBotaoCidade.equalsIgnoreCase(getString(R.string.todos))) {
-                                                listaAnuncios.add(animal);
-                                            } else if(textoBotaoCidade.equalsIgnoreCase(animal.getCidade())) {
-                                                listaAnuncios.add(animal);
+                                            //estado
+                                            if (textoBotaoCidade.length() == 2) {
+
+                                                if (textoBotaoCidade.equalsIgnoreCase(animal.getUf())) {
+                                                    listaAnuncios.add(animal);
+                                                }
+                                                //cidade
+                                            } else {
+
+                                                if (textoBotaoCidade.equalsIgnoreCase(getString(R.string.cidade)) ||
+                                                        textoBotaoCidade.equalsIgnoreCase(getString(R.string.todas)) ||
+                                                        textoBotaoCidade.equalsIgnoreCase(getString(R.string.todos))) {
+                                                    listaAnuncios.add(animal);
+                                                } else if (textoBotaoCidade.equalsIgnoreCase(animal.getCidade())) {
+                                                    listaAnuncios.add(animal);
+                                                }
                                             }
                                         }
                                     }
                                 }
-                            }
 
+                            }
                         }
                     }
-                    Collections.reverse(listaAnuncios);
-                    adapterAnuncios.notifyDataSetChanged();
+                        Collections.reverse(listaAnuncios);
+                        adapterAnuncios.notifyDataSetChanged();
 
-                    dialog.dismiss();
+                        dialog.dismiss();
+
                 }
 
                 @Override
@@ -406,7 +446,8 @@ public class AnunciosFragment extends Fragment {
                     String filtroEspecie = spinnerEspecie.getSelectedItem().toString();
                     String cidadeBotao = btnCidade.getText().toString();
 
-                    recuperarAnunciosFiltro(null, cidadeBotao, filtroEspecie);
+                    //recuperarAnunciosFiltro(null, cidadeBotao, filtroEspecie);
+                    refreshRecyclerAnuncios();
                 }
             });
 

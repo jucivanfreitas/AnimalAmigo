@@ -191,7 +191,7 @@ public class AdapterMeusAnuncios extends RecyclerView.Adapter<AdapterMeusAnuncio
             imvCompartilharMeusAnuncios = itemView.findViewById(R.id.imv_compartilhar_meus_anuncios);
 
             //Para a snackBar
-            layout = itemView.findViewById(R.id.frame_layout_meus_anuncios_fragment);
+            layout = itemView.findViewById(R.id.view_pager);
         }
     }
 }
