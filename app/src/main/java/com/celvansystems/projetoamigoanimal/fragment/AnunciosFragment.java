@@ -45,7 +45,7 @@ import static android.R.layout.simple_spinner_item;
  */
 public class AnunciosFragment extends Fragment {
 
-    private Button btnCidade, btnEspecie;
+    private Button btnLocal, btnEspecie;
     private AdapterAnuncios adapterAnuncios;
     private List<Animal> listaAnuncios = new ArrayList<>();
     private AlertDialog dialog;
@@ -86,10 +86,10 @@ public class AnunciosFragment extends Fragment {
         RecyclerView recyclerAnunciosPublicos = view.findViewById(R.id.recyclerAnuncios);
         recyclerAnunciosPublicos.setItemAnimator(null);
 
-        btnCidade = view.findViewById(R.id.btnCidade);
+        btnLocal = view.findViewById(R.id.btnCidade);
         btnEspecie = view.findViewById(R.id.btnEspecie);
 
-        btnCidade.setOnClickListener(new View.OnClickListener() {
+        btnLocal.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 filtraPorCidade(v);
@@ -134,7 +134,6 @@ public class AnunciosFragment extends Fragment {
         });
     }
 
-
     private boolean isListaAnunciosPopulada(){
         return listaAnuncios.size() > 0;
     }
@@ -148,19 +147,19 @@ public class AnunciosFragment extends Fragment {
 
         listaAnuncios.clear();
 
-        String cidadeTexto = btnCidade.getText().toString();
+        String localTexto = btnLocal.getText().toString();
         String especieTexto = btnEspecie.getText().toString();
 
         boolean filtrandoEspecie=false, filtrandoEstado=false, filtrandoCidade = false;
 
-        if(especieTexto.equals("cidade") || especieTexto.equals("Todas")) {
+        if(!especieTexto.equals("especie") && !especieTexto.equals("Todas")) {
             filtrandoEspecie = true;
         }
-        if(cidadeTexto.length() == 2) {
+        if(localTexto.length() == 2) {
             filtrandoEstado = true;
-        } else if((!cidadeTexto.equalsIgnoreCase("Todas")
-                && !cidadeTexto.equalsIgnoreCase("Todos")
-                && !cidadeTexto.equalsIgnoreCase("cidade") && !filtrandoEstado)){
+        } else if((!localTexto.equalsIgnoreCase("Todas")
+                && !localTexto.equalsIgnoreCase("Todos")
+                && !localTexto.equalsIgnoreCase("cidade"))){
             filtrandoCidade = true;
         }
 
@@ -169,9 +168,9 @@ public class AnunciosFragment extends Fragment {
                 recuperarAnunciosFiltro(null, null, especieTexto);
             } else {
                 if(filtrandoEstado) {
-                    recuperarAnunciosFiltro(cidadeTexto, null, especieTexto);
+                    recuperarAnunciosFiltro(localTexto, null, especieTexto);
                 } else {
-                    recuperarAnunciosFiltro(null, cidadeTexto, especieTexto);
+                    recuperarAnunciosFiltro(null, localTexto, especieTexto);
                 }
             }
         } else {
@@ -179,83 +178,15 @@ public class AnunciosFragment extends Fragment {
                 recuperarAnunciosFiltro(null, null, null);
             } else {
                 if(filtrandoEstado) {
-                    recuperarAnunciosFiltro(cidadeTexto, null, null);
+                    recuperarAnunciosFiltro(localTexto, null, null);
                 } else {
-                    recuperarAnunciosFiltro(null, cidadeTexto, null);
+                    recuperarAnunciosFiltro(null, localTexto, null);
                 }
             }
         }
 
         swipeRefreshLayout.setRefreshing(false);
     }
-
-    /**
-     * exibe os anúncios públicos
-     */
-    /*private void recuperarAnunciosPublicos(){
-
-        dialog.show();
-
-        try {
-            anunciosPublicosRef.addValueEventListener(new ValueEventListener() {
-                @Override
-                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-
-                    //se a lista de anuncios estiver vazia
-                    if (!isListaAnunciosPopulada()) {
-
-                        for (DataSnapshot animais : dataSnapshot.getChildren()) {
-                            Animal animal = animais.getValue(Animal.class);
-                            if (animal != null) {
-                                Log.d("INFO37:",animais.child("comentarios").getChildrenCount()+" : qtde: " + animal.getNome());
-
-                                List<Comentario> comentsList = new ArrayList<>();
-                                for (DataSnapshot comentarios: animais.child("comentarios").getChildren()) {
-                                    Comentario coment = new Comentario();
-
-                                    Log.d("INFO37: ", "comentarios " + animal.getNome());
-                                    if(comentarios!= null) {
-                                        coment.setDatahora(Objects.requireNonNull(comentarios.child("datahora").getValue()).toString());
-                                        coment.setTexto(Objects.requireNonNull(comentarios.child("texto").getValue()).toString());
-                                        Usuario usuario = new Usuario();
-                                        usuario.setNome(Objects.requireNonNull(comentarios.child("usuario").child("nome").getValue()).toString());
-                                        // TODO: 05/03/2019 concluir atributos de usuario apos activity para cadastro de usuario
-                                        //usuario.setFoto(ConfiguracaoFirebase.getFirebaseAutenticacao().getCurrentUser().getPhotoUrl().toString());
-                                        coment.setUsuario(usuario);
-                                        comentsList.add(coment);
-                                    }
-                                }
-                                animal.setListaComentarios(comentsList);
-                                listaAnuncios.add(animal);
-                            }
-                        }
-
-                        Collections.reverse(listaAnuncios);
-                        adapterAnuncios.notifyDataSetChanged();
-
-                        dialog.dismiss();
-                        Log.d("INFO50", "passou total");
-                    }
-                }
-
-                @Override
-                public void onCancelled(@NonNull DatabaseError databaseError) {
-                    Toast.makeText(view.getContext(),
-                            "Falha ao acessar anúncios. Verifique sua conexão à internet." + databaseError.getMessage(),
-                            Toast.LENGTH_SHORT).show();
-                    Log.d("INFO50", "cancelado");
-
-                    dialog.dismiss();
-                }
-            });
-        } catch (Exception e){
-            e.printStackTrace();
-            dialog.dismiss();
-
-            Toast.makeText(view.getContext(),
-                    "Falha ao acessar anúncios. Verifique sua conexão à internet." + e.getMessage(),
-                    Toast.LENGTH_SHORT).show();}
-    }*/
 
     @Override
     public void onStart() {
@@ -281,26 +212,6 @@ public class AnunciosFragment extends Fragment {
     public void onResume(){
         super.onResume();
         refreshRecyclerAnuncios();
-
-        if(getView() == null){
-            return;
-        }
-
-        /*getView().setFocusableInTouchMode(true);
-        getView().requestFocus();
-        getView().setOnKeyListener(new View.OnKeyListener() {
-            @Override
-            public boolean onKey(View v, int keyCode, KeyEvent event) {
-
-                if (event.getAction() == KeyEvent.ACTION_UP && keyCode == KeyEvent.KEYCODE_BACK){
-
-
-                    return true;
-                }
-                return false;
-            }
-        });*/
-
     }
 
     /**
@@ -316,11 +227,11 @@ public class AnunciosFragment extends Fragment {
 
             //cidade
             if (cidade!=null && !cidade.equalsIgnoreCase(getString(R.string.todas))) {
-                btnCidade.setText(cidade);
+                btnLocal.setText(cidade);
             }
             //estado
             else if (estado != null){
-                btnCidade.setText(estado);
+                btnLocal.setText(estado);
             }
             //especie
             if (especie != null) {
@@ -343,7 +254,7 @@ public class AnunciosFragment extends Fragment {
 
                             if (animal != null) {
 
-                                String textoBotaoCidade = btnCidade.getText().toString();
+                                String textoBotaoCidade = btnLocal.getText().toString();
                                 String textoBotaoEspecie = btnEspecie.getText().toString();
 
                                 //sem filtro
@@ -403,7 +314,6 @@ public class AnunciosFragment extends Fragment {
                         adapterAnuncios.notifyDataSetChanged();
 
                         dialog.dismiss();
-
                 }
 
                 @Override
@@ -414,7 +324,7 @@ public class AnunciosFragment extends Fragment {
     }
 
     /**
-     * filtra por espécie
+     * açao do botao especie
      */
     public void filtraPorEspecie(View view){
 
@@ -444,9 +354,7 @@ public class AnunciosFragment extends Fragment {
                 public void onClick(DialogInterface dialog, int which) {
 
                     String filtroEspecie = spinnerEspecie.getSelectedItem().toString();
-                    String cidadeBotao = btnCidade.getText().toString();
-
-                    //recuperarAnunciosFiltro(null, cidadeBotao, filtroEspecie);
+                    btnEspecie.setText(filtroEspecie);
                     refreshRecyclerAnuncios();
                 }
             });
@@ -464,7 +372,7 @@ public class AnunciosFragment extends Fragment {
     }
 
     /**
-     *
+     * açao do botao Local
      * @param view view
      */
     public void filtraPorCidade(View view){
@@ -472,8 +380,6 @@ public class AnunciosFragment extends Fragment {
         try {
             AlertDialog.Builder dialogCidade = new AlertDialog.Builder(view.getContext());
             dialogCidade.setTitle(getString(R.string.selecione_cidade));
-
-            Log.d("INFO50", "filtrando por cidade");
 
             //configura o spinner
             @SuppressLint("InflateParams")
@@ -485,6 +391,8 @@ public class AnunciosFragment extends Fragment {
             spinnerCidade = viewSpinner.findViewById(R.id.spinnerFiltroCidade);
 
             spinnerCidade.setVisibility(View.VISIBLE);
+
+            // TODO: 11/03/2019 mudar para estado do usuario
             ArrayList<String> cidadesLista = Util.getCidadesLista("AC", view.getContext());
 
             //cidades
@@ -494,38 +402,6 @@ public class AnunciosFragment extends Fragment {
             adapterCidades.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
             spinnerEstado.setAdapter(adapterEstados);
             spinnerCidade.setAdapter(adapterCidades);
-
-            dialogCidade.setView(viewSpinner);
-            dialogCidade.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialog, int which) {
-                    String filtroEstado = getString(R.string.todos);
-                    String filtroCidade = getString(R.string.todas);
-                    String filtroEspecie;
-
-                    if(spinnerEstado.getSelectedItem()!=null) {
-
-                        filtroEstado = spinnerEstado.getSelectedItem().toString();
-                    }
-                    if(spinnerCidade.getSelectedItem()!=null) {
-
-                        filtroCidade = spinnerCidade.getSelectedItem().toString();
-                    }
-
-                    filtroEspecie = btnEspecie.getText().toString();
-                    recuperarAnunciosFiltro(filtroEstado, filtroCidade, filtroEspecie);
-                }
-            });
-
-            dialogCidade.setNegativeButton(getString(R.string.cancelar), new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialog, int which) {
-
-                }
-            });
-
-            AlertDialog dialog = dialogCidade.create();
-            dialog.show();
 
             spinnerEstado.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
                 @Override
@@ -541,9 +417,46 @@ public class AnunciosFragment extends Fragment {
                 public void onNothingSelected(AdapterView<?> parent) {
                 }
             });
+
+            dialogCidade.setView(viewSpinner);
+            dialogCidade.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+
+                    String filtroEstado = getString(R.string.todos);
+                    String filtroCidade = getString(R.string.todas);
+
+                    if(spinnerEstado.getSelectedItem()!=null) {
+
+                        filtroEstado = spinnerEstado.getSelectedItem().toString();
+                        btnLocal.setText(filtroEstado);
+                    }
+                    if(spinnerCidade.getSelectedItem()!=null) {
+                        if(!spinnerCidade.getSelectedItem().toString().equalsIgnoreCase("Todas")) {
+                            filtroCidade = spinnerCidade.getSelectedItem().toString();
+                            btnLocal.setText(filtroCidade);
+                        }
+                    }
+                    refreshRecyclerAnuncios();
+                }
+            });
+
+            dialogCidade.setNegativeButton(getString(R.string.cancelar), new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+
+                }
+            });
+
+            AlertDialog dialog = dialogCidade.create();
+            dialog.show();
+
         } catch (Exception e) {e.printStackTrace();}
     }
 
+    /**
+     * popula spinner cidades de acordo com o estado
+     */
     private void setAdapterSpinnerCidade(){
 
         try {
@@ -554,6 +467,7 @@ public class AnunciosFragment extends Fragment {
             if(!estadoSelecionado.equalsIgnoreCase(getString(R.string.todos))) {
                 cidadesLista = Util.getCidadesLista(estadoSelecionado, view.getContext());
             }
+
             adapterCidades = new ArrayAdapter<>(view.getContext(), simple_spinner_item, cidadesLista);
             adapterCidades.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 
