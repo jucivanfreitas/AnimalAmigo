@@ -81,6 +81,7 @@ public class AdapterAnuncios extends RecyclerView.Adapter<AdapterAnuncios.MyView
                 configuraAcoes(myViewHolder, anuncio);
                 //Texto da quantidade de comentarios
                 confuguraVisibilidadeCampoComentario(anuncio, myViewHolder);
+
             }
         }
     }
@@ -130,6 +131,7 @@ public class AdapterAnuncios extends RecyclerView.Adapter<AdapterAnuncios.MyView
                     }
                 }
                 anuncio.setListaComentarios(comentsList);
+                atualizaComentarios(anuncio.getListaComentarios().size(), anuncio, myViewHolder);
             }
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {

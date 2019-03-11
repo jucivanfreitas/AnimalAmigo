@@ -309,13 +309,13 @@ public class AnunciosFragment extends Fragment {
 
                             }
                         }
-                    }
+
                         Collections.reverse(listaAnuncios);
                         adapterAnuncios.notifyDataSetChanged();
 
                         dialog.dismiss();
+                    }
                 }
-
                 @Override
                 public void onCancelled(@NonNull DatabaseError databaseError) {
                 }
