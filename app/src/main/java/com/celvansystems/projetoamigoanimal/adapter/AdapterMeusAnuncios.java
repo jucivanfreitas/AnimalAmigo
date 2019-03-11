@@ -104,7 +104,6 @@ public class AdapterMeusAnuncios extends RecyclerView.Adapter<AdapterMeusAnuncio
                         if (ConfiguracaoFirebase.getIdUsuario().equalsIgnoreCase(anuncio.getDonoAnuncio())) {
                             opcoesLista.add("Editar");
                             opcoesLista.add("Remover");
-
                         }
 
                         final String[] opcoes = new String[opcoesLista.size()];
@@ -144,7 +143,7 @@ public class AdapterMeusAnuncios extends RecyclerView.Adapter<AdapterMeusAnuncio
                                                     FragmentManager fragmentManager = activity.getSupportFragmentManager();
                                                     FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
                                                     fragmentTransaction.replace(R.id.view_pager, new AnunciosFragment()).addToBackStack(null).commit();
-                                                    Util.setSnackBar(myViewHolder.layout, "Remover");
+                                                    //Util.setSnackBar(myViewHolder.layout, "Remover");
                                                 }
                                             })
                                             .setNegativeButton("Não", null)

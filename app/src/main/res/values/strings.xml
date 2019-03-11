@@ -216,6 +216,7 @@
     <string name="txt_telefone">Telefone para contato</string>
     <string name="txt_nascimento">Data de Nascimento</string>
     <string name="txt_ocupação">Qual sua profissão?</string>
+    <string name="atualizar_cadastro">Atualizar cadastro</string>
 
 
 </resources>

@@ -1,10 +1,7 @@
 package com.celvansystems.projetoamigoanimal.model;
 
-import android.support.annotation.NonNull;
-
 import com.celvansystems.projetoamigoanimal.helper.ConfiguracaoFirebase;
 import com.celvansystems.projetoamigoanimal.helper.Util;
-import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.storage.StorageReference;
@@ -29,8 +26,6 @@ public class Animal implements Serializable {
     private List<String> fotos;
     private List<String> curtidas;
     private List<Comentario> listaComentarios;
-
-    boolean retorno;
 
     public Animal (){
 
@@ -81,9 +76,8 @@ public class Animal implements Serializable {
     /**
      * metodo auxilicar que apaga as fotos de um animal
      */
-    public boolean apagarFotosStorage (){
+    private void apagarFotosStorage (){
 
-        retorno = false;
         try {
             StorageReference storage = ConfiguracaoFirebase.getFirebaseStorage();
             StorageReference imagemAnimal = storage
@@ -91,32 +85,19 @@ public class Animal implements Serializable {
                     .child("animais")
                     .child(getIdAnimal());
 
-            int numFotos = getFotos().size();
-
-            for (int i = 0; i < numFotos; i++) {
+            for (int i = 0; i < 3; i++) {
                 String textoFoto = "imagem" + i;
 
-                imagemAnimal.child(textoFoto).delete().addOnSuccessListener(new OnSuccessListener<Void>() {
-                    @Override
-                    public void onSuccess(Void aVoid) {
-                        retorno = true;
-                    }
-                }).addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception exception) {
-                        retorno=false;
-                    }
-                });
+                imagemAnimal.child(textoFoto).delete();
             }
         } catch (Exception e) {e.printStackTrace();}
-        return retorno;
     }
 
     public String getIdAnimal() {
         return idAnimal;
     }
 
-    private void setIdAnimal(String idAnimal) {
+    public void setIdAnimal(String idAnimal) {
         this.idAnimal = idAnimal;
     }
 

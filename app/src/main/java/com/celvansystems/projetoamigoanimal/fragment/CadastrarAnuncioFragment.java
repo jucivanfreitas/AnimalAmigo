@@ -77,11 +77,12 @@ public class CadastrarAnuncioFragment extends Fragment
     private int requisicao;
     private View layout;
     private View viewFragment;
-    private Animal anuncio;
     private Button btnCadastrarAnuncio;
     private ArrayAdapter<String> adapterEspecies, adapterIdades;
     private ArrayAdapter<String> adapterCidades, adapterSexos;
     private ArrayAdapter<String> adapterEstados, adapterPortes;
+    private boolean editando = false;
+    private String idEditando;
 
     //Permissoes
     private String[] permissoes = new String[]{
@@ -101,9 +102,11 @@ public class CadastrarAnuncioFragment extends Fragment
         inicializarComponentes();
 
         if(bundle != null){
-            anuncio = (Animal) bundle.getSerializable("anuncioSelecionado");
-            btnCadastrarAnuncio.setText("Atualizar cadastro");
-            preencheCampos(anuncio);
+            Animal anuncio = (Animal) bundle.getSerializable("anuncioSelecionado");
+            btnCadastrarAnuncio.setText(getString(R.string.atualizar_cadastro));
+            if(anuncio!=null) {
+                preencheCampos(anuncio);
+            }
         }
         return viewFragment;
     }
@@ -133,8 +136,27 @@ public class CadastrarAnuncioFragment extends Fragment
         spinnerPosition = adapterCidades.getPosition(anuncio.getCidade());
         spnCidade.setSelection(spinnerPosition);
 
-        List<String> listaFotos = anuncio.getFotos();
+        editando = true;
+        idEditando = anuncio.getIdAnimal();
 
+        /*List<String> listaFotos = anuncio.getFotos();
+
+        String[] fotos = new String[listaFotos.size()];
+        fotos = listaFotos.toArray(fotos);
+
+        for (int i=0; i < fotos.length; i++){
+            switch (i){
+                case 0:
+                    Picasso.get().load(fotos[i]).into(imagem1);
+                    break;
+                case 1:
+                    Picasso.get().load(fotos[i]).into(imagem2);
+                    break;
+                case 2:
+                    Picasso.get().load(fotos[i]).into(imagem3);
+                    break;
+            }
+        }*/
     }
 
     /**
@@ -192,8 +214,10 @@ public class CadastrarAnuncioFragment extends Fragment
                 validarDadosAnuncio();
             }
         });
+
         //propagandas
-        configuraAdMob();
+        //configuraAdMob();
+        // TODO: 11/03/2019 descomentar linha acima
     }
 
     /**
@@ -338,6 +362,9 @@ public class CadastrarAnuncioFragment extends Fragment
     private Animal getAnimalDaActivity(){
 
         Animal retorno = new Animal();
+        if(editando) {
+            retorno.setIdAnimal(idEditando);
+        }
 
         try {
             String nome = edtNome.getText().toString();
@@ -372,28 +399,6 @@ public class CadastrarAnuncioFragment extends Fragment
     @Override
     public void onResume() {
         super.onResume();
-
-       /* if(getView() == null){
-            return;
-        }
-
-        // açao de voltar
-        getView().setFocusableInTouchMode(true);
-        getView().requestFocus();
-        getView().setOnKeyListener(new View.OnKeyListener() {
-            @Override
-            public boolean onKey(View v, int keyCode, KeyEvent event) {
-
-                if (event.getAction() == KeyEvent.ACTION_UP && keyCode == KeyEvent.KEYCODE_BACK){
-
-                    FragmentManager fragmentManager= Objects.requireNonNull(getActivity()).getSupportFragmentManager();
-                    FragmentTransaction fragmentTransaction =fragmentManager.beginTransaction();
-                    fragmentTransaction.replace(R.id.view_pager, new AnunciosFragment()).addToBackStack("tag").commit();
-                    return true;
-                }
-                return false;
-            }
-        });*/
     }
 
     /**
@@ -407,7 +412,9 @@ public class CadastrarAnuncioFragment extends Fragment
             if( !animal.getNome().isEmpty() ){
                 if( !animal.getRaca().isEmpty() ){
                     if (!animal.getDescricao().isEmpty()) {
-                        salvarAnuncio(animal);
+
+                            salvarAnuncio(animal);
+
                     } else {
                         Util.setSnackBar(layout, getString(R.string.preencha_descricao));
                     }
