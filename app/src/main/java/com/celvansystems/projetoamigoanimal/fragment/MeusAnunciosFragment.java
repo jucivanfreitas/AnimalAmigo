@@ -9,6 +9,7 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -41,7 +42,7 @@ public class MeusAnunciosFragment extends Fragment {
     private AdapterMeusAnuncios adapterMeusAnuncios;
     private DatabaseReference anuncioUsuarioRef;
     private View viewFragment;
-    //private SwipeRefreshLayout swipeRefreshLayout;
+    private SwipeRefreshLayout swipeRefreshLayout;
     private View layout;
 
 
@@ -144,71 +145,19 @@ public class MeusAnunciosFragment extends Fragment {
         //recupera anuncios para o usuario
         recuperarAnuncios();
 
-        //adiciona evento de clique
-
-        /*recyclerMeusAnuncios.addOnItemTouchListener(new RecyclerItemClickListener(
-                getContext(), recyclerMeusAnuncios, new RecyclerItemClickListener.OnItemClickListener() {
-            @Override
-            public void onItemClick(View view, int position) {
-                /*
-                Animal anuncioSelecionado = anuncios.get(position);
-                Intent detalhesIntent = new Intent(view.getContext(), DetalhesAnimalActivity.class);
-                detalhesIntent.putExtra("anuncioSelecionado", anuncioSelecionado);
-                view.getContext().startActivity(detalhesIntent);
-                */
-            /*}
-
-            @Override
-            public void onLongItemClick(View view, int position) {
-
-                /*Animal anuncioSelecionado = anuncios.get(position);
-                anuncioSelecionado.remover();
-
-                adapterMeusAnuncios.notifyDataSetChanged();
-
-                Util.setSnackBar(layout,  getString(R.string.anuncio_excluido));*/
-            /*}
-
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-            }
-        }
-        ));*/
         //refresh
-        /*swipeRefreshLayout = viewFragment.findViewById(R.id.swipeRefreshLayout);
+        swipeRefreshLayout = viewFragment.findViewById(R.id.swipeRefreshLayout_meus_anuncios);
         swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
                 refreshRecyclerAnuncios();
             }
-        });*/
+        });
     }
 
     @Override
     public void onResume() {
         super.onResume();
-
-        /*if(getView() == null){
-            return;
-        }
-
-        // açao de voltar
-        /*getView().setFocusableInTouchMode(true);
-        getView().requestFocus();
-        getView().setOnKeyListener(new View.OnKeyListener() {
-            @Override
-            public boolean onKey(View v, int keyCode, KeyEvent event) {
-
-                if (event.getAction() == KeyEvent.ACTION_UP && keyCode == KeyEvent.KEYCODE_BACK){
-
-                    FragmentManager fragmentManager= Objects.requireNonNull(getActivity()).getSupportFragmentManager();
-                    FragmentTransaction fragmentTransaction =fragmentManager.beginTransaction();
-                    fragmentTransaction.replace(R.id.view_pager, new AnunciosFragment()).commit();
-                    return true;
-                }
-                return false;
-            }
-        });*/
     }
 
     private void refreshRecyclerAnuncios(){
@@ -217,7 +166,7 @@ public class MeusAnunciosFragment extends Fragment {
 
         anuncios.clear();
         recuperarAnuncios();
-        //swipeRefreshLayout.setRefreshing(false);
+        swipeRefreshLayout.setRefreshing(false);
     }
 }
     
