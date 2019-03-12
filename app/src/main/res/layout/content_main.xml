@@ -26,7 +26,7 @@
         android:layout_marginTop="8dp"
         android:background="@color/default_circle_indicator_fill_color"
         app:layout_behavior="@string/appbar_scrolling_view_behavior"
-        app:layout_constraintBottom_toTopOf="@+id/constraintLayout_admob_comentarios"
+        app:layout_constraintBottom_toTopOf="@+id/constraintLayout_admob_detalhes_animal"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/linearLayout2"
@@ -35,7 +35,7 @@
     </android.support.constraint.ConstraintLayout>
 
     <android.support.constraint.ConstraintLayout
-        android:id="@+id/constraintLayout_admob_comentarios"
+        android:id="@+id/constraintLayout_admob_detalhes_animal"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:background="@drawable/bg_admob"

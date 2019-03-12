@@ -216,8 +216,7 @@ public class CadastrarAnuncioFragment extends Fragment
         });
 
         //propagandas
-        //configuraAdMob();
-        // TODO: 11/03/2019 descomentar linha acima
+        configuraAdMob();
     }
 
     /**
@@ -657,6 +656,4 @@ public class CadastrarAnuncioFragment extends Fragment
             });
         } catch (Exception e) {e.printStackTrace();}
     }
-
-
 }

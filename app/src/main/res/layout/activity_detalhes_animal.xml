@@ -83,4 +83,22 @@
         android:textColor="@color/common_google_signin_btn_text_dark_default"
         android:textStyle="bold" />
 
+    <android.support.constraint.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <com.google.android.gms.ads.AdView
+            android:id="@+id/banner_detalhes_animal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:adSize="BANNER"
+            app:adUnitId="ca-app-pub-3940256099942544/6300978111"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="1.0" />
+
+    </android.support.constraint.ConstraintLayout>
 </LinearLayout>

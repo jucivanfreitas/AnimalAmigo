@@ -12,6 +12,10 @@ import android.widget.TextView;
 import com.celvansystems.projetoamigoanimal.R;
 import com.celvansystems.projetoamigoanimal.helper.Util;
 import com.celvansystems.projetoamigoanimal.model.Animal;
+import com.google.android.gms.ads.AdListener;
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdView;
+import com.google.android.gms.ads.MobileAds;
 import com.squareup.picasso.Picasso;
 import com.synnapps.carouselview.CarouselView;
 import com.synnapps.carouselview.ImageListener;
@@ -104,5 +108,57 @@ public class DetalhesAnimalActivity extends AppCompatActivity {
                 }
             }
         });
+
+        configuraAdMob();
+
+    }
+
+    /**
+     * método que configura as propagandas via AdMob
+     */
+    private void configuraAdMob() {
+
+        //admob
+        //MobileAds.initialize(this, String.valueOf(R.string.app_id));
+        //teste do google
+        MobileAds.initialize(getApplicationContext(), getString(R.string.mobileadsIdTeste));
+
+        //AdView
+        try {
+            //banner teste
+            final AdRequest adRequest = new AdRequest.Builder()
+                    .addTestDevice(getString(R.string.testeDeviceId))
+                    .build();
+
+            AdView adView = findViewById(R.id.banner_detalhes_animal);
+            //final AdRequest adRequest = new AdRequest.Builder().build();
+            adView.loadAd(adRequest);
+
+            adView.setAdListener(new AdListener() {
+                @Override
+                public void onAdLoaded() {
+                    // Code to be executed when an ad finishes loading.
+                }
+                @Override
+                public void onAdFailedToLoad(int errorCode) {
+                    // Code to be executed when an ad request fails.
+                    // Toast.makeText(this, "failed to load. " +
+                    //        adRequest.getContentUrl(), Toast.LENGTH_SHORT).show();
+                }
+                @Override
+                public void onAdOpened() {
+                    // Code to be executed when an ad opens an overlay that
+                }
+                @Override
+                public void onAdLeftApplication() {
+                    // Code to be executed when the user has left the app.
+                }
+                @Override
+                public void onAdClosed() {
+                    // Code to be executed when when the user is about to return.
+                    // to the app after tapping on an ad.
+                }
+            });
+        } catch (Exception e) {e.printStackTrace();}
     }
 }

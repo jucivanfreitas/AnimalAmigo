@@ -107,10 +107,6 @@ public class MeusAnunciosFragment extends Fragment {
 
         layout = viewFragment.findViewById(R.id.frame_layout_meus_anuncios_fragment);
 
-        //esconde os botoes de cidade e especie
-        //LinearLayout linearLayoutBotoes = viewFragment.findViewById(R.id.linearLayoutBotoes);
-        //linearLayoutBotoes.setVisibility(View.GONE);
-
         //fab
         FloatingActionButton fabCadastrar = viewFragment.findViewById(R.id.fabcadastrar_meus_anuncios);
         fabCadastrar.setVisibility(View.VISIBLE);
@@ -160,8 +156,10 @@ public class MeusAnunciosFragment extends Fragment {
         super.onResume();
     }
 
+    /**
+     * Refresh itens
+     */
     private void refreshRecyclerAnuncios(){
-        // Refresh items
         Util.setSnackBar(layout,  getString(R.string.atualizando_pets));
 
         anuncios.clear();
