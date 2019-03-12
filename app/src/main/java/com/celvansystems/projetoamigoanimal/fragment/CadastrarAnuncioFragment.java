@@ -307,17 +307,16 @@ public class CadastrarAnuncioFragment extends Fragment
                             animal.setFotos(listaURLFotos);
                             animal.salvar();
                             Util.setSnackBar(layout, getString(R.string.sucesso_ao_fazer_upload));
-                            // exibirMensagem(getString(R.string.sucesso_ao_fazer_upload));
+
                             dialog.dismiss();
 
-                            //redireciona para AnunciosFragment
-                            FragmentManager fragmentManager= Objects.requireNonNull(getActivity()).getSupportFragmentManager();
-                            FragmentTransaction fragmentTransaction =fragmentManager.beginTransaction();
-                            fragmentTransaction.replace(R.id.view_pager, new MeusAnunciosFragment()).commit();
+                            //redireciona para MeusAnunciosFragment
+                            FragmentManager fragmentManager = Objects.requireNonNull(getActivity()).getSupportFragmentManager();
+                            FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+                            fragmentTransaction.replace(R.id.view_pager, new MeusAnunciosFragment()).addToBackStack("tag").commit();
                         }
                     } else {
                         Util.setSnackBar(layout, getString(R.string.falha_upload));
-                        //exibirMensagem(getString(R.string.falha_upload));
                     }
                 }
             });

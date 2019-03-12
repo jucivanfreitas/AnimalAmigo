@@ -7,7 +7,7 @@
 
 
     <ImageView
-        android:id="@+id/imageView_foto_usuario"
+        android:id="@+id/imageView_foto_usuario_comentarios"
         android:layout_width="50dp"
         android:layout_height="50dp"
         android:layout_marginStart="8dp"
@@ -29,7 +29,7 @@
         android:text="Usuario"
         android:textStyle="bold"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/imageView_foto_usuario" />
+        app:layout_constraintTop_toBottomOf="@+id/imageView_foto_usuario_comentarios" />
 
     <TextView
         android:id="@+id/textView_texto"
@@ -38,7 +38,7 @@
         android:layout_marginStart="16dp"
         android:layout_marginTop="16dp"
         android:text="Comentário"
-        app:layout_constraintStart_toEndOf="@+id/imageView_foto_usuario"
+        app:layout_constraintStart_toEndOf="@+id/imageView_foto_usuario_comentarios"
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView

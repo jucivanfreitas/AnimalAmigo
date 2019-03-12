@@ -19,6 +19,7 @@ import com.celvansystems.projetoamigoanimal.R;
 import com.celvansystems.projetoamigoanimal.activity.MainActivity;
 import com.celvansystems.projetoamigoanimal.helper.ConfiguracaoFirebase;
 import com.celvansystems.projetoamigoanimal.model.Animal;
+import com.celvansystems.projetoamigoanimal.model.Usuario;
 import com.facebook.login.LoginManager;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -121,10 +122,6 @@ public class PerfilUsuarioFragment extends Fragment {
 
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
         final String usuarioId = ConfiguracaoFirebase.getIdUsuario();
-        Log.d("INFO29", "usuario id: " + usuarioId);
-
-        //deleta todos os anuncios do usuario
-        deletarAnunciosUsuario(usuarioId);
 
         LoginManager.getInstance().logOut();
 
@@ -134,6 +131,13 @@ public class PerfilUsuarioFragment extends Fragment {
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {
                         if (task.isSuccessful()) {
+
+                            Usuario usuario = new Usuario();
+                            usuario.setId(usuarioId);
+                            usuario.remover();
+
+                            //deleta todos os anuncios do usuario
+                            deletarAnunciosUsuario(usuarioId);
 
                             Toast.makeText(viewFragment.getContext(), "Usuário excluído com sucesso!", Toast.LENGTH_SHORT).show();
                             startActivity(new Intent(viewFragment.getContext(), MainActivity.class));

@@ -74,7 +74,7 @@
                 android:visibility="visible">
 
                 <AutoCompleteTextView
-                    android:id="@+id/txt_nome"
+                    android:id="@+id/txi_nome"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="5dp"
@@ -90,7 +90,8 @@
                     android:textColor="@color/common_google_signin_btn_text_dark_pressed"
                     android:textColorHighlight="@color/colorPrimaryDark"
                     android:textColorHint="@color/colorPrimary"
-                    android:textColorLink="@color/colorPrimary" />
+                    android:textColorLink="@color/colorPrimary"
+                    android:visibility="visible" />
 
             </android.support.design.widget.TextInputLayout>
 

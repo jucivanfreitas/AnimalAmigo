@@ -1,5 +1,10 @@
 package com.celvansystems.projetoamigoanimal.model;
 
+import com.celvansystems.projetoamigoanimal.helper.ConfiguracaoFirebase;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.storage.StorageReference;
+
 import java.io.Serializable;
 
 public class Usuario implements Serializable {
@@ -15,6 +20,55 @@ public class Usuario implements Serializable {
     private String longitude;
     private String foto;
     private String genero;
+
+    /**
+     * salva usuario
+     */
+    public void salvar(){
+
+        try {
+            DatabaseReference usuarioRef = ConfiguracaoFirebase.getFirebase()
+                    .child("usuarios");
+
+            usuarioRef.child(getId())
+                    .setValue(this);
+        } catch (Exception e){e.printStackTrace();}
+    }
+
+    /**
+     * remove anuncio
+     */
+    public void remover(){
+
+        try {
+            DatabaseReference usuarioRef = ConfiguracaoFirebase.getFirebase()
+                    .child("usuarios")
+                    .child(getId());
+
+            usuarioRef.removeValue().addOnSuccessListener(new OnSuccessListener<Void>() {
+                @Override
+                public void onSuccess(Void aVoid) {
+                    apagarFotoStorage();
+                }
+            });
+        } catch (Exception e){e.printStackTrace();}
+    }
+    /**
+     * metodo auxilicar que apaga as fotos de um animal
+     */
+    private void apagarFotoStorage (){
+
+        try {
+            StorageReference storage = ConfiguracaoFirebase.getFirebaseStorage();
+            StorageReference imagemUsuario = storage
+                    .child("imagens")
+                    .child("usuarios")
+                    .child(getId());
+
+                imagemUsuario.child("imagem").delete();
+
+        } catch (Exception e) {e.printStackTrace();}
+    }
 
     public String getId() {
         return id;

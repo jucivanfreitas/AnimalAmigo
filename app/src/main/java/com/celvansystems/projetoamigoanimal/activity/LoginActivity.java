@@ -17,6 +17,7 @@ import android.os.Bundle;
 import android.provider.ContactsContract;
 import android.support.annotation.NonNull;
 import android.support.design.widget.Snackbar;
+import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.KeyEvent;
@@ -26,6 +27,7 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
+import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Switch;
@@ -36,6 +38,7 @@ import com.celvansystems.projetoamigoanimal.R;
 import com.celvansystems.projetoamigoanimal.helper.ConfiguracaoFirebase;
 import com.celvansystems.projetoamigoanimal.helper.Constantes;
 import com.celvansystems.projetoamigoanimal.helper.Util;
+import com.celvansystems.projetoamigoanimal.model.Usuario;
 import com.facebook.AccessToken;
 import com.facebook.CallbackManager;
 import com.facebook.FacebookCallback;
@@ -60,6 +63,7 @@ import com.google.firebase.auth.FirebaseAuthUserCollisionException;
 import com.google.firebase.auth.FirebaseAuthWeakPasswordException;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
+import com.google.firebase.auth.UserProfileChangeRequest;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -80,6 +84,8 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
     // UI references.
     private AutoCompleteTextView mEmailView;
     private EditText mPasswordView;
+    private AutoCompleteTextView txiNome;
+    private TextInputLayout txiLayout;
     private View mProgressView;
     private View mLoginFormView;
     private ImageView mImageBg_color;
@@ -114,6 +120,10 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             mProgressView = findViewById(R.id.login_progress);
             mImageBg_color =findViewById(R.id.imageViewbg_color);
             mPasswordView = findViewById(R.id.txiPassword);
+            txiNome = findViewById(R.id.txi_nome);
+            txiLayout = findViewById(R.id.txt_imput_nome);
+            txiLayout.setVisibility(View.INVISIBLE);
+
             Button btnLogin = findViewById(R.id.btnLogin);
             swtLoginCadastrar = findViewById(R.id.swtLoginCadastrar);
             TextView txvEsqueciSenha = findViewById(R.id.txtEsqueciSenha);
@@ -143,6 +153,17 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                 }
             });
 
+            swtLoginCadastrar.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+                public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                    if(isChecked) {
+                        txiNome.setVisibility(View.VISIBLE);
+                        txiLayout.setVisibility(View.VISIBLE);
+                    } else {
+                        txiNome.setVisibility(View.INVISIBLE);
+                        txiLayout.setVisibility(View.INVISIBLE);
+                    }
+                }
+            });
             txvEsqueciSenha.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -176,7 +197,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                     public void onComplete(@NonNull Task<Void> task) {
 
                         if (task.isSuccessful()) {
-                            //Toast.makeText(LoginActivity.this, getString(R.string.email_enviado), Toast.LENGTH_SHORT).show();
+
                             Util.setSnackBar(layout, getString(R.string.email_enviado));
 
                         } else {
@@ -204,7 +225,6 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         LoginButton loginButton = findViewById(R.id.login_button_facebook);
         loginButton.setReadPermissions(Arrays.asList(
                 "email", "public_profile"));
-        //loginButton.setLoginBehavior(LoginBehavior.DIALOG_ONLY);
 
         // Callback registration
         loginButton.registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
@@ -238,6 +258,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                 }
             }
         });
+
         // Configure Google Sign In
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                 .requestIdToken(getString(R.string.google_web_client))
@@ -375,48 +396,63 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         hideKeyboard(getApplicationContext(), mPasswordView);
 
         // Store values at the time of the login attempt.
-        String email = mEmailView.getText().toString();
-        String password = mPasswordView.getText().toString();
+        final String email = mEmailView.getText().toString();
+        final String password = mPasswordView.getText().toString();
 
         //cadastrando...
         if (swtLoginCadastrar.isChecked()) {
 
+            if(txiNome.getText() != null && !txiNome.getText().toString().equalsIgnoreCase("")) {
 
+                authentication.createUserWithEmailAndPassword(email, password)
+                        .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+                            @Override
+                            public void onComplete(@NonNull Task<AuthResult> task) {
 
-            authentication.createUserWithEmailAndPassword(email, password)
-                    .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
-                        @Override
-                        public void onComplete(@NonNull Task<AuthResult> task) {
+                                if (task.isSuccessful()) {
 
-                            if (task.isSuccessful()) {
+                                    swtLoginCadastrar.setChecked(false);
+                                    Util.setSnackBar(layout, getString(R.string.cadastro_realizado));
+                                    sendVerificationEmail();
 
-                                //Toast.makeText(LoginActivity.this, getString(R.string.cadastro_realizado),
-                                 //       Toast.LENGTH_LONG).show();
-                                Util.setSnackBar(layout, getString(R.string.cadastro_realizado));
-                                sendVerificationEmail();
+                                    FirebaseUser user = ConfiguracaoFirebase.getFirebaseAutenticacao().getCurrentUser();
 
-                                swtLoginCadastrar.setChecked(false);
-                            } else {
-                                String erroExcecao;
-                                try {
-                                    throw Objects.requireNonNull(task.getException());
-                                } catch (FirebaseAuthWeakPasswordException e) {
-                                    erroExcecao = getString(R.string.digite_senha_forte);
-                                } catch (FirebaseAuthInvalidCredentialsException e) {
-                                    erroExcecao = getString(R.string.digite_email_valido);
-                                } catch (FirebaseAuthUserCollisionException e) {
-                                    erroExcecao = getString(R.string.conta_cadastrada);
-                                } catch (FirebaseAuthInvalidUserException e) {
-                                    erroExcecao = getString(R.string.usuario_inexistente);
-                                } catch (Exception e) {
-                                    erroExcecao = getString(R.string.falha_cadastro_usuario) + e.getMessage();
-                                    e.printStackTrace();
+                                    UserProfileChangeRequest profileUpdates = new UserProfileChangeRequest.Builder()
+                                            .setDisplayName(txiNome.getText().toString()).build();
+
+                                    user.updateProfile(profileUpdates);
+
+                                    //criando usuario...
+                                    Usuario usuario = new Usuario();
+                                    usuario.setId(task.getResult().getUser().getUid());
+                                    usuario.setNome(txiNome.getText().toString());
+                                    usuario.setEmail(email);
+                                    usuario.salvar();
+
+                                } else {
+                                    String erroExcecao;
+                                    try {
+                                        throw Objects.requireNonNull(task.getException());
+                                    } catch (FirebaseAuthWeakPasswordException e) {
+                                        erroExcecao = getString(R.string.digite_senha_forte);
+                                    } catch (FirebaseAuthInvalidCredentialsException e) {
+                                        erroExcecao = getString(R.string.digite_email_valido);
+                                    } catch (FirebaseAuthUserCollisionException e) {
+                                        erroExcecao = getString(R.string.conta_cadastrada);
+                                    } catch (FirebaseAuthInvalidUserException e) {
+                                        erroExcecao = getString(R.string.usuario_inexistente);
+                                    } catch (Exception e) {
+                                        erroExcecao = getString(R.string.falha_cadastro_usuario) + e.getMessage();
+                                        e.printStackTrace();
+                                    }
+                                    Util.setSnackBar(layout, getString(R.string.erro) + erroExcecao);
                                 }
-                                Util.setSnackBar(layout, getString(R.string.erro) + erroExcecao);
                             }
-                        }
-                    });
-            //logando...
+                        });
+            } else {
+                Util.setSnackBar(layout, "Preencha seu nome!");
+            }
+        //logando...
         } else {
             //direciona para a activity principal
             authentication.signInWithEmailAndPassword(email, password)
@@ -451,6 +487,10 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             showProgress(true);
             mImageBg_color.setVisibility(View.VISIBLE);
         }
+    }
+
+    private void criarUsuarioFirebase(Usuario usuario) {
+
     }
 
     /**
@@ -494,10 +534,6 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         }
         return false;
     }
-
-    /*private boolean isPasswordValid(String password) {
-        return password.length() > 4;
-    }*/
 
     /**
      * Shows the progress UI and hides the login form.

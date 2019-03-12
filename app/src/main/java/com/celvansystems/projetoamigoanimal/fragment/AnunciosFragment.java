@@ -75,7 +75,7 @@ public class AnunciosFragment extends Fragment {
     @SuppressLint("RestrictedApi")
     private void inicializarComponentes(){
 
-        layout = view.findViewById(R.id.swipeRefreshLayout);
+        layout = view.findViewById(R.id.const_layout_anuncios);
 
         try {
             anunciosPublicosRef = ConfiguracaoFirebase.getFirebase()
