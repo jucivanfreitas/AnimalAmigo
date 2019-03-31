@@ -15,7 +15,7 @@
         <ScrollView
             android:layout_width="0dp"
             android:layout_height="0dp"
-            app:layout_constraintBottom_toTopOf="@+id/constraintLayout2"
+            app:layout_constraintBottom_toBottomOf="@+id/constraintLayout2"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">
@@ -27,18 +27,29 @@
 
                 <android.support.constraint.ConstraintLayout
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent">
+                    android:layout_height="wrap_content">
 
                     <android.support.constraint.ConstraintLayout
                         android:layout_width="0dp"
-                        android:layout_height="300dp"
+                        android:layout_height="405dp"
                         android:layout_margin="0dp"
+                        android:layout_marginBottom="8dp"
                         android:background="@drawable/bg_branco_gradient"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintHorizontal_bias="0.54"
+                        app:layout_constraintHorizontal_bias="0.0"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/fotoss">
+
+                        <ImageView
+                            android:id="@+id/imageView"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="8dp"
+                            android:layout_marginTop="8dp"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@+id/imageView5"
+                            app:srcCompat="@drawable/ic_perfil_animal_cor" />
 
                         <TextView
                             android:id="@+id/txv_nome_meus_anuncios"
@@ -65,14 +76,12 @@
                             android:layout_height="wrap_content"
                             android:layout_margin="8dp"
                             android:layout_marginStart="8dp"
-                            android:layout_marginTop="8dp"
-                            android:background="@drawable/bg_caixa_txt"
                             android:padding="8dp"
                             android:text="@string/especie"
-                            android:textColor="@color/colorPrimaryDark"
+                            android:textColor="@color/common_google_signin_btn_text_dark_focused"
                             android:textColorLink="@color/colorPrimaryDark"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toBottomOf="@+id/txv_nome_meus_anuncios" />
+                            app:layout_constraintStart_toEndOf="@+id/imageView"
+                            app:layout_constraintTop_toBottomOf="@+id/divider2" />
 
                         <TextView
                             android:id="@+id/txv_genero"
@@ -81,11 +90,10 @@
                             android:layout_margin="8dp"
                             android:layout_marginStart="8dp"
                             android:layout_marginTop="8dp"
-                            android:background="@drawable/bg_caixa_txt"
                             android:padding="8dp"
                             android:text="@string/txt_genero"
-                            android:textColor="@color/colorPrimaryDark"
-                            app:layout_constraintStart_toStartOf="parent"
+                            android:textColor="@android:color/black"
+                            app:layout_constraintStart_toEndOf="@+id/imageView"
                             app:layout_constraintTop_toBottomOf="@+id/txv_especie" />
 
                         <TextView
@@ -93,10 +101,9 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_margin="8dp"
-                            android:background="@drawable/bg_caixa_txt"
                             android:padding="8dp"
                             android:text="@string/txt_idade"
-                            android:textColor="@color/colorPrimaryDark"
+                            android:textColor="@color/common_google_signin_btn_text_dark_focused"
                             app:layout_constraintStart_toEndOf="@+id/txv_genero"
                             app:layout_constraintTop_toBottomOf="@+id/txv_especie" />
 
@@ -107,10 +114,9 @@
                             android:layout_marginStart="8dp"
                             android:layout_marginTop="8dp"
                             android:layout_marginEnd="8dp"
-                            android:background="@drawable/bg_caixa_txt"
                             android:padding="8dp"
                             android:text="@string/preencha_porte"
-                            android:textColor="@color/colorPrimaryDark"
+                            android:textColor="@color/common_google_signin_btn_text_dark_focused"
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintStart_toEndOf="@+id/txv_idade"
                             app:layout_constraintTop_toBottomOf="@+id/txv_especie" />
@@ -123,13 +129,13 @@
                             android:layout_marginStart="8dp"
                             android:layout_marginTop="8dp"
                             android:layout_marginEnd="8dp"
-                            android:background="@drawable/bg_caixa_txt"
                             android:padding="8dp"
                             android:text="@string/raca"
-                            android:textColor="@color/colorPrimaryDark"
+                            android:textColor="@android:color/black"
                             app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintHorizontal_bias="0.0"
                             app:layout_constraintStart_toEndOf="@+id/txv_especie"
-                            app:layout_constraintTop_toBottomOf="@+id/txv_nome_meus_anuncios" />
+                            app:layout_constraintTop_toBottomOf="@+id/divider2" />
 
                         <TextView
                             android:id="@+id/txv_estado"
@@ -137,15 +143,12 @@
                             android:layout_height="wrap_content"
                             android:layout_margin="8dp"
                             android:layout_marginStart="8dp"
-                            android:layout_marginTop="8dp"
-                            android:layout_marginEnd="8dp"
                             android:background="@drawable/bg_caixa_txt"
                             android:padding="8dp"
                             android:text="@string/txt_estado"
                             android:textColor="@color/colorPrimaryDark"
-                            app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintStart_toEndOf="@+id/txv_cidade"
-                            app:layout_constraintTop_toBottomOf="@+id/txv_genero" />
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@+id/divider4" />
 
                         <TextView
                             android:id="@+id/txv_cidade"
@@ -154,12 +157,14 @@
                             android:layout_margin="8dp"
                             android:layout_marginStart="8dp"
                             android:layout_marginTop="8dp"
+                            android:layout_marginEnd="8dp"
                             android:background="@drawable/bg_caixa_txt"
                             android:padding="8dp"
                             android:text="@string/cidade"
                             android:textColor="@color/colorPrimaryDark"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toBottomOf="@+id/txv_idade" />
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toEndOf="@+id/txv_estado"
+                            app:layout_constraintTop_toBottomOf="@+id/divider4" />
 
                         <TextView
                             android:id="@+id/txv_descricao"
@@ -186,7 +191,7 @@
                             android:layout_marginStart="8dp"
                             android:layout_marginTop="16dp"
                             android:layout_marginEnd="8dp"
-                            android:layout_marginBottom="24dp"
+                            android:layout_marginBottom="75dp"
                             android:background="@drawable/bg_btn"
                             android:clickable="true"
                             android:elevation="25dp"
@@ -199,14 +204,14 @@
                             app:layout_constraintBottom_toBottomOf="parent"
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toBottomOf="@+id/txv_descricao"
-                            app:layout_constraintVertical_bias="0.100000024" />
+                            app:layout_constraintTop_toBottomOf="@+id/txv_descricao" />
 
                         <ImageView
                             android:id="@+id/imageView5"
                             android:layout_width="50dp"
                             android:layout_height="50dp"
                             android:layout_marginStart="8dp"
+                            android:contentDescription="TODO"
                             android:padding="8dp"
                             app:layout_constraintBottom_toBottomOf="@+id/txv_nome_meus_anuncios"
                             app:layout_constraintEnd_toStartOf="@+id/txv_nome_meus_anuncios"
@@ -214,8 +219,7 @@
                             app:layout_constraintHorizontal_chainStyle="packed"
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintTop_toTopOf="@+id/txv_nome_meus_anuncios"
-                            app:srcCompat="@drawable/ic_colar"
-                            android:contentDescription="TODO" />
+                            app:srcCompat="@drawable/ic_colar" />
 
                         <ImageView
                             android:id="@+id/imageView6"
@@ -228,12 +232,70 @@
                             app:layout_constraintEnd_toEndOf="@+id/btnVerTelefone"
                             app:layout_constraintTop_toTopOf="@+id/btnVerTelefone"
                             app:srcCompat="@drawable/ic_concersar" />
+
+                        <TextView
+                            android:id="@+id/textView6"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="8dp"
+                            android:text="@string/descricao_do_animal"
+                            android:textColor="@color/colorPrimaryDark"
+                            app:layout_constraintBottom_toBottomOf="@+id/imageView"
+                            app:layout_constraintStart_toEndOf="@+id/imageView"
+                            app:layout_constraintTop_toTopOf="@+id/imageView" />
+
+                        <TextView
+                            android:id="@+id/textView8"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="8dp"
+                            android:text="@string/txt_locallização"
+                            android:textColor="@color/colorPrimaryDark"
+                            android:textColorLink="@color/colorPrimaryDark"
+                            app:layout_constraintBottom_toBottomOf="@+id/imageView7"
+                            app:layout_constraintStart_toEndOf="@+id/imageView7"
+                            app:layout_constraintTop_toTopOf="@+id/imageView7" />
+
+                        <View
+                            android:id="@+id/divider2"
+                            android:layout_width="0dp"
+                            android:layout_height="1dp"
+                            android:layout_marginStart="8dp"
+                            android:layout_marginTop="4dp"
+                            android:layout_marginEnd="8dp"
+                            android:background="@drawable/bg_bt_redes_sociais"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@+id/imageView" />
+
+                        <View
+                            android:id="@+id/divider4"
+                            android:layout_width="0dp"
+                            android:layout_height="1dp"
+                            android:layout_marginStart="8dp"
+                            android:layout_marginTop="4dp"
+                            android:layout_marginEnd="8dp"
+                            android:background="@drawable/bg_bt_redes_sociais"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintHorizontal_bias="0.0"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@+id/imageView7" />
+
+                        <ImageView
+                            android:id="@+id/imageView7"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="8dp"
+                            android:layout_marginTop="8dp"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@+id/txv_genero"
+                            app:srcCompat="@drawable/ic_microchip" />
                     </android.support.constraint.ConstraintLayout>
 
                     <android.support.constraint.ConstraintLayout
                         android:id="@+id/fotoss"
                         android:layout_width="match_parent"
-                        android:layout_height="250dp"
+                        android:layout_height="200dp"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent">
