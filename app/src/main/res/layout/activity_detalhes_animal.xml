@@ -8,218 +8,260 @@
     android:orientation="vertical"
     tools:context=".activity.DetalhesAnimalActivity">
 
-    <ScrollView
+    <android.support.constraint.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical" >
+        <ScrollView
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            app:layout_constraintBottom_toTopOf="@+id/constraintLayout2"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
 
-            <android.support.constraint.ConstraintLayout
+            <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent">
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
 
                 <android.support.constraint.ConstraintLayout
-                    android:layout_width="0dp"
-                    android:layout_height="300dp"
-                    android:layout_marginStart="2dp"
-                    android:layout_marginTop="2dp"
-                    android:layout_marginEnd="2dp"
-                    android:background="@drawable/btn_compartilhar"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintHorizontal_bias="0.0"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/fotoss">
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
 
-                    <TextView
-                        android:id="@+id/txv_nome_meus_anuncios"
+                    <android.support.constraint.ConstraintLayout
                         android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_margin="8dp"
-                        android:layout_marginStart="8dp"
-                        android:layout_marginTop="8dp"
-                        android:layout_marginEnd="8dp"
-                        android:padding="8dp"
-                        android:text="Nome"
-                        android:textAlignment="center"
-                        android:textColor="@color/colorPrimaryDark"
-                        android:textSize="20sp"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent" />
-
-                    <TextView
-                        android:id="@+id/txv_especie"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_margin="8dp"
-                        android:layout_marginStart="8dp"
-                        android:layout_marginTop="8dp"
-                        android:padding="8dp"
-                        android:text="Especie"
-                        android:textColorLink="@color/colorPrimaryDark"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/txv_nome_meus_anuncios" />
-
-                    <TextView
-                        android:id="@+id/txv_genero"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_margin="8dp"
-                        android:layout_marginStart="8dp"
-                        android:layout_marginTop="8dp"
-                        android:padding="8dp"
-                        android:text="macho"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/txv_especie" />
-
-                    <TextView
-                        android:id="@+id/txv_idade"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_margin="8dp"
-                        android:padding="8dp"
-                        android:text="Idade"
-                        app:layout_constraintStart_toEndOf="@+id/txv_genero"
-                        app:layout_constraintTop_toBottomOf="@+id/txv_especie" />
-
-                    <TextView
-                        android:id="@+id/txv_porte"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="8dp"
-                        android:layout_marginTop="8dp"
-                        android:layout_marginEnd="8dp"
-                        android:padding="8dp"
-                        android:text="Porte"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toEndOf="@+id/txv_idade"
-                        app:layout_constraintTop_toBottomOf="@+id/txv_especie" />
-
-                    <TextView
-                        android:id="@+id/txv_raca"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_margin="8dp"
-                        android:layout_marginStart="8dp"
-                        android:layout_marginTop="8dp"
-                        android:padding="8dp"
-                        android:text="Raça"
-                        app:layout_constraintStart_toEndOf="@+id/txv_especie"
-                        app:layout_constraintTop_toBottomOf="@+id/txv_nome_meus_anuncios" />
-
-                    <TextView
-                        android:id="@+id/txv_estado"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_margin="8dp"
-                        android:layout_marginStart="8dp"
-                        android:layout_marginTop="8dp"
-                        android:layout_marginEnd="8dp"
-                        android:padding="8dp"
-                        android:text="UF"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toEndOf="@+id/txv_cidade"
-                        app:layout_constraintTop_toBottomOf="@+id/txv_genero" />
-
-                    <TextView
-                        android:id="@+id/txv_cidade"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_margin="8dp"
-                        android:layout_marginStart="8dp"
-                        android:layout_marginTop="8dp"
-                        android:padding="8dp"
-                        android:text="Cidade"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/txv_idade" />
-
-                    <TextView
-                        android:id="@+id/txv_descricao"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_margin="8dp"
-                        android:layout_marginStart="8dp"
-                        android:layout_marginTop="8dp"
-                        android:layout_marginEnd="8dp"
-                        android:layout_marginBottom="8dp"
-                        android:padding="8dp"
+                        android:layout_height="300dp"
+                        android:layout_margin="0dp"
+                        android:background="@drawable/bg_branco_gradient"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintHorizontal_bias="0.54"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/txv_estado" />
-                </android.support.constraint.ConstraintLayout>
+                        app:layout_constraintTop_toBottomOf="@+id/fotoss">
 
-                <android.support.constraint.ConstraintLayout
-                    android:id="@+id/fotoss"
-                    android:layout_width="match_parent"
-                    android:layout_height="250dp"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent">
+                        <TextView
+                            android:id="@+id/txv_nome_meus_anuncios"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="8dp"
+                            android:layout_marginTop="8dp"
+                            android:layout_marginEnd="8dp"
+                            android:padding="8dp"
+                            android:text="@string/nome_do_animal"
+                            android:textAlignment="textStart"
+                            android:textColor="@color/colorPrimaryDark"
+                            android:textSize="20sp"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintHorizontal_bias="0.5"
+                            app:layout_constraintStart_toEndOf="@+id/imageView5"
+                            app:layout_constraintTop_toTopOf="parent" />
 
-                    <com.synnapps.carouselview.CarouselView
-                        android:id="@+id/carouselView"
+                        <TextView
+                            android:id="@+id/txv_especie"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="8dp"
+                            android:layout_marginStart="8dp"
+                            android:layout_marginTop="8dp"
+                            android:padding="8dp"
+                            android:text="@string/especie"
+                            android:textColorLink="@color/colorPrimaryDark"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@+id/txv_nome_meus_anuncios" />
+
+                        <TextView
+                            android:id="@+id/txv_genero"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="8dp"
+                            android:layout_marginStart="8dp"
+                            android:layout_marginTop="8dp"
+                            android:padding="8dp"
+                            android:text="@string/txt_genero"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@+id/txv_especie" />
+
+                        <TextView
+                            android:id="@+id/txv_idade"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="8dp"
+                            android:padding="8dp"
+                            android:text="@string/txt_idade"
+                            app:layout_constraintStart_toEndOf="@+id/txv_genero"
+                            app:layout_constraintTop_toBottomOf="@+id/txv_especie" />
+
+                        <TextView
+                            android:id="@+id/txv_porte"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="8dp"
+                            android:layout_marginTop="8dp"
+                            android:layout_marginEnd="8dp"
+                            android:padding="8dp"
+                            android:text="@string/preencha_porte"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toEndOf="@+id/txv_idade"
+                            app:layout_constraintTop_toBottomOf="@+id/txv_especie" />
+
+                        <TextView
+                            android:id="@+id/txv_raca"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="8dp"
+                            android:layout_marginStart="8dp"
+                            android:layout_marginTop="8dp"
+                            android:layout_marginEnd="8dp"
+                            android:padding="8dp"
+                            android:text="@string/raca"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toEndOf="@+id/txv_especie"
+                            app:layout_constraintTop_toBottomOf="@+id/txv_nome_meus_anuncios" />
+
+                        <TextView
+                            android:id="@+id/txv_estado"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="8dp"
+                            android:layout_marginStart="8dp"
+                            android:layout_marginTop="8dp"
+                            android:layout_marginEnd="8dp"
+                            android:padding="8dp"
+                            android:text="@string/txt_estado"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toEndOf="@+id/txv_cidade"
+                            app:layout_constraintTop_toBottomOf="@+id/txv_genero" />
+
+                        <TextView
+                            android:id="@+id/txv_cidade"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="8dp"
+                            android:layout_marginStart="8dp"
+                            android:layout_marginTop="8dp"
+                            android:padding="8dp"
+                            android:text="@string/cidade"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@+id/txv_idade" />
+
+                        <TextView
+                            android:id="@+id/txv_descricao"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="8dp"
+                            android:layout_marginStart="8dp"
+                            android:layout_marginTop="8dp"
+                            android:layout_marginEnd="8dp"
+                            android:layout_marginBottom="8dp"
+                            android:padding="8dp"
+                            android:text="@string/txt_cad_helper_descrição_animal"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@+id/txv_estado"
+                            app:layout_constraintVertical_bias="0.060000002" />
+
+                        <Button
+                            android:id="@+id/btnVerTelefone"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="8dp"
+                            android:layout_marginTop="8dp"
+                            android:layout_marginEnd="8dp"
+                            android:layout_marginBottom="8dp"
+                            android:background="@drawable/bg_btn"
+                            android:clickable="true"
+                            android:elevation="25dp"
+                            android:foreground="?attr/selectableItemBackground"
+                            android:shadowColor="@color/black_overlay"
+                            android:shadowDx="@android:integer/config_shortAnimTime"
+                            android:text="@string/txt_saber_mais"
+                            android:textColor="@color/common_google_signin_btn_text_dark_default"
+                            android:textStyle="bold"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@+id/txv_descricao"
+                            app:layout_constraintVertical_bias="0.100000024" />
+
+                        <ImageView
+                            android:id="@+id/imageView5"
+                            android:layout_width="50dp"
+                            android:layout_height="50dp"
+                            android:layout_marginStart="8dp"
+                            android:padding="8dp"
+                            app:layout_constraintBottom_toBottomOf="@+id/txv_nome_meus_anuncios"
+                            app:layout_constraintEnd_toStartOf="@+id/txv_nome_meus_anuncios"
+                            app:layout_constraintHorizontal_bias="0.37"
+                            app:layout_constraintHorizontal_chainStyle="packed"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="@+id/txv_nome_meus_anuncios"
+                            app:srcCompat="@drawable/ic_colar"
+                            android:contentDescription="TODO" />
+                    </android.support.constraint.ConstraintLayout>
+
+                    <android.support.constraint.ConstraintLayout
+                        android:id="@+id/fotoss"
                         android:layout_width="match_parent"
                         android:layout_height="250dp"
-                        app:fillColor="#FFFFFFFF"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent"
-                        app:pageColor="#00000000"
-                        app:radius="6dp"
-                        app:slideInterval="3000"
-                        app:strokeColor="#FF777777"
-                        app:strokeWidth="1dp" />
+                        app:layout_constraintTop_toTopOf="parent">
 
-                    <ImageView
-                        android:id="@+id/imageView3"
-                        android:layout_width="0dp"
-                        android:layout_height="250dp"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent"
-                        app:srcCompat="@drawable/bg_img_card_gradient" />
+                        <com.synnapps.carouselview.CarouselView
+                            android:id="@+id/carouselView"
+                            android:layout_width="match_parent"
+                            android:layout_height="250dp"
+                            app:fillColor="#FFFFFFFF"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent"
+                            app:pageColor="#00000000"
+                            app:radius="6dp"
+                            app:slideInterval="3000"
+                            app:strokeColor="#FF777777"
+                            app:strokeWidth="1dp" />
+
+                        <ImageView
+                            android:id="@+id/imageView3"
+                            android:layout_width="0dp"
+                            android:layout_height="250dp"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent"
+                            app:srcCompat="@drawable/bg_img_card_gradient" />
+
+                    </android.support.constraint.ConstraintLayout>
 
                 </android.support.constraint.ConstraintLayout>
 
-            </android.support.constraint.ConstraintLayout>
-        </LinearLayout>
-    </ScrollView>
+            </LinearLayout>
+        </ScrollView>
 
-    <Button
-        android:id="@+id/btnVerTelefone"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="20dp"
-        android:background="@drawable/bg_btn"
-        android:clickable="true"
-        android:elevation="25dp"
-        android:foreground="?attr/selectableItemBackground"
-        android:shadowColor="@color/black_overlay"
-        android:shadowDx="@android:integer/config_shortAnimTime"
-        android:text="@string/ver_telefone"
-        android:textColor="@color/common_google_signin_btn_text_dark_default"
-        android:textStyle="bold" />
-
-    <android.support.constraint.ConstraintLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-
-        <com.google.android.gms.ads.AdView
-            android:id="@+id/banner_detalhes_animal"
+        <android.support.constraint.ConstraintLayout
+            android:id="@+id/constraintLayout2"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:adSize="BANNER"
-            app:adUnitId="ca-app-pub-3940256099942544/6300978111"
+            android:background="@drawable/bg_branco_gradient_invertido"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="1.0" />
+            app:layout_constraintStart_toStartOf="parent">
 
+            <com.google.android.gms.ads.AdView
+                android:id="@+id/banner_detalhes_animal"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                app:adSize="BANNER"
+                app:adUnitId="ca-app-pub-3940256099942544/6300978111"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="1.0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.0" />
+
+        </android.support.constraint.ConstraintLayout>
     </android.support.constraint.ConstraintLayout>
+
 </LinearLayout>
