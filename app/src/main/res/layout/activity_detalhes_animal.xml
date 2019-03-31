@@ -66,6 +66,7 @@
                             android:layout_marginTop="8dp"
                             android:padding="8dp"
                             android:text="@string/especie"
+                            android:textColor="@color/colorPrimaryDark"
                             android:textColorLink="@color/colorPrimaryDark"
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintTop_toBottomOf="@+id/txv_nome_meus_anuncios" />
@@ -79,6 +80,7 @@
                             android:layout_marginTop="8dp"
                             android:padding="8dp"
                             android:text="@string/txt_genero"
+                            android:textColor="@color/colorPrimaryDark"
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintTop_toBottomOf="@+id/txv_especie" />
 
@@ -89,6 +91,7 @@
                             android:layout_margin="8dp"
                             android:padding="8dp"
                             android:text="@string/txt_idade"
+                            android:textColor="@color/colorPrimaryDark"
                             app:layout_constraintStart_toEndOf="@+id/txv_genero"
                             app:layout_constraintTop_toBottomOf="@+id/txv_especie" />
 
@@ -101,6 +104,7 @@
                             android:layout_marginEnd="8dp"
                             android:padding="8dp"
                             android:text="@string/preencha_porte"
+                            android:textColor="@color/colorPrimaryDark"
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintStart_toEndOf="@+id/txv_idade"
                             app:layout_constraintTop_toBottomOf="@+id/txv_especie" />
@@ -115,6 +119,7 @@
                             android:layout_marginEnd="8dp"
                             android:padding="8dp"
                             android:text="@string/raca"
+                            android:textColor="@color/colorPrimaryDark"
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintStart_toEndOf="@+id/txv_especie"
                             app:layout_constraintTop_toBottomOf="@+id/txv_nome_meus_anuncios" />
@@ -129,6 +134,7 @@
                             android:layout_marginEnd="8dp"
                             android:padding="8dp"
                             android:text="@string/txt_estado"
+                            android:textColor="@color/colorPrimaryDark"
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintStart_toEndOf="@+id/txv_cidade"
                             app:layout_constraintTop_toBottomOf="@+id/txv_genero" />
@@ -142,6 +148,7 @@
                             android:layout_marginTop="8dp"
                             android:padding="8dp"
                             android:text="@string/cidade"
+                            android:textColor="@color/colorPrimaryDark"
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintTop_toBottomOf="@+id/txv_idade" />
 
@@ -155,7 +162,8 @@
                             android:layout_marginEnd="8dp"
                             android:layout_marginBottom="8dp"
                             android:padding="8dp"
-                            android:text="@string/txt_cad_helper_descrição_animal"
+                            android:text="@string/txt_ajudar"
+                            android:textColor="@color/colorPrimaryDark"
                             app:layout_constraintBottom_toBottomOf="parent"
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintStart_toStartOf="parent"
@@ -199,6 +207,18 @@
                             app:layout_constraintTop_toTopOf="@+id/txv_nome_meus_anuncios"
                             app:srcCompat="@drawable/ic_colar"
                             android:contentDescription="TODO" />
+
+                        <ImageView
+                            android:id="@+id/imageView6"
+                            android:layout_width="40dp"
+                            android:layout_height="40dp"
+                            android:layout_marginEnd="24dp"
+                            android:contentDescription="TODO"
+                            android:elevation="30dp"
+                            app:layout_constraintBottom_toBottomOf="@+id/btnVerTelefone"
+                            app:layout_constraintEnd_toEndOf="@+id/btnVerTelefone"
+                            app:layout_constraintTop_toTopOf="@+id/btnVerTelefone"
+                            app:srcCompat="@drawable/ic_concersar" />
                     </android.support.constraint.ConstraintLayout>
 
                     <android.support.constraint.ConstraintLayout
