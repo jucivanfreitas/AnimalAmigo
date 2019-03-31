@@ -12,13 +12,49 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
+        <android.support.constraint.ConstraintLayout
+            android:id="@+id/fotoss"
+            android:layout_width="match_parent"
+            android:layout_height="200dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <com.synnapps.carouselview.CarouselView
+                android:id="@+id/carouselView"
+                android:layout_width="match_parent"
+                android:layout_height="250dp"
+                app:fillColor="#FFFFFFFF"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:pageColor="#00000000"
+                app:radius="6dp"
+                app:slideInterval="3000"
+                app:strokeColor="#FF777777"
+                app:strokeWidth="1dp" />
+
+            <ImageView
+                android:id="@+id/imageView3"
+                android:layout_width="0dp"
+                android:layout_height="250dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:srcCompat="@drawable/bg_img_card_gradient" />
+
+        </android.support.constraint.ConstraintLayout>
+
         <ScrollView
             android:layout_width="0dp"
             android:layout_height="0dp"
             app:layout_constraintBottom_toBottomOf="@+id/constraintLayout2"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.0">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -27,11 +63,12 @@
 
                 <android.support.constraint.ConstraintLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="200dp">
 
                     <android.support.constraint.ConstraintLayout
                         android:layout_width="0dp"
-                        android:layout_height="405dp"
+                        android:layout_height="wrap_content"
                         android:layout_margin="0dp"
                         android:layout_marginBottom="8dp"
                         android:background="@drawable/bg_branco_gradient"
@@ -39,7 +76,18 @@
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintHorizontal_bias="0.0"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/fotoss">
+
+                        app:layout_constraintVertical_bias="0.0">
+
+                        <ImageView
+                            android:id="@+id/imageView8"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="8dp"
+                            android:layout_marginTop="8dp"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@+id/txv_estado"
+                            app:srcCompat="@drawable/ic_historia_do_pet" />
 
                         <ImageView
                             android:id="@+id/imageView"
@@ -143,11 +191,10 @@
                             android:layout_height="wrap_content"
                             android:layout_margin="8dp"
                             android:layout_marginStart="8dp"
-                            android:background="@drawable/bg_caixa_txt"
                             android:padding="8dp"
                             android:text="@string/txt_estado"
-                            android:textColor="@color/colorPrimaryDark"
-                            app:layout_constraintStart_toStartOf="parent"
+                            android:textColor="@color/common_google_signin_btn_text_dark_focused"
+                            app:layout_constraintStart_toEndOf="@+id/imageView7"
                             app:layout_constraintTop_toBottomOf="@+id/divider4" />
 
                         <TextView
@@ -158,10 +205,9 @@
                             android:layout_marginStart="8dp"
                             android:layout_marginTop="8dp"
                             android:layout_marginEnd="8dp"
-                            android:background="@drawable/bg_caixa_txt"
                             android:padding="8dp"
                             android:text="@string/cidade"
-                            android:textColor="@color/colorPrimaryDark"
+                            android:textColor="@color/common_google_signin_btn_text_dark_focused"
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintStart_toEndOf="@+id/txv_estado"
                             app:layout_constraintTop_toBottomOf="@+id/divider4" />
@@ -171,18 +217,17 @@
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_margin="8dp"
-                            android:layout_marginStart="8dp"
                             android:layout_marginTop="8dp"
                             android:layout_marginEnd="8dp"
-                            android:background="@drawable/bg_caixa_txt"
+                            android:elevation="50dp"
                             android:padding="8dp"
-                            android:text="@string/txt_ajudar"
-                            android:textColor="@color/colorPrimaryDark"
-                            app:layout_constraintBottom_toBottomOf="parent"
+                            android:text="@string/txt_cad_helper_descrição_animal"
+                            android:textColor="@color/common_google_signin_btn_text_dark_focused"
+                            android:visibility="visible"
                             app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toBottomOf="@+id/txv_estado"
-                            app:layout_constraintVertical_bias="0.060000002" />
+                            app:layout_constraintHorizontal_bias="0.0"
+                            app:layout_constraintStart_toEndOf="@+id/imageView8"
+                            app:layout_constraintTop_toBottomOf="@+id/divider5" />
 
                         <Button
                             android:id="@+id/btnVerTelefone"
@@ -191,7 +236,7 @@
                             android:layout_marginStart="8dp"
                             android:layout_marginTop="16dp"
                             android:layout_marginEnd="8dp"
-                            android:layout_marginBottom="75dp"
+                            android:layout_marginBottom="202dp"
                             android:background="@drawable/bg_btn"
                             android:clickable="true"
                             android:elevation="25dp"
@@ -221,18 +266,6 @@
                             app:layout_constraintTop_toTopOf="@+id/txv_nome_meus_anuncios"
                             app:srcCompat="@drawable/ic_colar" />
 
-                        <ImageView
-                            android:id="@+id/imageView6"
-                            android:layout_width="40dp"
-                            android:layout_height="40dp"
-                            android:layout_marginEnd="24dp"
-                            android:contentDescription="TODO"
-                            android:elevation="30dp"
-                            app:layout_constraintBottom_toBottomOf="@+id/btnVerTelefone"
-                            app:layout_constraintEnd_toEndOf="@+id/btnVerTelefone"
-                            app:layout_constraintTop_toTopOf="@+id/btnVerTelefone"
-                            app:srcCompat="@drawable/ic_concersar" />
-
                         <TextView
                             android:id="@+id/textView6"
                             android:layout_width="wrap_content"
@@ -255,6 +288,19 @@
                             app:layout_constraintBottom_toBottomOf="@+id/imageView7"
                             app:layout_constraintStart_toEndOf="@+id/imageView7"
                             app:layout_constraintTop_toTopOf="@+id/imageView7" />
+
+                        <TextView
+                            android:id="@+id/textView9"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="8dp"
+                            android:text="@string/txt_pouco_sobre"
+                            android:textColor="@color/colorPrimaryDark"
+                            android:textColorLink="@color/colorPrimaryDark"
+                            app:layout_constraintBottom_toBottomOf="@+id/imageView8"
+                            app:layout_constraintStart_toEndOf="@+id/imageView8"
+                            app:layout_constraintTop_toTopOf="@+id/imageView8"
+                            app:layout_constraintVertical_bias="0.0" />
 
                         <View
                             android:id="@+id/divider2"
@@ -281,6 +327,19 @@
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintTop_toBottomOf="@+id/imageView7" />
 
+                        <View
+                            android:id="@+id/divider5"
+                            android:layout_width="0dp"
+                            android:layout_height="1dp"
+                            android:layout_marginStart="8dp"
+                            android:layout_marginTop="8dp"
+                            android:layout_marginEnd="8dp"
+                            android:background="@drawable/bg_bt_redes_sociais"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintHorizontal_bias="0.0"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@+id/textView9" />
+
                         <ImageView
                             android:id="@+id/imageView7"
                             android:layout_width="wrap_content"
@@ -290,39 +349,6 @@
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintTop_toBottomOf="@+id/txv_genero"
                             app:srcCompat="@drawable/ic_microchip" />
-                    </android.support.constraint.ConstraintLayout>
-
-                    <android.support.constraint.ConstraintLayout
-                        android:id="@+id/fotoss"
-                        android:layout_width="match_parent"
-                        android:layout_height="200dp"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent">
-
-                        <com.synnapps.carouselview.CarouselView
-                            android:id="@+id/carouselView"
-                            android:layout_width="match_parent"
-                            android:layout_height="250dp"
-                            app:fillColor="#FFFFFFFF"
-                            app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toTopOf="parent"
-                            app:pageColor="#00000000"
-                            app:radius="6dp"
-                            app:slideInterval="3000"
-                            app:strokeColor="#FF777777"
-                            app:strokeWidth="1dp" />
-
-                        <ImageView
-                            android:id="@+id/imageView3"
-                            android:layout_width="0dp"
-                            android:layout_height="250dp"
-                            app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toTopOf="parent"
-                            app:srcCompat="@drawable/bg_img_card_gradient" />
-
                     </android.support.constraint.ConstraintLayout>
 
                 </android.support.constraint.ConstraintLayout>
@@ -335,6 +361,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@drawable/bg_branco_gradient_invertido"
+            android:visibility="visible"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent">
@@ -343,14 +370,14 @@
                 android:id="@+id/banner_detalhes_animal"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
                 app:adSize="BANNER"
                 app:adUnitId="ca-app-pub-3940256099942544/6300978111"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="1.0"
+                app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintVertical_bias="0.0" />
+                app:layout_constraintTop_toTopOf="parent" />
 
         </android.support.constraint.ConstraintLayout>
     </android.support.constraint.ConstraintLayout>

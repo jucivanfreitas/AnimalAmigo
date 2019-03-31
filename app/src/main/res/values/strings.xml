@@ -219,6 +219,7 @@
     <string name="atualizar_cadastro">Atualizar cadastro</string>
     <string name="txt_saber_mais">Quero Saber Mais</string>
     <string name="txt_locallização">Localização do PET</string>
+    <string name="txt_pouco_sobre">Sobre o PET</string>
 
 
 </resources>
