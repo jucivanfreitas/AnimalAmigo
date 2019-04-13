@@ -12,6 +12,8 @@ import com.celvansystems.projetoamigoanimal.R;
 
 public class NotificacoesFragment extends Fragment {
 
+
+
     private View view;
 
     public NotificacoesFragment() {}

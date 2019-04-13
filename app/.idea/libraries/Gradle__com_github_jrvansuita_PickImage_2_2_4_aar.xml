@@ -1,0 +1,13 @@
+<component name="libraryTable">
+  <library name="Gradle: com.github.jrvansuita:PickImage:2.2.4@aar">
+    <ANNOTATIONS>
+      <root url="jar://$USER_HOME$/.gradle/caches/transforms-1/files-1.1/PickImage-2.2.4.aar/51cf14984ab2fb5f88c0f13f0d357904/annotations.zip!/" />
+    </ANNOTATIONS>
+    <CLASSES>
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-1/files-1.1/PickImage-2.2.4.aar/51cf14984ab2fb5f88c0f13f0d357904/res" />
+      <root url="jar://$USER_HOME$/.gradle/caches/transforms-1/files-1.1/PickImage-2.2.4.aar/51cf14984ab2fb5f88c0f13f0d357904/jars/classes.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>
