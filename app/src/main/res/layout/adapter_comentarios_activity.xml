@@ -12,10 +12,8 @@
         android:layout_height="60dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
-        android:layout_marginBottom="8dp"
         android:background="@drawable/bg_caixa_txt"
         android:contentDescription="TODO"
-        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/com_facebook_profile_picture_blank_portrait" />
@@ -26,26 +24,22 @@
 
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
+        android:layout_marginTop="4dp"
         android:text="@string/usuario"
         android:textStyle="bold"
-        app:layout_constraintStart_toEndOf="@+id/imageView_foto_usuario_comentarios"
-        app:layout_constraintTop_toTopOf="@+id/imageView_foto_usuario_comentarios" />
+        app:layout_constraintStart_toStartOf="@+id/imageView_foto_usuario_comentarios"
+        app:layout_constraintTop_toBottomOf="@+id/imageView_foto_usuario_comentarios" />
 
     <TextView
         android:id="@+id/textView_texto"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="4dp"
         android:layout_marginEnd="8dp"
-        android:layout_marginBottom="24dp"
         android:text="@string/comentario"
-        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="@+id/textView_nome_usuario"
-        app:layout_constraintTop_toBottomOf="@+id/divider3"
-        app:layout_constraintVertical_bias="0.0" />
+        app:layout_constraintTop_toBottomOf="@+id/textView7" />
 
     <TextView
         android:id="@+id/textView_dataHora"
@@ -71,11 +65,13 @@
         android:id="@+id/divider3"
         android:layout_width="0dp"
         android:layout_height="2dp"
-        android:layout_marginTop="2dp"
-        android:background="@drawable/bg_bt_redes_sociais"
+        android:layout_marginTop="24dp"
+        android:layout_marginBottom="2dp"
+        android:background="@drawable/bg_caixa_txt"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="@+id/textView_dataHora"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="@+id/textView_nome_usuario"
-        app:layout_constraintTop_toBottomOf="@+id/textView7" />
+        app:layout_constraintTop_toBottomOf="@+id/textView_texto" />
 
 </android.support.constraint.ConstraintLayout>
