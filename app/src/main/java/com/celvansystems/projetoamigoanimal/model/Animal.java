@@ -25,6 +25,7 @@ public class Animal implements Serializable {
     private String dataCadastro;
     private List<String> fotos;
     private List<String> curtidas;
+    private List<String> denuncias;
     private List<Comentario> listaComentarios;
 
     public Animal (){
@@ -203,6 +204,14 @@ public class Animal implements Serializable {
 
     public void setCurtidas(List<String> curtidas) {
         this.curtidas = curtidas;
+    }
+
+    public List<String> getDenuncias() {
+        return denuncias;
+    }
+
+    public void setDenuncias(List<String> denuncias) {
+        this.denuncias = denuncias;
     }
 
     public List<Comentario> getListaComentarios() {

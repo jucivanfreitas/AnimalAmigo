@@ -168,7 +168,7 @@
                     android:orientation="horizontal">
 
                     <Spinner
-                        android:id="@+id/spinner_cad_estado"
+                        android:id="@+id/spinner_cad_estado_complemento"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
 
@@ -178,7 +178,7 @@
                         android:padding="12dp" />
 
                     <Spinner
-                        android:id="@+id/spinner_cad_cidade"
+                        android:id="@+id/spinner_cad_cidade_complemento"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="8dp"

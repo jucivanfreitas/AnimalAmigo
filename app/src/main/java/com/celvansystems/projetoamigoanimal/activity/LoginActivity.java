@@ -43,6 +43,8 @@ import com.facebook.AccessToken;
 import com.facebook.CallbackManager;
 import com.facebook.FacebookCallback;
 import com.facebook.FacebookException;
+import com.facebook.GraphRequest;
+import com.facebook.GraphResponse;
 import com.facebook.login.LoginResult;
 import com.facebook.login.widget.LoginButton;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
@@ -64,6 +66,9 @@ import com.google.firebase.auth.FirebaseAuthWeakPasswordException;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
 import com.google.firebase.auth.UserProfileChangeRequest;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -231,6 +236,8 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             @Override
             public void onSuccess(LoginResult loginResult) {
                 handleFacebookAccessToken(loginResult.getAccessToken());
+
+                getFbInfo();
             }
             @Override
             public void onCancel() {
@@ -241,6 +248,40 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         });
     }
 
+    private void getFbInfo() {
+        GraphRequest request = GraphRequest.newMeRequest(
+                AccessToken.getCurrentAccessToken(),
+                new GraphRequest.GraphJSONObjectCallback() {
+                    @Override
+                    public void onCompleted(
+                            JSONObject object,
+                            GraphResponse response) {
+                        try {
+                            Log.d("INFO3", "fb json object: " + object);
+                            Log.d("INFO3", "fb graph response: " + response);
+
+                            String id = object.getString("id");
+                            String first_name = object.getString("first_name");
+                            String last_name = object.getString("last_name");
+                            String gender = object.getString("gender");
+                            String birthday = object.getString("birthday");
+                            String image_url = "http://graph.facebook.com/" + id + "/picture?type=large";
+
+                            String email;
+                            if (object.has("email")) {
+                                email = object.getString("email");
+                            }
+
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                });
+        Bundle parameters = new Bundle();
+        parameters.putString("fields", "id,first_name,last_name,email,gender,birthday"); // id,first_name,last_name,email,gender,birthday,cover,picture.type(large)
+        request.setParameters(parameters);
+        request.executeAsync();
+    }
     /**
      * método que configura o login por meio do google
      */
@@ -271,11 +312,11 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
      * método auxiliar para login por facebook
      * @param token token
      */
-    private void handleFacebookAccessToken(AccessToken token) {
+    private void handleFacebookAccessToken(final AccessToken token) {
 
         showProgress(true);
 
-        AuthCredential credential = FacebookAuthProvider.getCredential(token.getToken());
+        final AuthCredential credential = FacebookAuthProvider.getCredential(token.getToken());
 
         authentication.signInWithCredential(credential)
                 .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
@@ -287,6 +328,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                                 //direciona para a tela principal
                                 startActivity(new Intent(LoginActivity.this, MainActivity.class));
                                 finish();
+
                                 Util.setSnackBar(layout, getString(R.string.sucesso_login_facebook));
                             } else {
                                 Util.setSnackBar(layout, getString(R.string.falha_login_facebook));
@@ -463,8 +505,13 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
 
                                 // TODO: 20/02/2019 habilitar verificacao de e-mail no final. Não deletar o código
                                 //if (checkIfEmailVerified()) {
-                                Intent intent = new Intent(getApplicationContext(), MainActivity.class);
-                                startActivity(intent);
+                                if(ConfiguracaoFirebase.getFirebaseAutenticacao().getCurrentUser().getPhotoUrl()!=null) {
+                                    Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+                                    startActivity(intent);
+                                } else {
+                                    Intent intent = new Intent(getApplicationContext(), ComplementoLoginActivity.class);
+                                    startActivity(intent);
+                                }
                                 Toast.makeText(LoginActivity.this, getString(R.string.sucesso_login),
                                         Toast.LENGTH_SHORT).show();
                                 // TODO: 06/03/2019 setSnackBar passando mensagem pra Main

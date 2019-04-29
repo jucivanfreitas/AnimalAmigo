@@ -172,8 +172,8 @@ public class CadastrarAnuncioFragment extends Fragment
         spnSexo = viewFragment.findViewById(R.id.spinner_cad_Sexo);
         spnIdade = viewFragment.findViewById(R.id.spinner_cad_idade);
         spnPorte = viewFragment.findViewById(R.id.spinner_cad_porte);
-        spnEstado = viewFragment.findViewById(R.id.spinner_cad_estado);
-        spnCidade = viewFragment.findViewById(R.id.spinner_cad_cidade);
+        spnEstado = viewFragment.findViewById(R.id.spinner_cad_estado_complemento);
+        spnCidade = viewFragment.findViewById(R.id.spinner_cad_cidade_complemento);
         edtDescricao = viewFragment.findViewById(R.id.editText_cad_descrição);
         edtDescricao.setVerticalScrollBarEnabled(true);
         edtDescricao.setMovementMethod(new ScrollingMovementMethod());

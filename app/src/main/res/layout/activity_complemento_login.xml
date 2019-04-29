@@ -27,6 +27,7 @@
             tools:layout_editor_absoluteY="0dp">
 
             <android.support.constraint.ConstraintLayout
+                android:id="@+id/const_layout_complemento"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_marginTop="16dp"
@@ -35,7 +36,7 @@
                 tools:layout_editor_absoluteY="8dp">
 
                 <ImageView
-                    android:id="@+id/imageView4"
+                    android:id="@+id/imv_foto_complemento"
                     android:layout_width="80dp"
                     android:layout_height="80dp"
                     android:layout_marginStart="8dp"
@@ -47,7 +48,7 @@
                     app:srcCompat="@drawable/com_facebook_profile_picture_blank_square" />
 
                 <EditText
-                    android:id="@+id/_cad_nome"
+                    android:id="@+id/edt_cad_nome"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="8dp"
@@ -58,10 +59,10 @@
                     android:inputType="textPersonName"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/imageView4" />
+                    app:layout_constraintTop_toBottomOf="@+id/imv_foto_complemento" />
 
                 <EditText
-                    android:id="@+id/editText_cad_telefone"
+                    android:id="@+id/edt_cad_telefone"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="8dp"
@@ -72,10 +73,10 @@
                     android:inputType="phone"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/_cad_nome" />
+                    app:layout_constraintTop_toBottomOf="@+id/edt_cad_nome" />
 
                 <EditText
-                    android:id="@+id/editText_data_nascimento"
+                    android:id="@+id/edt_data_nascimento"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="8dp"
@@ -86,7 +87,7 @@
                     android:inputType="date"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/editText_cad_telefone" />
+                    app:layout_constraintTop_toBottomOf="@+id/edt_cad_telefone" />
 
                 <Spinner
                     android:id="@+id/spinner_cad_sexo"
@@ -97,10 +98,10 @@
                     android:layout_marginEnd="8dp"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/editText_data_nascimento" />
+                    app:layout_constraintTop_toBottomOf="@+id/edt_data_nascimento" />
 
                 <Spinner
-                    android:id="@+id/spinner_cad_paiis"
+                    android:id="@+id/spinner_cad_pais_complemento"
                     android:layout_width="395dp"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="8dp"
@@ -111,7 +112,7 @@
                     app:layout_constraintTop_toBottomOf="@+id/spinner_cad_sexo" />
 
                 <Spinner
-                    android:id="@+id/spinner_cad_estado"
+                    android:id="@+id/spinner_cad_estado_complemento"
                     android:layout_width="395dp"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="8dp"
@@ -119,10 +120,10 @@
                     android:layout_marginEnd="8dp"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/spinner_cad_paiis" />
+                    app:layout_constraintTop_toBottomOf="@+id/spinner_cad_pais_complemento" />
 
                 <Spinner
-                    android:id="@+id/spinner_cad_cidade"
+                    android:id="@+id/spinner_cad_cidade_complemento"
                     android:layout_width="395dp"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="8dp"
@@ -130,10 +131,10 @@
                     android:layout_marginEnd="8dp"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/spinner_cad_estado" />
+                    app:layout_constraintTop_toBottomOf="@+id/spinner_cad_estado_complemento" />
 
                 <EditText
-                    android:id="@+id/editText_cad_ocupacao"
+                    android:id="@+id/editText_cad_profissao"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="8dp"
@@ -144,7 +145,7 @@
                     android:inputType="textPersonName"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/spinner_cad_cidade" />
+                    app:layout_constraintTop_toBottomOf="@+id/spinner_cad_cidade_complemento" />
 
                 <EditText
                     android:id="@+id/editText_cad_sobremim"
@@ -158,10 +159,10 @@
                     android:inputType="textMultiLine"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/editText_cad_ocupacao" />
+                    app:layout_constraintTop_toBottomOf="@+id/editText_cad_profissao" />
 
                 <Button
-                    android:id="@+id/btn_comple_cad"
+                    android:id="@+id/btn_cad_complemento"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="8dp"

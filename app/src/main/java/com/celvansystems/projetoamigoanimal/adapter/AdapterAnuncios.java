@@ -19,6 +19,7 @@ import com.celvansystems.projetoamigoanimal.R;
 import com.celvansystems.projetoamigoanimal.activity.ComentariosActivity;
 import com.celvansystems.projetoamigoanimal.activity.DetalhesAnimalActivity;
 import com.celvansystems.projetoamigoanimal.helper.ConfiguracaoFirebase;
+import com.celvansystems.projetoamigoanimal.helper.Constantes;
 import com.celvansystems.projetoamigoanimal.helper.Util;
 import com.celvansystems.projetoamigoanimal.model.Animal;
 import com.celvansystems.projetoamigoanimal.model.Comentario;
@@ -75,6 +76,8 @@ public class AdapterAnuncios extends RecyclerView.Adapter<AdapterAnuncios.MyView
 
                 //curtidas
                 atualizaCurtidas(anuncio, myViewHolder);
+                //denuncias
+                atualizaDenuncias(anuncio, myViewHolder);
                 //Foto do anúncio
                 configuraFotoAnuncio(anuncio, myViewHolder);
                 //Acoes dos botoes
@@ -237,8 +240,61 @@ public class AdapterAnuncios extends RecyclerView.Adapter<AdapterAnuncios.MyView
                 v.getContext().startActivity(comentariosIntent);
             }
         });
+
+        myViewHolder.imvDenunciar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                denunciarAnuncio(myViewHolder.itemView.getContext(), myViewHolder,
+                        anuncio, myViewHolder.imvDenunciar);
+                            }
+        });
     }
 
+    private void denunciarAnuncio(final Context ctx, final RecyclerView.ViewHolder myViewHolder,
+                               final Animal anuncio, final ImageView imageView){
+
+        if (ConfiguracaoFirebase.isUsuarioLogado()) {
+            DatabaseReference anuncioRef = ConfiguracaoFirebase.getFirebase()
+                    .child("meus_animais");
+
+            String usuarioAtual = ConfiguracaoFirebase.getIdUsuario();
+            List<String> listaDenuncias = new ArrayList<>();
+
+            if(isDenunciado(anuncio)){
+                Toast.makeText(ctx, "Usuário já denunciou " + anuncio.getNome()+"!", Toast.LENGTH_SHORT).show();
+            } else {
+                if(ConfiguracaoFirebase.isUsuarioLogado()) {
+                    if (anuncio.getDenuncias() != null) {
+                        listaDenuncias = anuncio.getDenuncias();
+                    }
+                    listaDenuncias.add(usuarioAtual);
+                    anuncio.setDenuncias(listaDenuncias);
+
+                    Task<Void> anuncioDenunciasRef = anuncioRef
+                            .child(anuncio.getIdAnimal())
+                            .child("denuncias")
+                            .setValue(listaDenuncias);
+
+                    imageView.setVisibility(View.GONE);
+
+                    anuncioDenunciasRef.addOnCompleteListener(new OnCompleteListener<Void>() {
+                        @Override
+                        public void onComplete(@NonNull Task<Void> task) {
+                            atualizaDenuncias(anuncio, (MyViewHolder) myViewHolder);
+
+                            //envia email sobre denuncia do anuncio
+                            if(anuncio.getDenuncias().size() >= Constantes.MAX_DENUNCIAS) {
+                                anuncio.remover();
+                            }
+                            Util.setSnackBar(((MyViewHolder) myViewHolder).layout, "Anúncio denunciado!");
+                        }
+                    });
+                }
+            }
+        } else {
+            Toast.makeText(myViewHolder.itemView.getContext(), "Usuário não logado!", Toast.LENGTH_LONG).show();
+        }
+    }
 
     /**
      * metodo que insere comentarios no firebase
@@ -313,6 +369,18 @@ public class AdapterAnuncios extends RecyclerView.Adapter<AdapterAnuncios.MyView
         } catch (Exception e) {e.printStackTrace();}
     }
 
+    private void atualizaDenuncias(Animal anuncio, MyViewHolder myViewHolder) {
+        try {
+            if (isDenunciado(anuncio)) {
+                myViewHolder.imvDenunciar.setVisibility(View.GONE);
+            } else {
+                // TODO: 29/04/2019 van, trocar imagem aqui->>>
+                myViewHolder.imvDenunciar.setImageResource(R.drawable.ic_add_circle_outline_black_24dp);
+            }
+
+        } catch (Exception e) {e.printStackTrace();}
+    }
+
     private void atualizaComentarios(int size, Animal anuncio, MyViewHolder myViewHolder) {
         try {
 
@@ -359,7 +427,7 @@ public class AdapterAnuncios extends RecyclerView.Adapter<AdapterAnuncios.MyView
                     listaCurtidas.add(usuarioAtual);
                     anuncio.setCurtidas(listaCurtidas);
 
-                    Toast.makeText(ctx, "Animal curtido!", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(ctx, "Anúncio curtido!", Toast.LENGTH_SHORT).show();
 
                     Task<Void> anuncioCurtidasRef = anuncioRef
                             .child(anuncio.getIdAnimal())
@@ -380,6 +448,7 @@ public class AdapterAnuncios extends RecyclerView.Adapter<AdapterAnuncios.MyView
             Toast.makeText(myViewHolder.itemView.getContext(), "Usuário não logado!", Toast.LENGTH_LONG).show();
         }
     }
+
     /**
      * método auxiliar para compartilhamento de anuncios
      * @param ctx contexto
@@ -420,6 +489,20 @@ public class AdapterAnuncios extends RecyclerView.Adapter<AdapterAnuncios.MyView
         return retorno;
     }
 
+    private boolean isDenunciado(Animal animal){
+        boolean retorno = false;
+
+        if(ConfiguracaoFirebase.isUsuarioLogado()) {
+            String usuarioAtual = ConfiguracaoFirebase.getIdUsuario();
+
+            if (animal != null && animal.getDenuncias() != null)
+                if (animal.getDenuncias().contains(usuarioAtual)) {
+                    retorno = true;
+                }
+        }
+        return retorno;
+    }
+
     @Override
     public int getItemCount() {
 
@@ -439,7 +522,7 @@ public class AdapterAnuncios extends RecyclerView.Adapter<AdapterAnuncios.MyView
         TextView textViewCurtidas;
         TextView textViewTodosComentarios;
         ImageView foto;
-        ImageView imvCompartilharAnuncio, imvCurtirAnuncio, imvComentarAnuncio;
+        ImageView imvCompartilharAnuncio, imvCurtirAnuncio, imvComentarAnuncio, imvDenunciar;
         ImageButton imbComentarAnuncio;
         EditText edtComentar;
         View layout;
@@ -456,6 +539,7 @@ public class AdapterAnuncios extends RecyclerView.Adapter<AdapterAnuncios.MyView
             numeroCurtidas = itemView.findViewById(R.id.txv_num_curtidas);
             textViewCurtidas = itemView.findViewById(R.id.textViewCurtidas);
             textViewTodosComentarios = itemView.findViewById(R.id.ttv_todos_comentarios);
+            imvDenunciar = itemView.findViewById(R.id.imv_denunciar);
 
             //Para a snackBar
             layout = itemView.findViewById(R.id.constraintLayout_comentar);
