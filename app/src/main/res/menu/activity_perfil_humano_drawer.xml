@@ -8,10 +8,10 @@
             android:id="@+id/nav_minha_conta"
             android:icon="@drawable/ic_usuario"
             android:title="@string/txt_minha_conta" />
-        <item
+        <!--item
             android:id="@+id/nav_config_notificacoes"
             android:icon="@drawable/ic_notifications"
-            android:title="@string/txt_config_notificar" />
+            android:title="@string/txt_config_notificar" /-->
         <item
             android:id="@+id/nav_meus_anuncios"
             android:icon="@drawable/ic_menu_slideshow"
@@ -29,10 +29,10 @@
                 android:icon="@drawable/ic_man_carrying_a_dog_with_a_belt_to_walk"
                 android:title="@string/adotar_pet" />
 
-            <item
+            <!--item
                 android:id="@+id/pet_procurado"
                 android:icon="@drawable/ic_procurar_pet"
-                android:title="@string/txt_perdido" />
+                android:title="@string/txt_perdido" /-->
             <item
                 android:id="@+id/pet_cad"
                 android:icon="@drawable/ic_perfilpet"
@@ -62,11 +62,11 @@
                 android:id="@+id/nav_share_app"
                 android:icon="@drawable/ic_menu_share"
                 android:title="@string/txt_compartilhar_app" />
-            <item
+            <!--item
                 android:checkableBehavior="single"
                 android:id="@+id/nav_conversar"
                 android:icon="@drawable/ic_conversa"
-                android:title="@string/txt_conversas" />
+                android:title="@string/txt_conversas" /-->
             <item
                 android:checkableBehavior="single"
                 android:id="@+id/nav_help"

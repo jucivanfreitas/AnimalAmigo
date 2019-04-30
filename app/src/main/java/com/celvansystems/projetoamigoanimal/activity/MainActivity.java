@@ -21,11 +21,8 @@ import com.celvansystems.projetoamigoanimal.R;
 import com.celvansystems.projetoamigoanimal.fragment.AnunciosFragment;
 import com.celvansystems.projetoamigoanimal.fragment.CadastrarAnuncioFragment;
 import com.celvansystems.projetoamigoanimal.fragment.DoacaoFragment;
-import com.celvansystems.projetoamigoanimal.fragment.MensagensFragment;
 import com.celvansystems.projetoamigoanimal.fragment.MeusAnunciosFragment;
-import com.celvansystems.projetoamigoanimal.fragment.NotificacoesFragment;
 import com.celvansystems.projetoamigoanimal.fragment.PerfilUsuarioFragment;
-import com.celvansystems.projetoamigoanimal.fragment.ProcuradoFragment;
 import com.celvansystems.projetoamigoanimal.fragment.SobreAppFragment;
 import com.celvansystems.projetoamigoanimal.helper.ConfiguracaoFirebase;
 import com.celvansystems.projetoamigoanimal.helper.Util;
@@ -86,7 +83,6 @@ public class MainActivity extends AppCompatActivity
         fragmentTransaction.replace(R.id.view_pager, new AnunciosFragment()).commit();
     }
 
-
     private void carregaDadosUsuario() {
 
         NavigationView navigationView = findViewById(R.id.nav_view);
@@ -103,7 +99,6 @@ public class MainActivity extends AppCompatActivity
             navUsername.setText(getString(R.string.usuario));
             navEmail.setText(getString(R.string.email));
         }
-
     }
     /**
      * configuracao da exibicao de intersticial periodico
@@ -137,16 +132,16 @@ public class MainActivity extends AppCompatActivity
         Menu menuNav = navigationView.getMenu();
 
         MenuItem nav_minha_conta = menuNav.findItem(R.id.nav_minha_conta);
-        MenuItem nav_config_notificacoes = menuNav.findItem(R.id.nav_config_notificacoes);
+        //MenuItem nav_config_notificacoes = menuNav.findItem(R.id.nav_config_notificacoes);
         MenuItem nav_meus_anuncios = menuNav.findItem(R.id.nav_meus_anuncios);
         MenuItem nav_pet_cad = menuNav.findItem(R.id.pet_cad);
         MenuItem nav_pet_adote = menuNav.findItem(R.id.pet_adote);
         MenuItem nav_doacao = menuNav.findItem(R.id.doacao);
         MenuItem nav_share_app = menuNav.findItem(R.id.nav_share_app);
-        MenuItem nav_conversar = menuNav.findItem(R.id.nav_conversar);
+        //MenuItem nav_conversar = menuNav.findItem(R.id.nav_conversar);
         MenuItem nav_help = menuNav.findItem(R.id.nav_help);
         MenuItem nav_sair = menuNav.findItem(R.id.nav_sair);
-        MenuItem nav_pet_procurado = menuNav.findItem(R.id.pet_procurado);
+        //MenuItem nav_pet_procurado = menuNav.findItem(R.id.pet_procurado);
 
         if(ConfiguracaoFirebase.isUsuarioLogado()){
             nav_minha_conta.setEnabled(true);
@@ -162,13 +157,13 @@ public class MainActivity extends AppCompatActivity
                 }
             });
 
-            nav_config_notificacoes.setEnabled(true);
+            //nav_config_notificacoes.setEnabled(true);
             nav_meus_anuncios.setEnabled(true);
             nav_pet_cad.setEnabled(true);
             nav_pet_adote.setEnabled(true);
-            nav_conversar.setEnabled(true);
+            //nav_conversar.setEnabled(true);
             nav_sair.setEnabled(true);
-            nav_pet_procurado.setEnabled(true);
+            //nav_pet_procurado.setEnabled(true);
 
         } else {
             nav_minha_conta.setTitle(R.string.txt_entrar);
@@ -180,13 +175,13 @@ public class MainActivity extends AppCompatActivity
                     return true;
                 }
             });
-            nav_config_notificacoes.setEnabled(false);
+            //nav_config_notificacoes.setEnabled(false);
             nav_meus_anuncios.setEnabled(false);
             nav_pet_cad.setEnabled(false);
             nav_pet_adote.setEnabled(false);
-            nav_conversar.setEnabled(false);
+            //nav_conversar.setEnabled(false);
             nav_sair.setEnabled(false);
-            nav_pet_procurado.setEnabled(false);
+            //nav_pet_procurado.setEnabled(false);
         }
     }
 
@@ -242,7 +237,8 @@ public class MainActivity extends AppCompatActivity
             Toast.makeText(getApplicationContext(), "foi aberto a fragment Perfil.." +
                     " realizar proframação na fragment PerfilUser", Toast.LENGTH_SHORT).show();
 
-        } else if (id == R.id.nav_config_notificacoes) {
+        }
+        /*else if (id == R.id.nav_config_notificacoes) {
 
             fragmentTransaction.replace(R.id.view_pager, new NotificacoesFragment()).addToBackStack("tag").commit();
 
@@ -252,7 +248,8 @@ public class MainActivity extends AppCompatActivity
                     "implementar content configuração de notificação na activity dentro da pasta fragment",
                     Toast.LENGTH_SHORT).show();
 
-        } else if (id == R.id.nav_meus_anuncios) {
+        } */
+        else if (id == R.id.nav_meus_anuncios) {
 
             //reuso da activit meus anuncios
             fragmentTransaction.replace(R.id.view_pager, new MeusAnunciosFragment()).addToBackStack("tag").commit();
@@ -283,7 +280,8 @@ public class MainActivity extends AppCompatActivity
                     Toast.LENGTH_SHORT).show();
             // TODO: 17/02/2019 programar ação do botão compartilahar app on clic compartilhar para instalação do app
 
-        } else if (id == R.id.nav_conversar) {
+        }
+        /*else if (id == R.id.nav_conversar) {
 
             fragmentTransaction.replace(R.id.view_pager, new MensagensFragment()).addToBackStack("tag").commit();
             Toast.makeText(getApplicationContext(),
@@ -294,7 +292,8 @@ public class MainActivity extends AppCompatActivity
 
             // TODO: 17/02/2019 implementar activity com conversar: funcionalidades basicas do zap e enviar e receber mensagens pelo app
 
-        }else if (id == R.id.nav_help) {
+        }*/
+        else if (id == R.id.nav_help) {
 
             fragmentTransaction.replace(R.id.view_pager, new SobreAppFragment()).addToBackStack("tag").commit();
             Toast.makeText(getApplicationContext(),
@@ -318,7 +317,8 @@ public class MainActivity extends AppCompatActivity
             // TODO: 17/02/2019 implementar a função de invalidade do menu para retorno ao menus de usuarios não logado 
             finish();
             // TODO: 17/02/2019 imPlementar janela
-        }else if (id == R.id.pet_procurado) {
+        }
+        /*else if (id == R.id.pet_procurado) {
 
             fragmentTransaction.replace(R.id.view_pager, new ProcuradoFragment()).addToBackStack("tag").commit();
             // TODO: 17/02/2019 programar activit cadastrar procurado
@@ -332,7 +332,7 @@ public class MainActivity extends AppCompatActivity
                             "afimde ajudar a achar o pet" +
                             "perdido",
                     Toast.LENGTH_SHORT).show();
-        }
+        }*/
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
@@ -401,7 +401,6 @@ public class MainActivity extends AppCompatActivity
             adView = findViewById(R.id.banner_main);
             //final AdRequest adRequest = new AdRequest.Builder().build();
             adView.loadAd(adRequest);
-
 
             adView.setAdListener(new AdListener() {
                 @Override

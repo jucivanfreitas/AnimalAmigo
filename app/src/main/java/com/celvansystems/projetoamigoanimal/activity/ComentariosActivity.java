@@ -1,11 +1,13 @@
 package com.celvansystems.projetoamigoanimal.activity;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.ImageButton;
 
@@ -65,6 +67,7 @@ public class ComentariosActivity extends AppCompatActivity {
                 @Override
                 public void onClick(View v) {
                     comentarAnuncio(anuncioSelecionado);
+                    hideKeyboard(getApplicationContext(), edtComentario);
                 }
             });
 
@@ -202,5 +205,14 @@ public class ComentariosActivity extends AppCompatActivity {
                 }
             });
         } catch (Exception e) {e.printStackTrace();}
+    }
+
+    public static void hideKeyboard(Context context, View editText) {
+        try {
+            InputMethodManager imm = (InputMethodManager) context.getSystemService(Context.INPUT_METHOD_SERVICE);
+            imm.hideSoftInputFromWindow(editText.getWindowToken(), 0);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }
