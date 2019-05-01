@@ -228,6 +228,8 @@
     <string name="txt_cadastro">Precisamos completar seu cadastro</string>
     <string name="txt_qual_nome">Qua seu nome??</string>
     <string name="txt_seu_telefon">Insira seu telefone..</string>
+    <string name="txt_local_user">De onde você é?</string>
+    <string name="txt_finalizar_cadastro">Finalizar cadastro</string>
 
 
 </resources>
