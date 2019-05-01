@@ -19,10 +19,75 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <android.support.constraint.ConstraintLayout
+        android:id="@+id/layout_inserir_nome"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <Button
+            android:id="@+id/btn_proximo_nome"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="48dp"
+            android:background="@drawable/btn_compartilhar"
+            android:text="Button"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/btn_voltar_nome"
+            app:layout_constraintTop_toBottomOf="@+id/edt_cad_nome" />
+
+        <Button
+            android:id="@+id/btn_voltar_nome"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="80dp"
+            android:layout_marginTop="48dp"
+            android:background="@drawable/btn_compartilhar"
+            android:text="@string/txt_voltar"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/edt_cad_nome" />
+
+        <EditText
+            android:id="@+id/edt_cad_nome"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="72dp"
+            android:layout_marginEnd="8dp"
+            android:ems="10"
+            android:hint="@string/txt_nome_completo"
+            android:inputType="textPersonName"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textView12" />
+
+        <TextView
+            android:id="@+id/textView12"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="100dp"
+            android:layout_marginEnd="8dp"
+            android:text="@string/txt_qual_nome"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+    </android.support.constraint.ConstraintLayout>
+
+    <android.support.constraint.ConstraintLayout
         android:id="@+id/layout_inserir_foto"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:layout_editor_absoluteY="16dp">
+        android:visibility="invisible"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="1.0">
 
         <ImageView
             android:id="@+id/imv_foto_complemento"
@@ -99,20 +164,6 @@
                 android:layout_marginBottom="60dp"
                 tools:layout_editor_absoluteX="8dp"
                 tools:layout_editor_absoluteY="8dp">
-
-                <EditText
-                    android:id="@+id/edt_cad_nome"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="8dp"
-                    android:layout_marginTop="8dp"
-                    android:layout_marginEnd="8dp"
-                    android:ems="10"
-                    android:hint="@string/txt_nome_completo"
-                    android:inputType="textPersonName"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/imv_foto_complemento" />
 
                 <EditText
                     android:id="@+id/edt_cad_telefone"
