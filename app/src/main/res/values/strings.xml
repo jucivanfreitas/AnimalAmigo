@@ -222,6 +222,10 @@
     <string name="txt_pouco_sobre">Sobre o PET</string>
     <string name="txt_diz">Diz:</string>
     <string name="txt_data">Data</string>
+    <string name="txt_inserir_foto">Vamos Inserir uma foto sua??</string>
+    <string name="txt_voltar">Voltar..</string>
+    <string name="txt_proximo">Próximo</string>
+    <string name="txt_cadastro">Precisamos completar seu cadastro</string>
 
 
 </resources>
