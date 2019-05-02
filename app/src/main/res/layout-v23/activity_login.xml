@@ -71,7 +71,7 @@
                 android:layout_marginBottom="2dp"
                 android:padding="3dp"
                 android:textColorHint="@color/cinza"
-                android:visibility="visible">
+                android:visibility="invisible">
 
                 <AutoCompleteTextView
                     android:id="@+id/txi_nome"
