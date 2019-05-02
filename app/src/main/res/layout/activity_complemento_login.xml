@@ -84,7 +84,7 @@
         android:id="@+id/layout_inserir_nome"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:visibility="visible"
+        android:visibility="invisible"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -94,22 +94,11 @@
             android:id="@+id/btn_proximo_nome"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="48dp"
+            android:layout_marginTop="44dp"
+            android:layout_marginEnd="76dp"
             android:background="@drawable/btn_compartilhar"
             android:text="Button"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/btn_voltar_nome"
-            app:layout_constraintTop_toBottomOf="@+id/edt_cad_nome" />
-
-        <Button
-            android:id="@+id/btn_voltar_nome"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="80dp"
-            android:layout_marginTop="48dp"
-            android:background="@drawable/btn_compartilhar"
-            android:text="@string/txt_voltar"
-            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/edt_cad_nome" />
 
         <EditText
@@ -144,7 +133,7 @@
         android:id="@+id/layout_inserir_cidade"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:visibility="invisible"
+        android:visibility="visible"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -275,7 +264,7 @@
             android:layout_marginTop="48dp"
             android:layout_marginEnd="16dp"
             android:background="@drawable/btn_compartilhar"
-            android:text="Button"
+            android:text="@string/txt_proximo"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.58"
             app:layout_constraintStart_toEndOf="@+id/btn_volta_fone"
