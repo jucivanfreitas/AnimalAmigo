@@ -230,6 +230,7 @@
     <string name="txt_seu_telefon">Insira seu telefone..</string>
     <string name="txt_local_user">De onde você é?</string>
     <string name="txt_finalizar_cadastro">Finalizar cadastro</string>
+    <string name="proximo">Próximo</string>
 
 
 </resources>
