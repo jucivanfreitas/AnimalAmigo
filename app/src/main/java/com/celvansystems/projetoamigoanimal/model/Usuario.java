@@ -157,4 +157,13 @@ public class Usuario implements Serializable {
     public void setGenero(String genero) {
         this.genero = genero;
     }
+
+    public boolean isLoginCompleto(){
+        boolean retorno = false;
+        if(!nome.isEmpty() && !telefone.isEmpty() &&
+                !foto.isEmpty() && !cidade.isEmpty()){
+            retorno = true;
+        }
+        return retorno;
+    }
 }
