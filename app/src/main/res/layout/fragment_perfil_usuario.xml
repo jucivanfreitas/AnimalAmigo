@@ -9,7 +9,7 @@
 
 
     tools:context=".fragment.PerfilUsuarioFragment">
-    tools:showIn="@layout/drawer_app_bar_main">
+    <!--tools:showIn="@layout/drawer_app_bar_main"-->
 
     <android.support.constraint.ConstraintLayout
         android:id="@+id/linearLayout"
@@ -110,9 +110,12 @@
             android:id="@+id/btnEncerrarConta"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginEnd="8dp"
             android:layout_marginBottom="50dp"
             android:background="@drawable/bg_btn"
             android:text="@string/enc_conta"
+            android:textColor="@color/common_google_signin_btn_text_dark_default"
             android:visibility="visible"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
@@ -222,6 +225,17 @@
             android:textSize="12sp"
             app:layout_constraintStart_toStartOf="@+id/textview_nome_humano"
             app:layout_constraintTop_toBottomOf="@+id/divider6" />
+
+        <TextView
+            android:id="@+id/textView_perfil_humano"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="perfis"
+            android:visibility="invisible"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
 
     </android.support.constraint.ConstraintLayout>
 
