@@ -232,6 +232,9 @@
     <string name="txt_finalizar_cadastro">Finalizar cadastro</string>
     <string name="proximo">Próximo</string>
     <string name="salvando_usuario">Salvando usuário</string>
+    <string name="txt_nomee">Nome:</string>
+    <string name="txt_celio">Célio Alves da Silveira</string>
+    <string name="txt_cidade">Cidade:</string>
 
 
 </resources>
