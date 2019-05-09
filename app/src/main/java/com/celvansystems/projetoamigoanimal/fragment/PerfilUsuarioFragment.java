@@ -83,19 +83,19 @@ public class PerfilUsuarioFragment extends Fragment {
         Toast.makeText(viewFragment.getContext(), "Iniciando componentes...", Toast.LENGTH_SHORT).show();
 
         Button btnDesativarConta = viewFragment.findViewById(R.id.btnEncerrarConta);
-
+Log.d("INFO2", "1");
         btnDesativarConta.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 AlertDialog.Builder alertDesativarConta = new AlertDialog.Builder(v.getContext());
-
+                Log.d("INFO2", "2");
                 alertDesativarConta.setTitle("Tem certeza que deseja desativar sua conta? ");
                 alertDesativarConta.setMessage("Esta opção não poderá ser revertida.");
 
                 alertDesativarConta.setPositiveButton("Sim", new DialogInterface.OnClickListener() {
 
                     public void onClick(DialogInterface dialog, int which) {
-
+                        Log.d("INFO2", "3");
                         removerContaAtual();
                         dialog.dismiss();
                     }
@@ -106,11 +106,13 @@ public class PerfilUsuarioFragment extends Fragment {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         dialog.dismiss();
+                        Log.d("INFO2", "4");
                     }
                 });
 
                 AlertDialog alert = alertDesativarConta.create();
                 alert.show();
+                Log.d("INFO2", "5");
             }
         });
     }
