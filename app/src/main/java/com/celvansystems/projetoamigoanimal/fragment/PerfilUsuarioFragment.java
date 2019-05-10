@@ -25,6 +25,7 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.auth.UserInfo;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -47,7 +48,8 @@ public class PerfilUsuarioFragment extends Fragment {
     private TextView txvResumo;
     private TextView txvPerfilHumano;
 
-    public PerfilUsuarioFragment() {}
+    public PerfilUsuarioFragment() {
+    }
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
@@ -80,22 +82,18 @@ public class PerfilUsuarioFragment extends Fragment {
         //Preenchendo os campos do Fragment com dados do usuario
         txvEmail.setText(getEmailUsuario());
 
-        Toast.makeText(viewFragment.getContext(), "Iniciando componentes...", Toast.LENGTH_SHORT).show();
-
         Button btnDesativarConta = viewFragment.findViewById(R.id.btnEncerrarConta);
-Log.d("INFO2", "1");
+
         btnDesativarConta.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 AlertDialog.Builder alertDesativarConta = new AlertDialog.Builder(v.getContext());
-                Log.d("INFO2", "2");
                 alertDesativarConta.setTitle("Tem certeza que deseja desativar sua conta? ");
                 alertDesativarConta.setMessage("Esta opção não poderá ser revertida.");
 
                 alertDesativarConta.setPositiveButton("Sim", new DialogInterface.OnClickListener() {
 
                     public void onClick(DialogInterface dialog, int which) {
-                        Log.d("INFO2", "3");
                         removerContaAtual();
                         dialog.dismiss();
                     }
@@ -106,21 +104,31 @@ Log.d("INFO2", "1");
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         dialog.dismiss();
-                        Log.d("INFO2", "4");
                     }
                 });
 
                 AlertDialog alert = alertDesativarConta.create();
                 alert.show();
-                Log.d("INFO2", "5");
             }
         });
+
+        carregarDados();
+    }
+
+    private void carregarDados() {
+
+        if(ConfiguracaoFirebase.isUsuarioLogado()){
+            UserInfo user = ConfiguracaoFirebase.getFirebaseAutenticacao().getCurrentUser();
+            txvEmail.setText(user.getEmail());
+            txvNomeHumano.setText(user.getDisplayName());
+            txvTelefone.setText(user.getPhoneNumber());
+        }
     }
 
     /**
      * metodo que exclui o usuario atual e todos os seus anuncios
      */
-    private void removerContaAtual(){
+    private void removerContaAtual() {
 
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
         final String usuarioId = ConfiguracaoFirebase.getIdUsuario();
@@ -156,6 +164,7 @@ Log.d("INFO2", "1");
 
     /**
      * apaga todos os anuncios de um usuario
+     *
      * @param usuarioId id
      */
     private void deletarAnunciosUsuario(final String usuarioId) {
@@ -169,21 +178,22 @@ Log.d("INFO2", "1");
 
                 @Override
                 public void onDataChange(@NonNull DataSnapshot snapshot) {
-                    for(DataSnapshot animal: snapshot.getChildren()){
+                    for (DataSnapshot animal : snapshot.getChildren()) {
                         Log.d("INFO29", "passou2");
                         Animal anuncio = animal.getValue(Animal.class);
-                        if(anuncio != null && anuncio.getDonoAnuncio()!= null) {
-                            Log.d("INFO29", "passou3: "+ anuncio.getDonoAnuncio());
+                        if (anuncio != null && anuncio.getDonoAnuncio() != null) {
+                            Log.d("INFO29", "passou3: " + anuncio.getDonoAnuncio());
                             if (anuncio.getDonoAnuncio().equalsIgnoreCase(usuarioId)) {
-                                Log.d("INFO29", "passou4: animal removido: "+ anuncio.getIdAnimal());
+                                Log.d("INFO29", "passou4: animal removido: " + anuncio.getIdAnimal());
                                 animal.getRef().removeValue();
                             }
                         }
                     }
                 }
+
                 @Override
                 public void onCancelled(@NonNull DatabaseError databaseError) {
-                    Log.d("INFO29", "passou5: nancelled: "+ databaseError.getMessage());
+                    Log.d("INFO29", "passou5: nancelled: " + databaseError.getMessage());
                     throw databaseError.toException();
                 }
             });
@@ -193,8 +203,8 @@ Log.d("INFO2", "1");
         }
     }
 
-    private String getEmailUsuario(){
-        if(ConfiguracaoFirebase.isUsuarioLogado()) {
+    private String getEmailUsuario() {
+        if (ConfiguracaoFirebase.isUsuarioLogado()) {
             FirebaseAuth autenticacao = ConfiguracaoFirebase.getFirebaseAutenticacao();
             return Objects.requireNonNull(autenticacao.getCurrentUser()).getEmail();
         }
