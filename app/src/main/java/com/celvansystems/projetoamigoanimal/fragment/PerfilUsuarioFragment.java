@@ -42,10 +42,11 @@ public class PerfilUsuarioFragment extends Fragment {
     private TextView txvIdade;
     private TextView txvCidade;
     private TextView txvEstado;
-    private TextView txvPais;
+    //private TextView txvPais;
     private TextView txvTelefone;
     private TextView txvSexo;
     private TextView txvResumo;
+    private TextView txvSobreMim;
     private TextView txvPerfilHumano;
 
     public PerfilUsuarioFragment() {
@@ -73,10 +74,13 @@ public class PerfilUsuarioFragment extends Fragment {
         txvIdade = viewFragment.findViewById(R.id.textView_idade);
         txvCidade = viewFragment.findViewById(R.id.textView_cidade);
         txvEstado = viewFragment.findViewById(R.id.textView_estado);
-        txvPais = viewFragment.findViewById(R.id.textView_pais);
+        //txvPais = viewFragment.findViewById(R.id.textView_pais);
         txvTelefone = viewFragment.findViewById(R.id.textView_telefone);
         txvSexo = viewFragment.findViewById(R.id.textView_sexo);
         txvResumo = viewFragment.findViewById(R.id.textView_resumo);
+        txvResumo.setVisibility(View.INVISIBLE);
+        txvSobreMim = viewFragment.findViewById(R.id.txvSobreMim);
+        txvSobreMim.setVisibility(View.INVISIBLE);
         txvPerfilHumano = viewFragment.findViewById(R.id.textView_perfil_humano);
 
         //Preenchendo os campos do Fragment com dados do usuario
@@ -118,10 +122,111 @@ public class PerfilUsuarioFragment extends Fragment {
     private void carregarDados() {
 
         if(ConfiguracaoFirebase.isUsuarioLogado()){
-            UserInfo user = ConfiguracaoFirebase.getFirebaseAutenticacao().getCurrentUser();
-            txvEmail.setText(user.getEmail());
-            txvNomeHumano.setText(user.getDisplayName());
-            txvTelefone.setText(user.getPhoneNumber());
+
+            DatabaseReference usuariosRef = ConfiguracaoFirebase.getFirebase()
+                    .child("usuarios");
+
+            usuariosRef.addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+
+                    for (DataSnapshot usuarios : dataSnapshot.getChildren()) {
+
+                        if (usuarios != null) {
+
+                            UserInfo user = ConfiguracaoFirebase.getFirebaseAutenticacao().getCurrentUser();
+                            //txvEmail.setText(user.getEmail());
+                            //txvNomeHumano.setText(user.getDisplayName());
+                            //txvTelefone.setText(user.getPhoneNumber());
+
+                            if (Objects.requireNonNull(usuarios.child("id").getValue()).toString().equalsIgnoreCase(Objects.requireNonNull(user).getUid())) {
+
+                                Usuario usuario = new Usuario();
+
+                                usuario.setId(Objects.requireNonNull(ConfiguracaoFirebase.getFirebaseAutenticacao().getCurrentUser()).getUid());
+
+                                if(usuarios.child("nome").getValue() != null) {
+                                    usuario.setNome(usuarios.child("nome").getValue().toString());
+                                } else {
+                                    usuario.setNome("");
+                                }
+
+                                if(usuarios.child("telefone").getValue() != null) {
+                                    usuario.setTelefone(usuarios.child("telefone").getValue().toString());
+                                } else {
+                                    usuario.setTelefone("");
+                                }
+
+                                if(usuarios.child("foto").getValue() != null) {
+                                    usuario.setFoto(usuarios.child("foto").getValue().toString());
+                                }
+
+                                if(usuarios.child("pais").getValue() != null) {
+                                    usuario.setPais(usuarios.child("pais").getValue().toString());
+                                } else {
+                                    usuario.setPais("");
+                                }
+
+                                if(usuarios.child("uf").getValue() != null) {
+                                    usuario.setUf(usuarios.child("uf").getValue().toString());
+                                } else {
+                                    usuario.setUf("");
+                                }
+
+                                if(usuarios.child("cidade").getValue() != null) {
+                                    usuario.setCidade(usuarios.child("cidade").getValue().toString());
+                                } else {
+                                    usuario.setCidade("");
+                                }
+
+                                if(usuarios.child("email").getValue() != null) {
+                                    usuario.setEmail(usuarios.child("email").getValue().toString());
+                                } else {
+                                    usuario.setEmail("");
+                                }
+
+                                //Preenchimento da tela
+                                if(usuario.getNome() != null && !usuario.getNome().equalsIgnoreCase("")) {
+                                    txvNomeHumano.setText(usuario.getNome());
+                                } else {
+                                    txvNomeHumano.setText("[Edite seu perfil]");
+                                }
+                                if(usuario.getTelefone() != null && !usuario.getTelefone().equalsIgnoreCase("")) {
+                                    txvTelefone.setText(usuario.getTelefone());
+                                } else {
+                                    txvTelefone.setText("[Edite seu perfil]");
+                                }
+                                /*if(usuario.getPais() != null  && !usuario.getPais().equalsIgnoreCase("")) {
+                                    txvPais.setText(usuario.getPais());
+                                }*/
+                                if(usuario.getUf() != null && !usuario.getUf().equalsIgnoreCase("")) {
+                                    txvEstado.setText(usuario.getUf());
+                                } else {
+                                    txvEstado.setText("[Edite seu perfil]");
+                                }
+                                if(usuario.getCidade() != null && !usuario.getCidade().equalsIgnoreCase("")) {
+                                    txvCidade.setText(usuario.getCidade());
+                                } else {
+                                    txvCidade.setText("[Edite seu perfil]");
+                                }
+                                if(usuario.getEmail() != null && !usuario.getEmail().equalsIgnoreCase("")) {
+                                    txvEmail.setText(usuario.getEmail());
+                                } else {
+                                    txvEmail.setText("[Edite seu perfil]");
+                                }
+
+                                if(usuario.getFoto() != null) {
+
+                                }
+                            }
+                        }
+                    }
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError databaseError) {
+                }
+            });
         }
     }
 
