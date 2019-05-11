@@ -66,6 +66,10 @@ import com.google.firebase.auth.FirebaseAuthWeakPasswordException;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
 import com.google.firebase.auth.UserProfileChangeRequest;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.ValueEventListener;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -76,6 +80,7 @@ import java.util.List;
 import java.util.Objects;
 
 import static android.Manifest.permission.READ_CONTACTS;
+
 /**
  * A login screen that offers login via email/password.
  */
@@ -98,7 +103,8 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
     private CallbackManager callbackManager;
     private GoogleSignInClient mGoogleSignInClient;
     private View layout;
-
+    private boolean retorno;
+    private Usuario usuarioRetorno;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -123,7 +129,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             mEmailView = findViewById(R.id.txiEmail);
             mLoginFormView = findViewById(R.id.login_form);
             mProgressView = findViewById(R.id.login_progress);
-            mImageBg_color =findViewById(R.id.imageViewbg_color);
+            mImageBg_color = findViewById(R.id.imageViewbg_color);
             mPasswordView = findViewById(R.id.txiPassword);
             txiNome = findViewById(R.id.txi_nome);
             txiLayout = findViewById(R.id.txt_imput_nome);
@@ -160,7 +166,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
 
             swtLoginCadastrar.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
                 public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                    if(isChecked) {
+                    if (isChecked) {
                         txiNome.setVisibility(View.VISIBLE);
                         txiLayout.setVisibility(View.VISIBLE);
                     } else {
@@ -173,9 +179,9 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                 @Override
                 public void onClick(View v) {
                     hideKeyboard(LoginActivity.this, mEmailView);
-                    if(mEmailView.getText()!= null &&
-                            !mEmailView.getText().toString().equalsIgnoreCase("")  &&
-                            mEmailView.getText().toString().contains("@")){
+                    if (mEmailView.getText() != null &&
+                            !mEmailView.getText().toString().equalsIgnoreCase("") &&
+                            mEmailView.getText().toString().contains("@")) {
                         enviarEmailRecuperacao(mEmailView.getText().toString());
                     } else {
                         Util.setSnackBar(layout, "Preencha seu e-mail!");
@@ -223,7 +229,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
     /**
      * método que configura o login por meio do facebook
      */
-    private void configuraLoginFacebook(){
+    private void configuraLoginFacebook() {
 
         callbackManager = CallbackManager.Factory.create();
 
@@ -239,9 +245,11 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
 
                 getFbInfo();
             }
+
             @Override
             public void onCancel() {
             }
+
             @Override
             public void onError(FacebookException exception) {
             }
@@ -257,8 +265,6 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                             JSONObject object,
                             GraphResponse response) {
                         try {
-                            Log.d("INFO3", "fb json object: " + object);
-                            Log.d("INFO3", "fb graph response: " + response);
 
                             String id = object.getString("id");
                             String first_name = object.getString("first_name");
@@ -282,20 +288,19 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         request.setParameters(parameters);
         request.executeAsync();
     }
+
     /**
      * método que configura o login por meio do google
      */
-    private void configuraLoginGoogle(){
+    private void configuraLoginGoogle() {
         //Google Login
         SignInButton signInButton = findViewById(R.id.login_button_google);
         signInButton.setSize(SignInButton.SIZE_WIDE);
         signInButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                switch (v.getId()) {
-                    case R.id.login_button_google:
-                        signInGoogle();
-                        break;
+                if (v.getId() == R.id.login_button_google) {
+                    signInGoogle();
                 }
             }
         });
@@ -308,8 +313,10 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
 
     }
+
     /**
      * método auxiliar para login por facebook
+     *
      * @param token token
      */
     private void handleFacebookAccessToken(final AccessToken token) {
@@ -371,7 +378,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             try {
                 // Google Sign In was successful, authenticate with Firebase
                 GoogleSignInAccount account = task.getResult(ApiException.class);
-                if(account!= null) {
+                if (account != null) {
                     firebaseAuthWithGoogle(account);
                 }
             } catch (ApiException e) {
@@ -384,12 +391,13 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
 
     /**
      * método que pega o resultado da tentativa de login do google
+     *
      * @param completedTask task
      */
     private void handleSignInResult(Task<GoogleSignInAccount> completedTask) {
         try {
             GoogleSignInAccount account = completedTask.getResult(ApiException.class);
-            if(account!= null)
+            if (account != null)
                 Log.d("INFO40", String.format("handle - logado pelo google %s", account.getDisplayName()));
         } catch (ApiException e) {
             Log.d("INFO40", "signInResult:failed code=" + e.getStatusCode());
@@ -398,6 +406,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
 
     /**
      * método usado para fazer login no google com uma credential
+     *
      * @param acct conta
      */
     private void firebaseAuthWithGoogle(GoogleSignInAccount acct) {
@@ -414,7 +423,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
 
                             FirebaseUser user = authentication.getCurrentUser();
                             //direciona para a tela principal
-                            if(user!= null && user.getEmail()!= null) {
+                            if (user != null && user.getEmail() != null) {
                                 Toast.makeText(LoginActivity.this, getString(R.string.sucesso_login_google) +
                                                 user.getEmail(),
                                         Toast.LENGTH_SHORT).show();
@@ -444,7 +453,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         //cadastrando...
         if (swtLoginCadastrar.isChecked()) {
 
-            if(txiNome.getText() != null && !txiNome.getText().toString().equalsIgnoreCase("")) {
+            if (txiNome.getText() != null && !txiNome.getText().toString().equalsIgnoreCase("")) {
 
                 authentication.createUserWithEmailAndPassword(email, password)
                         .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
@@ -462,11 +471,13 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                                     UserProfileChangeRequest profileUpdates = new UserProfileChangeRequest.Builder()
                                             .setDisplayName(txiNome.getText().toString()).build();
 
-                                    user.updateProfile(profileUpdates);
+                                    if (user != null) {
+                                        user.updateProfile(profileUpdates);
+                                    }
 
                                     //criando usuario...
                                     Usuario usuario = new Usuario();
-                                    usuario.setId(task.getResult().getUser().getUid());
+                                    usuario.setId(Objects.requireNonNull(task.getResult()).getUser().getUid());
                                     usuario.setNome(txiNome.getText().toString());
                                     usuario.setEmail(email);
                                     usuario.salvar();
@@ -494,7 +505,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             } else {
                 Util.setSnackBar(layout, "Preencha seu nome!");
             }
-        //logando...
+            //logando...
         } else {
             //direciona para a activity principal
             authentication.signInWithEmailAndPassword(email, password)
@@ -505,17 +516,11 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
 
                                 // TODO: 20/02/2019 habilitar verificacao de e-mail no final. Não deletar o código
                                 //if (checkIfEmailVerified()) {
-                                if(ConfiguracaoFirebase.getFirebaseAutenticacao().getCurrentUser().getPhotoUrl()!=null) {
-                                    Intent intent = new Intent(getApplicationContext(), MainActivity.class);
-                                    startActivity(intent);
-                                } else {
-                                    Intent intent = new Intent(getApplicationContext(), ComplementoLoginActivity.class);
-                                    startActivity(intent);
-                                }
-                                Toast.makeText(LoginActivity.this, getString(R.string.sucesso_login),
-                                        Toast.LENGTH_SHORT).show();
-                                // TODO: 06/03/2019 setSnackBar passando mensagem pra Main
-                                finish();
+
+                                //redirecionamento de acordo com o cadastro do usuario (completo ou incompleto)
+                                String usuarioId = Objects.requireNonNull(ConfiguracaoFirebase.getFirebaseAutenticacao().getCurrentUser()).getUid();
+                                redireciona(usuarioId);
+
                                 /*} else {
                                     Toast.makeText(LoginActivity.this, getString(R.string.email_nao_verificado),
                                             Toast.LENGTH_SHORT).show();
@@ -528,12 +533,137 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                             }
                             showProgress(false);
                             mImageBg_color.setVisibility(View.INVISIBLE);
-
                         }
                     });
             showProgress(true);
             mImageBg_color.setVisibility(View.VISIBLE);
         }
+    }
+
+    private void redireciona(final String usuarioId) {
+
+        DatabaseReference usuariosRef = ConfiguracaoFirebase.getFirebase()
+                .child("usuarios");
+
+        usuariosRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+
+                for (DataSnapshot usuarios : dataSnapshot.getChildren()) {
+
+                    if (usuarios != null) {
+                        if (Objects.requireNonNull(usuarios.child("id").getValue()).toString().equalsIgnoreCase(usuarioId)) {
+
+                            if (usuarios.child("loginCompleto").getValue() == null) {
+
+                                Intent intent = new Intent(getApplicationContext(), ComplementoLoginActivity.class);
+                                startActivity(intent);
+
+                            } else {
+
+                                Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+                                startActivity(intent);
+
+                            }
+                            finish();
+                        }
+                    }
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+            }
+        });
+
+        // TODO: 06/03/2019 setSnackBar passando mensagem pra Main
+    }
+
+    /*private boolean isCadastroCompleto(final String usuarioId) {
+
+        retorno = true;
+
+        DatabaseReference usuariosRef = ConfiguracaoFirebase.getFirebase()
+                .child("usuarios");
+
+        usuariosRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+
+                for (DataSnapshot usuarios : dataSnapshot.getChildren()) {
+
+                    if (usuarios != null) {
+                        if (Objects.requireNonNull(usuarios.child("id").getValue()).toString().equalsIgnoreCase(usuarioId)) {
+
+                            if ((usuarios.child("nome").getValue()) == null ||
+                                    (usuarios.child("telefone").getValue()) == null ||
+                                    (usuarios.child("foto").getValue()) == null ||
+                                    (usuarios.child("pais").getValue()) == null ||
+                                    (usuarios.child("uf").getValue()) == null ||
+                                    (usuarios.child("cidade").getValue()) == null) {
+
+                                retorno = false;
+
+                            }
+                            // TODO: 05/03/2019 concluir atributos de usuario apos activity para cadastro de usuario
+                            //usuario.setFoto(ConfiguracaoFirebase.getFirebaseAutenticacao().getCurrentUser().getPhotoUrl().toString());
+                        }
+                    }
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+            }
+        });
+        return retorno;
+    }*/
+
+    private Usuario getUsuarioDoCadastro(final String usuarioId) {
+
+        DatabaseReference usuariosRef = ConfiguracaoFirebase.getFirebase()
+                .child("usuarios");
+
+
+        usuariosRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                //int size = (int) dataSnapshot.getChildrenCount();
+                //atualizaComentarios(size, anuncio, myViewHolder);
+
+                //List<Usuario> usuariosList = new ArrayList<>();
+                for (DataSnapshot usuarios : dataSnapshot.getChildren()) {
+
+                    if (usuarios != null) {
+                        if (Objects.requireNonNull(usuarios.child("id").getValue()).toString().equalsIgnoreCase(usuarioId)) {
+
+                            usuarioRetorno = new Usuario();
+
+                            usuarioRetorno.setId(Objects.requireNonNull(ConfiguracaoFirebase.getFirebaseAutenticacao().getCurrentUser()).getUid());
+
+                            usuarioRetorno.setNome(Objects.requireNonNull(usuarios.child("nome").getValue()).toString());
+
+                            usuarioRetorno.setNome(Objects.requireNonNull(usuarios.child("telefone").getValue()).toString());
+
+                            usuarioRetorno.setNome(Objects.requireNonNull(usuarios.child("foto").getValue()).toString());
+
+                            usuarioRetorno.setNome(Objects.requireNonNull(usuarios.child("pais").getValue()).toString());
+
+                            usuarioRetorno.setNome(Objects.requireNonNull(usuarios.child("uf").getValue()).toString());
+
+                            usuarioRetorno.setNome(Objects.requireNonNull(usuarios.child("cidade").getValue()).toString());
+
+                        }
+                    }
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+            }
+        });
+
+        return usuarioRetorno;
     }
 
     private void criarUsuarioFirebase(Usuario usuario) {
@@ -543,8 +673,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
     /**
      * firebase envia e-mail de verificação
      */
-    private void sendVerificationEmail()
-    {
+    private void sendVerificationEmail() {
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
 
         assert user != null;
@@ -555,9 +684,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                         if (task.isSuccessful()) {
                             // email enviado
                             FirebaseAuth.getInstance().signOut();
-                        }
-                        else
-                        {
+                        } else {
                             // email nao enviado
                             overridePendingTransition(0, 0);
                             finish();
@@ -570,13 +697,13 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
 
     /**
      * verifica se o e-mail do usuário foi validado pelo firebase
+     *
      * @return boolean e-mail verified
      */
-    private boolean checkIfEmailVerified()
-    {
+    private boolean checkIfEmailVerified() {
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
 
-        if(user != null) {
+        if (user != null) {
             return user.isEmailVerified();
         }
         return false;
@@ -647,7 +774,9 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                 cursor.moveToNext();
             }
             addEmailsToAutoComplete(emails);
-        } catch (Exception e){e.printStackTrace();}
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
@@ -663,7 +792,9 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                             android.R.layout.simple_dropdown_item_1line, emailAddressCollection);
 
             mEmailView.setAdapter(adapter);
-        } catch (Exception e){e.printStackTrace();}
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     private interface ProfileQuery {

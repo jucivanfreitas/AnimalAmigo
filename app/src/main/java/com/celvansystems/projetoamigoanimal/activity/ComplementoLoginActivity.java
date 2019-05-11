@@ -173,12 +173,28 @@ public class ComplementoLoginActivity extends AppCompatActivity {
                 @Override
                 public void onClick(View v) {
 
+                    //Id
                     usuario.setId(ConfiguracaoFirebase.getIdUsuario());
-                    usuario.setNome(edtNome.getText().toString());
-                    usuario.setTelefone(edtTelefone.getText().toString());
+                    //Email
+                    usuario.setEmail(ConfiguracaoFirebase.getFirebaseAutenticacao().getCurrentUser().getEmail());
+                    //Nome
+                    if (edtNome.getText() != null && !edtNome.getText().toString().equalsIgnoreCase("")) {
+                        usuario.setNome(edtNome.getText().toString());
+                    }
+                    //Telefone
+                    if (edtTelefone.getText() != null && !edtTelefone.getText().toString().equalsIgnoreCase("")) {
+                        usuario.setTelefone(edtTelefone.getText().toString());
+                    }
+                    //Pais
                     usuario.setPais(spnPais.getSelectedItem().toString());
-                    usuario.setUf(spnEstado.getSelectedItem().toString());
-                    usuario.setCidade(spnCidade.getSelectedItem().toString());
+                    //Estado
+                    if (spnEstado.getSelectedItem() != null && !spnEstado.getSelectedItem().toString().equalsIgnoreCase("")) {
+                        usuario.setUf(spnEstado.getSelectedItem().toString());
+                    }
+                    //Cidade
+                    if (spnCidade.getSelectedItem() != null && !spnCidade.getSelectedItem().toString().equalsIgnoreCase("")) {
+                        usuario.setCidade(spnCidade.getSelectedItem().toString());
+                    }
 
                     salvarUsuario(usuario);
                 }
@@ -212,8 +228,10 @@ public class ComplementoLoginActivity extends AppCompatActivity {
 
             ArrayList<String> estadosLista = Util.getEstadosLista(this);
             estadosLista.remove(0);
+            estadosLista.add("");
             ArrayList<String> cidadesLista = Util.getCidadesLista("AC", this);
             cidadesLista.remove(0);
+            cidadesLista.add("");
 
             //cidades
             adapterCidades = new ArrayAdapter<>(this, simple_spinner_item, cidadesLista);
@@ -349,53 +367,63 @@ public class ComplementoLoginActivity extends AppCompatActivity {
     private void salvarFotosStorage(final Usuario usuario, String url) {
 
         try {
-            //cria nó do storage
-            final StorageReference imagemUsuario = storage
-                    .child("imagens")
-                    .child("usuarios")
-                    .child(usuario.getId())
-                    .child("perfil");
+            if (url != null) {
+                //cria nó do storage
+                final StorageReference imagemUsuario = storage
+                        .child("imagens")
+                        .child("usuarios")
+                        .child(usuario.getId())
+                        .child("perfil");
 
-            Uri selectedImage = Uri.parse(url);
-            //imagem comprimida
-            byte[] byteArray = comprimirImagem(selectedImage);
-            UploadTask uploadTask = imagemUsuario.putBytes(byteArray);
+                Uri selectedImage = Uri.parse(url);
+                //imagem comprimida
+                byte[] byteArray = comprimirImagem(selectedImage);
+                UploadTask uploadTask = imagemUsuario.putBytes(byteArray);
 
-            uploadTask.continueWithTask(new Continuation<UploadTask.TaskSnapshot, Task<Uri>>() {
-                @Override
-                public Task<Uri> then(@NonNull Task<UploadTask.TaskSnapshot> task) throws Exception {
-                    if (!task.isSuccessful()) {
-                        throw Objects.requireNonNull(task.getException());
+                uploadTask.continueWithTask(new Continuation<UploadTask.TaskSnapshot, Task<Uri>>() {
+                    @Override
+                    public Task<Uri> then(@NonNull Task<UploadTask.TaskSnapshot> task) throws Exception {
+                        if (!task.isSuccessful()) {
+                            throw Objects.requireNonNull(task.getException());
+                        }
+
+                        // Continue with the task to get the download URL
+                        return imagemUsuario.getDownloadUrl();
                     }
+                }).addOnCompleteListener(new OnCompleteListener<Uri>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Uri> task) {
+                        if (task.isSuccessful()) {
 
-                    // Continue with the task to get the download URL
-                    return imagemUsuario.getDownloadUrl();
-                }
-            }).addOnCompleteListener(new OnCompleteListener<Uri>() {
-                @Override
-                public void onComplete(@NonNull Task<Uri> task) {
-                    if (task.isSuccessful()) {
+                            Uri firebaseUrl = task.getResult();
+                            String urlConvertida = Objects.requireNonNull(firebaseUrl).toString();
 
-                        Uri firebaseUrl = task.getResult();
-                        String urlConvertida = Objects.requireNonNull(firebaseUrl).toString();
+                            usuario.setFoto(urlConvertida);
+                            usuario.salvar();
+                            Util.setSnackBar(layout, getString(R.string.sucesso_ao_fazer_upload));
 
-                        usuario.setFoto(urlConvertida);
-                        usuario.salvar();
-                        Util.setSnackBar(layout, getString(R.string.sucesso_ao_fazer_upload));
+                            dialog.dismiss();
 
-                        dialog.dismiss();
-
-                        startActivity(new Intent(ComplementoLoginActivity.this, MainActivity.class));
-                        finish();
-                    } else {
-                        Util.setSnackBar(layout, getString(R.string.falha_upload));
+                            startActivity(new Intent(ComplementoLoginActivity.this, MainActivity.class));
+                            finish();
+                        } else {
+                            Util.setSnackBar(layout, getString(R.string.falha_upload));
+                        }
                     }
-                }
-            }).addOnFailureListener(new OnFailureListener() {
-                @Override
-                public void onFailure(@NonNull Exception e) {
-                }
-            });
+                }).addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                    }
+                });
+            } else {
+                usuario.salvar();
+                Util.setSnackBar(layout, getString(R.string.sucesso_ao_fazer_upload));
+
+                dialog.dismiss();
+
+                startActivity(new Intent(ComplementoLoginActivity.this, MainActivity.class));
+                finish();
+            }
         } catch (Exception e) {
             e.printStackTrace();
         }

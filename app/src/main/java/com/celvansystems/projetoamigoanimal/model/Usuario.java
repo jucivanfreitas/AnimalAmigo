@@ -24,7 +24,7 @@ public class Usuario implements Serializable {
     /**
      * salva usuario
      */
-    public void salvar(){
+    public void salvar() {
 
         try {
             DatabaseReference usuarioRef = ConfiguracaoFirebase.getFirebase()
@@ -32,13 +32,15 @@ public class Usuario implements Serializable {
 
             usuarioRef.child(getId())
                     .setValue(this);
-        } catch (Exception e){e.printStackTrace();}
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     /**
      * remove anuncio
      */
-    public void remover(){
+    public void remover() {
 
         try {
             DatabaseReference usuarioRef = ConfiguracaoFirebase.getFirebase()
@@ -51,12 +53,15 @@ public class Usuario implements Serializable {
                     apagarFotoStorage();
                 }
             });
-        } catch (Exception e){e.printStackTrace();}
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
+
     /**
      * metodo auxilicar que apaga as fotos de um animal
      */
-    private void apagarFotoStorage (){
+    private void apagarFotoStorage() {
 
         try {
             StorageReference storage = ConfiguracaoFirebase.getFirebaseStorage();
@@ -65,9 +70,11 @@ public class Usuario implements Serializable {
                     .child("usuarios")
                     .child(getId());
 
-                imagemUsuario.child("imagem").delete();
+            imagemUsuario.child("imagem").delete();
 
-        } catch (Exception e) {e.printStackTrace();}
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     public String getId() {
@@ -158,11 +165,16 @@ public class Usuario implements Serializable {
         this.genero = genero;
     }
 
-    public boolean isLoginCompleto(){
+    public boolean isLoginCompleto() {
+
         boolean retorno = false;
-        if(!nome.isEmpty() && !telefone.isEmpty() &&
-                !foto.isEmpty() && !cidade.isEmpty()){
-            retorno = true;
+
+        if (nome != null && telefone != null &&
+                foto != null && cidade != null) {
+            if (!nome.isEmpty() && !telefone.isEmpty() &&
+                    !foto.isEmpty() && !cidade.isEmpty()) {
+                retorno = true;
+            }
         }
         return retorno;
     }

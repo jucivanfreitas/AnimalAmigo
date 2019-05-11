@@ -236,7 +236,6 @@ public class MainActivity extends AppCompatActivity
 
             Toast.makeText(getApplicationContext(), "foi aberto a fragment Perfil.." +
                     " realizar proframação na fragment PerfilUser", Toast.LENGTH_SHORT).show();
-
         }
         /*else if (id == R.id.nav_config_notificacoes) {
 
