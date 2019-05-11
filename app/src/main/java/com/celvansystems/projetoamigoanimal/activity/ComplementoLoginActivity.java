@@ -228,10 +228,10 @@ public class ComplementoLoginActivity extends AppCompatActivity {
 
             ArrayList<String> estadosLista = Util.getEstadosLista(this);
             estadosLista.remove(0);
-            estadosLista.add("");
+            estadosLista.add(0, "");
             ArrayList<String> cidadesLista = Util.getCidadesLista("AC", this);
             cidadesLista.remove(0);
-            cidadesLista.add("");
+            cidadesLista.add(0, "");
 
             //cidades
             adapterCidades = new ArrayAdapter<>(this, simple_spinner_item, cidadesLista);
@@ -268,6 +268,7 @@ public class ComplementoLoginActivity extends AppCompatActivity {
 
             cidadesLista = Util.getCidadesLista(estadoSelecionado, this);
             cidadesLista.remove(0);
+            cidadesLista.add(0, "");
 
             adapterCidades = new ArrayAdapter<>(this, simple_spinner_item, cidadesLista);
             adapterCidades.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
