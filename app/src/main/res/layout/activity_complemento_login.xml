@@ -126,7 +126,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginBottom="4dp"
-            android:text="@string/txt_nomess"
+            android:text="@string/txt_nome"
             android:textColor="@color/colorPrimaryDark"
             app:layout_constraintBottom_toTopOf="@+id/edt_cad_nome"
             app:layout_constraintStart_toStartOf="@+id/edt_cad_nome" />
