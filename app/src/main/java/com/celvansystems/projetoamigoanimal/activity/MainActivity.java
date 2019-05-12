@@ -147,7 +147,7 @@ public class MainActivity extends AppCompatActivity
             nav_minha_conta.setEnabled(true);
             nav_minha_conta.setTitle(R.string.txt_minha_conta);
 
-            nav_minha_conta.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
+            /*nav_minha_conta.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
 
                 @Override
                 public boolean onMenuItemClick(MenuItem item) {
@@ -155,7 +155,7 @@ public class MainActivity extends AppCompatActivity
                     fragmentTransaction.replace(R.id.view_pager, new PerfilUsuarioFragment()).addToBackStack("tag").commit();
                     return false;
                 }
-            });
+            });*/
 
             //nav_config_notificacoes.setEnabled(true);
             nav_meus_anuncios.setEnabled(true);
@@ -231,11 +231,8 @@ public class MainActivity extends AppCompatActivity
         int id = item.getItemId();
 
         if (id == R.id.nav_minha_conta) {
-            // Handle the camera action
-            fragmentTransaction.replace(R.id.view_pager, new PerfilUsuarioFragment()).addToBackStack("tag").commit();
 
-            Toast.makeText(getApplicationContext(), "foi aberto a fragment Perfil.." +
-                    " realizar proframação na fragment PerfilUser", Toast.LENGTH_SHORT).show();
+            fragmentTransaction.replace(R.id.view_pager, new PerfilUsuarioFragment()).addToBackStack("tag").commit();
         }
         /*else if (id == R.id.nav_config_notificacoes) {
 

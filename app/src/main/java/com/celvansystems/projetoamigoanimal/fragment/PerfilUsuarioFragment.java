@@ -30,6 +30,7 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.ValueEventListener;
+import com.squareup.picasso.Picasso;
 
 import java.util.Objects;
 
@@ -146,41 +147,41 @@ public class PerfilUsuarioFragment extends Fragment {
                                 usuario.setId(Objects.requireNonNull(ConfiguracaoFirebase.getFirebaseAutenticacao().getCurrentUser()).getUid());
 
                                 if(usuarios.child("nome").getValue() != null) {
-                                    usuario.setNome(usuarios.child("nome").getValue().toString());
+                                    usuario.setNome(Objects.requireNonNull(usuarios.child("nome").getValue()).toString());
                                 } else {
                                     usuario.setNome("");
                                 }
 
                                 if(usuarios.child("telefone").getValue() != null) {
-                                    usuario.setTelefone(usuarios.child("telefone").getValue().toString());
+                                    usuario.setTelefone(Objects.requireNonNull(usuarios.child("telefone").getValue()).toString());
                                 } else {
                                     usuario.setTelefone("");
                                 }
 
                                 if(usuarios.child("foto").getValue() != null) {
-                                    usuario.setFoto(usuarios.child("foto").getValue().toString());
+                                    usuario.setFoto(Objects.requireNonNull(usuarios.child("foto").getValue()).toString());
                                 }
 
                                 if(usuarios.child("pais").getValue() != null) {
-                                    usuario.setPais(usuarios.child("pais").getValue().toString());
+                                    usuario.setPais(Objects.requireNonNull(usuarios.child("pais").getValue()).toString());
                                 } else {
                                     usuario.setPais("");
                                 }
 
                                 if(usuarios.child("uf").getValue() != null) {
-                                    usuario.setUf(usuarios.child("uf").getValue().toString());
+                                    usuario.setUf(Objects.requireNonNull(usuarios.child("uf").getValue()).toString());
                                 } else {
                                     usuario.setUf("");
                                 }
 
                                 if(usuarios.child("cidade").getValue() != null) {
-                                    usuario.setCidade(usuarios.child("cidade").getValue().toString());
+                                    usuario.setCidade(Objects.requireNonNull(usuarios.child("cidade").getValue()).toString());
                                 } else {
                                     usuario.setCidade("");
                                 }
 
                                 if(usuarios.child("email").getValue() != null) {
-                                    usuario.setEmail(usuarios.child("email").getValue().toString());
+                                    usuario.setEmail(Objects.requireNonNull(usuarios.child("email").getValue()).toString());
                                 } else {
                                     usuario.setEmail("");
                                 }
@@ -189,12 +190,12 @@ public class PerfilUsuarioFragment extends Fragment {
                                 if(usuario.getNome() != null && !usuario.getNome().equalsIgnoreCase("")) {
                                     txvNomeHumano.setText(usuario.getNome());
                                 } else {
-                                    txvNomeHumano.setText("[Edite seu perfil]");
+                                    txvNomeHumano.setText(getString(R.string.edite_seu_perfil));
                                 }
                                 if(usuario.getTelefone() != null && !usuario.getTelefone().equalsIgnoreCase("")) {
                                     txvTelefone.setText(usuario.getTelefone());
                                 } else {
-                                    txvTelefone.setText("[Edite seu perfil]");
+                                    txvTelefone.setText(R.string.edite_seu_perfil);
                                 }
                                 /*if(usuario.getPais() != null  && !usuario.getPais().equalsIgnoreCase("")) {
                                     txvPais.setText(usuario.getPais());
@@ -202,21 +203,21 @@ public class PerfilUsuarioFragment extends Fragment {
                                 if(usuario.getUf() != null && !usuario.getUf().equalsIgnoreCase("")) {
                                     txvEstado.setText(usuario.getUf());
                                 } else {
-                                    txvEstado.setText("[Edite seu perfil]");
+                                    txvEstado.setText(R.string.edite_seu_perfil);
                                 }
                                 if(usuario.getCidade() != null && !usuario.getCidade().equalsIgnoreCase("")) {
                                     txvCidade.setText(usuario.getCidade());
                                 } else {
-                                    txvCidade.setText("[Edite seu perfil]");
+                                    txvCidade.setText(R.string.edite_seu_perfil);
                                 }
                                 if(usuario.getEmail() != null && !usuario.getEmail().equalsIgnoreCase("")) {
                                     txvEmail.setText(usuario.getEmail());
                                 } else {
-                                    txvEmail.setText("[Edite seu perfil]");
+                                    txvEmail.setText(R.string.edite_seu_perfil);
                                 }
 
                                 if(usuario.getFoto() != null) {
-
+                                    Picasso.get().load(usuario.getFoto()).into(imvPerfil);
                                 }
                             }
                         }
