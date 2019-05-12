@@ -30,6 +30,13 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="1.0">
 
+        <android.support.constraint.Guideline
+            android:id="@+id/guideline11"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_percent="0.50121653" />
+
         <ImageView
             android:id="@+id/imv_foto_complemento"
             android:layout_width="100dp"
@@ -48,11 +55,13 @@
             android:id="@+id/btn_voltar_foto"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
             android:layout_marginTop="24dp"
+            android:layout_marginEnd="40dp"
             android:background="@drawable/btn_compartilhar"
             android:text="@string/txt_voltar"
-            app:layout_constraintEnd_toStartOf="@+id/btn_proximo_foto"
-            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintEnd_toStartOf="@+id/guideline11"
+            app:layout_constraintHorizontal_bias="1.0"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/imv_foto_complemento" />
 
@@ -60,11 +69,12 @@
             android:id="@+id/btn_proximo_foto"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginStart="40dp"
             android:background="@drawable/btn_compartilhar"
             android:text="@string/txt_proximo"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintStart_toEndOf="@+id/btn_voltar_foto"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="@+id/guideline11"
             app:layout_constraintTop_toTopOf="@+id/btn_voltar_foto" />
 
         <TextView
@@ -91,16 +101,35 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
+        <android.support.constraint.Guideline
+            android:id="@+id/guideline10"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_percent="0.50121653" />
+
         <Button
             android:id="@+id/btn_proximo_nome"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginStart="40dp"
             android:layout_marginTop="48dp"
-            android:layout_marginEnd="76dp"
             android:background="@drawable/btn_compartilhar"
             android:text="@string/txt_proximo"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="@+id/guideline10"
             app:layout_constraintTop_toBottomOf="@+id/edt_cad_nome" />
+
+        <TextView
+            android:id="@+id/textView24"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="4dp"
+            android:text="@string/txt_nomess"
+            android:textColor="@color/colorPrimaryDark"
+            app:layout_constraintBottom_toTopOf="@+id/edt_cad_nome"
+            app:layout_constraintStart_toStartOf="@+id/edt_cad_nome" />
 
         <EditText
             android:id="@+id/edt_cad_nome"
@@ -109,6 +138,7 @@
             android:layout_marginStart="8dp"
             android:layout_marginTop="72dp"
             android:layout_marginEnd="8dp"
+            android:background="@drawable/bg_caixa_txt"
             android:ems="10"
             android:hint="@string/txt_nome_completo"
             android:inputType="textPersonName"
@@ -140,6 +170,45 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
+        <android.support.constraint.Guideline
+            android:id="@+id/guideline9"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_percent="0.50121653" />
+
+        <TextView
+            android:id="@+id/textView21"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="4dp"
+            android:text="@string/txt_estado"
+            android:textColor="@color/colorPrimaryDark"
+            app:layout_constraintBottom_toTopOf="@+id/spinner_cad_pais_complemento"
+            app:layout_constraintStart_toStartOf="@+id/spinner_cad_estado_complemento" />
+
+        <TextView
+            android:id="@+id/textView23"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:text="@string/cidade"
+            android:textColor="@color/colorPrimaryDark"
+            app:layout_constraintStart_toStartOf="@+id/spinner_cad_cidade_complemento"
+            app:layout_constraintTop_toBottomOf="@+id/spinner_cad_pais_complemento" />
+
+        <TextView
+            android:id="@+id/textView22"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="4dp"
+            android:text="@string/txt_pais"
+            android:textColor="@color/colorPrimaryDark"
+            app:layout_constraintBottom_toTopOf="@+id/spinner_cad_pais_complemento"
+            app:layout_constraintEnd_toEndOf="@+id/spinner_cad_pais_complemento"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="@+id/spinner_cad_pais_complemento" />
+
         <TextView
             android:id="@+id/textView14"
             android:layout_width="wrap_content"
@@ -154,7 +223,7 @@
 
         <Spinner
             android:id="@+id/spinner_cad_pais_complemento"
-            android:layout_width="0dp"
+            android:layout_width="50dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
             android:layout_marginTop="40dp"
@@ -166,7 +235,7 @@
             android:id="@+id/spinner_cad_estado_complemento"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
+            android:layout_marginStart="24dp"
             android:layout_marginEnd="8dp"
             android:padding="8dp"
             app:layout_constraintEnd_toEndOf="parent"
@@ -178,23 +247,13 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
-            android:layout_marginTop="16dp"
+            android:layout_marginTop="4dp"
             android:layout_marginEnd="8dp"
             android:padding="8dp"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/spinner_cad_estado_complemento" />
-
-        <Button
-            android:id="@+id/btn_voltar_cidade"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="76dp"
-            android:layout_marginTop="60dp"
-            android:background="@drawable/btn_compartilhar"
-            android:text="@string/txt_voltar"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/spinner_cad_cidade_complemento" />
+            app:layout_constraintTop_toBottomOf="@+id/textView23" />
 
         <Button
             android:id="@+id/btn_finalizar_complemento"
@@ -208,6 +267,19 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/btn_voltar_cidade" />
+
+        <Button
+            android:id="@+id/btn_voltar_cidade"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="44dp"
+            android:layout_marginEnd="40dp"
+            android:background="@drawable/btn_compartilhar"
+            android:text="@string/txt_voltar"
+            app:layout_constraintEnd_toStartOf="@+id/guideline9"
+            app:layout_constraintHorizontal_bias="1.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/spinner_cad_cidade_complemento" />
     </android.support.constraint.ConstraintLayout>
 
     <android.support.constraint.ConstraintLayout
@@ -217,8 +289,20 @@
         android:visibility="invisible"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="1.0">
+
+        <TextView
+            android:id="@+id/textView25"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="4dp"
+            android:text="@string/txt_contato"
+            android:textColor="@color/colorPrimaryDark"
+            app:layout_constraintBottom_toTopOf="@+id/edt_cad_telefone"
+            app:layout_constraintStart_toStartOf="@+id/edt_cad_telefone" />
 
         <TextView
             android:id="@+id/textView13"
@@ -239,6 +323,7 @@
             android:layout_marginStart="8dp"
             android:layout_marginTop="72dp"
             android:layout_marginEnd="8dp"
+            android:background="@drawable/bg_caixa_txt"
             android:ems="10"
             android:hint="@string/txt_telefone"
             android:inputType="phone"
@@ -251,10 +336,12 @@
             android:id="@+id/btn_volta_fone"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="76dp"
             android:layout_marginTop="48dp"
+            android:layout_marginEnd="40dp"
             android:background="@drawable/btn_compartilhar"
             android:text="@string/txt_voltar"
+            app:layout_constraintEnd_toStartOf="@+id/guideline2"
+            app:layout_constraintHorizontal_bias="1.0"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/edt_cad_telefone" />
 
@@ -262,15 +349,23 @@
             android:id="@+id/btn_proximo_fone"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginStart="40dp"
             android:layout_marginTop="48dp"
             android:layout_marginEnd="16dp"
             android:background="@drawable/btn_compartilhar"
             android:elevation="15dp"
             android:text="@string/txt_proximo"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.58"
-            app:layout_constraintStart_toEndOf="@+id/btn_volta_fone"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="@+id/guideline2"
             app:layout_constraintTop_toBottomOf="@+id/edt_cad_telefone" />
+
+        <android.support.constraint.Guideline
+            android:id="@+id/guideline2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_begin="206dp" />
     </android.support.constraint.ConstraintLayout>
 
     <ScrollView
