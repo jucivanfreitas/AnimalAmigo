@@ -65,6 +65,7 @@ import com.google.firebase.auth.FirebaseAuthUserCollisionException;
 import com.google.firebase.auth.FirebaseAuthWeakPasswordException;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
+import com.google.firebase.auth.UserInfo;
 import com.google.firebase.auth.UserProfileChangeRequest;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -551,22 +552,31 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
 
                 for (DataSnapshot usuarios : dataSnapshot.getChildren()) {
 
-                    if (usuarios != null) {
-                        if (Objects.requireNonNull(usuarios.child("id").getValue()).toString().equalsIgnoreCase(usuarioId)) {
+                    try {
+                        if (usuarios != null) {
 
-                            if (usuarios.child("loginCompleto").getValue() == null) {
+                            UserInfo user = ConfiguracaoFirebase.getFirebaseAutenticacao().getCurrentUser();
 
-                                Intent intent = new Intent(getApplicationContext(), ComplementoLoginActivity.class);
-                                startActivity(intent);
+                            if (Objects.requireNonNull(usuarios.child("id").getValue()).toString().equalsIgnoreCase(usuarioId)) {
 
-                            } else {
+                                if (Objects.requireNonNull(usuarios.child("loginCompleto").getValue()).toString().equalsIgnoreCase("true")) {
+                                    Log.d("INFO21", "bli ");
 
-                                Intent intent = new Intent(getApplicationContext(), MainActivity.class);
-                                startActivity(intent);
-
+                                    Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+                                    startActivity(intent);
+                                    finish();
+                                } else {
+                                    Log.d("INFO21", "blo");
+                                    Intent intent = new Intent(LoginActivity.this, ComplementoLoginActivity.class);
+                                    startActivity(intent);
+                                    finish();
+                                }
                             }
-                            finish();
                         }
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                        Log.d("INFO21", "cle" + usuarioId);
+
                     }
                 }
             }

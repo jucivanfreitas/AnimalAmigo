@@ -197,6 +197,8 @@ public class ComplementoLoginActivity extends AppCompatActivity {
                     }
 
                     salvarUsuario(usuario);
+
+
                 }
             });
 
@@ -445,8 +447,14 @@ public class ComplementoLoginActivity extends AppCompatActivity {
 
         //salvar imagem no storage
         try {
-            String urlImagem = usuario.getFoto();
-            salvarFotosStorage(usuario, urlImagem);
+            if(usuario.getFoto()!= null) {
+                String urlImagem = usuario.getFoto();
+                salvarFotosStorage(usuario, urlImagem);
+            } else {
+                dialog.dismiss();
+                startActivity(new Intent(ComplementoLoginActivity.this, MainActivity.class));
+                finish();
+            }
         } catch (Exception e) {
             e.printStackTrace();
         }

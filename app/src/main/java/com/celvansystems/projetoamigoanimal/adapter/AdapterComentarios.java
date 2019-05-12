@@ -55,7 +55,6 @@ public class AdapterComentarios extends RecyclerView.Adapter<AdapterComentarios.
 
                 String foto = comentario.getUsuario().getFoto();
                 if(foto != null) {
-                    //myViewHolder.fotousuario.setImageURI(Uri.parse(foto));
                     Picasso.get().load(foto).into(myViewHolder.fotousuario);
                 }
                 myViewHolder.ttvTexto.setText(comentario.getTexto());
