@@ -117,7 +117,7 @@ public class ComentariosActivity extends AppCompatActivity {
                             if (Objects.requireNonNull(usuarios.child("id").getValue()).toString().equalsIgnoreCase(Objects.requireNonNull(user).getUid())) {
 
                                 Usuario usuario = new Usuario();
-                                usuario.setId(Objects.requireNonNull(ConfiguracaoFirebase.getFirebaseAutenticacao().getCurrentUser()).getUid());
+                                usuario.setId(ConfiguracaoFirebase.getIdUsuario());
 
                                 //Dados fora do cadastro
                                 String texto = edtComentario.getText().toString();
@@ -127,7 +127,6 @@ public class ComentariosActivity extends AppCompatActivity {
                                 } else {
                                     String nomeUsuario = Objects.requireNonNull(ConfiguracaoFirebase.getFirebaseAutenticacao().getCurrentUser()).getDisplayName();
                                     if(nomeUsuario!=null) {
-                                        usuario.setId(ConfiguracaoFirebase.getIdUsuario());
                                         usuario.setNome(nomeUsuario);
                                     }
                                 }

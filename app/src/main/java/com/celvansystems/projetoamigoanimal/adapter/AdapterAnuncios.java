@@ -6,7 +6,6 @@ import android.content.Intent;
 import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -344,23 +343,19 @@ public class AdapterAnuncios extends RecyclerView.Adapter<AdapterAnuncios.MyView
 
                                 //Dados fora do cadastro
                                 String texto = myViewHolder.edtComentar.getText().toString();
-                                Log.d("INFO21", "1");
 
-                                if (usuarios.child(ConfiguracaoFirebase.getIdUsuario()).child("nome").getValue() != null) {
-                                    usuario.setNome(usuarios.child(ConfiguracaoFirebase.getIdUsuario()).child("nome").getValue().toString());
-                                    Log.d("INFO21", usuario.getNome() + "1");
+                                if (usuarios.child("nome").getValue() != null) {
+                                    usuario.setNome(Objects.requireNonNull(usuarios.child("nome").getValue()).toString());
                                 } else if (user.getDisplayName() != null) {
                                     String nomeUsuario = user.getDisplayName();
                                     usuario.setNome(nomeUsuario);
-                                    Log.d("INFO21", usuario.getNome() + "2");
 
                                 } else {
                                     usuario.setNome("Anônimo");
-                                    Log.d("INFO21", usuario.getNome() + "3");
                                 }
+
                                 //Inserindo o comentário
                                 if (Util.validaTexto(texto)) {
-                                    Log.d("INFO21", "texto validado");
 
                                     Comentario coment = new Comentario(usuario, texto, Util.getDataAtualBrasil());
 

@@ -176,7 +176,7 @@ public class ComplementoLoginActivity extends AppCompatActivity {
                     //Id
                     usuario.setId(ConfiguracaoFirebase.getIdUsuario());
                     //Email
-                    usuario.setEmail(ConfiguracaoFirebase.getFirebaseAutenticacao().getCurrentUser().getEmail());
+                    usuario.setEmail(Objects.requireNonNull(ConfiguracaoFirebase.getFirebaseAutenticacao().getCurrentUser()).getEmail());
                     //Nome
                     if (edtNome.getText() != null && !edtNome.getText().toString().equalsIgnoreCase("")) {
                         usuario.setNome(edtNome.getText().toString());

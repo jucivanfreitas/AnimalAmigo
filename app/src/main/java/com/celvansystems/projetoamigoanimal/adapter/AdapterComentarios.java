@@ -11,7 +11,6 @@ import android.widget.TextView;
 
 import com.celvansystems.projetoamigoanimal.R;
 import com.celvansystems.projetoamigoanimal.model.Comentario;
-import com.squareup.picasso.Picasso;
 
 import java.io.Serializable;
 import java.util.List;
@@ -23,6 +22,7 @@ public class AdapterComentarios extends RecyclerView.Adapter<AdapterComentarios.
 
     /**
      * construtor
+     *
      * @param comentarios lista de comentarios
      */
     public AdapterComentarios(List<Comentario> comentarios) {
@@ -40,8 +40,9 @@ public class AdapterComentarios extends RecyclerView.Adapter<AdapterComentarios.
 
     /**
      * Bind
+     *
      * @param myViewHolder myViewHolder
-     * @param i anuncio
+     * @param i            anuncio
      */
     @Override
     public void onBindViewHolder(@NonNull final MyViewHolder myViewHolder, @SuppressLint("RecyclerView") int i) {
@@ -51,16 +52,25 @@ public class AdapterComentarios extends RecyclerView.Adapter<AdapterComentarios.
 
             // TODO: 05/03/2019 após concluir desenvolvimento do cadastro do usuario, configurar restante dos atributos
             if (comentario != null) {
+
+                //nome
                 String nomeUsuario = comentario.getUsuario().getNome();
 
-                String foto = comentario.getUsuario().getFoto();
-                if(foto != null) {
+                //foto
+                /*String foto = comentario.getUsuario().getFoto();
+                if (foto != null) {
                     Picasso.get().load(foto).into(myViewHolder.fotousuario);
-                }
+                    Log.d("INFO5", "foto ok");
+                }*/
+
+                //texto do comentario
                 myViewHolder.ttvTexto.setText(comentario.getTexto());
+
+                //data/hora do comentario
                 myViewHolder.ttvDataHora.setText(comentario.getDatahora());
 
-                if(nomeUsuario!= null) {
+                //nome do usuario
+                if (nomeUsuario != null) {
                     myViewHolder.ttvNomeUsuario.setText(nomeUsuario);
                 }
             }
@@ -83,7 +93,7 @@ public class AdapterComentarios extends RecyclerView.Adapter<AdapterComentarios.
         TextView ttvNomeUsuario;
         ImageView fotousuario;
 
-        private View layout;
+        //private View layout;
 
         MyViewHolder(View itemView) {
             super(itemView);
@@ -93,7 +103,7 @@ public class AdapterComentarios extends RecyclerView.Adapter<AdapterComentarios.
             ttvNomeUsuario = itemView.findViewById(R.id.textView_nome_usuario);
             fotousuario = itemView.findViewById(R.id.imageView_foto_usuario_comentarios);
 
-            layout = itemView.findViewById(R.id.constraint_comentarios);
+            //layout = itemView.findViewById(R.id.constraint_comentarios);
         }
     }
 }
