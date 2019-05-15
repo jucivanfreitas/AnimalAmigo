@@ -18,6 +18,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.Spinner;
+import android.widget.TextView;
 
 import com.celvansystems.projetoamigoanimal.R;
 import com.celvansystems.projetoamigoanimal.adapter.AdapterAnuncios;
@@ -53,17 +54,20 @@ public class AnunciosFragment extends Fragment {
     private Spinner spinnerEstado;
     private Spinner spinnerCidade;
     private ArrayAdapter adapterCidades;
+    private RecyclerView recyclerAnunciosPublicos;
     private SwipeRefreshLayout swipeRefreshLayout;
+    private TextView txvSemAnuncios;
     private View view;
     private View layout;
 
-    public AnunciosFragment() {}
+    public AnunciosFragment() {
+    }
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
-        view =  inflater.inflate(R.layout.fragment_anuncios, container, false);
+        view = inflater.inflate(R.layout.fragment_anuncios, container, false);
         inicializarComponentes();
 
         return view;
@@ -73,7 +77,7 @@ public class AnunciosFragment extends Fragment {
      * inicializa os componentes da view
      */
     @SuppressLint("RestrictedApi")
-    private void inicializarComponentes(){
+    private void inicializarComponentes() {
 
         layout = view.findViewById(R.id.const_layout_anuncios);
 
@@ -81,13 +85,21 @@ public class AnunciosFragment extends Fragment {
             anunciosPublicosRef = ConfiguracaoFirebase.getFirebase()
                     .child("meus_animais");
 
-        } catch (Exception e){e.printStackTrace();}
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
-        RecyclerView recyclerAnunciosPublicos = view.findViewById(R.id.recyclerAnuncios);
+        recyclerAnunciosPublicos = view.findViewById(R.id.recyclerAnuncios);
         recyclerAnunciosPublicos.setItemAnimator(null);
+
 
         btnLocal = view.findViewById(R.id.btnCidade);
         btnEspecie = view.findViewById(R.id.btnEspecie);
+
+        txvSemAnuncios = view.findViewById(R.id.txv_sem_anuncios);
+        //txvSemAnuncios.setVisibility(View.INVISIBLE);
+        txvSemAnuncios.setText("Nenhum Pet encontrado. Tente outra opção!");
+        txvSemAnuncios.setTextSize(15);
 
         btnLocal.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -114,7 +126,9 @@ public class AnunciosFragment extends Fragment {
 
             recyclerAnunciosPublicos.setAdapter(adapterAnuncios);
 
-        } catch (Exception e){e.printStackTrace();}
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
         try {
             dialog = new SpotsDialog.Builder()
@@ -122,7 +136,9 @@ public class AnunciosFragment extends Fragment {
                     .setMessage("Procurando anúncios")
                     .setCancelable(true)
                     .build();
-        } catch (Exception e){e.printStackTrace();}
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
         //refresh
         swipeRefreshLayout = view.findViewById(R.id.swipeRefreshLayout);
@@ -134,14 +150,14 @@ public class AnunciosFragment extends Fragment {
         });
     }
 
-    private boolean isListaAnunciosPopulada(){
+    private boolean isListaAnunciosPopulada() {
         return listaAnuncios.size() > 0;
     }
 
     /**
      * Refesh dos anuncios
      */
-    private void refreshRecyclerAnuncios(){
+    private void refreshRecyclerAnuncios() {
         // Refresh items
         Util.setSnackBar(layout, "Atualizando pets...");
 
@@ -150,40 +166,41 @@ public class AnunciosFragment extends Fragment {
         String localTexto = btnLocal.getText().toString();
         String especieTexto = btnEspecie.getText().toString();
 
-        boolean filtrandoEspecie=false, filtrandoEstado=false, filtrandoCidade = false;
+        boolean filtrandoEspecie = false, filtrandoEstado = false, filtrandoCidade = false;
 
-        if(!especieTexto.equals("especie") && !especieTexto.equals("Todas")) {
+        if (!especieTexto.equals("especie") && !especieTexto.equals("Todas")) {
             filtrandoEspecie = true;
         }
-        if(localTexto.length() == 2) {
+        if (localTexto.length() == 2) {
             filtrandoEstado = true;
-        } else if((!localTexto.equalsIgnoreCase("Todas")
+        } else if ((!localTexto.equalsIgnoreCase("Todas")
                 && !localTexto.equalsIgnoreCase("Todos")
-                && !localTexto.equalsIgnoreCase("cidade"))){
+                && !localTexto.equalsIgnoreCase("cidade"))) {
             filtrandoCidade = true;
         }
 
         if (filtrandoEspecie) {
-            if (!filtrandoEstado && !filtrandoCidade){
+            if (!filtrandoEstado && !filtrandoCidade) {
                 recuperarAnunciosFiltro(null, null, especieTexto);
             } else {
-                if(filtrandoEstado) {
+                if (filtrandoEstado) {
                     recuperarAnunciosFiltro(localTexto, null, especieTexto);
                 } else {
                     recuperarAnunciosFiltro(null, localTexto, especieTexto);
                 }
             }
         } else {
-            if (!filtrandoEstado && !filtrandoCidade){
+            if (!filtrandoEstado && !filtrandoCidade) {
                 recuperarAnunciosFiltro(null, null, null);
             } else {
-                if(filtrandoEstado) {
+                if (filtrandoEstado) {
                     recuperarAnunciosFiltro(localTexto, null, null);
                 } else {
                     recuperarAnunciosFiltro(null, localTexto, null);
                 }
             }
         }
+
 
         swipeRefreshLayout.setRefreshing(false);
     }
@@ -194,7 +211,7 @@ public class AnunciosFragment extends Fragment {
 
         // Verifica se há conta do google logada.
         GoogleSignInAccount account = GoogleSignIn.getLastSignedInAccount(view.getContext());
-        if(account != null) {
+        if (account != null) {
             Log.d("INFO40", "Usuário logado com google");
             //Util.setSnackBar(layout, "Usuário logado pelo google");
         } else {
@@ -209,15 +226,16 @@ public class AnunciosFragment extends Fragment {
     }
 
     @Override
-    public void onResume(){
+    public void onResume() {
         super.onResume();
         refreshRecyclerAnuncios();
     }
 
     /**
      * filtro dos anuncioos
-     * @param estado uf
-     * @param cidade cidade
+     *
+     * @param estado  uf
+     * @param cidade  cidade
      * @param especie especie
      */
     public void recuperarAnunciosFiltro(final String estado, final String cidade, final String especie) {
@@ -226,11 +244,11 @@ public class AnunciosFragment extends Fragment {
             dialog.show();
 
             //cidade
-            if (cidade!=null && !cidade.equalsIgnoreCase(getString(R.string.todas))) {
+            if (cidade != null && !cidade.equalsIgnoreCase(getString(R.string.todas))) {
                 btnLocal.setText(cidade);
             }
             //estado
-            else if (estado != null){
+            else if (estado != null) {
                 btnLocal.setText(estado);
             }
             //especie
@@ -316,17 +334,20 @@ public class AnunciosFragment extends Fragment {
                         dialog.dismiss();
                     }
                 }
+
                 @Override
                 public void onCancelled(@NonNull DatabaseError databaseError) {
                 }
             });
-        } catch (Exception e){e.printStackTrace();}
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     /**
      * açao do botao especie
      */
-    public void filtraPorEspecie(View view){
+    public void filtraPorEspecie(View view) {
 
         try {
             AlertDialog.Builder dialogEspecie = new AlertDialog.Builder(view.getContext());
@@ -356,7 +377,11 @@ public class AnunciosFragment extends Fragment {
                     String filtroEspecie = spinnerEspecie.getSelectedItem().toString();
                     btnEspecie.setText(filtroEspecie);
                     refreshRecyclerAnuncios();
+
+                    verificaRecyclerZerada();
                 }
+
+
             });
 
             dialogEspecie.setNegativeButton(getString(R.string.cancelar), new DialogInterface.OnClickListener() {
@@ -368,14 +393,30 @@ public class AnunciosFragment extends Fragment {
 
             AlertDialog dialog = dialogEspecie.create();
             dialog.show();
-        } catch (Exception e) {e.printStackTrace();}
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void verificaRecyclerZerada() {
+        if (getItemsSizeFromRecycler() == 0) {
+            /*RelativeLayout.LayoutParams p = (RelativeLayout.LayoutParams) txvSemAnuncios.getLayoutParams();
+            p.leftMargin = 50; // in PX
+            p.topMargin = 400; // in PX
+            txvSemAnuncios.setLayoutParams(p);*/
+
+            txvSemAnuncios.setVisibility(View.VISIBLE);
+        } else {
+            txvSemAnuncios.setVisibility(View.INVISIBLE);
+        }
     }
 
     /**
      * açao do botao Local
+     *
      * @param view view
      */
-    public void filtraPorCidade(View view){
+    public void filtraPorCidade(View view) {
 
         try {
             AlertDialog.Builder dialogCidade = new AlertDialog.Builder(view.getContext());
@@ -409,10 +450,11 @@ public class AnunciosFragment extends Fragment {
 
                     try {
                         setAdapterSpinnerCidade();
-                    }catch (Exception e){
+                    } catch (Exception e) {
                         e.printStackTrace();
                     }
                 }
+
                 @Override
                 public void onNothingSelected(AdapterView<?> parent) {
                 }
@@ -426,18 +468,20 @@ public class AnunciosFragment extends Fragment {
                     String filtroEstado = getString(R.string.todos);
                     String filtroCidade = getString(R.string.todas);
 
-                    if(spinnerEstado.getSelectedItem()!=null) {
+                    if (spinnerEstado.getSelectedItem() != null) {
 
                         filtroEstado = spinnerEstado.getSelectedItem().toString();
                         btnLocal.setText(filtroEstado);
                     }
-                    if(spinnerCidade.getSelectedItem()!=null) {
-                        if(!spinnerCidade.getSelectedItem().toString().equalsIgnoreCase("Todas")) {
+                    if (spinnerCidade.getSelectedItem() != null) {
+                        if (!spinnerCidade.getSelectedItem().toString().equalsIgnoreCase("Todas")) {
                             filtroCidade = spinnerCidade.getSelectedItem().toString();
                             btnLocal.setText(filtroCidade);
                         }
                     }
                     refreshRecyclerAnuncios();
+                    verificaRecyclerZerada();
+
                 }
             });
 
@@ -451,20 +495,22 @@ public class AnunciosFragment extends Fragment {
             AlertDialog dialog = dialogCidade.create();
             dialog.show();
 
-        } catch (Exception e) {e.printStackTrace();}
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     /**
      * popula spinner cidades de acordo com o estado
      */
-    private void setAdapterSpinnerCidade(){
+    private void setAdapterSpinnerCidade() {
 
         try {
             ArrayList<String> cidadesLista = new ArrayList<>();
             cidadesLista.add(getString(R.string.todas));
             String estadoSelecionado = spinnerEstado.getSelectedItem().toString();
 
-            if(!estadoSelecionado.equalsIgnoreCase(getString(R.string.todos))) {
+            if (!estadoSelecionado.equalsIgnoreCase(getString(R.string.todos))) {
                 cidadesLista = Util.getCidadesLista(estadoSelecionado, view.getContext());
             }
 
@@ -474,6 +520,16 @@ public class AnunciosFragment extends Fragment {
             spinnerCidade.setAdapter(adapterCidades);
             adapterCidades.notifyDataSetChanged();
 
-        } catch (Exception e){e.printStackTrace();}
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    private int getItemsSizeFromRecycler() {
+        int count = 0;
+        if (recyclerAnunciosPublicos.getAdapter() != null) {
+            count = recyclerAnunciosPublicos.getAdapter().getItemCount();
+        }
+        return count;
     }
 }

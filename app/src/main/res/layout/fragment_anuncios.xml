@@ -10,7 +10,6 @@
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
     tools:context=".fragment.AnunciosFragment">
 
-
     <android.support.constraint.ConstraintLayout
         android:id="@+id/const_layout_anuncios"
         android:layout_width="match_parent"
@@ -70,6 +69,20 @@
                 tools:ignore="OnClick" />
         </LinearLayout>
 
+<RelativeLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    tools:ignore="MissingConstraints">
+
+    <TextView
+        android:id="@+id/txv_sem_anuncios"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="300dp"
+        android:layout_marginStart="60dp"
+        android:visibility="gone" />
+</RelativeLayout>
+
         <android.support.v4.widget.SwipeRefreshLayout
             android:id="@+id/swipeRefreshLayout"
             android:layout_width="match_parent"
@@ -81,24 +94,21 @@
             <android.support.v7.widget.RecyclerView
                 android:id="@+id/recyclerAnuncios"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent" />
+                android:layout_height="wrap_content" />
+
         </android.support.v4.widget.SwipeRefreshLayout>
 
     </android.support.constraint.ConstraintLayout>
 
-    <android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
-        xmlns:tools="http://schemas.android.com/tools"
+    <android.support.design.widget.CoordinatorLayout
         android:id="@+id/coordinator_layout_anuncios"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_alignParentStart="true"
         android:orientation="vertical"
         android:visibility="gone"
         app:layout_behavior="@string/appbar_scrolling_view_behavior"
         tools:context=".activity.MainActivity"
         tools:showIn="@layout/fragment_anuncios">
-
 
     </android.support.design.widget.CoordinatorLayout>
 
@@ -108,12 +118,6 @@
         android:layout_height="match_parent"
         android:layout_marginTop="50dp"
         android:visibility="gone">
-
-        <android.support.constraint.ConstraintLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
-
-        </android.support.constraint.ConstraintLayout>
 
         <com.google.android.gms.ads.AdView xmlns:ads="http://schemas.android.com/apk/res-auto"
             android:id="@+id/adView"
@@ -125,9 +129,6 @@
             android:visibility="gone"
             ads:adSize="BANNER"
             ads:adUnitId="ca-app-pub-3940256099942544/6300978111">
-            <!--ads:adUnitId="@string/banner_id"-->
-            <!--ads:layout_anchorGravity="bottom|center"-->
-            <!--ads:layout_anchor="@+id/include"-->
         </com.google.android.gms.ads.AdView>
 
     </RelativeLayout>
