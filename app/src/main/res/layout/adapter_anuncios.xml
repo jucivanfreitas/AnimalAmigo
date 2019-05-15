@@ -196,7 +196,7 @@
             android:padding="9dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:srcCompat="@drawable/ic_problema_branco" />
+            app:srcCompat="@drawable/ic_more_vert_black_24dp" />
 
     </android.support.constraint.ConstraintLayout>
 
