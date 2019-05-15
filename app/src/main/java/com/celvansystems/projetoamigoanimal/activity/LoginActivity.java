@@ -103,8 +103,6 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
     private CallbackManager callbackManager;
     private GoogleSignInClient mGoogleSignInClient;
     private View layout;
-    private boolean retorno;
-    private Usuario usuarioRetorno;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -551,22 +549,29 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
 
                 for (DataSnapshot usuarios : dataSnapshot.getChildren()) {
 
-                    if (usuarios != null) {
-                        if (Objects.requireNonNull(usuarios.child("id").getValue()).toString().equalsIgnoreCase(usuarioId)) {
+                    try {
+                        if (usuarios != null) {
 
-                            if (usuarios.child("loginCompleto").getValue() == null) {
+                            if (Objects.requireNonNull(usuarios.child("id").getValue()).toString().equalsIgnoreCase(usuarioId)) {
 
-                                Intent intent = new Intent(getApplicationContext(), ComplementoLoginActivity.class);
-                                startActivity(intent);
+                                if (Objects.requireNonNull(usuarios.child("loginCompleto").getValue()).toString().equalsIgnoreCase("true")) {
+                                    Log.d("INFO21", "bli ");
 
-                            } else {
-
-                                Intent intent = new Intent(getApplicationContext(), MainActivity.class);
-                                startActivity(intent);
-
+                                    Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+                                    startActivity(intent);
+                                    finish();
+                                } else {
+                                    Log.d("INFO21", "blo");
+                                    Intent intent = new Intent(LoginActivity.this, ComplementoLoginActivity.class);
+                                    startActivity(intent);
+                                    finish();
+                                }
                             }
-                            finish();
                         }
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                        Log.d("INFO21", "cle" + usuarioId);
+
                     }
                 }
             }
@@ -577,97 +582,6 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         });
 
         // TODO: 06/03/2019 setSnackBar passando mensagem pra Main
-    }
-
-    /*private boolean isCadastroCompleto(final String usuarioId) {
-
-        retorno = true;
-
-        DatabaseReference usuariosRef = ConfiguracaoFirebase.getFirebase()
-                .child("usuarios");
-
-        usuariosRef.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-
-                for (DataSnapshot usuarios : dataSnapshot.getChildren()) {
-
-                    if (usuarios != null) {
-                        if (Objects.requireNonNull(usuarios.child("id").getValue()).toString().equalsIgnoreCase(usuarioId)) {
-
-                            if ((usuarios.child("nome").getValue()) == null ||
-                                    (usuarios.child("telefone").getValue()) == null ||
-                                    (usuarios.child("foto").getValue()) == null ||
-                                    (usuarios.child("pais").getValue()) == null ||
-                                    (usuarios.child("uf").getValue()) == null ||
-                                    (usuarios.child("cidade").getValue()) == null) {
-
-                                retorno = false;
-
-                            }
-                            // TODO: 05/03/2019 concluir atributos de usuario apos activity para cadastro de usuario
-                            //usuario.setFoto(ConfiguracaoFirebase.getFirebaseAutenticacao().getCurrentUser().getPhotoUrl().toString());
-                        }
-                    }
-                }
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-            }
-        });
-        return retorno;
-    }*/
-
-    private Usuario getUsuarioDoCadastro(final String usuarioId) {
-
-        DatabaseReference usuariosRef = ConfiguracaoFirebase.getFirebase()
-                .child("usuarios");
-
-
-        usuariosRef.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                //int size = (int) dataSnapshot.getChildrenCount();
-                //atualizaComentarios(size, anuncio, myViewHolder);
-
-                //List<Usuario> usuariosList = new ArrayList<>();
-                for (DataSnapshot usuarios : dataSnapshot.getChildren()) {
-
-                    if (usuarios != null) {
-                        if (Objects.requireNonNull(usuarios.child("id").getValue()).toString().equalsIgnoreCase(usuarioId)) {
-
-                            usuarioRetorno = new Usuario();
-
-                            usuarioRetorno.setId(Objects.requireNonNull(ConfiguracaoFirebase.getFirebaseAutenticacao().getCurrentUser()).getUid());
-
-                            usuarioRetorno.setNome(Objects.requireNonNull(usuarios.child("nome").getValue()).toString());
-
-                            usuarioRetorno.setNome(Objects.requireNonNull(usuarios.child("telefone").getValue()).toString());
-
-                            usuarioRetorno.setNome(Objects.requireNonNull(usuarios.child("foto").getValue()).toString());
-
-                            usuarioRetorno.setNome(Objects.requireNonNull(usuarios.child("pais").getValue()).toString());
-
-                            usuarioRetorno.setNome(Objects.requireNonNull(usuarios.child("uf").getValue()).toString());
-
-                            usuarioRetorno.setNome(Objects.requireNonNull(usuarios.child("cidade").getValue()).toString());
-
-                        }
-                    }
-                }
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-            }
-        });
-
-        return usuarioRetorno;
-    }
-
-    private void criarUsuarioFirebase(Usuario usuario) {
-
     }
 
     /**

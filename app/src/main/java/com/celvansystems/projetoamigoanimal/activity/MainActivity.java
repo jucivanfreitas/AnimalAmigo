@@ -14,6 +14,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -26,6 +27,7 @@ import com.celvansystems.projetoamigoanimal.fragment.PerfilUsuarioFragment;
 import com.celvansystems.projetoamigoanimal.fragment.SobreAppFragment;
 import com.celvansystems.projetoamigoanimal.helper.ConfiguracaoFirebase;
 import com.celvansystems.projetoamigoanimal.helper.Util;
+import com.celvansystems.projetoamigoanimal.model.Usuario;
 import com.facebook.login.LoginManager;
 import com.google.android.gms.ads.AdListener;
 import com.google.android.gms.ads.AdRequest;
@@ -34,6 +36,13 @@ import com.google.android.gms.ads.InterstitialAd;
 import com.google.android.gms.ads.MobileAds;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.ValueEventListener;
+import com.squareup.picasso.Picasso;
+
+import java.util.Objects;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -41,8 +50,6 @@ public class MainActivity extends AppCompatActivity
     private FirebaseAuth autenticacao;
     private View layout;
     private NavigationView navigationView;
-    private FragmentManager fragmentManager;
-    private FragmentTransaction fragmentTransaction;
     private InterstitialAd mInterstitialAd;
     private AdView adView;
 
@@ -60,7 +67,7 @@ public class MainActivity extends AppCompatActivity
         //configuraInterstitialAdTimer(Constantes.DELAY_INTERSTITIAL, Constantes.TIME_INTERSTITIAL);
     }
 
-    private void inicializarComponentes(){
+    private void inicializarComponentes() {
 
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -78,33 +85,75 @@ public class MainActivity extends AppCompatActivity
         navigationView = findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
-        fragmentManager = getSupportFragmentManager();
-        fragmentTransaction = fragmentManager.beginTransaction();
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
         fragmentTransaction.replace(R.id.view_pager, new AnunciosFragment()).commit();
     }
 
     private void carregaDadosUsuario() {
 
-        NavigationView navigationView = findViewById(R.id.nav_view);
-        View headerView = navigationView.getHeaderView(0);
-        TextView navUsername = headerView.findViewById(R.id.textview_nome_humano);
-        TextView navEmail = headerView.findViewById(R.id.textView_email_cadastrado);
+        //Dados do Usuário
+        DatabaseReference usuariosRef = ConfiguracaoFirebase.getFirebase()
+                .child("usuarios");
 
-        FirebaseUser user = autenticacao.getCurrentUser();
+        usuariosRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
 
-        if(user != null) {
-            navUsername.setText(user.getDisplayName());
-            navEmail.setText(user.getEmail());
-        } else {
-            navUsername.setText(getString(R.string.usuario));
-            navEmail.setText(getString(R.string.email));
-        }
+                for (DataSnapshot usuarios : dataSnapshot.getChildren()) {
+
+                    if (usuarios != null) {
+
+                        FirebaseUser user = autenticacao.getCurrentUser();
+
+                        if (Objects.requireNonNull(usuarios.child("id").getValue()).toString().equalsIgnoreCase(Objects.requireNonNull(user).getUid())) {
+
+                            NavigationView navigationView = findViewById(R.id.nav_view);
+                            View headerView = navigationView.getHeaderView(0);
+                            TextView navUsername = headerView.findViewById(R.id.textview_nome_humano);
+                            TextView navEmail = headerView.findViewById(R.id.textView_email_cadastrado);
+                            ImageView imageViewPerfil = headerView.findViewById(R.id.imageView_perfil);
+
+
+                            Usuario usuario = new Usuario();
+                            usuario.setId(ConfiguracaoFirebase.getIdUsuario());
+
+                            //nome
+                            if (usuarios.child("nome").getValue() != null) {
+                                usuario.setNome(Objects.requireNonNull(usuarios.child("nome").getValue()).toString());
+                                navUsername.setText(usuario.getNome());
+                            } else {
+                                navUsername.setText(user.getDisplayName());
+                            }
+
+                            //email
+                            if (usuarios.child("email").getValue() != null) {
+
+                                usuario.setEmail(Objects.requireNonNull(usuarios.child("email").getValue()).toString());
+                                navEmail.setText(usuario.getEmail());
+                            } else {
+                                navEmail.setText(user.getEmail());
+                            }
+                            //foto
+                            if (usuarios.child("foto").getValue() != null) {
+                                usuario.setFoto(Objects.requireNonNull(usuarios.child("foto").getValue()).toString());
+                                Picasso.get().load(usuario.getFoto()).into(imageViewPerfil);
+                            }
+                        }
+                    }
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+            }
+        });
     }
+
     /**
      * configuracao da exibicao de intersticial periodico
      */
     /*private void configuraInterstitialAdTimer(int delay, int segundos) {
-
 
         prepareInterstitialAd();
         ScheduledExecutorService scheduler =
@@ -122,11 +171,9 @@ public class MainActivity extends AppCompatActivity
                         prepareInterstitialAd();
                     }
                 });
-
             }
         }, delay, segundos, TimeUnit.SECONDS);
     }*/
-
     private void habilitaOpcoesNav() {
 
         Menu menuNav = navigationView.getMenu();
@@ -143,7 +190,7 @@ public class MainActivity extends AppCompatActivity
         MenuItem nav_sair = menuNav.findItem(R.id.nav_sair);
         //MenuItem nav_pet_procurado = menuNav.findItem(R.id.pet_procurado);
 
-        if(ConfiguracaoFirebase.isUsuarioLogado()){
+        if (ConfiguracaoFirebase.isUsuarioLogado()) {
             nav_minha_conta.setEnabled(true);
             nav_minha_conta.setTitle(R.string.txt_minha_conta);
 
@@ -197,7 +244,7 @@ public class MainActivity extends AppCompatActivity
 
     @Override
     protected void onPause() {
-        if(adView!=null){
+        if (adView != null) {
             adView.pause();
         }
         super.onPause();
@@ -206,7 +253,7 @@ public class MainActivity extends AppCompatActivity
     @Override
     protected void onResume() {
         super.onResume();
-        if(adView!=null){
+        if (adView != null) {
             adView.resume();
         }
         carregaDadosUsuario();
@@ -214,7 +261,7 @@ public class MainActivity extends AppCompatActivity
 
     @Override
     protected void onDestroy() {
-        if(adView!=null){
+        if (adView != null) {
             adView.destroy();
         }
         super.onDestroy();
@@ -224,8 +271,8 @@ public class MainActivity extends AppCompatActivity
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
 
         //implementa fragmento
-        FragmentManager fragmentManager=getSupportFragmentManager();
-        FragmentTransaction fragmentTransaction =fragmentManager.beginTransaction();
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
 
         // Handle navigation view item clicks here.
         int id = item.getItemId();
@@ -254,8 +301,7 @@ public class MainActivity extends AppCompatActivity
         } else if (id == R.id.pet_cad) {
             // fragment pet_cad cadastrar anuncio
             fragmentTransaction.replace(R.id.view_pager, new CadastrarAnuncioFragment()).addToBackStack("tag").commit();
-        }
-        else if (id == R.id.pet_adote) {
+        } else if (id == R.id.pet_adote) {
             //reuso da activity cadastrar anuncio
             fragmentTransaction.replace(R.id.view_pager, new AnunciosFragment()).addToBackStack("tag").commit();
         } else if (id == R.id.doacao) {
@@ -297,12 +343,12 @@ public class MainActivity extends AppCompatActivity
                             "sobre o APP",
                     Toast.LENGTH_SHORT).show();
             // TODO: 17/02/2019 imPlementar janela de ajudas sobre o app
-        }else if (id == R.id.nav_sair) {
+        } else if (id == R.id.nav_sair) {
 
             Toast.makeText(getApplicationContext(),
                     "Volte sempre, precisamos de você!!!",
                     Toast.LENGTH_SHORT).show();
-            startActivity(new Intent(this,LoginActivity.class));
+            startActivity(new Intent(this, LoginActivity.class));
 
             mostraInterstitialAd();
 
@@ -334,7 +380,6 @@ public class MainActivity extends AppCompatActivity
         return true;
     }
 
-
     /**
      * método que configura as propagandas via AdMob
      */
@@ -351,7 +396,7 @@ public class MainActivity extends AppCompatActivity
             InterstitialAd mInterstitialAd = new InterstitialAd(this);
             mInterstitialAd.setAdUnitId("ca-app-pub-3940256099942544/1033173712");
             mInterstitialAd.loadAd(new AdRequest.Builder().build());
-            if(mInterstitialAd.isLoaded()) {
+            if (mInterstitialAd.isLoaded()) {
                 mInterstitialAd.show();
             }
             mInterstitialAd.setAdListener(new AdListener() {
@@ -403,23 +448,27 @@ public class MainActivity extends AppCompatActivity
                 public void onAdLoaded() {
                     // Code to be executed when an ad finishes loading.
                 }
+
                 @Override
                 public void onAdFailedToLoad(int errorCode) {
                     // Code to be executed when an ad request fails.
                     // Toast.makeText(this, "failed to load. " +
                     //        adRequest.getContentUrl(), Toast.LENGTH_SHORT).show();
                 }
+
                 @Override
                 public void onAdOpened() {
                     // Code to be executed when an ad opens an overlay that
                     // covers the screen.
                     //Toast.makeText(getApplicationContext(), "opened", Toast.LENGTH_SHORT).show();
                 }
+
                 @Override
                 public void onAdLeftApplication() {
                     // Code to be executed when the user has left the app.
                     //Toast.makeText(getApplicationContext(), "left", Toast.LENGTH_SHORT).show();
                 }
+
                 @Override
                 public void onAdClosed() {
                     // Code to be executed when when the user is about to return.
@@ -428,18 +477,20 @@ public class MainActivity extends AppCompatActivity
                     adView.loadAd(adRequest);
                 }
             });
-        } catch (Exception e) {e.printStackTrace();}
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
-    private void prepareInterstitialAd(){
+    private void prepareInterstitialAd() {
 
         mInterstitialAd = new InterstitialAd(this);
         mInterstitialAd.setAdUnitId(getString(R.string.interAdTestId));
         mInterstitialAd.loadAd(new AdRequest.Builder().build());
     }
 
-    private void mostraInterstitialAd(){
-        if(mInterstitialAd==null) {
+    private void mostraInterstitialAd() {
+        if (mInterstitialAd == null) {
             prepareInterstitialAd();
         }
         if (mInterstitialAd.isLoaded()) {

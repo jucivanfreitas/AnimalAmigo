@@ -191,7 +191,7 @@ public class Util {
 
         boolean retorno = false;
         if (texto != null) {
-            retorno = (texto != null && !texto.equalsIgnoreCase("")
+            retorno = (!texto.equalsIgnoreCase("")
                     && !texto.trim().equals("null") && texto.trim()
                     .length() > 0 && !texto.isEmpty());
         }

@@ -24,6 +24,7 @@ import com.google.android.gms.ads.AdView;
 import com.google.android.gms.ads.MobileAds;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.UserInfo;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -57,7 +58,7 @@ public class ComentariosActivity extends AppCompatActivity {
         recyclercomentarios.setItemAnimator(null);
         anuncioSelecionado = (Animal) getIntent().getSerializableExtra("anuncioSelecionado");
 
-        if(anuncioSelecionado != null){
+        if (anuncioSelecionado != null) {
 
             //comentarios
             List<Comentario> listaComentarios = anuncioSelecionado.getListaComentarios();
@@ -78,13 +79,16 @@ public class ComentariosActivity extends AppCompatActivity {
                 recyclercomentarios.setHasFixedSize(true);
                 adapterComentarios = new AdapterComentarios(listaComentarios);
                 recyclercomentarios.setAdapter(adapterComentarios);
-            } catch (Exception e){e.printStackTrace();}
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
         configuraAdMob();
     }
 
     /**
      * metodo que insere comentarios no firebase
+     *
      * @param anuncio animal
      */
     private void comentarAnuncio(final Animal anuncio) {
@@ -96,63 +100,95 @@ public class ComentariosActivity extends AppCompatActivity {
                     .child(anuncio.getIdAnimal())
                     .child("comentarios");
 
-            String texto = edtComentario.getText().toString();
-            String nomeUsuario = Objects.requireNonNull(ConfiguracaoFirebase.getFirebaseAutenticacao().getCurrentUser()).getDisplayName();
-            Usuario usuario = new Usuario();
+            //Dados do Usuário
+            DatabaseReference usuariosRef = ConfiguracaoFirebase.getFirebase()
+                    .child("usuarios");
 
-            if(ConfiguracaoFirebase.getFirebaseAutenticacao().getCurrentUser().getPhotoUrl() != null) {
-                usuario.setFoto(ConfiguracaoFirebase.getFirebaseAutenticacao().getCurrentUser().getPhotoUrl().toString());
-            }
-            if(nomeUsuario!=null) {
-                usuario.setId(ConfiguracaoFirebase.getIdUsuario());
-                usuario.setNome(nomeUsuario);
-            }
-
-            final Comentario coment = new Comentario(usuario, texto, Util.getDataAtualBrasil());
-
-            if(Util.validaTexto(texto)){
-                Task<Void> inserirComentarioRef = comentarioRef
-                        .push().setValue(coment);
-
-                inserirComentarioRef.addOnCompleteListener(new OnCompleteListener<Void>() {
-                    @Override
-                    public void onComplete(@NonNull Task<Void> task) {
-
-                        Util.setSnackBar(layout, "Comentário inserido!");
-                        edtComentario.setText(null);
-                    }
-                });
-            } else {
-                Util.setSnackBar(layout, "Comentário inválido!");
-            }
-
-            //Update do RecyclerView
-            comentarioRef.addValueEventListener(new ValueEventListener() {
+            usuariosRef.addValueEventListener(new ValueEventListener() {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                    List<Comentario> comentsList = new ArrayList<>();
-                    for (DataSnapshot comentarios: dataSnapshot.getChildren()) {
-                        Comentario coment = new Comentario();
-                        if(comentarios!= null) {
-                            coment.setDatahora(Objects.requireNonNull(comentarios.child("datahora").getValue()).toString());
-                            coment.setTexto(Objects.requireNonNull(comentarios.child("texto").getValue()).toString());
-                            Usuario usuario = new Usuario();
-                            usuario.setNome(Objects.requireNonNull(comentarios.child("usuario").child("nome").getValue()).toString());
-                            // TODO: 05/03/2019 concluir atributos de usuario apos activity para cadastro de usuario
-                            //usuario.setFoto(ConfiguracaoFirebase.getFirebaseAutenticacao().getCurrentUser().getPhotoUrl().toString());
-                            coment.setUsuario(usuario);
-                            comentsList.add(coment);
+
+                    for (DataSnapshot usuarios : dataSnapshot.getChildren()) {
+
+                        if (usuarios != null) {
+
+                            UserInfo user = ConfiguracaoFirebase.getFirebaseAutenticacao().getCurrentUser();
+
+                            if (Objects.requireNonNull(usuarios.child("id").getValue()).toString().equalsIgnoreCase(Objects.requireNonNull(user).getUid())) {
+
+                                Usuario usuario = new Usuario();
+                                usuario.setId(ConfiguracaoFirebase.getIdUsuario());
+
+                                //Dados fora do cadastro
+                                String texto = edtComentario.getText().toString();
+
+                                if (usuarios.child("nome").getValue() != null) {
+                                    usuario.setNome(Objects.requireNonNull(usuarios.child("nome").getValue()).toString());
+                                } else {
+                                    String nomeUsuario = Objects.requireNonNull(ConfiguracaoFirebase.getFirebaseAutenticacao().getCurrentUser()).getDisplayName();
+                                    if(nomeUsuario!=null) {
+                                        usuario.setNome(nomeUsuario);
+                                    }
+                                }
+
+                                //Inserindo o comentário
+                                if (Util.validaTexto(texto)) {
+
+                                    Comentario coment = new Comentario(usuario, texto, Util.getDataAtualBrasil());
+
+                                    comentarioRef.push().setValue(coment)
+                                            .addOnCompleteListener(new OnCompleteListener<Void>() {
+                                        @Override
+                                        public void onComplete(@NonNull Task<Void> task) {
+
+                                            Util.setSnackBar(layout, "Comentário inserido!");
+                                            edtComentario.setText(null);
+                                        }
+                                    });
+                                } else {
+                                    Util.setSnackBar(layout, "Comentário inválido!");
+                                }
+
+                                //Update do RecyclerView
+                                comentarioRef.addValueEventListener(new ValueEventListener() {
+                                    @Override
+                                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                                        List<Comentario> comentsList = new ArrayList<>();
+                                        for (DataSnapshot comentarios : dataSnapshot.getChildren()) {
+                                            Comentario coment = new Comentario();
+                                            if (comentarios != null) {
+                                                coment.setDatahora(Objects.requireNonNull(comentarios.child("datahora").getValue()).toString());
+                                                coment.setTexto(Objects.requireNonNull(comentarios.child("texto").getValue()).toString());
+                                                Usuario usuario = new Usuario();
+                                                usuario.setNome(Objects.requireNonNull(comentarios.child("usuario").child("nome").getValue()).toString());
+                                                // TODO: 05/03/2019 concluir atributos de usuario apos activity para cadastro de usuario
+                                                //usuario.setFoto(ConfiguracaoFirebase.getFirebaseAutenticacao().getCurrentUser().getPhotoUrl().toString());
+                                                coment.setUsuario(usuario);
+                                                comentsList.add(coment);
+                                            }
+                                        }
+                                        adapterComentarios = new AdapterComentarios(comentsList);
+                                        recyclercomentarios.setAdapter(adapterComentarios);
+                                        adapterComentarios.notifyDataSetChanged();
+                                    }
+
+                                    @Override
+                                    public void onCancelled(@NonNull DatabaseError databaseError) {
+                                    }
+                                });
+                                //Fim do update do Recycler
+                            }
                         }
                     }
-                    adapterComentarios = new AdapterComentarios(comentsList);
-                    recyclercomentarios.setAdapter(adapterComentarios);
-                    adapterComentarios.notifyDataSetChanged();
                 }
+
                 @Override
                 public void onCancelled(@NonNull DatabaseError databaseError) {
                 }
             });
-            //Fim do update do Recycler
+            // fim dos dados do usuario
+
+
         } else {
             Util.setSnackBar(layout, "Usuário não logado!");
         }
@@ -184,27 +220,33 @@ public class ComentariosActivity extends AppCompatActivity {
                 public void onAdLoaded() {
                     // Code to be executed when an ad finishes loading.
                 }
+
                 @Override
                 public void onAdFailedToLoad(int errorCode) {
                     // Code to be executed when an ad request fails.
                     // Toast.makeText(this, "failed to load. " +
                     //        adRequest.getContentUrl(), Toast.LENGTH_SHORT).show();
                 }
+
                 @Override
                 public void onAdOpened() {
                     // Code to be executed when an ad opens an overlay that
                 }
+
                 @Override
                 public void onAdLeftApplication() {
                     // Code to be executed when the user has left the app.
                 }
+
                 @Override
                 public void onAdClosed() {
                     // Code to be executed when when the user is about to return.
                     // to the app after tapping on an ad.
                 }
             });
-        } catch (Exception e) {e.printStackTrace();}
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     public static void hideKeyboard(Context context, View editText) {

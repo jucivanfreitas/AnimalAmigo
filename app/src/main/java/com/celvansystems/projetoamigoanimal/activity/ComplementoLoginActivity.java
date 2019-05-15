@@ -2,6 +2,7 @@ package com.celvansystems.projetoamigoanimal.activity;
 
 import android.Manifest;
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -29,6 +30,10 @@ import com.google.android.gms.tasks.Continuation;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 import com.vansuita.pickimage.bean.PickResult;
@@ -68,6 +73,14 @@ public class ComplementoLoginActivity extends AppCompatActivity {
     private ConstraintLayout layout_inserir_cidade;
     private ConstraintLayout layout_inserir_fone;
 
+    private Button btn_proximo_nome;
+    private Button btn_proximo_fone;
+    private Button btn_proximo_foto;
+    private Button btnFinalizarComplemento;
+
+    private Button btn_voltar_fone;
+    private Button btn_voltar_foto;
+    private Button btn_voltar_cidade;
     //private String urlFoto;
 
     //Permissoes
@@ -105,14 +118,15 @@ public class ComplementoLoginActivity extends AppCompatActivity {
             //EditText edtProfissao = findViewById(R.id.editText_cad_profissao);
             //EditText edtSobreMim = findViewById(R.id.editText_cad_sobremim);
 
-            Button btn_proximo_nome = findViewById(R.id.btn_proximo_nome);
-            Button btn_proximo_fone = findViewById(R.id.btn_proximo_fone);
-            Button btn_proximo_foto = findViewById(R.id.btn_proximo_foto);
-            Button btnFinalizarComplemento = findViewById(R.id.btn_finalizar_complemento);
+            btn_proximo_nome = findViewById(R.id.btn_proximo_nome);
+            btn_proximo_fone = findViewById(R.id.btn_proximo_fone);
+            btn_proximo_foto = findViewById(R.id.btn_proximo_foto);
+            btnFinalizarComplemento = findViewById(R.id.btn_finalizar_complemento);
 
-            Button btn_voltar_fone = findViewById(R.id.btn_volta_fone);
-            Button btn_voltar_foto = findViewById(R.id.btn_voltar_foto);
-            Button btn_voltar_cidade = findViewById(R.id.btn_voltar_cidade);
+            btn_voltar_fone = findViewById(R.id.btn_volta_fone);
+            btn_voltar_foto = findViewById(R.id.btn_voltar_foto);
+            btn_voltar_cidade = findViewById(R.id.btn_voltar_cidade);
+
 
             layout_inserir_nome = findViewById(R.id.layout_inserir_nome);
             layout_inserir_foto = findViewById(R.id.layout_inserir_foto);
@@ -121,6 +135,95 @@ public class ComplementoLoginActivity extends AppCompatActivity {
 
             preencheDadosSpinners();
 
+            configuraAcoes();
+
+            preencheDadosDoUsuario();
+
+            //Validar permissões
+            Permissoes.validarPermissoes(permissoes, this, 1);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void preencheDadosDoUsuario() {
+
+        try {
+
+            DatabaseReference usuariosRef = ConfiguracaoFirebase.getFirebase()
+                    .child("usuarios");
+
+            final Context ctx = this;
+
+
+            usuariosRef.addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+
+                    for (DataSnapshot usuarios : dataSnapshot.getChildren()) {
+
+                        try {
+                            if (usuarios != null) {
+
+                                String id = ConfiguracaoFirebase.getIdUsuario();
+
+                                if (Objects.requireNonNull(usuarios.child("id").getValue()).toString().equalsIgnoreCase(id)) {
+
+                                    if (usuarios.child("nome").getValue() != null) {
+                                        edtNome.setText(Objects.requireNonNull(usuarios.child("nome").getValue()).toString());
+                                    }
+
+                                    if (usuarios.child("telefone").getValue() != null) {
+                                        edtTelefone.setText(Objects.requireNonNull(usuarios.child("telefone").getValue()).toString());
+                                    }
+
+                                    /*if(usuarios.child("foto").getValue() != null){
+                                        String foto = usuarios.child("foto").getValue().toString();
+                                        Picasso.get().load(foto).into(imvFoto);
+                                    }*/
+
+                                    if (usuarios.child("uf").getValue() != null) {
+
+                                        String uf = Objects.requireNonNull(usuarios.child("uf").getValue()).toString();
+
+                                        //estados
+                                        ArrayList<String> estadosLista = Util.getEstadosLista(ctx);
+                                        estadosLista.remove(0);
+                                        estadosLista.add(0, "");
+                                        final ArrayAdapter<String> adapterEstados = new ArrayAdapter<>(ctx, simple_spinner_item, estadosLista);
+                                        adapterEstados.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                                        spnEstado.setAdapter(adapterEstados);
+
+                                        spnEstado.setSelection(adapterEstados.getPosition(uf));
+
+                                        /*setAdapterSpinnerCidade();
+
+                                        String cidade = usuarios.child("cidade").getValue().toString();
+
+                                        spnCidade.setSelection(adapterEstados.getPosition(cidade));*/
+                                    }
+                                }
+                            }
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError databaseError) {
+                }
+            });
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void configuraAcoes() {
+
+        try {
             btn_proximo_nome.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -176,7 +279,7 @@ public class ComplementoLoginActivity extends AppCompatActivity {
                     //Id
                     usuario.setId(ConfiguracaoFirebase.getIdUsuario());
                     //Email
-                    usuario.setEmail(ConfiguracaoFirebase.getFirebaseAutenticacao().getCurrentUser().getEmail());
+                    usuario.setEmail(Objects.requireNonNull(ConfiguracaoFirebase.getFirebaseAutenticacao().getCurrentUser()).getEmail());
                     //Nome
                     if (edtNome.getText() != null && !edtNome.getText().toString().equalsIgnoreCase("")) {
                         usuario.setNome(edtNome.getText().toString());
@@ -209,9 +312,6 @@ public class ComplementoLoginActivity extends AppCompatActivity {
         } catch (Exception e) {
             e.printStackTrace();
         }
-
-        //Validar permissões
-        Permissoes.validarPermissoes(permissoes, this, 1);
     }
 
     private void preencheDadosSpinners() {
@@ -445,8 +545,14 @@ public class ComplementoLoginActivity extends AppCompatActivity {
 
         //salvar imagem no storage
         try {
-            String urlImagem = usuario.getFoto();
-            salvarFotosStorage(usuario, urlImagem);
+            if (usuario.getFoto() != null) {
+                String urlImagem = usuario.getFoto();
+                salvarFotosStorage(usuario, urlImagem);
+            } else {
+                dialog.dismiss();
+                startActivity(new Intent(ComplementoLoginActivity.this, MainActivity.class));
+                finish();
+            }
         } catch (Exception e) {
             e.printStackTrace();
         }
