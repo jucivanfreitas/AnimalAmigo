@@ -188,7 +188,7 @@
             app:layout_constraintGuide_begin="273dp" />
 
         <ImageView
-            android:id="@+id/imv_denunciar"
+            android:id="@+id/imv_mais_opcoes_anuncios"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"

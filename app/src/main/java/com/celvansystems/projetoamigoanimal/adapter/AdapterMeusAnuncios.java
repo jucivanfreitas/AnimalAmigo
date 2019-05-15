@@ -9,7 +9,6 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -59,8 +58,6 @@ public class AdapterMeusAnuncios extends RecyclerView.Adapter<AdapterMeusAnuncio
 
     @Override
     public void onBindViewHolder(@NonNull final MyViewHolder myViewHolder, int i) {
-
-        Log.d("INFO1"," "+ i);
 
         if(anuncios != null) {
 

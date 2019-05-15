@@ -61,6 +61,14 @@ public class AdapterAnuncios extends RecyclerView.Adapter<AdapterAnuncios.MyView
         return new MyViewHolder(item);
     }
 
+    private void configuracoesMaisOpcoes(Animal anuncio, AdapterAnuncios.MyViewHolder myViewHolder) {
+
+        if(ConfiguracaoFirebase.isUsuarioLogado()) {
+            myViewHolder.imvMaisOpcoesAnuncios.setVisibility(View.VISIBLE);
+        } else {
+            myViewHolder.imvMaisOpcoesAnuncios.setVisibility(View.GONE);
+        }
+    }
 
     @Override
     public void onBindViewHolder(@NonNull final MyViewHolder myViewHolder, @SuppressLint("RecyclerView") int i) {
@@ -72,6 +80,7 @@ public class AdapterAnuncios extends RecyclerView.Adapter<AdapterAnuncios.MyView
             //anuncioComentado = anuncio;
             if (anuncio != null) {
 
+                configuracoesMaisOpcoes(anuncio, myViewHolder);
 
                 configuraViewHolder(anuncio, myViewHolder);
 
@@ -364,12 +373,12 @@ public class AdapterAnuncios extends RecyclerView.Adapter<AdapterAnuncios.MyView
                                                 @Override
                                                 public void onComplete(@NonNull Task<Void> task) {
 
-                                                    Util.setSnackBar(((MyViewHolder) myViewHolder).layout, "Comentário inserido!");
+                                                    Util.setSnackBar( myViewHolder.layout, "Comentário inserido!");
                                                     myViewHolder.edtComentar.setText(null);
                                                 }
                                             });
                                 } else {
-                                    Util.setSnackBar(((MyViewHolder) myViewHolder).layout, "Comentário inválido!");
+                                    Util.setSnackBar( myViewHolder.layout, "Comentário inválido!");
                                 }
                             }
                         }
@@ -383,7 +392,7 @@ public class AdapterAnuncios extends RecyclerView.Adapter<AdapterAnuncios.MyView
             // fim dos dados do usuario
 
         } else {
-            Util.setSnackBar(((MyViewHolder) myViewHolder).layout, "Usuário não logado!");
+            Util.setSnackBar(myViewHolder.layout, "Usuário não logado!");
         }
     }
 
@@ -462,7 +471,7 @@ public class AdapterAnuncios extends RecyclerView.Adapter<AdapterAnuncios.MyView
                 myViewHolder.imvDenunciar.setVisibility(View.GONE);
             } else {
                 // TODO: 29/04/2019 van, trocar imagem aqui->>>
-                myViewHolder.imvDenunciar.setImageResource(R.drawable.ic_add_circle_outline_black_24dp);
+                myViewHolder.imvDenunciar.setImageResource(R.drawable.ic_more_vert_black_24dp);
             }
 
         } catch (Exception e) {
@@ -478,7 +487,8 @@ public class AdapterAnuncios extends RecyclerView.Adapter<AdapterAnuncios.MyView
                     myViewHolder.textViewTodosComentarios.setText(
                             ("Ver todos os " + size + " comentários"));
                 } else if (size == 1) {
-                    myViewHolder.textViewTodosComentarios.setText("Ver " + size + " comentário");
+                    myViewHolder.textViewTodosComentarios.setText(
+                            String.format("Ver %d comentário", size));
                 }
                 myViewHolder.textViewTodosComentarios.setVisibility(View.VISIBLE);
             } else {
@@ -618,10 +628,12 @@ public class AdapterAnuncios extends RecyclerView.Adapter<AdapterAnuncios.MyView
         TextView textViewCurtidas;
         TextView textViewTodosComentarios;
         ImageView foto;
-        ImageView imvCompartilharAnuncio, imvCurtirAnuncio, imvComentarAnuncio, imvDenunciar;
+        ImageView imvCompartilharAnuncio, imvCurtirAnuncio, imvComentarAnuncio;
+        ImageView imvDenunciar;
         ImageButton imbComentarAnuncio;
         EditText edtComentar;
         View layout;
+        ImageView imvMaisOpcoesAnuncios;
 
         MyViewHolder(View itemView) {
             super(itemView);
@@ -635,7 +647,7 @@ public class AdapterAnuncios extends RecyclerView.Adapter<AdapterAnuncios.MyView
             numeroCurtidas = itemView.findViewById(R.id.txv_num_curtidas);
             textViewCurtidas = itemView.findViewById(R.id.textViewCurtidas);
             textViewTodosComentarios = itemView.findViewById(R.id.ttv_todos_comentarios);
-            imvDenunciar = itemView.findViewById(R.id.imv_denunciar);
+            imvDenunciar = itemView.findViewById(R.id.imv_mais_opcoes_anuncios);
 
             //Para a snackBar
             layout = itemView.findViewById(R.id.constraintLayout_comentar);
@@ -646,6 +658,8 @@ public class AdapterAnuncios extends RecyclerView.Adapter<AdapterAnuncios.MyView
             imvComentarAnuncio = itemView.findViewById(R.id.imv_comentar_anuncio);
             imvCurtirAnuncio = itemView.findViewById(R.id.imv_curtir_anuncio);
             edtComentar = itemView.findViewById(R.id.editText_comentar);
+            imvMaisOpcoesAnuncios = itemView.findViewById(R.id.imv_mais_opcoes_anuncios);
+
         }
     }
 }
