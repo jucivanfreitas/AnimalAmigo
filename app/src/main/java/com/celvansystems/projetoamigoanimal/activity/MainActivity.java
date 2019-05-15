@@ -26,6 +26,7 @@ import com.celvansystems.projetoamigoanimal.fragment.MeusAnunciosFragment;
 import com.celvansystems.projetoamigoanimal.fragment.PerfilUsuarioFragment;
 import com.celvansystems.projetoamigoanimal.fragment.SobreAppFragment;
 import com.celvansystems.projetoamigoanimal.helper.ConfiguracaoFirebase;
+import com.celvansystems.projetoamigoanimal.helper.Constantes;
 import com.celvansystems.projetoamigoanimal.helper.Util;
 import com.celvansystems.projetoamigoanimal.model.Usuario;
 import com.facebook.login.LoginManager;
@@ -184,7 +185,7 @@ public class MainActivity extends AppCompatActivity
         MenuItem nav_pet_cad = menuNav.findItem(R.id.pet_cad);
         MenuItem nav_pet_adote = menuNav.findItem(R.id.pet_adote);
         MenuItem nav_doacao = menuNav.findItem(R.id.doacao);
-        MenuItem nav_share_app = menuNav.findItem(R.id.nav_share_app);
+        MenuItem nav_compartilhar_app = menuNav.findItem(R.id.nav_share_app);
         //MenuItem nav_conversar = menuNav.findItem(R.id.nav_conversar);
         MenuItem nav_help = menuNav.findItem(R.id.nav_help);
         MenuItem nav_sair = menuNav.findItem(R.id.nav_sair);
@@ -317,10 +318,19 @@ public class MainActivity extends AppCompatActivity
 
         } else if (id == R.id.nav_share_app) {
 
-            Toast.makeText(getApplicationContext(),
-                    "implementar função de compartilhar app para instalação",
-                    Toast.LENGTH_SHORT).show();
-            // TODO: 17/02/2019 programar ação do botão compartilahar app on clic compartilhar para instalação do app
+            // TODO: Trocar o application ID em Constantes após publicacao na play store
+
+            try {
+                Intent shareIntent = new Intent(Intent.ACTION_SEND);
+                shareIntent.setType("text/plain");
+                shareIntent.putExtra(Intent.EXTRA_SUBJECT, Constantes.APPLICATION_NAME);
+                String shareMessage= "\n"+Constantes.APPLICATION_MESSAGE+"\n\n";
+                shareMessage = shareMessage + "https://play.google.com/store/apps/details?id=" + Constantes.APPLICATION_ID +"\n\n";
+                shareIntent.putExtra(Intent.EXTRA_TEXT, shareMessage);
+                startActivity(Intent.createChooser(shareIntent, getText(R.string.escolha_uma_opcao)));
+            } catch(Exception e) {
+                e.printStackTrace();
+            }
 
         }
         /*else if (id == R.id.nav_conversar) {

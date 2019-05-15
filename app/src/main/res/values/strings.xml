@@ -241,6 +241,24 @@
     <string name="txt_teste">De tanto eu te falar Você subverteu o que era um sentimento e assim Fez dele razão pra se perder No abismo que é pensar e sentir Ela é mais sentimental que eu Então fica bem Se eu sofro um pouco mais</string>
     <string name="perfis">perfis</string>
     <string name="edite_seu_perfil">[Edite seu perfil]</string>
+    <string name="escolha_uma_opcao">Escolha uma opção</string>
+    <string name="anuncio_denunciado">Anúncio denunciado!</string>
+    <string name="usuario_ja_denunciou">Usuário já denunciou</string>
+    <string name="nao">Não</string>
+    <string name="sim">Sim</string>
+    <string name="curtir">Curtir</string>
+    <string name="comentar">Comentar...</string>
+    <string name="adotar">Adotar...</string>
+    <string name="denunciar">Denunciar...</string>
+    <string name="tem_certeza_denunciar_anuncio">Tem certeza de que deseja denunciar este anúncio?</string>
+    <string name="ver_comentario">Ver %d comentário</string>
+    <string name="ver_todos_comentarios">Ver todos os %d comentários</string>
+    <string name="usuario_nao_logado">Usuário não logado!</string>
+    <string name="anonimo">Anônimo</string>
+    <string name="comentario_inserido">Comentário inserido!</string>
+    <string name="comentario_invalido">Comentário inválido!</string>
+    <string name="usuario_ja_curtiu">Usuário já curtiu </string>
+    <string name="anuncio_curtido">Anúncio curtido!</string>
 
 
 </resources>
