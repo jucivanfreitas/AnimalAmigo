@@ -5,7 +5,11 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
+import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -46,7 +50,6 @@ public class AdapterAnuncios extends RecyclerView.Adapter<AdapterAnuncios.MyView
 
     /**
      * construtor
-     *
      * @param anuncios lista de animais
      */
     public AdapterAnuncios(List<Animal> anuncios) {
@@ -269,7 +272,7 @@ public class AdapterAnuncios extends RecyclerView.Adapter<AdapterAnuncios.MyView
             @Override
             public void onClick(View v) {
 
-                compartilharAnuncio(myViewHolder.itemView.getContext(), anuncio);
+                compartilharAnuncio(myViewHolder, anuncio);
             }
         });
 
@@ -584,29 +587,35 @@ public class AdapterAnuncios extends RecyclerView.Adapter<AdapterAnuncios.MyView
                 }
             }
         } else {
+            /*Intent intent = new Intent(myViewHolder.itemView.getContext(), LoginActivity.class);
+            myViewHolder.itemView.getContext().startActivity(intent);*/
             Util.setSnackBar(((MyViewHolder) myViewHolder).layout, ctx.getString(R.string.usuario_nao_logado));
         }
     }
 
     /**
      * método auxiliar para compartilhamento de anuncios
-     *
-     * @param ctx     contexto
-     * @param anuncio animal
+     * @param myViewHolder myViewHolder
+     * @param anuncio Animal
      */
-    private void compartilharAnuncio(Context ctx, Animal anuncio) {
+    private void compartilharAnuncio(MyViewHolder myViewHolder, Animal anuncio) {
 
         try {
             // TODO: 13/02/2019 configurar quando o app for publicado do google play
-            Intent share = new Intent(Intent.ACTION_SEND);
-            share.setType("text/plain");
-            share.putExtra(Intent.EXTRA_TEXT, "Conheça o " + anuncio.getNome() + ". Baixe o App Amigo Animal em " +
-                    "https://play.google.com/store/apps/details?id=com.google.android.apps.plus");
-            share.setType("text/plain");
-            share.putExtra(Intent.EXTRA_SUBJECT, "Anúncio de animal");
-            share.setType("image/*");
-            share.putExtra(Intent.EXTRA_STREAM, Uri.parse(anuncio.getFotos().get(0)));
-            ctx.startActivity(Intent.createChooser(share, "Compartilhando anúncio de animal..."));
+
+            Drawable mDrawable = myViewHolder.foto.getDrawable();
+            Bitmap mBitmap = ((BitmapDrawable) mDrawable).getBitmap();
+
+            String path = MediaStore.Images.Media.insertImage(myViewHolder.itemView.getContext()
+                    .getContentResolver(), mBitmap, null, null);
+            Uri uri = Uri.parse(path);
+
+            Intent intent = new Intent(Intent.ACTION_SEND);
+            intent.setType("image/jpeg");
+            intent.putExtra(Intent.EXTRA_TEXT, "Instale o App Pet Amigo e conheça o "+ anuncio.getNome()+ "! Disponível em " +
+                    "https://play.google.com/store/apps/details?id=" + Constantes.APPLICATION_ID +"\n\n");
+            intent.putExtra(Intent.EXTRA_STREAM, uri);
+            myViewHolder.itemView.getContext().startActivity(Intent.createChooser(intent, "Compartilhando imagem..."));
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -649,7 +658,6 @@ public class AdapterAnuncios extends RecyclerView.Adapter<AdapterAnuncios.MyView
 
     @Override
     public int getItemCount() {
-
         return anuncios.size();
     }
 

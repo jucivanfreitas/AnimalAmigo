@@ -44,8 +44,6 @@ public class MeusAnunciosFragment extends Fragment {
     private View viewFragment;
     private SwipeRefreshLayout swipeRefreshLayout;
     private View layout;
-
-
     private AlertDialog dialog;
 
     public MeusAnunciosFragment() {}
@@ -107,7 +105,7 @@ public class MeusAnunciosFragment extends Fragment {
 
         layout = viewFragment.findViewById(R.id.frame_layout_meus_anuncios_fragment);
 
-        //fab
+                //fab
         FloatingActionButton fabCadastrar = viewFragment.findViewById(R.id.fabcadastrar_meus_anuncios);
         fabCadastrar.setVisibility(View.VISIBLE);
         fabCadastrar.setOnClickListener(new View.OnClickListener() {

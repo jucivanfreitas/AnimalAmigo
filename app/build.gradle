@@ -25,8 +25,8 @@ android {
 dependencies {
 
     //admob
-    implementation 'com.google.android.gms:play-services-ads:17.1.3'
-    implementation 'com.google.firebase:firebase-ads:17.1.3'
+    implementation 'com.google.android.gms:play-services-ads:17.2.0'
+    implementation 'com.google.firebase:firebase-ads:17.2.0'
 
     implementation fileTree(include: ['*.jar'], dir: 'libs')
     //noinspection GradleCompatible
@@ -60,6 +60,9 @@ dependencies {
     implementation 'com.facebook.android:facebook-android-sdk:4.40.0'
 
     //login google
-    implementation 'com.google.android.gms:play-services-auth:16.0.0'
+    implementation 'com.google.android.gms:play-services-auth:16.0.1'
+
+    //billing
+    implementation 'com.anjlab.android.iab.v3:library:1.0.44'
 }
 apply plugin: 'com.google.gms.google-services'

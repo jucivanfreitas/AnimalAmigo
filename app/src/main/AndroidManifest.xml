@@ -13,6 +13,7 @@
     <uses-permission android:name="android.permission.CAMERA" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="com.android.vending.BILLING" />
 
     <application
         android:allowBackup="true"
@@ -22,7 +23,8 @@
         android:roundIcon="@mipmap/ic_launcher_pegada_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".activity.ComplementoLoginActivity"></activity>
+        <activity android:name=".activity.SomeActivity"></activity>
+        <activity android:name=".activity.ComplementoLoginActivity" />
         <activity
             android:name=".activity.ComentariosActivity"
             android:parentActivityName=".activity.MainActivity" />

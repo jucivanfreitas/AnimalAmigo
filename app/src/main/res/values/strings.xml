@@ -260,6 +260,9 @@
     <string name="usuario_ja_curtiu">Usuário já curtiu </string>
     <string name="anuncio_curtido">Anúncio curtido!</string>
     <string name="nao_ha_anuncios">Não há anúncios a serem exibidos nesta seleção. Tente outras opções!</string>
+    <string name="usuario_facebook">Usuário logado pelo facebook</string>
+    <string name="usuario_google">Usuário logado pelo google</string>
+    <string name="nenhum_pet_encontrado">Nenhum Pet encontrado. Tente outra opção!</string>
 
 
 </resources>

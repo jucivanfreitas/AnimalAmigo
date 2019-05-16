@@ -3,7 +3,12 @@ package com.celvansystems.projetoamigoanimal.adapter;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
+import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
@@ -21,6 +26,7 @@ import com.celvansystems.projetoamigoanimal.activity.DetalhesAnimalActivity;
 import com.celvansystems.projetoamigoanimal.fragment.AnunciosFragment;
 import com.celvansystems.projetoamigoanimal.fragment.CadastrarAnuncioFragment;
 import com.celvansystems.projetoamigoanimal.helper.ConfiguracaoFirebase;
+import com.celvansystems.projetoamigoanimal.helper.Constantes;
 import com.celvansystems.projetoamigoanimal.helper.Util;
 import com.celvansystems.projetoamigoanimal.model.Animal;
 import com.squareup.picasso.Picasso;
@@ -47,7 +53,7 @@ public class AdapterMeusAnuncios extends RecyclerView.Adapter<AdapterMeusAnuncio
     }
 
 
-    private void configuracoesMaisOpcoes(Animal anuncio, AdapterMeusAnuncios.MyViewHolder myViewHolder) {
+    private void configuracoesMaisOpcoes(AdapterMeusAnuncios.MyViewHolder myViewHolder) {
 
         if(ConfiguracaoFirebase.isUsuarioLogado()) {
             myViewHolder.imvMaisOpcoesMeusAnuncios.setVisibility(View.VISIBLE);
@@ -65,7 +71,7 @@ public class AdapterMeusAnuncios extends RecyclerView.Adapter<AdapterMeusAnuncio
             //anuncioComentado = anuncio;
             if (anuncio != null) {
 
-                configuracoesMaisOpcoes(anuncio, myViewHolder);
+                configuracoesMaisOpcoes(myViewHolder);
 
                 myViewHolder.dataCadastro.setText(anuncio.getDataCadastro());
                 myViewHolder.nome.setText(anuncio.getNome());
@@ -88,6 +94,30 @@ public class AdapterMeusAnuncios extends RecyclerView.Adapter<AdapterMeusAnuncio
                         Intent detalhesIntent = new Intent(v.getContext(), DetalhesAnimalActivity.class);
                         detalhesIntent.putExtra("anuncioSelecionado", anuncio);
                         v.getContext().startActivity(detalhesIntent);
+                    }
+                });
+
+                myViewHolder.imvCompartilharMeusAnuncios.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        myViewHolder.imvCompartilharMeusAnuncios.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                Drawable mDrawable = myViewHolder.foto.getDrawable();
+                                Bitmap mBitmap = ((BitmapDrawable) mDrawable).getBitmap();
+
+                                String path = MediaStore.Images.Media.insertImage(myViewHolder.itemView.getContext()
+                                        .getContentResolver(), mBitmap, "Image Description", "blalballaaa");
+                                Uri uri = Uri.parse(path);
+
+                                Intent intent = new Intent(Intent.ACTION_SEND);
+                                intent.setType("image/jpeg");
+                                intent.putExtra(Intent.EXTRA_TEXT, "Instale o App Pet Amigo e conheça o "+ anuncio.getNome()+ "! Disponível em " +
+                                        "https://play.google.com/store/apps/details?id=" + Constantes.APPLICATION_ID +"\n\n");
+                                intent.putExtra(Intent.EXTRA_STREAM, uri);
+                                myViewHolder.itemView.getContext().startActivity(Intent.createChooser(intent, "Share Image"));
+                            }
+                        });
                     }
                 });
 

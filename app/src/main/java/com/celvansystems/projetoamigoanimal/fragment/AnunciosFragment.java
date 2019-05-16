@@ -10,7 +10,6 @@ import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -36,6 +35,7 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Objects;
 
 import dmax.dialog.SpotsDialog;
 
@@ -53,7 +53,7 @@ public class AnunciosFragment extends Fragment {
     private DatabaseReference anunciosPublicosRef;
     private Spinner spinnerEstado;
     private Spinner spinnerCidade;
-    private ArrayAdapter adapterCidades;
+    private ArrayAdapter<String> adapterCidades;
     private RecyclerView recyclerAnunciosPublicos;
     private SwipeRefreshLayout swipeRefreshLayout;
     private TextView txvSemAnuncios;
@@ -97,8 +97,7 @@ public class AnunciosFragment extends Fragment {
         btnEspecie = view.findViewById(R.id.btnEspecie);
 
         txvSemAnuncios = view.findViewById(R.id.txv_sem_anuncios);
-        //txvSemAnuncios.setVisibility(View.INVISIBLE);
-        txvSemAnuncios.setText("Nenhum Pet encontrado. Tente outra opção!");
+        txvSemAnuncios.setText(Objects.requireNonNull(getContext()).getString(R.string.nenhum_pet_encontrado));
         txvSemAnuncios.setTextSize(15);
 
         btnLocal.setOnClickListener(new View.OnClickListener() {
@@ -161,6 +160,7 @@ public class AnunciosFragment extends Fragment {
         // Refresh items
         Util.setSnackBar(layout, "Atualizando pets...");
 
+        txvSemAnuncios.setVisibility(View.INVISIBLE);
         listaAnuncios.clear();
 
         String localTexto = btnLocal.getText().toString();
@@ -212,15 +212,13 @@ public class AnunciosFragment extends Fragment {
         // Verifica se há conta do google logada.
         GoogleSignInAccount account = GoogleSignIn.getLastSignedInAccount(view.getContext());
         if (account != null) {
-            Log.d("INFO40", "Usuário logado com google");
-            //Util.setSnackBar(layout, "Usuário logado pelo google");
+            Util.setSnackBar(layout, Objects.requireNonNull(getContext()).getString(R.string.usuario_google));
         } else {
             // Verifica se há conta do facebook logada
             AccessToken token = AccessToken.getCurrentAccessToken();
 
             if (token != null) {
-                Log.d("INFO40", "Usuário logado pelo facebook");
-                //Util.setSnackBar(layout, "Usuário logado pelo facebook");
+                Util.setSnackBar(layout, Objects.requireNonNull(getContext()).getString(R.string.usuario_facebook));
             }
         }
     }
@@ -353,8 +351,6 @@ public class AnunciosFragment extends Fragment {
             AlertDialog.Builder dialogEspecie = new AlertDialog.Builder(view.getContext());
             dialogEspecie.setTitle(getString(R.string.selecione_especie));
 
-            Log.d("INFO50", "filtrando por especie");
-
             //configura o spinner
             @SuppressLint("InflateParams")
             View viewSpinnerEspecie = getLayoutInflater().inflate(R.layout.dialog_spinner_especie, null);
@@ -433,7 +429,6 @@ public class AnunciosFragment extends Fragment {
 
             spinnerCidade.setVisibility(View.VISIBLE);
 
-            // TODO: 11/03/2019 mudar para estado do usuario
             ArrayList<String> cidadesLista = Util.getCidadesLista("AC", view.getContext());
 
             //cidades
@@ -465,8 +460,8 @@ public class AnunciosFragment extends Fragment {
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
 
-                    String filtroEstado = getString(R.string.todos);
-                    String filtroCidade = getString(R.string.todas);
+                    String filtroEstado;
+                    String filtroCidade;
 
                     if (spinnerEstado.getSelectedItem() != null) {
 
@@ -475,6 +470,7 @@ public class AnunciosFragment extends Fragment {
                     }
                     if (spinnerCidade.getSelectedItem() != null) {
                         if (!spinnerCidade.getSelectedItem().toString().equalsIgnoreCase("Todas")) {
+
                             filtroCidade = spinnerCidade.getSelectedItem().toString();
                             btnLocal.setText(filtroCidade);
                         }
