@@ -35,7 +35,6 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="8dp"
-        android:background="@drawable/btn_compartilhar"
         android:contentDescription="TODO"
         android:elevation="40dp"
         android:focusable="true"
