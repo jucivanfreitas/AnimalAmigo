@@ -34,6 +34,8 @@ public class DetalhesAnimalActivity extends AppCompatActivity {
     private TextView textCidade;
     private TextView textRaca;
     private TextView textDescricao;
+    private Button btnTeste;
+
     private View layout;
 
     private Animal anuncioSelecionado;
@@ -52,9 +54,9 @@ public class DetalhesAnimalActivity extends AppCompatActivity {
 
         //recupera anuncio para exibicao
         anuncioSelecionado = (Animal) getIntent().getSerializableExtra("anuncioSelecionado");
-        if(anuncioSelecionado != null){
+        if (anuncioSelecionado != null) {
 
-            ImageListener imageListener =  new ImageListener() {
+            ImageListener imageListener = new ImageListener() {
                 @Override
                 public void setImageForPosition(int position, ImageView imageView) {
                     String urlString = anuncioSelecionado.getFotos().get(position);
@@ -73,6 +75,7 @@ public class DetalhesAnimalActivity extends AppCompatActivity {
             textEstado.setText(anuncioSelecionado.getUf());
             textCidade.setText(anuncioSelecionado.getCidade());
             textRaca.setText(anuncioSelecionado.getRaca());
+
             textDescricao.setText(anuncioSelecionado.getDescricao());
         }
     }
@@ -89,7 +92,15 @@ public class DetalhesAnimalActivity extends AppCompatActivity {
         textCidade = findViewById(R.id.txv_cidade);
         textRaca = findViewById(R.id.txv_raca);
         textDescricao = findViewById(R.id.txv_descricao);
+        btnTeste = findViewById(R.id.btnTeste);
 
+        btnTeste.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(DetalhesAnimalActivity.this, SomeActivity.class));
+                finish();
+            }
+        });
         layout = findViewById(R.id.linear_layout_detalhes_animal);
         Button btnVerTelefone = findViewById(R.id.btnVerTelefone);
 
@@ -98,7 +109,7 @@ public class DetalhesAnimalActivity extends AppCompatActivity {
             public void onClick(View v) {
 
                 // TODO: 18/02/2019 configurar para pegar o telefone cadastrado do usuario
-                if(anuncioSelecionado.getDonoAnuncio()!= null) {
+                if (anuncioSelecionado.getDonoAnuncio() != null) {
                     Intent i = new Intent(Intent.ACTION_DIAL, Uri.fromParts("tel",
                             anuncioSelecionado.getDonoAnuncio(), null));
                     // TODO: 10/02/2019 mudar getDonoanuncio para getTelefone
@@ -138,27 +149,33 @@ public class DetalhesAnimalActivity extends AppCompatActivity {
                 public void onAdLoaded() {
                     // Code to be executed when an ad finishes loading.
                 }
+
                 @Override
                 public void onAdFailedToLoad(int errorCode) {
                     // Code to be executed when an ad request fails.
                     // Toast.makeText(this, "failed to load. " +
                     //        adRequest.getContentUrl(), Toast.LENGTH_SHORT).show();
                 }
+
                 @Override
                 public void onAdOpened() {
                     // Code to be executed when an ad opens an overlay that
                 }
+
                 @Override
                 public void onAdLeftApplication() {
                     // Code to be executed when the user has left the app.
                 }
+
                 @Override
                 public void onAdClosed() {
                     // Code to be executed when when the user is about to return.
                     // to the app after tapping on an ad.
                 }
             });
-        } catch (Exception e) {e.printStackTrace();}
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
 
