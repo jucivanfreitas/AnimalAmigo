@@ -263,6 +263,7 @@
     <string name="usuario_facebook">Usuário logado pelo facebook</string>
     <string name="usuario_google">Usuário logado pelo google</string>
     <string name="nenhum_pet_encontrado">Nenhum Pet encontrado. Tente outra opção!</string>
+    <string name="txt_doarAgora">Doar Agora</string>
 
 
 </resources>
