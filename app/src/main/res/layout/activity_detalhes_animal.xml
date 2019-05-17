@@ -85,7 +85,7 @@
                             android:layout_marginTop="8dp"
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintTop_toBottomOf="@+id/txv_estado"
-                            app:srcCompat="@drawable/ic_historia_do_pet" />
+                            app:srcCompat="@drawable/ic_registration" />
 
                         <ImageView
                             android:id="@+id/imageView"
@@ -95,7 +95,7 @@
                             android:layout_marginTop="8dp"
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintTop_toBottomOf="@+id/imageView5"
-                            app:srcCompat="@drawable/ic_verificacao" />
+                            app:srcCompat="@drawable/ic_perfilpet" />
 
                         <TextView
                             android:id="@+id/txv_nome_meus_anuncios"
@@ -347,7 +347,7 @@
                             android:layout_marginTop="8dp"
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintTop_toBottomOf="@+id/txv_genero"
-                            app:srcCompat="@drawable/ic_microchip" />
+                            app:srcCompat="@drawable/ic_route" />
                     </android.support.constraint.ConstraintLayout>
 
                 </android.support.constraint.ConstraintLayout>
