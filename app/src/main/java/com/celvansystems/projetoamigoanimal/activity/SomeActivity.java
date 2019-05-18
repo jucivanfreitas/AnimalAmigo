@@ -1,13 +1,38 @@
 package com.celvansystems.projetoamigoanimal.activity;
 
 import android.app.Activity;
+import android.content.Context;
+import android.os.Bundle;
+import android.support.annotation.Nullable;
+import android.util.Log;
+import android.view.View;
+import android.widget.Button;
+
+import com.android.billingclient.api.AcknowledgePurchaseParams;
+import com.android.billingclient.api.AcknowledgePurchaseResponseListener;
+import com.android.billingclient.api.BillingClient;
+import com.android.billingclient.api.BillingClientStateListener;
+import com.android.billingclient.api.BillingFlowParams;
+import com.android.billingclient.api.BillingResult;
+import com.android.billingclient.api.ConsumeResponseListener;
+import com.android.billingclient.api.Purchase;
+import com.android.billingclient.api.PurchasesUpdatedListener;
+import com.android.billingclient.api.SkuDetails;
+import com.android.billingclient.api.SkuDetailsParams;
+import com.android.billingclient.api.SkuDetailsResponseListener;
+import com.celvansystems.projetoamigoanimal.R;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class SomeActivity extends Activity {
 
-
+    private BillingClient billingClient;
+    private ConsumeResponseListener listener;
+    private AcknowledgePurchaseResponseListener acknowledgePurchaseResponseListener;
     //implements BillingProcessor.IBillingHandler {
 
-    /*BillingProcessor bp;
+    //BillingProcessor bp;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -15,30 +40,150 @@ public class SomeActivity extends Activity {
         setContentView(R.layout.activity_some);
 
         Button btnPurchase = findViewById(R.id.btnPurchase);
-
         // TODO: 16/05/2019   colocar "YOUR LICENSE KEY FROM GOOGLE PLAY CONSOLE HERE" (segundo parametro)
-        bp = new BillingProcessor(this, null, this);
-        bp.initialize();
+        //bp = new BillingProcessor(this, null, this);
+        //bp.initialize();
         // or bp = BillingProcessor.newBillingProcessor(this, "YOUR LICENSE KEY FROM GOOGLE PLAY CONSOLE HERE", this);
         // See below on why this is a useful alternative
 
         btnPurchase.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v) {
+            public void onClick(final View v) {
                 //boolean isAvailable = BillingProcessor.isIabServiceAvailable(SomeActivity.this);
                 //if(!isAvailable) {
                 // continue
 
+                final Context ctx = v.getContext();
+
                 // TODO: 16/05/2019  "YOUR PRODUCT ID FROM GOOGLE PLAY CONSOLE HERE"
-                bp.purchase(SomeActivity.this, "com.android.blabla");
+                //bp.purchase(SomeActivity.this, "com.android.blabla");
                 //}
+                Log.d("INFO40", "botao clicado");
+
+                billingClient = BillingClient.newBuilder(SomeActivity.this).enablePendingPurchases().setListener(new PurchasesUpdatedListener() {
+                    @Override
+                    public void onPurchasesUpdated(BillingResult billingResult, @Nullable List<Purchase> purchases) {
+                        Log.d("INFO40", "purchased updated");
+                        if (billingResult.getResponseCode() == BillingClient.BillingResponseCode.OK
+                                && purchases != null) {
+                            for (Purchase purchase : purchases) {
+                                handlePurchase(purchase);
+                                Log.d("INFO40", "purchased updated - acao apos purchase");
+                            }
+                        } else if (billingResult.getResponseCode() == BillingClient.BillingResponseCode.USER_CANCELED) {
+                            // Handle an error caused by a user cancelling the purchase flow.
+                            Log.d("INFO40", "usuario cancelou");
+                        } else {
+                            // Handle any other error codes.
+                            Log.d("INFO40", "purchased outro");
+                        }
+                    }
+                }).build();
+
+                 listener = new ConsumeResponseListener() {
+                     @Override
+                     public void onConsumeResponse(BillingResult billingResult, String purchaseToken) {
+
+                     }
+                 };
+
+                
+                acknowledgePurchaseResponseListener = new AcknowledgePurchaseResponseListener() {
+                    @Override
+                    public void onAcknowledgePurchaseResponse(BillingResult billingResult) {
+
+                    }
+                };
+
+                        billingClient.startConnection(new BillingClientStateListener() {
+                    @Override
+                    public void onBillingSetupFinished(BillingResult billingResult) {
+                        if (billingResult.getResponseCode() == BillingClient.BillingResponseCode.OK) {
+                            // The BillingClient is ready. You can query purchases here.
+                            Log.d("INFO40", "setup finalizado");
+
+                        }
+                    }
+                    @Override
+                    public void onBillingServiceDisconnected() {
+                        // Try to restart the connection on the next request to
+                        // Google Play by calling the startConnection() method.
+                        Log.d("INFO40", "servico desconectado");
+
+                    }
+                });
+
+                ////////////////
+
+                List<String> skuList = new ArrayList<>();
+                skuList.add("doar_5_reais");
+                SkuDetailsParams.Builder params = SkuDetailsParams.newBuilder();
+                params.setSkusList(skuList).setType(BillingClient.SkuType.INAPP);
+                billingClient.querySkuDetailsAsync(params.build(),
+                        new SkuDetailsResponseListener() {
+                            @Override
+                            public void onSkuDetailsResponse(BillingResult billingResult,
+                                                             List<SkuDetails> skuDetailsList) {
+                                // Process the result.
+                                BillingResult result = billingResult;
+
+                                if (result.getResponseCode() == BillingClient.BillingResponseCode.OK && skuDetailsList != null) {
+                                    for (SkuDetails skuDetails : skuDetailsList) {
+                                        String sku = skuDetails.getSku();
+                                        String price = skuDetails.getPrice();
+                                        if ("doar_5_reais".equalsIgnoreCase(sku)) {
+
+                                            Log.d("INFO40", "doado 5 reais");
+                                            // Retrieve a value for "skuDetails" by calling querySkuDetailsAsync().
+
+                                            BillingFlowParams flowParams = BillingFlowParams.newBuilder()
+                                                    .setSkuDetails(skuDetails)
+                                                    .build();
+                                            BillingResult responseCode = billingClient.launchBillingFlow(SomeActivity.this, flowParams);
+
+                                        } else  {
+                                            Log.d("INFO40", "nada doado");
+                                        }
+
+
+                                    }
+                                } else {
+                                    Log.d("INFO40", "result nao OK");
+
+                                }
+                            }
+                        });
+
             }
         });
+
+
     }
 
+    void handlePurchase(Purchase purchase) {
+        if (purchase.getPurchaseState() == Purchase.PurchaseState.PURCHASED) {
+            // Grant entitlement to the user.
+        //...
+
+            // Acknowledge the purchase if it hasn't already been acknowledged.
+            if (!purchase.isAcknowledged()) {
+                AcknowledgePurchaseParams acknowledgePurchaseParams =
+                        AcknowledgePurchaseParams.newBuilder()
+                                .setPurchaseToken(purchase.getPurchaseToken())
+                                .build();
+                billingClient.acknowledgePurchase(acknowledgePurchaseParams, acknowledgePurchaseResponseListener);
+            }
+        } else if (purchase.getPurchaseState() == Purchase.PurchaseState.PENDING) {
+            // Here you can confirm to the user that they've started the pending
+            // purchase, and to complete it, they should follow instructions that
+            // are given to them. You can also choose to remind the user in the
+            // future to complete the purchase if you detect that it is still
+            // pending.
+        }
+    }
     // IBillingHandler implementation
 
-    @Override
+    /*@Override
     public void onBillingInitialized() {
         /*
          * Called when BillingProcessor was initialized and it's ready to purchase

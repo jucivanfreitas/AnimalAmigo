@@ -23,7 +23,11 @@
         android:roundIcon="@mipmap/ic_launcher_pegada_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".activity.SomeActivity"></activity>
+        <activity
+            android:name=".activity.InAppBillingActivity"
+            android:label="@string/title_activity_in_app_billing"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
+        <activity android:name=".activity.SomeActivity" />
         <activity android:name=".activity.ComplementoLoginActivity" />
         <activity
             android:name=".activity.ComentariosActivity"
