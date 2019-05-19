@@ -505,19 +505,20 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             }
             //logando...
         } else {
-            //direciona para a activity principal
-            authentication.signInWithEmailAndPassword(email, password)
-                    .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
-                        @Override
-                        public void onComplete(@NonNull Task<AuthResult> task) {
-                            if (task.isSuccessful()) {
+            if (!email.equalsIgnoreCase("") && !password.equalsIgnoreCase("")){
+                //direciona para a activity principal
+                authentication.signInWithEmailAndPassword(email, password)
+                        .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+                            @Override
+                            public void onComplete(@NonNull Task<AuthResult> task) {
+                                if (task.isSuccessful()) {
 
-                                // TODO: 20/02/2019 habilitar verificacao de e-mail no final. Não deletar o código
-                                //if (checkIfEmailVerified()) {
+                                    // TODO: 20/02/2019 habilitar verificacao de e-mail no final. Não deletar o código
+                                    //if (checkIfEmailVerified()) {
 
-                                //redirecionamento de acordo com o cadastro do usuario (completo ou incompleto)
-                                String usuarioId = Objects.requireNonNull(ConfiguracaoFirebase.getFirebaseAutenticacao().getCurrentUser()).getUid();
-                                redireciona(usuarioId);
+                                    //redirecionamento de acordo com o cadastro do usuario (completo ou incompleto)
+                                    String usuarioId = Objects.requireNonNull(ConfiguracaoFirebase.getFirebaseAutenticacao().getCurrentUser()).getUid();
+                                    redireciona(usuarioId);
 
                                 /*} else {
                                     Toast.makeText(LoginActivity.this, getString(R.string.email_nao_verificado),
@@ -525,16 +526,19 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                                     //envia e-mail de verificacao
                                     sendVerificationEmail();
                                 }*/
-                                // TODO: 20/02/2019 a verificacao de e-mail termina aqui. Não deletar o código
-                            } else {
-                                Util.setSnackBar(layout, getString(R.string.email_senha_invalido));
+                                    // TODO: 20/02/2019 a verificacao de e-mail termina aqui. Não deletar o código
+                                } else {
+                                    Util.setSnackBar(layout, getString(R.string.email_senha_invalido));
+                                }
+                                showProgress(false);
+                                mImageBg_color.setVisibility(View.INVISIBLE);
                             }
-                            showProgress(false);
-                            mImageBg_color.setVisibility(View.INVISIBLE);
-                        }
-                    });
+                        });
             showProgress(true);
             mImageBg_color.setVisibility(View.VISIBLE);
+        } else {
+                Util.setSnackBar(layout, getString(R.string.email_senha_invalido));
+            }
         }
     }
 

@@ -95,99 +95,105 @@ public class ComentariosActivity extends AppCompatActivity {
 
         if (ConfiguracaoFirebase.isUsuarioLogado()) {
 
-            final DatabaseReference comentarioRef = ConfiguracaoFirebase.getFirebase()
-                    .child("meus_animais")
-                    .child(anuncio.getIdAnimal())
-                    .child("comentarios");
+            if(edtComentario.getText() != null && !edtComentario.getText().toString().equalsIgnoreCase("")) {
 
-            //Dados do Usuário
-            DatabaseReference usuariosRef = ConfiguracaoFirebase.getFirebase()
-                    .child("usuarios");
+                final DatabaseReference comentarioRef = ConfiguracaoFirebase.getFirebase()
+                        .child("meus_animais")
+                        .child(anuncio.getIdAnimal())
+                        .child("comentarios");
 
-            usuariosRef.addValueEventListener(new ValueEventListener() {
-                @Override
-                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                //Dados do Usuário
+                DatabaseReference usuariosRef = ConfiguracaoFirebase.getFirebase()
+                        .child("usuarios");
 
-                    for (DataSnapshot usuarios : dataSnapshot.getChildren()) {
+                usuariosRef.addValueEventListener(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
 
-                        if (usuarios != null) {
+                        for (DataSnapshot usuarios : dataSnapshot.getChildren()) {
 
-                            UserInfo user = ConfiguracaoFirebase.getFirebaseAutenticacao().getCurrentUser();
+                            if (usuarios != null) {
 
-                            if (Objects.requireNonNull(usuarios.child("id").getValue()).toString().equalsIgnoreCase(Objects.requireNonNull(user).getUid())) {
+                                UserInfo user = ConfiguracaoFirebase.getFirebaseAutenticacao().getCurrentUser();
 
-                                Usuario usuario = new Usuario();
-                                usuario.setId(ConfiguracaoFirebase.getIdUsuario());
+                                if (Objects.requireNonNull(usuarios.child("id").getValue()).toString().equalsIgnoreCase(Objects.requireNonNull(user).getUid())) {
 
-                                //Dados fora do cadastro
-                                String texto = edtComentario.getText().toString();
+                                    Usuario usuario = new Usuario();
+                                    usuario.setId(ConfiguracaoFirebase.getIdUsuario());
 
-                                if (usuarios.child("nome").getValue() != null) {
-                                    usuario.setNome(Objects.requireNonNull(usuarios.child("nome").getValue()).toString());
-                                } else {
-                                    String nomeUsuario = Objects.requireNonNull(ConfiguracaoFirebase.getFirebaseAutenticacao().getCurrentUser()).getDisplayName();
-                                    if(nomeUsuario!=null) {
-                                        usuario.setNome(nomeUsuario);
+                                    //Dados fora do cadastro
+                                    String texto = edtComentario.getText().toString();
+
+                                    if (usuarios.child("nome").getValue() != null) {
+                                        usuario.setNome(Objects.requireNonNull(usuarios.child("nome").getValue()).toString());
+                                    } else {
+                                        String nomeUsuario = Objects.requireNonNull(ConfiguracaoFirebase.getFirebaseAutenticacao().getCurrentUser()).getDisplayName();
+                                        if (nomeUsuario != null) {
+                                            usuario.setNome(nomeUsuario);
+                                        }
                                     }
-                                }
 
-                                //Inserindo o comentário
-                                if (Util.validaTexto(texto)) {
+                                    //Inserindo o comentário
+                                    if (Util.validaTexto(texto)) {
 
-                                    Comentario coment = new Comentario(usuario, texto, Util.getDataAtualBrasil());
+                                        Comentario coment = new Comentario(usuario, texto, Util.getDataAtualBrasil());
 
-                                    comentarioRef.push().setValue(coment)
-                                            .addOnCompleteListener(new OnCompleteListener<Void>() {
+                                        comentarioRef.push().setValue(coment)
+                                                .addOnCompleteListener(new OnCompleteListener<Void>() {
+                                                    @Override
+                                                    public void onComplete(@NonNull Task<Void> task) {
+
+                                                        Util.setSnackBar(layout, "Comentário inserido!");
+                                                        edtComentario.setText(null);
+                                                    }
+                                                });
+                                    } else {
+                                        Util.setSnackBar(layout, "Comentário inválido!");
+                                    }
+
+                                    //Update do RecyclerView
+                                    comentarioRef.addValueEventListener(new ValueEventListener() {
                                         @Override
-                                        public void onComplete(@NonNull Task<Void> task) {
+                                        public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                                            List<Comentario> comentsList = new ArrayList<>();
+                                            for (DataSnapshot comentarios : dataSnapshot.getChildren()) {
+                                                Comentario coment = new Comentario();
+                                                if (comentarios != null) {
 
-                                            Util.setSnackBar(layout, "Comentário inserido!");
-                                            edtComentario.setText(null);
+                                                    coment.setDatahora(Objects.requireNonNull(comentarios.child("datahora").getValue()).toString());
+                                                    coment.setTexto(Objects.requireNonNull(comentarios.child("texto").getValue()).toString());
+                                                    Usuario usuario = new Usuario();
+                                                    usuario.setNome(Objects.requireNonNull(comentarios.child("usuario").child("nome").getValue()).toString());
+                                                    // TODO: 05/03/2019 concluir atributos de usuario apos activity para cadastro de usuario
+                                                    //usuario.setFoto(ConfiguracaoFirebase.getFirebaseAutenticacao().getCurrentUser().getPhotoUrl().toString());
+                                                    coment.setUsuario(usuario);
+                                                    comentsList.add(coment);
+                                                }
+                                            }
+                                            adapterComentarios = new AdapterComentarios(comentsList);
+                                            recyclercomentarios.setAdapter(adapterComentarios);
+                                            adapterComentarios.notifyDataSetChanged();
+                                        }
+
+                                        @Override
+                                        public void onCancelled(@NonNull DatabaseError databaseError) {
                                         }
                                     });
-                                } else {
-                                    Util.setSnackBar(layout, "Comentário inválido!");
+                                    //Fim do update do Recycler
                                 }
-
-                                //Update do RecyclerView
-                                comentarioRef.addValueEventListener(new ValueEventListener() {
-                                    @Override
-                                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                                        List<Comentario> comentsList = new ArrayList<>();
-                                        for (DataSnapshot comentarios : dataSnapshot.getChildren()) {
-                                            Comentario coment = new Comentario();
-                                            if (comentarios != null) {
-                                                coment.setDatahora(Objects.requireNonNull(comentarios.child("datahora").getValue()).toString());
-                                                coment.setTexto(Objects.requireNonNull(comentarios.child("texto").getValue()).toString());
-                                                Usuario usuario = new Usuario();
-                                                usuario.setNome(Objects.requireNonNull(comentarios.child("usuario").child("nome").getValue()).toString());
-                                                // TODO: 05/03/2019 concluir atributos de usuario apos activity para cadastro de usuario
-                                                //usuario.setFoto(ConfiguracaoFirebase.getFirebaseAutenticacao().getCurrentUser().getPhotoUrl().toString());
-                                                coment.setUsuario(usuario);
-                                                comentsList.add(coment);
-                                            }
-                                        }
-                                        adapterComentarios = new AdapterComentarios(comentsList);
-                                        recyclercomentarios.setAdapter(adapterComentarios);
-                                        adapterComentarios.notifyDataSetChanged();
-                                    }
-
-                                    @Override
-                                    public void onCancelled(@NonNull DatabaseError databaseError) {
-                                    }
-                                });
-                                //Fim do update do Recycler
                             }
                         }
                     }
-                }
 
-                @Override
-                public void onCancelled(@NonNull DatabaseError databaseError) {
-                }
-            });
-            // fim dos dados do usuario
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError databaseError) {
+                    }
+                });
+                // fim dos dados do usuario
 
+            } else {
+                Util.setSnackBar(layout, "Insira um comentário válido!");
+            }
 
         } else {
             Util.setSnackBar(layout, "Usuário não logado!");

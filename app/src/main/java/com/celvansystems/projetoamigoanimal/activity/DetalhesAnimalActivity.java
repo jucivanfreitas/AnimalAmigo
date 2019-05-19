@@ -97,7 +97,7 @@ public class DetalhesAnimalActivity extends AppCompatActivity {
         btnTeste.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(DetalhesAnimalActivity.this, InAppBillingActivity.class));
+                startActivity(new Intent(DetalhesAnimalActivity.this, SomeActivity.class));
                 finish();
             }
         });

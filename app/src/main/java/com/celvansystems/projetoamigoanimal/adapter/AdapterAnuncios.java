@@ -421,69 +421,75 @@ public class AdapterAnuncios extends RecyclerView.Adapter<AdapterAnuncios.MyView
 
         if (ConfiguracaoFirebase.isUsuarioLogado()) {
 
-            final DatabaseReference comentarioRef = ConfiguracaoFirebase.getFirebase()
-                    .child("meus_animais")
-                    .child(anuncio.getIdAnimal())
-                    .child("comentarios");
+            if(myViewHolder.edtComentar.getText() != null && !myViewHolder.edtComentar.getText().toString().equalsIgnoreCase("")) {
 
-            //Dados do Usuário
-            DatabaseReference usuariosRef = ConfiguracaoFirebase.getFirebase()
-                    .child("usuarios");
+                final DatabaseReference comentarioRef = ConfiguracaoFirebase.getFirebase()
+                        .child("meus_animais")
+                        .child(anuncio.getIdAnimal())
+                        .child("comentarios");
 
-            usuariosRef.addValueEventListener(new ValueEventListener() {
-                @Override
-                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                //Dados do Usuário
+                DatabaseReference usuariosRef = ConfiguracaoFirebase.getFirebase()
+                        .child("usuarios");
 
-                    for (DataSnapshot usuarios : dataSnapshot.getChildren()) {
+                usuariosRef.addValueEventListener(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
 
-                        if (usuarios != null) {
+                        for (DataSnapshot usuarios : dataSnapshot.getChildren()) {
 
-                            UserInfo user = ConfiguracaoFirebase.getFirebaseAutenticacao().getCurrentUser();
+                            if (usuarios != null) {
 
-                            if (Objects.requireNonNull(usuarios.child("id").getValue()).toString().equalsIgnoreCase(Objects.requireNonNull(user).getUid())) {
+                                UserInfo user = ConfiguracaoFirebase.getFirebaseAutenticacao().getCurrentUser();
 
-                                Usuario usuario = new Usuario();
-                                usuario.setId(ConfiguracaoFirebase.getIdUsuario());
+                                if (Objects.requireNonNull(usuarios.child("id").getValue()).toString().equalsIgnoreCase(Objects.requireNonNull(user).getUid())) {
 
-                                //Dados fora do cadastro
-                                String texto = myViewHolder.edtComentar.getText().toString();
+                                    Usuario usuario = new Usuario();
+                                    usuario.setId(ConfiguracaoFirebase.getIdUsuario());
 
-                                if (usuarios.child("nome").getValue() != null) {
-                                    usuario.setNome(Objects.requireNonNull(usuarios.child("nome").getValue()).toString());
-                                } else if (user.getDisplayName() != null) {
-                                    String nomeUsuario = user.getDisplayName();
-                                    usuario.setNome(nomeUsuario);
+                                    //Dados fora do cadastro
+                                    String texto = myViewHolder.edtComentar.getText().toString();
 
-                                } else {
-                                    usuario.setNome(ctx.getString(R.string.anonimo));
-                                }
+                                    if (usuarios.child("nome").getValue() != null) {
+                                        usuario.setNome(Objects.requireNonNull(usuarios.child("nome").getValue()).toString());
+                                    } else if (user.getDisplayName() != null) {
+                                        String nomeUsuario = user.getDisplayName();
+                                        usuario.setNome(nomeUsuario);
 
-                                //Inserindo o comentário
-                                if (Util.validaTexto(texto)) {
+                                    } else {
+                                        usuario.setNome(ctx.getString(R.string.anonimo));
+                                    }
 
-                                    Comentario coment = new Comentario(usuario, texto, Util.getDataAtualBrasil());
+                                    //Inserindo o comentário
+                                    if (Util.validaTexto(texto)) {
 
-                                    comentarioRef.push().setValue(coment)
-                                            .addOnCompleteListener(new OnCompleteListener<Void>() {
-                                                @Override
-                                                public void onComplete(@NonNull Task<Void> task) {
+                                        Comentario coment = new Comentario(usuario, texto, Util.getDataAtualBrasil());
 
-                                                    Util.setSnackBar(myViewHolder.layout, ctx.getString(R.string.comentario_inserido));
-                                                    myViewHolder.edtComentar.setText(null);
-                                                }
-                                            });
-                                } else {
-                                    Util.setSnackBar(myViewHolder.layout, ctx.getString(R.string.comentario_invalido));
+                                        comentarioRef.push().setValue(coment)
+                                                .addOnCompleteListener(new OnCompleteListener<Void>() {
+                                                    @Override
+                                                    public void onComplete(@NonNull Task<Void> task) {
+
+                                                        Util.setSnackBar(myViewHolder.layout, ctx.getString(R.string.comentario_inserido));
+                                                        myViewHolder.edtComentar.setText(null);
+                                                    }
+                                                });
+                                    } else {
+                                        Util.setSnackBar(myViewHolder.layout, ctx.getString(R.string.comentario_invalido));
+                                    }
                                 }
                             }
                         }
                     }
-                }
-                @Override
-                public void onCancelled(@NonNull DatabaseError databaseError) {
-                }
-            });
-            // fim dos dados do usuario
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError databaseError) {
+                    }
+                });
+                // fim dos dados do usuario
+            }else {
+                Util.setSnackBar(myViewHolder.layout, "Insira um comentário válido!");
+            }
 
         } else {
             Util.setSnackBar(myViewHolder.layout, ctx.getString(R.string.usuario_nao_logado));
