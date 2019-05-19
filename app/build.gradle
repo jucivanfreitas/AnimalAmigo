@@ -6,11 +6,11 @@ android {
         applicationId "com.celvansystems.projetoamigoanimal"
         minSdkVersion 21
         targetSdkVersion 28
-        versionCode 2
-        versionName "1.1"
+        versionCode 1
+        versionName "1.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         ndk {
-            ndk.abiFilters 'armeabi-v7a','arm64-v8a','x86','x86_64'
+            abiFilters 'armeabi', 'x86'//or armeabi-v7a、arm64-v8a、x86
         }
     }
     buildTypes {
@@ -69,7 +69,10 @@ dependencies {
     implementation 'com.google.android.gms:play-services-auth:16.0.1'
 
     //billing
-    //implementation 'com.anjlab.android.iab.v3:library:1.0.44'
-    implementation 'com.android.billingclient:billing:2.0.0'
+    implementation 'com.anjlab.android.iab.v3:library:1.0.44'
+
+    //circulo de imagem
+
+    implementation 'com.mikhaellopez:circularimageview:3.2.0'
 }
 apply plugin: 'com.google.gms.google-services'
