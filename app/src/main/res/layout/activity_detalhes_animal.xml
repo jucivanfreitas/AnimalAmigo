@@ -85,7 +85,7 @@
                             android:layout_marginTop="8dp"
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintTop_toBottomOf="@+id/txv_estado"
-                            app:srcCompat="@drawable/ic_registration" />
+                            app:srcCompat="@drawable/ic_perfilpet" />
 
                         <ImageView
                             android:id="@+id/imageView"
@@ -362,7 +362,7 @@
                             android:layout_marginTop="8dp"
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintTop_toBottomOf="@+id/txv_genero"
-                            app:srcCompat="@drawable/ic_route" />
+                            app:srcCompat="@drawable/ic_microchip" />
                     </android.support.constraint.ConstraintLayout>
 
                 </android.support.constraint.ConstraintLayout>

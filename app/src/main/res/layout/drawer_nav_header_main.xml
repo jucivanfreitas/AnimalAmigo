@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/linearLayout"
     android:layout_width="match_parent"
     android:layout_height="@dimen/nav_header_height"
     android:background="@drawable/side_nav_bar"
@@ -11,28 +13,54 @@
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingBottom="@dimen/activity_vertical_margin"
     android:theme="@style/ThemeOverlay.AppCompat.Dark">
-
+    <!--
     <ImageView
-        android:id="@+id/imageView_perfil"
+        android:id="@+id/imageView_perfil1"
         android:layout_width="80dp"
         android:layout_height="80dp"
         android:contentDescription="@string/nav_header_desc"
         android:paddingTop="@dimen/nav_header_vertical_spacing"
+        app:srcCompat="@drawable/ic_perfil_user"
+        tools:visibility="gone" />-->
+
+    <com.mikhaellopez.circularimageview.CircularImageView
+        android:id="@+id/imageView_perfil"
+        android:layout_width="80dp"
+        android:layout_height="80dp"
+
+        android:layout_marginStart="4dp"
+        android:layout_marginTop="16dp"
+        android:contentDescription="@string/nav_header_desc"
+        android:elevation="25dp"
+        app:civ_border_color="#EEEEEE"
+        app:civ_border_width="4dp"
+        app:civ_shadow="true"
+        app:civ_shadow_color="#F5D9D7"
+        app:civ_shadow_radius="5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/ic_perfil_user" />
 
     <TextView
         android:id="@+id/textview_nome_humano"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginStart="5dp"
+        android:layout_marginTop="-5dp"
         android:paddingTop="@dimen/nav_header_vertical_spacing"
         android:text="@string/txt_nome"
         android:textAppearance="@style/TextAppearance.AppCompat.Body1"
-        android:textStyle="bold" />
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="@+id/imageView_perfil"
+        app:layout_constraintTop_toBottomOf="@+id/imageView_perfil" />
 
     <TextView
         android:id="@+id/textView_email_cadastrado"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/txt_email_exemplo" />
+        android:layout_marginTop="4dp"
+        android:text="@string/txt_email_exemplo"
+        app:layout_constraintStart_toStartOf="@+id/textview_nome_humano"
+        app:layout_constraintTop_toBottomOf="@+id/textview_nome_humano" />
 
-</LinearLayout>
+</android.support.constraint.ConstraintLayout>
