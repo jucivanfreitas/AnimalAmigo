@@ -93,7 +93,7 @@
         app:layout_constraintStart_toStartOf="@+id/textView15"
         app:layout_constraintTop_toBottomOf="@+id/textview_nome_humano" />
 
-
+<!--
     <ImageView
         android:id="@+id/imageView_perfil1"
         android:layout_width="93dp"
@@ -109,7 +109,7 @@
         android:visibility="gone"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/ic_foto_perfil" />
+        app:srcCompat="@drawable/ic_foto_perfil" />-->
 
     <com.mikhaellopez.circularimageview.CircularImageView
 
