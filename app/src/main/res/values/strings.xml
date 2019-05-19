@@ -267,6 +267,11 @@
     <string name="button">Button</string>
     <string name="title_activity_in_app_billing">InAppBillingActivity</string>
     <string name="txt_editar">Editar</string>
+    <string name="txt_doar10">Doar Dez Reais</string>
+    <string name="txt_doar5" />
+    <string name="txt_doar5reais">Doar Cinco Reais</string>
+    <string name="txt_doar2">Doar Dois reais</string>
+    <string name="txt_mkt">Marketing App Pet Amigo</string>
 
 
 </resources>

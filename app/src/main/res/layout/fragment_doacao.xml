@@ -25,11 +25,31 @@
                 android:id="@+id/imageView2"
                 android:layout_width="wrap_content"
                 android:layout_height="250dp"
+                android:contentDescription="@string/txt_mkt"
                 android:src="@drawable/difenrenca2019" />
         </android.support.v7.widget.CardView>
 
         <Button
-            android:id="@+id/button3"
+            android:id="@+id/btn_doar5_Reais"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="8dp"
+            android:background="@drawable/bg_bt_redes_sociais"
+            android:elevation="10dp"
+            android:shadowColor="@color/black_overlay"
+            android:shadowDx="10"
+            android:text="@string/txt_doar5reais"
+            android:textColor="@color/com_facebook_button_background_color_focused"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="1.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/btndoar10_reais" />
+
+        <Button
+            android:id="@+id/btndoar10_reais"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
@@ -38,12 +58,33 @@
             android:elevation="10dp"
             android:shadowColor="@color/black_overlay"
             android:shadowDx="10"
-            android:text="@string/txt_doarAgora"
+            android:text="@string/txt_doar10"
             android:textColor="@color/com_facebook_button_background_color_focused"
             android:textStyle="bold"
             app:layout_constraintBottom_toBottomOf="@+id/cardViweDoar01"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent" />
+
+        <Button
+            android:id="@+id/btn_doar2_Reais"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="8dp"
+            android:background="@drawable/bg_bt_redes_sociais"
+            android:elevation="10dp"
+            android:shadowColor="@color/black_overlay"
+            android:shadowDx="10"
+            android:text="@string/txt_doar2"
+            android:textColor="@color/com_facebook_button_background_color_focused"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/btn_doar5_Reais" />
+
 
     </android.support.constraint.ConstraintLayout>
 
