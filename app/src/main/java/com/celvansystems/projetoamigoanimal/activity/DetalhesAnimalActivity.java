@@ -34,7 +34,6 @@ public class DetalhesAnimalActivity extends AppCompatActivity {
     private TextView textCidade;
     private TextView textRaca;
     private TextView textDescricao;
-    private Button btnTeste;
 
     private View layout;
 
@@ -92,15 +91,14 @@ public class DetalhesAnimalActivity extends AppCompatActivity {
         textCidade = findViewById(R.id.txv_cidade);
         textRaca = findViewById(R.id.txv_raca);
         textDescricao = findViewById(R.id.txv_descricao);
-        btnTeste = findViewById(R.id.btnTeste);
 
-        btnTeste.setOnClickListener(new View.OnClickListener() {
+        /*btnTeste.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 startActivity(new Intent(DetalhesAnimalActivity.this, SomeActivity.class));
                 finish();
             }
-        });
+        });*/
         layout = findViewById(R.id.linear_layout_detalhes_animal);
         Button btnVerTelefone = findViewById(R.id.btnVerTelefone);
 
