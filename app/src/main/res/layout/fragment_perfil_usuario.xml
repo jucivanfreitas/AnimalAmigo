@@ -95,7 +95,7 @@
 
 
     <ImageView
-        android:id="@+id/imageView_perfil"
+        android:id="@+id/imageView_perfil1"
         android:layout_width="93dp"
         android:layout_height="98dp"
         android:layout_marginStart="24dp"
@@ -106,9 +106,26 @@
         android:cropToPadding="true"
         android:padding="1dp"
         android:scaleType="centerCrop"
+        android:visibility="gone"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/ic_foto_perfil" />
+
+    <com.mikhaellopez.circularimageview.CircularImageView
+
+        android:id="@+id/imageView_perfil"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:src="@drawable/ic_foto_perfil"
+        app:civ_border_color="@color/colorPrimaryDark"
+        app:civ_border_width="2dp"
+        app:civ_shadow="true"
+        app:civ_shadow_color="@color/common_google_signin_btn_text_dark_focused"
+        app:civ_shadow_radius="2"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
 
@@ -156,7 +173,7 @@
         android:text="@string/txt_alagoas"
         android:textColor="@color/common_google_signin_btn_text_dark_focused"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.05"
+        app:layout_constraintHorizontal_bias="0.31"
         app:layout_constraintStart_toEndOf="@+id/textView_cidade"
         app:layout_constraintTop_toBottomOf="@+id/textView17" />
 
@@ -165,7 +182,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="4dp"
-        android:text="@string/ver_telefone"
+        android:text="@string/txt_editar"
         android:textColor="@color/common_google_signin_btn_text_dark_focused"
         app:layout_constraintStart_toStartOf="@+id/textView19"
         app:layout_constraintTop_toBottomOf="@+id/textView19" />

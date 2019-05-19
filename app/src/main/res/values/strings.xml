@@ -266,6 +266,7 @@
     <string name="txt_doarAgora">Doar Agora</string>
     <string name="button">Button</string>
     <string name="title_activity_in_app_billing">InAppBillingActivity</string>
+    <string name="txt_editar">Editar</string>
 
 
 </resources>
