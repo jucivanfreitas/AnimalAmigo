@@ -10,6 +10,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -132,7 +133,7 @@ public class AnunciosFragment extends Fragment {
         try {
             dialog = new SpotsDialog.Builder()
                     .setContext(view.getContext())
-                    .setMessage("Procurando anúncios")
+                    .setMessage(R.string.procurando_anuncios)
                     .setCancelable(true)
                     .build();
         } catch (Exception e) {
@@ -158,7 +159,7 @@ public class AnunciosFragment extends Fragment {
      */
     private void refreshRecyclerAnuncios() {
         // Refresh items
-        Util.setSnackBar(layout, "Atualizando pets...");
+        Util.setSnackBar(layout, getString(R.string.atualizando_pets));
 
         txvSemAnuncios.setVisibility(View.INVISIBLE);
         listaAnuncios.clear();
@@ -177,6 +178,9 @@ public class AnunciosFragment extends Fragment {
                 && !localTexto.equalsIgnoreCase("Todos")
                 && !localTexto.equalsIgnoreCase("cidade"))) {
             filtrandoCidade = true;
+        } else {
+            filtrandoCidade = false;
+            filtrandoEstado = false;
         }
 
         if (filtrandoEspecie) {
@@ -200,8 +204,6 @@ public class AnunciosFragment extends Fragment {
                 }
             }
         }
-
-
         swipeRefreshLayout.setRefreshing(false);
     }
 
@@ -242,7 +244,7 @@ public class AnunciosFragment extends Fragment {
             dialog.show();
 
             //cidade
-            if (cidade != null && !cidade.equalsIgnoreCase(getString(R.string.todas))) {
+            if (cidade != null && !cidade.equalsIgnoreCase(getString(R.string.todas)) && !cidade.equalsIgnoreCase(getString(R.string.todos))) {
                 btnLocal.setText(cidade);
             }
             //estado
@@ -280,7 +282,7 @@ public class AnunciosFragment extends Fragment {
                                                 textoBotaoEspecie.equalsIgnoreCase(getString(R.string.especie)) ||
                                                         textoBotaoEspecie.equalsIgnoreCase(getString(R.string.todas))))) {
                                     listaAnuncios.add(animal);
-
+                                    Log.d("INFO26", "1");
                                 } else {
                                     //sem espécie
                                     if (textoBotaoEspecie.equalsIgnoreCase(getString(R.string.especie)) ||
@@ -291,11 +293,12 @@ public class AnunciosFragment extends Fragment {
                                                 textoBotaoCidade.equalsIgnoreCase(getString(R.string.todos))) {
 
                                             listaAnuncios.add(animal);
-
+                                            Log.d("INFO26", "2");
                                         } else {
                                             if (textoBotaoCidade.equalsIgnoreCase(animal.getCidade()) ||
                                                     textoBotaoCidade.equalsIgnoreCase(animal.getUf())) {
                                                 listaAnuncios.add(animal);
+                                                Log.d("INFO26", "3");
                                             }
                                         }
                                         //com espécie
@@ -307,6 +310,7 @@ public class AnunciosFragment extends Fragment {
 
                                                 if (textoBotaoCidade.equalsIgnoreCase(animal.getUf())) {
                                                     listaAnuncios.add(animal);
+                                                    Log.d("INFO26", "4");
                                                 }
                                                 //cidade
                                             } else {
@@ -315,14 +319,15 @@ public class AnunciosFragment extends Fragment {
                                                         textoBotaoCidade.equalsIgnoreCase(getString(R.string.todas)) ||
                                                         textoBotaoCidade.equalsIgnoreCase(getString(R.string.todos))) {
                                                     listaAnuncios.add(animal);
+                                                    Log.d("INFO26", "5");
                                                 } else if (textoBotaoCidade.equalsIgnoreCase(animal.getCidade())) {
                                                     listaAnuncios.add(animal);
+                                                    Log.d("INFO26", "6");
                                                 }
                                             }
                                         }
                                     }
                                 }
-
                             }
                         }
 

@@ -2,12 +2,14 @@
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/frame_layout_doacao"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".fragment.DoacaoFragment">
 
 
     <android.support.constraint.ConstraintLayout
+        android:id="@+id/constraint_layout_doacao"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
@@ -30,7 +32,7 @@
         </android.support.v7.widget.CardView>
 
         <Button
-            android:id="@+id/btn_doar5_Reais"
+            android:id="@+id/btn_doar5_reais"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
@@ -40,16 +42,16 @@
             android:elevation="10dp"
             android:shadowColor="@color/black_overlay"
             android:shadowDx="10"
-            android:text="@string/txt_doar5reais"
+            android:text="@string/txt_doar5"
             android:textColor="@color/com_facebook_button_background_color_focused"
             android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="1.0"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/btndoar10_reais" />
+            app:layout_constraintTop_toBottomOf="@+id/btn_doar10_reais" />
 
         <Button
-            android:id="@+id/btndoar10_reais"
+            android:id="@+id/btn_doar10_reais"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
@@ -67,7 +69,7 @@
             app:layout_constraintStart_toStartOf="parent" />
 
         <Button
-            android:id="@+id/btn_doar2_Reais"
+            android:id="@+id/btn_doar2_reais"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
@@ -83,7 +85,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/btn_doar5_Reais" />
+            app:layout_constraintTop_toBottomOf="@+id/btn_doar5_reais" />
 
 
     </android.support.constraint.ConstraintLayout>

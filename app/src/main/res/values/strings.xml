@@ -162,7 +162,6 @@
     <string name="anuncio_excluido">Anúncio excluído!</string>
     <string name="fotos_excluidas">Fotos excluídas com sucesso</string>
     <string name="falha_deletar_fotos">Falha ao deletar fotos</string>
-    <string name="procurando_anuncios">Procurando anúncios</string>
     <string name="falha_carregar_anuncios">Falha ao carregar anúncios.</string>
     <string name="esqueci_senha">Esqueci minha senha</string>
     <string name="email_enviado">Um e-mail foi enviado para você.</string>
@@ -268,10 +267,11 @@
     <string name="title_activity_in_app_billing">InAppBillingActivity</string>
     <string name="txt_editar">Editar</string>
     <string name="txt_doar10">Doar Dez Reais</string>
-    <string name="txt_doar5" />
+    <string name="txt_doar5">Doar Cinco reais</string>
     <string name="txt_doar5reais">Doar Cinco Reais</string>
     <string name="txt_doar2">Doar Dois reais</string>
     <string name="txt_mkt">Marketing App Pet Amigo</string>
+    <string name="procurando_anuncios">Procurando anúncios...</string>
 
 
 </resources>

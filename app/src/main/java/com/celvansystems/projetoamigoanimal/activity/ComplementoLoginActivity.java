@@ -292,12 +292,16 @@ public class ComplementoLoginActivity extends AppCompatActivity {
                     usuario.setPais(spnPais.getSelectedItem().toString());
                     //Estado
                     if (spnEstado.getSelectedItem() != null && !spnEstado.getSelectedItem().toString().equalsIgnoreCase("")) {
-                        usuario.setUf(spnEstado.getSelectedItem().toString());
+                        Log.d("INFO25", "estado ok");
+                        //Cidade
+                        if (spnCidade.getSelectedItem() != null && !spnCidade.getSelectedItem().toString().equalsIgnoreCase("")) {
+                            usuario.setUf(spnEstado.getSelectedItem().toString());
+                            usuario.setCidade(spnCidade.getSelectedItem().toString());
+                            Log.d("INFO25", "cidade ok");
+                        }
                     }
-                    //Cidade
-                    if (spnCidade.getSelectedItem() != null && !spnCidade.getSelectedItem().toString().equalsIgnoreCase("")) {
-                        usuario.setCidade(spnCidade.getSelectedItem().toString());
-                    }
+
+                    Log.d("INFO25", "salvando usuario...");
 
                     salvarUsuario(usuario);
                 }
@@ -465,18 +469,31 @@ public class ComplementoLoginActivity extends AppCompatActivity {
         }
     }
 
-    private void salvarFotosStorage(final Usuario usuario, String url) {
+    private void salvarUsuario(final Usuario usuario) {
 
         try {
-            if (url != null) {
-                //cria nó do storage
+            dialog = new SpotsDialog.Builder()
+                    .setContext(this)
+                    .setMessage(R.string.salvando_usuario)
+                    .setCancelable(false)
+                    .build();
+            dialog.show();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        //salvar imagem no storage
+        try {
+            if (usuario.getFoto() != null) {
+                Log.d("INFO8", usuario.getFoto());
+//cria nó do storage
                 final StorageReference imagemUsuario = storage
                         .child("imagens")
                         .child("usuarios")
                         .child(usuario.getId())
                         .child("perfil");
 
-                Uri selectedImage = Uri.parse(url);
+                Uri selectedImage = Uri.parse(usuario.getFoto());
                 //imagem comprimida
                 byte[] byteArray = comprimirImagem(selectedImage);
                 UploadTask uploadTask = imagemUsuario.putBytes(byteArray);
@@ -503,55 +520,38 @@ public class ComplementoLoginActivity extends AppCompatActivity {
                             usuario.salvar();
                             Util.setSnackBar(layout, getString(R.string.sucesso_ao_fazer_upload));
 
-                            dialog.dismiss();
 
-                            startActivity(new Intent(ComplementoLoginActivity.this, MainActivity.class));
-                            finish();
+                            //startActivity(new Intent(ComplementoLoginActivity.this, MainActivity.class));
+                            //finish();
+                            Intent intent = new Intent(ComplementoLoginActivity.this, MainActivity.class);
+                            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                            startActivity(intent);
+
                         } else {
                             Util.setSnackBar(layout, getString(R.string.falha_upload));
                         }
+                        dialog.dismiss();
+
                     }
                 }).addOnFailureListener(new OnFailureListener() {
                     @Override
                     public void onFailure(@NonNull Exception e) {
+                        Util.setSnackBar(layout, getString(R.string.falha_upload));
                     }
                 });
             } else {
                 usuario.salvar();
+
                 Util.setSnackBar(layout, getString(R.string.sucesso_ao_fazer_upload));
 
                 dialog.dismiss();
 
-                startActivity(new Intent(ComplementoLoginActivity.this, MainActivity.class));
-                finish();
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
+                //startActivity(new Intent(ComplementoLoginActivity.this, MainActivity.class));
+                //finish();
+                Intent intent = new Intent(ComplementoLoginActivity.this, MainActivity.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                startActivity(intent);
 
-    private void salvarUsuario(Usuario usuario) {
-
-        try {
-            dialog = new SpotsDialog.Builder()
-                    .setContext(this)
-                    .setMessage(R.string.salvando_usuario)
-                    .setCancelable(false)
-                    .build();
-            dialog.show();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-        //salvar imagem no storage
-        try {
-            if (usuario.getFoto() != null) {
-                String urlImagem = usuario.getFoto();
-                salvarFotosStorage(usuario, urlImagem);
-            } else {
-                dialog.dismiss();
-                startActivity(new Intent(ComplementoLoginActivity.this, MainActivity.class));
-                finish();
             }
         } catch (Exception e) {
             e.printStackTrace();

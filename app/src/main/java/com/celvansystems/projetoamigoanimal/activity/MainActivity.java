@@ -151,30 +151,6 @@ public class MainActivity extends AppCompatActivity
         });
     }
 
-    /**
-     * configuracao da exibicao de intersticial periodico
-     */
-    /*private void configuraInterstitialAdTimer(int delay, int segundos) {
-
-        prepareInterstitialAd();
-        ScheduledExecutorService scheduler =
-                Executors.newSingleThreadScheduledExecutor();
-        scheduler.scheduleAtFixedRate(new Runnable() {
-
-            public void run() {
-
-                runOnUiThread(new Runnable() {
-                    public void run() {
-
-                        if (mInterstitialAd.isLoaded()) {
-                            mInterstitialAd.show();
-                        }
-                        prepareInterstitialAd();
-                    }
-                });
-            }
-        }, delay, segundos, TimeUnit.SECONDS);
-    }*/
     private void habilitaOpcoesNav() {
 
         Menu menuNav = navigationView.getMenu();
@@ -324,11 +300,11 @@ public class MainActivity extends AppCompatActivity
                 Intent shareIntent = new Intent(Intent.ACTION_SEND);
                 shareIntent.setType("text/plain");
                 shareIntent.putExtra(Intent.EXTRA_SUBJECT, Constantes.APPLICATION_NAME);
-                String shareMessage= "\n"+Constantes.APPLICATION_MESSAGE+"\n\n";
-                shareMessage = shareMessage + "https://play.google.com/store/apps/details?id=" + Constantes.APPLICATION_ID +"\n\n";
+                String shareMessage = "\n" + Constantes.APPLICATION_MESSAGE + "\n\n";
+                shareMessage = shareMessage + "https://play.google.com/store/apps/details?id=" + Constantes.APPLICATION_ID + "\n\n";
                 shareIntent.putExtra(Intent.EXTRA_TEXT, shareMessage);
                 startActivity(Intent.createChooser(shareIntent, getText(R.string.escolha_uma_opcao)));
-            } catch(Exception e) {
+            } catch (Exception e) {
                 e.printStackTrace();
             }
 
