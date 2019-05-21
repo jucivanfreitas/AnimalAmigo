@@ -182,7 +182,7 @@ public class AnunciosFragment extends Fragment {
             filtrandoCidade = false;
             filtrandoEstado = false;
         }
-
+//filtrando especie
         if (filtrandoEspecie) {
             if (!filtrandoEstado && !filtrandoCidade) {
                 recuperarAnunciosFiltro(null, null, especieTexto);
@@ -193,6 +193,7 @@ public class AnunciosFragment extends Fragment {
                     recuperarAnunciosFiltro(null, localTexto, especieTexto);
                 }
             }
+            //sem filtrar especie
         } else {
             if (!filtrandoEstado && !filtrandoCidade) {
                 recuperarAnunciosFiltro(null, null, null);
@@ -276,13 +277,16 @@ public class AnunciosFragment extends Fragment {
                                 String textoBotaoEspecie = btnEspecie.getText().toString();
 
                                 //sem filtro
-                                if ((textoBotaoCidade.equalsIgnoreCase(getString(R.string.todas)) ||
+                                if (((textoBotaoCidade.equalsIgnoreCase(getString(R.string.todas)) ||
                                         textoBotaoCidade.equalsIgnoreCase(getString(R.string.todos)) ||
-                                        textoBotaoCidade.equalsIgnoreCase(getString(R.string.cidade)) && (
+                                        textoBotaoCidade.equalsIgnoreCase(getString(R.string.cidade))) && ((
                                                 textoBotaoEspecie.equalsIgnoreCase(getString(R.string.especie)) ||
-                                                        textoBotaoEspecie.equalsIgnoreCase(getString(R.string.todas))))) {
+                                                        textoBotaoEspecie.equalsIgnoreCase(getString(R.string.todas)))))) {
                                     listaAnuncios.add(animal);
+
                                     Log.d("INFO26", "1");
+                                    Log.d("INFO26", "cidade: "+textoBotaoCidade);
+                                    Log.d("INFO26", "especie: "+textoBotaoEspecie);
                                 } else {
                                     //sem espécie
                                     if (textoBotaoEspecie.equalsIgnoreCase(getString(R.string.especie)) ||
