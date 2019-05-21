@@ -488,7 +488,7 @@ public class AdapterAnuncios extends RecyclerView.Adapter<AdapterAnuncios.MyView
                 });
                 // fim dos dados do usuario
             }else {
-                Util.setSnackBar(myViewHolder.layout, "Insira um comentário válido!");
+                Util.setSnackBar(myViewHolder.layout, ctx.getString(R.string.insira_comentario_valido));
             }
 
         } else {
@@ -566,7 +566,7 @@ public class AdapterAnuncios extends RecyclerView.Adapter<AdapterAnuncios.MyView
             List<String> listaCurtidas = new ArrayList<>();
 
             if (isCurtido(anuncio)) {
-                Util.setSnackBar(((MyViewHolder) myViewHolder).layout, ctx.getString(R.string.usuario_ja_curtiu) + anuncio.getNome() + "!");
+                Util.setSnackBar(((MyViewHolder) myViewHolder).layout,  ctx.getString(R.string.usuario_ja_curtiu) + " " + anuncio.getNome() + "!");
             } else {
                 if (ConfiguracaoFirebase.isUsuarioLogado()) {
                     if (anuncio.getCurtidas() != null) {
@@ -609,6 +609,7 @@ public class AdapterAnuncios extends RecyclerView.Adapter<AdapterAnuncios.MyView
         try {
             // TODO: 13/02/2019 configurar quando o app for publicado do google play
 
+            Context ctx = myViewHolder.itemView.getContext();
             Drawable mDrawable = myViewHolder.foto.getDrawable();
             Bitmap mBitmap = ((BitmapDrawable) mDrawable).getBitmap();
 
@@ -618,10 +619,10 @@ public class AdapterAnuncios extends RecyclerView.Adapter<AdapterAnuncios.MyView
 
             Intent intent = new Intent(Intent.ACTION_SEND);
             intent.setType("image/jpeg");
-            intent.putExtra(Intent.EXTRA_TEXT, "Instale o App Pet Amigo e conheça o "+ anuncio.getNome()+ "! Disponível em " +
+            intent.putExtra(Intent.EXTRA_TEXT, ctx.getString(R.string.instale_e_conheca)+ anuncio.getNome()+ ctx.getString(R.string.disponivel_em) +
                     "https://play.google.com/store/apps/details?id=" + Constantes.APPLICATION_ID +"\n\n");
             intent.putExtra(Intent.EXTRA_STREAM, uri);
-            myViewHolder.itemView.getContext().startActivity(Intent.createChooser(intent, "Compartilhando imagem..."));
+            myViewHolder.itemView.getContext().startActivity(Intent.createChooser(intent, ctx.getString(R.string.compartilhando_imagem)));
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -634,7 +635,7 @@ public class AdapterAnuncios extends RecyclerView.Adapter<AdapterAnuncios.MyView
      * @param animal anuncio
      * @return boolean
      */
-    private boolean isCurtido(Animal animal) {
+    private boolean isCurtido (Animal animal) {
         boolean retorno = false;
 
         if (ConfiguracaoFirebase.isUsuarioLogado()) {

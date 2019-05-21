@@ -13,6 +13,7 @@ import android.widget.Button;
 import com.anjlab.android.iab.v3.BillingProcessor;
 import com.anjlab.android.iab.v3.TransactionDetails;
 import com.celvansystems.projetoamigoanimal.R;
+import com.celvansystems.projetoamigoanimal.helper.Constantes;
 import com.celvansystems.projetoamigoanimal.helper.Util;
 
 public class DoacaoFragment extends Fragment implements BillingProcessor.IBillingHandler{
@@ -37,7 +38,7 @@ public class DoacaoFragment extends Fragment implements BillingProcessor.IBillin
 
     private void inializaComponentes() {
 
-        bp = new BillingProcessor(view.getContext(), null, (BillingProcessor.IBillingHandler) this);
+        bp = new BillingProcessor(view.getContext(), null, this);
         //bp = new BillingProcessor(view.getContext(), "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAloCy1BSGqDHUo7EeRa+27DhgB46GSVjj5RwPt7ABMayFpdh0vbe7gOUPWqWWugebdoI3Tnmm7NghevAgDTKcqhqNxUBMpyWML5My25ipnHzca/zpGpb3f3aPFG4vf8udIP07osQzHA8lCzYsMfGJtVdXv1bcXNDP2WQJWeXzqnDAyXb+rRQgLcvWI58OFk8co9t1URjcAKRk0j8wyChB55T+TmhhTN2bU9HQ5I3U6m76ph4nc3XSmyk4kww3/bkrErXI3d9/6woEX0DwGmHghB1q3xPVDQ0883J3b0YUcAZQj6xvlzS9tWjzSILb3dAjEpzEbVMtKejH3cEvtrxGsQIDAQAB", this);
 
         layout = view.findViewById(R.id.frame_layout_doacao);
@@ -48,29 +49,26 @@ public class DoacaoFragment extends Fragment implements BillingProcessor.IBillin
         btnDoar10.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                bp.purchase(getActivity(),"android.test.purchased");
-                //bp.purchase(getActivity(),"doar_5_reais");
+                bp.purchase(getActivity(), Constantes.PRODUCT_ID_10_REAIS);
             }
         });
         btnDoar5.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                bp.purchase(getActivity(),"android.test.purchased");
-                //bp.purchase(getActivity(),"doar_5_reais");
+                bp.purchase(getActivity(),Constantes.PRODUCT_ID_5_REAIS);
             }
         });
         btnDoar2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                bp.purchase(getActivity(),"android.test.purchased");
-                //bp.purchase(getActivity(),"doar_5_reais");
+                bp.purchase(getActivity(),Constantes.PRODUCT_ID_2_REAIS);
             }
         });
     }
 
     @Override
     public void onProductPurchased(@NonNull String productId, @Nullable TransactionDetails details) {
-        Util.setSnackBar(layout, "Purchased!");
+        //Util.setSnackBar(layout, "Purchased!");
     }
 
     @Override
@@ -80,12 +78,13 @@ public class DoacaoFragment extends Fragment implements BillingProcessor.IBillin
 
     @Override
     public void onBillingError(int errorCode, @Nullable Throwable error) {
-        Util.setSnackBar(layout, "Billing Error!");
+        //Util.setSnackBar(layout, "Billing Error!");
     }
 
     @Override
     public void onBillingInitialized() {
-        Util.setSnackBar(layout, "Pagamento iniciado!");
+
+        //Util.setSnackBar(layout, "Pagamento iniciado!");
     }
 
     @Override

@@ -10,7 +10,6 @@ import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -159,7 +158,7 @@ public class AnunciosFragment extends Fragment {
      */
     private void refreshRecyclerAnuncios() {
         // Refresh items
-        Util.setSnackBar(layout, getString(R.string.atualizando_pets));
+        //Util.setSnackBar(layout, getString(R.string.atualizando_pets));
 
         txvSemAnuncios.setVisibility(View.INVISIBLE);
         listaAnuncios.clear();
@@ -239,7 +238,7 @@ public class AnunciosFragment extends Fragment {
      * @param cidade  cidade
      * @param especie especie
      */
-    public void recuperarAnunciosFiltro(final String estado, final String cidade, final String especie) {
+    private void recuperarAnunciosFiltro(final String estado, final String cidade, final String especie) {
 
         try {
             dialog.show();
@@ -284,9 +283,6 @@ public class AnunciosFragment extends Fragment {
                                                         textoBotaoEspecie.equalsIgnoreCase(getString(R.string.todas)))))) {
                                     listaAnuncios.add(animal);
 
-                                    Log.d("INFO26", "1");
-                                    Log.d("INFO26", "cidade: "+textoBotaoCidade);
-                                    Log.d("INFO26", "especie: "+textoBotaoEspecie);
                                 } else {
                                     //sem espécie
                                     if (textoBotaoEspecie.equalsIgnoreCase(getString(R.string.especie)) ||
@@ -297,12 +293,10 @@ public class AnunciosFragment extends Fragment {
                                                 textoBotaoCidade.equalsIgnoreCase(getString(R.string.todos))) {
 
                                             listaAnuncios.add(animal);
-                                            Log.d("INFO26", "2");
                                         } else {
                                             if (textoBotaoCidade.equalsIgnoreCase(animal.getCidade()) ||
                                                     textoBotaoCidade.equalsIgnoreCase(animal.getUf())) {
                                                 listaAnuncios.add(animal);
-                                                Log.d("INFO26", "3");
                                             }
                                         }
                                         //com espécie
@@ -314,7 +308,6 @@ public class AnunciosFragment extends Fragment {
 
                                                 if (textoBotaoCidade.equalsIgnoreCase(animal.getUf())) {
                                                     listaAnuncios.add(animal);
-                                                    Log.d("INFO26", "4");
                                                 }
                                                 //cidade
                                             } else {
@@ -323,10 +316,8 @@ public class AnunciosFragment extends Fragment {
                                                         textoBotaoCidade.equalsIgnoreCase(getString(R.string.todas)) ||
                                                         textoBotaoCidade.equalsIgnoreCase(getString(R.string.todos))) {
                                                     listaAnuncios.add(animal);
-                                                    Log.d("INFO26", "5");
                                                 } else if (textoBotaoCidade.equalsIgnoreCase(animal.getCidade())) {
                                                     listaAnuncios.add(animal);
-                                                    Log.d("INFO26", "6");
                                                 }
                                             }
                                         }

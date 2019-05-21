@@ -91,7 +91,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
      */
     private static final int REQUEST_READ_CONTACTS = 0;
     private FirebaseAuth authentication;
-    // UI references.
+
     private AutoCompleteTextView mEmailView;
     private EditText mPasswordView;
     private AutoCompleteTextView txiNome;
@@ -124,6 +124,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
     private void inicializarComponentes() {
 
         try {
+
             mEmailView = findViewById(R.id.txiEmail);
             mLoginFormView = findViewById(R.id.login_form);
             mProgressView = findViewById(R.id.login_progress);
@@ -182,7 +183,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                             mEmailView.getText().toString().contains("@")) {
                         enviarEmailRecuperacao(mEmailView.getText().toString());
                     } else {
-                        Util.setSnackBar(layout, "Preencha seu e-mail!");
+                        Util.setSnackBar(layout, getString(R.string.insira_seu_email));
                     }
                 }
             });
@@ -309,7 +310,6 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                 .requestEmail()
                 .build();
         mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
-
     }
 
     /**
@@ -398,7 +398,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             if (account != null)
                 Log.d("INFO40", String.format("handle - logado pelo google %s", account.getDisplayName()));
         } catch (ApiException e) {
-            Log.d("INFO40", "signInResult:failed code=" + e.getStatusCode());
+            e.printStackTrace();
         }
     }
 
@@ -438,7 +438,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
     }
 
 
-    @SuppressLint("MissingPermission")
+    //@SuppressLint("MissingPermission")
     private void tentarLogin() {
 
         //esconde o teclado
@@ -501,11 +501,11 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                             }
                         });
             } else {
-                Util.setSnackBar(layout, "Preencha seu nome!");
+                Util.setSnackBar(layout, getString(R.string.insira_seu_nome));
             }
             //logando...
         } else {
-            if (!email.equalsIgnoreCase("") && !password.equalsIgnoreCase("")){
+            if (!email.equalsIgnoreCase("") && !password.equalsIgnoreCase("")) {
                 //direciona para a activity principal
                 authentication.signInWithEmailAndPassword(email, password)
                         .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
@@ -534,9 +534,9 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                                 mImageBg_color.setVisibility(View.INVISIBLE);
                             }
                         });
-            showProgress(true);
-            mImageBg_color.setVisibility(View.VISIBLE);
-        } else {
+                showProgress(true);
+                mImageBg_color.setVisibility(View.VISIBLE);
+            } else {
                 Util.setSnackBar(layout, getString(R.string.email_senha_invalido));
             }
         }
@@ -547,10 +547,9 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         DatabaseReference usuariosRef = ConfiguracaoFirebase.getFirebase()
                 .child("usuarios");
 
-        usuariosRef.addValueEventListener(new ValueEventListener() {
+        usuariosRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-
                 for (DataSnapshot usuarios : dataSnapshot.getChildren()) {
 
                     try {
@@ -559,13 +558,13 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                             if (Objects.requireNonNull(usuarios.child("id").getValue()).toString().equalsIgnoreCase(usuarioId)) {
 
                                 if (Objects.requireNonNull(usuarios.child("loginCompleto").getValue()).toString().equalsIgnoreCase("true")) {
-                                    Log.d("INFO21", "bli ");
 
                                     Intent intent = new Intent(LoginActivity.this, MainActivity.class);
                                     startActivity(intent);
                                     finish();
+
                                 } else {
-                                    Log.d("INFO21", "blo");
+
                                     Intent intent = new Intent(LoginActivity.this, ComplementoLoginActivity.class);
                                     startActivity(intent);
                                     finish();
@@ -574,18 +573,15 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                         }
                     } catch (Exception e) {
                         e.printStackTrace();
-                        Log.d("INFO21", "cle" + usuarioId);
-
                     }
                 }
             }
 
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
+
             }
         });
-
-        // TODO: 06/03/2019 setSnackBar passando mensagem pra Main
     }
 
     /**
@@ -703,7 +699,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
     }
 
     private void addEmailsToAutoComplete(List<String> emailAddressCollection) {
-        //Create adapter to tell the AutoCompleteTextView what to show in its dropdown list.
+
         try {
             ArrayAdapter<String> adapter =
                     new ArrayAdapter<>(LoginActivity.this,

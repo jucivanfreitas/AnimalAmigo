@@ -15,7 +15,7 @@ import java.util.List;
 
 public class Permissoes {
 
-    public static boolean validarPermissoes(String[] permissoes, Activity activity, int requestCode){
+    public static void validarPermissoes(String[] permissoes, Activity activity, int requestCode){
 
         if (Build.VERSION.SDK_INT >= 23 ){
 
@@ -30,14 +30,13 @@ public class Permissoes {
             }
 
             /*Caso a lista esteja vazia, não é necessário solicitar permissão*/
-            if ( listaPermissoes.isEmpty() ) return true;
+            if ( listaPermissoes.isEmpty() ) return;
             String[] novasPermissoes = new String[ listaPermissoes.size() ];
             listaPermissoes.toArray( novasPermissoes );
 
             //Solicita permissão
             ActivityCompat.requestPermissions(activity, novasPermissoes, requestCode );
         }
-        return true;
     }
 }
 

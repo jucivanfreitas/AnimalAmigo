@@ -292,17 +292,12 @@ public class ComplementoLoginActivity extends AppCompatActivity {
                     usuario.setPais(spnPais.getSelectedItem().toString());
                     //Estado
                     if (spnEstado.getSelectedItem() != null && !spnEstado.getSelectedItem().toString().equalsIgnoreCase("")) {
-                        Log.d("INFO25", "estado ok");
                         //Cidade
                         if (spnCidade.getSelectedItem() != null && !spnCidade.getSelectedItem().toString().equalsIgnoreCase("")) {
                             usuario.setUf(spnEstado.getSelectedItem().toString());
                             usuario.setCidade(spnCidade.getSelectedItem().toString());
-                            Log.d("INFO25", "cidade ok");
                         }
                     }
-
-                    Log.d("INFO25", "salvando usuario...");
-
                     salvarUsuario(usuario);
                 }
             });
@@ -426,7 +421,7 @@ public class ComplementoLoginActivity extends AppCompatActivity {
                     .setTitle(getString(R.string.escolha))
                     .setFlip(true)
                     .setMaxSize(Constantes.PICK_MAX_SIZE)
-                    .setCameraButtonText(getString(R.string.camera))
+                    .setCameraButtonText(getString(R.string.cameraa))
                     .setCancelText(getString(R.string.cancelar))
                     .setGalleryButtonText(getString(R.string.galeria));
 
@@ -448,7 +443,7 @@ public class ComplementoLoginActivity extends AppCompatActivity {
                         @Override
                         public void onPickResult(PickResult r) {
                             if (r.getError() == null) {
-                                Log.d("INFO1", "555");
+
                                 Uri imagemSelecionada = r.getUri();
                                 String caminhoImagem = Objects.requireNonNull(imagemSelecionada).toString();
 
@@ -486,7 +481,7 @@ public class ComplementoLoginActivity extends AppCompatActivity {
         try {
             if (usuario.getFoto() != null) {
                 Log.d("INFO8", usuario.getFoto());
-//cria nó do storage
+                //cria nó do storage
                 final StorageReference imagemUsuario = storage
                         .child("imagens")
                         .child("usuarios")

@@ -16,7 +16,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.celvansystems.projetoamigoanimal.R;
 import com.celvansystems.projetoamigoanimal.fragment.AnunciosFragment;
@@ -49,10 +48,10 @@ public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
     private FirebaseAuth autenticacao;
-    private View layout;
     private NavigationView navigationView;
     private InterstitialAd mInterstitialAd;
     private AdView adView;
+    private View layout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -65,7 +64,6 @@ public class MainActivity extends AppCompatActivity
 
         //Propagandas
         configuraAdMob();
-        //configuraInterstitialAdTimer(Constantes.DELAY_INTERSTITIAL, Constantes.TIME_INTERSTITIAL);
     }
 
     private void inicializarComponentes() {
@@ -75,7 +73,7 @@ public class MainActivity extends AppCompatActivity
 
         autenticacao = ConfiguracaoFirebase.getFirebaseAutenticacao();
 
-        layout = findViewById(R.id.constraint_perfil_humano);
+        layout = findViewById(R.id.view_pager);
 
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
@@ -85,6 +83,18 @@ public class MainActivity extends AppCompatActivity
 
         navigationView = findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+
+        Intent myIntent = getIntent(); // gets the previously created intent
+        String usuario_excluido = myIntent.getStringExtra("usuario_excluido");
+
+        if (usuario_excluido != null) {
+
+            if (usuario_excluido.equalsIgnoreCase("Sim")) {
+                Util.setSnackBar(layout, getString(R.string.usuario_excluido));
+            } else if (usuario_excluido.equalsIgnoreCase("Não")) {
+                Util.setSnackBar(layout, getString(R.string.falha_excluir_usuario));
+            }
+        }
 
         FragmentManager fragmentManager = getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
@@ -107,38 +117,39 @@ public class MainActivity extends AppCompatActivity
 
                         FirebaseUser user = autenticacao.getCurrentUser();
 
-                        if (Objects.requireNonNull(usuarios.child("id").getValue()).toString().equalsIgnoreCase(Objects.requireNonNull(user).getUid())) {
+                        if (usuarios.child("id").getValue() != null && ConfiguracaoFirebase.isUsuarioLogado()) {
+                            if (Objects.requireNonNull(usuarios.child("id").getValue()).toString().equalsIgnoreCase(Objects.requireNonNull(user).getUid())) {
 
-                            NavigationView navigationView = findViewById(R.id.nav_view);
-                            View headerView = navigationView.getHeaderView(0);
-                            TextView navUsername = headerView.findViewById(R.id.textview_nome_humano);
-                            TextView navEmail = headerView.findViewById(R.id.textView_email_cadastrado);
-                            ImageView imageViewPerfil = headerView.findViewById(R.id.imageView_perfil);
+                                NavigationView navigationView = findViewById(R.id.nav_view);
+                                View headerView = navigationView.getHeaderView(0);
+                                TextView navUsername = headerView.findViewById(R.id.textview_nome_humano);
+                                TextView navEmail = headerView.findViewById(R.id.textView_email_cadastrado);
+                                ImageView imageViewPerfil = headerView.findViewById(R.id.imageView_perfil);
 
+                                Usuario usuario = new Usuario();
+                                usuario.setId(ConfiguracaoFirebase.getIdUsuario());
 
-                            Usuario usuario = new Usuario();
-                            usuario.setId(ConfiguracaoFirebase.getIdUsuario());
+                                //nome
+                                if (usuarios.child("nome").getValue() != null) {
+                                    usuario.setNome(Objects.requireNonNull(usuarios.child("nome").getValue()).toString());
+                                    navUsername.setText(usuario.getNome());
+                                } else {
+                                    navUsername.setText(user.getDisplayName());
+                                }
 
-                            //nome
-                            if (usuarios.child("nome").getValue() != null) {
-                                usuario.setNome(Objects.requireNonNull(usuarios.child("nome").getValue()).toString());
-                                navUsername.setText(usuario.getNome());
-                            } else {
-                                navUsername.setText(user.getDisplayName());
-                            }
+                                //email
+                                if (usuarios.child("email").getValue() != null) {
 
-                            //email
-                            if (usuarios.child("email").getValue() != null) {
-
-                                usuario.setEmail(Objects.requireNonNull(usuarios.child("email").getValue()).toString());
-                                navEmail.setText(usuario.getEmail());
-                            } else {
-                                navEmail.setText(user.getEmail());
-                            }
-                            //foto
-                            if (usuarios.child("foto").getValue() != null) {
-                                usuario.setFoto(Objects.requireNonNull(usuarios.child("foto").getValue()).toString());
-                                Picasso.get().load(usuario.getFoto()).into(imageViewPerfil);
+                                    usuario.setEmail(Objects.requireNonNull(usuarios.child("email").getValue()).toString());
+                                    navEmail.setText(usuario.getEmail());
+                                } else {
+                                    navEmail.setText(user.getEmail());
+                                }
+                                //foto
+                                if (usuarios.child("foto").getValue() != null) {
+                                    usuario.setFoto(Objects.requireNonNull(usuarios.child("foto").getValue()).toString());
+                                    Picasso.get().load(usuario.getFoto()).into(imageViewPerfil);
+                                }
                             }
                         }
                     }
@@ -284,13 +295,6 @@ public class MainActivity extends AppCompatActivity
         } else if (id == R.id.doacao) {
             // implementar funções na activit doação.
             fragmentTransaction.replace(R.id.view_pager, new DoacaoFragment()).addToBackStack("tag").commit();
-            Toast.makeText(getApplicationContext(),
-                    "implementar content  de doações " +
-                            " na activity dentro da pasta fragment." +
-                            "essa fragmente terá apelos afim de comover " +
-                            "o usuário a doar e links para " +
-                            "receber doação na activity doação",
-                    Toast.LENGTH_SHORT).show();
 
         } else if (id == R.id.nav_share_app) {
 
@@ -324,16 +328,10 @@ public class MainActivity extends AppCompatActivity
         else if (id == R.id.nav_help) {
 
             fragmentTransaction.replace(R.id.view_pager, new SobreAppFragment()).addToBackStack("tag").commit();
-            Toast.makeText(getApplicationContext(),
-                    "implementar fragment help " +
-                            "sobre o APP",
-                    Toast.LENGTH_SHORT).show();
+
             // TODO: 17/02/2019 imPlementar janela de ajudas sobre o app
         } else if (id == R.id.nav_sair) {
 
-            Toast.makeText(getApplicationContext(),
-                    "Volte sempre, precisamos de você!!!",
-                    Toast.LENGTH_SHORT).show();
             startActivity(new Intent(this, LoginActivity.class));
 
             mostraInterstitialAd();
@@ -342,9 +340,7 @@ public class MainActivity extends AppCompatActivity
             LoginManager.getInstance().logOut();
 
             invalidateOptionsMenu(); //invalida o menu e chama o onPrepare de novo
-            // TODO: 17/02/2019 implementar a função de invalidade do menu para retorno ao menus de usuarios não logado 
             finish();
-            // TODO: 17/02/2019 imPlementar janela
         }
         /*else if (id == R.id.pet_procurado) {
 
@@ -389,31 +385,30 @@ public class MainActivity extends AppCompatActivity
                 @Override
                 public void onAdLoaded() {
                     // Code to be executed when an ad finishes loading.
-                    // TODO: 23/02/2019 definir se mostra ou nao intersticial nos anuncios
                 }
 
                 @Override
                 public void onAdFailedToLoad(int errorCode) {
                     // Code to be executed when an ad request fails.
-                    Util.setSnackBar(layout, "intersticial failed");
+                    //Util.setSnackBar(layout, "intersticial failed");
                 }
 
                 @Override
                 public void onAdOpened() {
                     // Code to be executed when the ad is displayed.
-                    Util.setSnackBar(layout, "intersticial opened");
+                    //Util.setSnackBar(layout, "intersticial opened");
                 }
 
                 @Override
                 public void onAdLeftApplication() {
                     // Code to be executed when the user has left the app.
-                    Util.setSnackBar(layout, "intersticial on left");
+                    //Util.setSnackBar(layout, "intersticial on left");
                 }
 
                 @Override
                 public void onAdClosed() {
                     // Load the next interstitial.
-                    Util.setSnackBar(layout, "intersticial closed");
+                    //Util.setSnackBar(layout, "intersticial closed");
                     prepareInterstitialAd();
                 }
             });

@@ -6,14 +6,12 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.celvansystems.projetoamigoanimal.R;
 import com.celvansystems.projetoamigoanimal.activity.MainActivity;
@@ -49,6 +47,7 @@ public class PerfilUsuarioFragment extends Fragment {
     private TextView txvResumo;
     private TextView txvSobreMim;
     private TextView txvPerfilHumano;
+    private View layout;
 
     public PerfilUsuarioFragment() {
     }
@@ -84,6 +83,8 @@ public class PerfilUsuarioFragment extends Fragment {
         txvSobreMim.setVisibility(View.INVISIBLE);
         txvPerfilHumano = viewFragment.findViewById(R.id.textView_perfil_humano);
 
+        layout = viewFragment.findViewById(R.id.const_layout_anuncios);
+
         //Preenchendo os campos do Fragment com dados do usuario
         txvEmail.setText(getEmailUsuario());
 
@@ -93,10 +94,10 @@ public class PerfilUsuarioFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 AlertDialog.Builder alertDesativarConta = new AlertDialog.Builder(v.getContext());
-                alertDesativarConta.setTitle("Tem certeza que deseja desativar sua conta? ");
-                alertDesativarConta.setMessage("Esta opção não poderá ser revertida.");
+                alertDesativarConta.setTitle(getString(R.string.tem_certeza_desativar_conta));
+                alertDesativarConta.setMessage(getString(R.string.estaa_opcao_nao_podera_revertida));
 
-                alertDesativarConta.setPositiveButton("Sim", new DialogInterface.OnClickListener() {
+                alertDesativarConta.setPositiveButton(getString(R.string.sim), new DialogInterface.OnClickListener() {
 
                     public void onClick(DialogInterface dialog, int which) {
                         removerContaAtual();
@@ -104,7 +105,7 @@ public class PerfilUsuarioFragment extends Fragment {
                     }
                 });
 
-                alertDesativarConta.setNegativeButton("Não", new DialogInterface.OnClickListener() {
+                alertDesativarConta.setNegativeButton(getString(R.string.nao), new DialogInterface.OnClickListener() {
 
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
@@ -134,90 +135,91 @@ public class PerfilUsuarioFragment extends Fragment {
                     for (DataSnapshot usuarios : dataSnapshot.getChildren()) {
 
                         if (usuarios != null) {
+                            if (usuarios.child("id").getValue() != null && ConfiguracaoFirebase.isUsuarioLogado()) {
+                                UserInfo user = ConfiguracaoFirebase.getFirebaseAutenticacao().getCurrentUser();
+                                //txvEmail.setText(user.getEmail());
+                                //txvNomeHumano.setText(user.getDisplayName());
+                                //txvTelefone.setText(user.getPhoneNumber());
 
-                            UserInfo user = ConfiguracaoFirebase.getFirebaseAutenticacao().getCurrentUser();
-                            //txvEmail.setText(user.getEmail());
-                            //txvNomeHumano.setText(user.getDisplayName());
-                            //txvTelefone.setText(user.getPhoneNumber());
+                                if (Objects.requireNonNull(usuarios.child("id").getValue()).toString().equalsIgnoreCase(Objects.requireNonNull(user).getUid())) {
 
-                            if (Objects.requireNonNull(usuarios.child("id").getValue()).toString().equalsIgnoreCase(Objects.requireNonNull(user).getUid())) {
+                                    Usuario usuario = new Usuario();
 
-                                Usuario usuario = new Usuario();
+                                    usuario.setId(Objects.requireNonNull(ConfiguracaoFirebase.getFirebaseAutenticacao().getCurrentUser()).getUid());
 
-                                usuario.setId(Objects.requireNonNull(ConfiguracaoFirebase.getFirebaseAutenticacao().getCurrentUser()).getUid());
+                                    if (usuarios.child("nome").getValue() != null) {
+                                        usuario.setNome(Objects.requireNonNull(usuarios.child("nome").getValue()).toString());
+                                    } else {
+                                        usuario.setNome("");
+                                    }
 
-                                if(usuarios.child("nome").getValue() != null) {
-                                    usuario.setNome(Objects.requireNonNull(usuarios.child("nome").getValue()).toString());
-                                } else {
-                                    usuario.setNome("");
-                                }
+                                    if (usuarios.child("telefone").getValue() != null) {
+                                        usuario.setTelefone(Objects.requireNonNull(usuarios.child("telefone").getValue()).toString());
+                                    } else {
+                                        usuario.setTelefone("");
+                                    }
 
-                                if(usuarios.child("telefone").getValue() != null) {
-                                    usuario.setTelefone(Objects.requireNonNull(usuarios.child("telefone").getValue()).toString());
-                                } else {
-                                    usuario.setTelefone("");
-                                }
+                                    if (usuarios.child("foto").getValue() != null) {
+                                        usuario.setFoto(Objects.requireNonNull(usuarios.child("foto").getValue()).toString());
+                                    }
 
-                                if(usuarios.child("foto").getValue() != null) {
-                                    usuario.setFoto(Objects.requireNonNull(usuarios.child("foto").getValue()).toString());
-                                }
+                                    if (usuarios.child("pais").getValue() != null) {
+                                        usuario.setPais(Objects.requireNonNull(usuarios.child("pais").getValue()).toString());
+                                    } else {
+                                        usuario.setPais("");
+                                    }
 
-                                if(usuarios.child("pais").getValue() != null) {
-                                    usuario.setPais(Objects.requireNonNull(usuarios.child("pais").getValue()).toString());
-                                } else {
-                                    usuario.setPais("");
-                                }
+                                    if (usuarios.child("uf").getValue() != null) {
+                                        usuario.setUf(Objects.requireNonNull(usuarios.child("uf").getValue()).toString());
+                                    } else {
+                                        usuario.setUf("");
+                                    }
 
-                                if(usuarios.child("uf").getValue() != null) {
-                                    usuario.setUf(Objects.requireNonNull(usuarios.child("uf").getValue()).toString());
-                                } else {
-                                    usuario.setUf("");
-                                }
+                                    if (usuarios.child("cidade").getValue() != null) {
+                                        usuario.setCidade(Objects.requireNonNull(usuarios.child("cidade").getValue()).toString());
+                                    } else {
+                                        usuario.setCidade("");
+                                    }
 
-                                if(usuarios.child("cidade").getValue() != null) {
-                                    usuario.setCidade(Objects.requireNonNull(usuarios.child("cidade").getValue()).toString());
-                                } else {
-                                    usuario.setCidade("");
-                                }
+                                    if (usuarios.child("email").getValue() != null) {
+                                        usuario.setEmail(Objects.requireNonNull(usuarios.child("email").getValue()).toString());
+                                    } else {
+                                        usuario.setEmail("");
+                                    }
 
-                                if(usuarios.child("email").getValue() != null) {
-                                    usuario.setEmail(Objects.requireNonNull(usuarios.child("email").getValue()).toString());
-                                } else {
-                                    usuario.setEmail("");
-                                }
-
-                                //Preenchimento da tela
-                                if(usuario.getNome() != null && !usuario.getNome().equalsIgnoreCase("")) {
-                                    txvNomeHumano.setText(usuario.getNome());
-                                } else {
-                                    txvNomeHumano.setText(getString(R.string.edite_seu_perfil));
-                                }
-                                if(usuario.getTelefone() != null && !usuario.getTelefone().equalsIgnoreCase("")) {
-                                    txvTelefone.setText(usuario.getTelefone());
-                                } else {
-                                    txvTelefone.setText(R.string.edite_seu_perfil);
-                                }
+                                    //Preenchimento da tela
+                                    if (usuario.getNome() != null && !usuario.getNome().equalsIgnoreCase("")) {
+                                        txvNomeHumano.setText(usuario.getNome());
+                                    } else {
+                                        txvNomeHumano.setText(getString(R.string.edite_seu_perfil));
+                                    }
+                                    if (usuario.getTelefone() != null && !usuario.getTelefone().equalsIgnoreCase("")) {
+                                        txvTelefone.setText(usuario.getTelefone());
+                                    } else {
+                                        txvTelefone.setText(R.string.edite_seu_perfil);
+                                    }
                                 /*if(usuario.getPais() != null  && !usuario.getPais().equalsIgnoreCase("")) {
                                     txvPais.setText(usuario.getPais());
                                 }*/
-                                if(usuario.getUf() != null && !usuario.getUf().equalsIgnoreCase("")) {
-                                    txvEstado.setText(usuario.getUf());
-                                } else {
-                                    txvEstado.setText(R.string.edite_seu_perfil);
-                                }
-                                if(usuario.getCidade() != null && !usuario.getCidade().equalsIgnoreCase("")) {
-                                    txvCidade.setText(usuario.getCidade());
-                                } else {
-                                    txvCidade.setText(R.string.edite_seu_perfil);
-                                }
-                                if(usuario.getEmail() != null && !usuario.getEmail().equalsIgnoreCase("")) {
-                                    txvEmail.setText(usuario.getEmail());
-                                } else {
-                                    txvEmail.setText(R.string.edite_seu_perfil);
-                                }
+                                    if (usuario.getUf() != null && !usuario.getUf().equalsIgnoreCase("")) {
+                                        txvEstado.setText(usuario.getUf());
+                                    } else {
+                                        txvEstado.setText(R.string.edite_seu_perfil);
+                                    }
+                                    if (usuario.getCidade() != null && !usuario.getCidade().equalsIgnoreCase("")) {
+                                        txvCidade.setText(usuario.getCidade());
+                                    } else {
+                                        txvCidade.setText(R.string.edite_seu_perfil);
+                                    }
+                                    if (usuario.getEmail() != null && !usuario.getEmail().equalsIgnoreCase("")) {
+                                        txvEmail.setText(usuario.getEmail());
+                                    } else {
+                                        txvEmail.setText(R.string.edite_seu_perfil);
+                                    }
 
-                                if(usuario.getFoto() != null) {
-                                    Picasso.get().load(usuario.getFoto()).into(imvPerfil);
+                                    if (usuario.getFoto() != null) {
+                                        Picasso.get().load(usuario.getFoto()).into(imvPerfil);
+                                    }
                                 }
                             }
                         }
@@ -239,6 +241,13 @@ public class PerfilUsuarioFragment extends Fragment {
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
         final String usuarioId = ConfiguracaoFirebase.getIdUsuario();
 
+        //deleta todos os anuncios do usuario
+        deletarAnunciosUsuario(usuarioId);
+
+        Usuario usuario = new Usuario();
+        usuario.setId(usuarioId);
+        usuario.remover();
+
         LoginManager.getInstance().logOut();
 
         //Deleta usuário
@@ -248,21 +257,19 @@ public class PerfilUsuarioFragment extends Fragment {
                     public void onComplete(@NonNull Task<Void> task) {
                         if (task.isSuccessful()) {
 
-                            Usuario usuario = new Usuario();
-                            usuario.setId(usuarioId);
-                            usuario.remover();
-
-                            //deleta todos os anuncios do usuario
-                            deletarAnunciosUsuario(usuarioId);
-
-                            Toast.makeText(viewFragment.getContext(), "Usuário excluído com sucesso!", Toast.LENGTH_SHORT).show();
-                            startActivity(new Intent(viewFragment.getContext(), MainActivity.class));
-                            Toast.makeText(viewFragment.getContext(), "usuario excluido!", Toast.LENGTH_SHORT).show();
+                            //Util.setSnackBar(layout, getString(R.string.usuario_excluido));
+                            //Toast.makeText(viewFragment.getContext(), "Usuário excluído com sucesso!", Toast.LENGTH_SHORT).show();
+                            Intent intent = new Intent(viewFragment.getContext(), MainActivity.class);
+                            intent.putExtra("usuario_excluido","sim");
+                            startActivity(intent);
                             Objects.requireNonNull(getActivity()).finish();
 
                         } else {
-                            Log.d("INFO3", "User account not deleted.");
-                            Toast.makeText(viewFragment.getContext(), "Falha ao excluir usuário!", Toast.LENGTH_SHORT).show();
+                            //Toast.makeText(viewFragment.getContext(), getString(R.string.falha_excluir_usuario), Toast.LENGTH_SHORT).show();
+                            Intent intent = new Intent(viewFragment.getContext(), MainActivity.class);
+                            intent.putExtra("usuario_excluido","nao");
+                            startActivity(intent);
+                            Objects.requireNonNull(getActivity()).finish();
                         }
                     }
                 });
@@ -279,18 +286,17 @@ public class PerfilUsuarioFragment extends Fragment {
             //excluindo todos os anuncios do usuario removido
             DatabaseReference anunciosPublicosRef = ConfiguracaoFirebase.getFirebase()
                     .child("meus_animais");
-            Log.d("INFO29", "passou1");
+
             anunciosPublicosRef.addValueEventListener(new ValueEventListener() {
 
                 @Override
                 public void onDataChange(@NonNull DataSnapshot snapshot) {
                     for (DataSnapshot animal : snapshot.getChildren()) {
-                        Log.d("INFO29", "passou2");
+
                         Animal anuncio = animal.getValue(Animal.class);
                         if (anuncio != null && anuncio.getDonoAnuncio() != null) {
-                            Log.d("INFO29", "passou3: " + anuncio.getDonoAnuncio());
+
                             if (anuncio.getDonoAnuncio().equalsIgnoreCase(usuarioId)) {
-                                Log.d("INFO29", "passou4: animal removido: " + anuncio.getIdAnimal());
                                 animal.getRef().removeValue();
                             }
                         }
@@ -299,12 +305,10 @@ public class PerfilUsuarioFragment extends Fragment {
 
                 @Override
                 public void onCancelled(@NonNull DatabaseError databaseError) {
-                    Log.d("INFO29", "passou5: nancelled: " + databaseError.getMessage());
                     throw databaseError.toException();
                 }
             });
         } catch (Exception e) {
-            Log.d("INFO29", "passou6: excecao!!!: " + e.getMessage());
             e.printStackTrace();
         }
     }

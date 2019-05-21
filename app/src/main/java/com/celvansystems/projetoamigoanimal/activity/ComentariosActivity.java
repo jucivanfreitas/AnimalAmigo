@@ -95,6 +95,8 @@ public class ComentariosActivity extends AppCompatActivity {
 
         if (ConfiguracaoFirebase.isUsuarioLogado()) {
 
+            final Context ctx = this.getApplicationContext();
+
             if(edtComentario.getText() != null && !edtComentario.getText().toString().equalsIgnoreCase("")) {
 
                 final DatabaseReference comentarioRef = ConfiguracaoFirebase.getFirebase()
@@ -143,12 +145,12 @@ public class ComentariosActivity extends AppCompatActivity {
                                                     @Override
                                                     public void onComplete(@NonNull Task<Void> task) {
 
-                                                        Util.setSnackBar(layout, "Comentário inserido!");
+                                                        Util.setSnackBar(layout, getString(R.string.comentario_inserido));
                                                         edtComentario.setText(null);
                                                     }
                                                 });
                                     } else {
-                                        Util.setSnackBar(layout, "Comentário inválido!");
+                                        Util.setSnackBar(layout, ctx.getString(R.string.insira_comentario_valido));
                                     }
 
                                     //Update do RecyclerView
@@ -192,11 +194,11 @@ public class ComentariosActivity extends AppCompatActivity {
                 // fim dos dados do usuario
 
             } else {
-                Util.setSnackBar(layout, "Insira um comentário válido!");
+                Util.setSnackBar(layout, ctx.getString(R.string.insira_comentario_valido));
             }
 
         } else {
-            Util.setSnackBar(layout, "Usuário não logado!");
+            Util.setSnackBar(layout, getString(R.string.usuario_nao_logado));
         }
     }
 

@@ -1,6 +1,7 @@
 package com.celvansystems.projetoamigoanimal.adapter;
 
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -67,6 +68,8 @@ public class AdapterMeusAnuncios extends RecyclerView.Adapter<AdapterMeusAnuncio
 
         if(anuncios != null) {
 
+            final Context ctx = myViewHolder.itemView.getContext();
+
             final Animal anuncio = anuncios.get(i);
             //anuncioComentado = anuncio;
             if (anuncio != null) {
@@ -107,15 +110,16 @@ public class AdapterMeusAnuncios extends RecyclerView.Adapter<AdapterMeusAnuncio
                                 Bitmap mBitmap = ((BitmapDrawable) mDrawable).getBitmap();
 
                                 String path = MediaStore.Images.Media.insertImage(myViewHolder.itemView.getContext()
-                                        .getContentResolver(), mBitmap, "Image Description", "blalballaaa");
+                                        .getContentResolver(), mBitmap, "Imagem", "");
                                 Uri uri = Uri.parse(path);
 
                                 Intent intent = new Intent(Intent.ACTION_SEND);
                                 intent.setType("image/jpeg");
-                                intent.putExtra(Intent.EXTRA_TEXT, "Instale o App Pet Amigo e conheça o "+ anuncio.getNome()+ "! Disponível em " +
+                                intent.putExtra(Intent.EXTRA_TEXT, ctx.getString(R.string.instale_e_conheca)+
+                                        anuncio.getNome()+ ctx.getString(R.string.disponivel_em) +
                                         "https://play.google.com/store/apps/details?id=" + Constantes.APPLICATION_ID +"\n\n");
                                 intent.putExtra(Intent.EXTRA_STREAM, uri);
-                                myViewHolder.itemView.getContext().startActivity(Intent.createChooser(intent, "Share Image"));
+                                myViewHolder.itemView.getContext().startActivity(Intent.createChooser(intent, ctx.getString(R.string.compartilhando_imagem)));
                             }
                         });
                     }
@@ -129,8 +133,8 @@ public class AdapterMeusAnuncios extends RecyclerView.Adapter<AdapterMeusAnuncio
                         List<String> opcoesLista = new ArrayList<>();
 
                         if (ConfiguracaoFirebase.getIdUsuario().equalsIgnoreCase(anuncio.getDonoAnuncio())) {
-                            opcoesLista.add("Editar");
-                            opcoesLista.add("Remover");
+                            opcoesLista.add(ctx.getString(R.string.editar));
+                            opcoesLista.add(ctx.getString(R.string.remover));
                         }
 
                         final String[] opcoes = new String[opcoesLista.size()];
@@ -145,7 +149,7 @@ public class AdapterMeusAnuncios extends RecyclerView.Adapter<AdapterMeusAnuncio
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
 
-                                if ("Editar".equals(opcoes[which])) {
+                                if (ctx.getString(R.string.editar).equals(opcoes[which])) {
 
                                     Bundle data = new Bundle();
                                     data.putSerializable("anuncioSelecionado", anuncio);
@@ -158,26 +162,25 @@ public class AdapterMeusAnuncios extends RecyclerView.Adapter<AdapterMeusAnuncio
                                     FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
                                     fragmentTransaction.replace(R.id.view_pager, cadFragment).addToBackStack("tag").commit();
 
-                                } else if ("Remover".equals(opcoes[which])) {
+                                } else if (ctx.getString(R.string.remover).equals(opcoes[which])) {
 
                                     new AlertDialog.Builder(myViewHolder.itemView.getContext())
-                                            .setMessage("Tem certeza de que deseja excluir este anúncio?")
+                                            .setMessage(ctx.getString(R.string.tem_certeza_excluir_anuncio))
                                             .setCancelable(false)
-                                            .setPositiveButton("Sim", new DialogInterface.OnClickListener() {
+                                            .setPositiveButton(ctx.getString(R.string.sim), new DialogInterface.OnClickListener() {
                                                 public void onClick(DialogInterface dialog, int id) {
                                                     anuncio.remover();
                                                     AppCompatActivity activity = (AppCompatActivity) myViewHolder.itemView.getContext();
                                                     FragmentManager fragmentManager = activity.getSupportFragmentManager();
                                                     FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
                                                     fragmentTransaction.replace(R.id.view_pager, new AnunciosFragment()).addToBackStack(null).commit();
-                                                    //Util.setSnackBar(myViewHolder.layout, "Remover");
                                                 }
                                             })
-                                            .setNegativeButton("Não", null)
+                                            .setNegativeButton(ctx.getString(R.string.nao), null)
                                             .show();
 
-                                } else if ("Denunciar".equals(opcoes[which])) {
-                                    Util.setSnackBar(myViewHolder.layout, "Denunciar");
+                                } else if (ctx.getString(R.string.denunciar).equals(opcoes[which])) {
+                                    Util.setSnackBar(myViewHolder.layout, ctx.getString(R.string.denunciar));
                                 }
                             }
                         });

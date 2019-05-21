@@ -1,6 +1,9 @@
 package com.celvansystems.projetoamigoanimal.model;
 
+import android.support.annotation.NonNull;
+
 import com.celvansystems.projetoamigoanimal.helper.ConfiguracaoFirebase;
+import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.storage.StorageReference;
@@ -47,10 +50,15 @@ public class Usuario implements Serializable {
                     .child("usuarios")
                     .child(getId());
 
+
             usuarioRef.removeValue().addOnSuccessListener(new OnSuccessListener<Void>() {
                 @Override
                 public void onSuccess(Void aVoid) {
                     apagarFotoStorage();
+                }
+            }).addOnFailureListener(new OnFailureListener() {
+                @Override
+                public void onFailure(@NonNull Exception e) {
                 }
             });
         } catch (Exception e) {

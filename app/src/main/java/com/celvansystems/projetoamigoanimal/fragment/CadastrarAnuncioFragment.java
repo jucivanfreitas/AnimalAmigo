@@ -460,7 +460,7 @@ public class CadastrarAnuncioFragment extends Fragment
                     .setTitle(getString(R.string.escolha))
                     .setFlip(true)
                     .setMaxSize(Constantes.PICK_MAX_SIZE)
-                    .setCameraButtonText(getString(R.string.camera))
+                    .setCameraButtonText(getString(R.string.cameraa))
                     .setCancelText(getString(R.string.cancelar))
                     .setGalleryButtonText(getString(R.string.galeria));
 
@@ -631,25 +631,25 @@ public class CadastrarAnuncioFragment extends Fragment
                 @Override
                 public void onAdFailedToLoad(int errorCode) {
                     // Code to be executed when an ad request fails.
-                    Util.setSnackBar(layout, "intersticial failed");
+                    //Util.setSnackBar(layout, "intersticial failed");
                 }
 
                 @Override
                 public void onAdOpened() {
                     // Code to be executed when the ad is displayed.
-                    Util.setSnackBar(layout, "intersticial opened");
+                    //Util.setSnackBar(layout, "intersticial opened");
                 }
 
                 @Override
                 public void onAdLeftApplication() {
                     // Code to be executed when the user has left the app.
-                    Util.setSnackBar(layout, "intersticial on left");
+                    //Util.setSnackBar(layout, "intersticial on left");
                 }
 
                 @Override
                 public void onAdClosed() {
                     // Load the next interstitial.
-                    Util.setSnackBar(layout, "intersticial closed");
+                    //Util.setSnackBar(layout, "intersticial closed");
                     //mInterstitialAd.loadAd(new AdRequest.Builder().build());
                 }
             });

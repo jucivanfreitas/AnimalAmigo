@@ -5,7 +5,7 @@
     <string name="txt_sair">Sair</string>
     <string name="txt_meus_anuncios">Meus Anúncios</string>
     <string name="title_activity_login">Sign in</string>
-    <!-- Strings related to login -->
+
     <string name="prompt_email">Email</string>
     <string name="prompt_password">Senha</string>
     <string name="action_sign_in">Login ou Registrar</string>
@@ -116,8 +116,6 @@
     <string name="facebook_app_id">314424992539028</string>
     <string name="fb_login_protocol_scheme">fb314424992539028</string>
     <string name="google_web_client">401004222439-k032p84b3o9tp5rngjjqqeiodtflfa50.apps.googleusercontent.com</string>
-
-    <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="ir_anuncios">Ir para os anúncios</string>
     <string name="senha">Senha</string>
@@ -153,7 +151,7 @@
     <string name="preencha_nome">Preencha o campo nome!</string>
     <string name="selecione_foto">Selecione pelo menos uma foto!</string>
     <string name="escolha">Escolha</string>
-    <string name="camera">Câmera</string>
+    <string name="cameraa">Câmera</string>
     <string name="galeria">Galeria</string>
     <string name="permissoes_negadas">Permissões negadas</string>
     <string name="necessario_aceitar_permissoes">Para utilizar o app é necessário aceitar as permissões</string>
@@ -216,7 +214,7 @@
     <string name="txt_nascimento">Data de Nascimento</string>
     <string name="txt_ocupação">Qual sua profissão?</string>
     <string name="atualizar_cadastro">Atualizar cadastro</string>
-    <string name="txt_saber_mais">Quero Saber Mais ...</string>
+    <string name="txt_saber_mais">Quero Saber Mais…</string>
     <string name="txt_locallização">Localização do PET</string>
     <string name="txt_pouco_sobre">Sobre o PET</string>
     <string name="txt_diz">Diz:</string>
@@ -271,7 +269,19 @@
     <string name="txt_doar5reais">Doar Cinco Reais</string>
     <string name="txt_doar2">Doar Dois reais</string>
     <string name="txt_mkt">Marketing App Pet Amigo</string>
-    <string name="procurando_anuncios">Procurando anúncios...</string>
-
+    <string name="procurando_anuncios">Procurando anúncios…</string>
+    <string name="insira_comentario_valido">Insira um comentário válido!</string>
+    <string name="insira_seu_email">Insira seu e-mail!</string>
+    <string name="insira_seu_nome">Insira seu nome!</string>
+    <string name="instale_e_conheca">Instale o App Pet Amigo e conheça o</string>
+    <string name="disponivel_em">! Disponível em</string>
+    <string name="compartilhando_imagem">Compartilhando imagem…</string>
+    <string name="remover">Remover</string>
+    <string name="editar">Editar</string>
+    <string name="tem_certeza_excluir_anuncio">Tem certeza de que deseja excluir este anúncio?</string>
+    <string name="tem_certeza_desativar_conta">Tem certeza que deseja desativar sua conta?</string>
+    <string name="estaa_opcao_nao_podera_revertida">Esta opção não poderá ser revertida.</string>
+    <string name="usuario_excluido">Usuário excluído com sucesso!</string>
+    <string name="falha_excluir_usuario">Falha ao excluir usuário!</string>
 
 </resources>

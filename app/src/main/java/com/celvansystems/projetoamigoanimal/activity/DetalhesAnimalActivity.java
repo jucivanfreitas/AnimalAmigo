@@ -34,11 +34,8 @@ public class DetalhesAnimalActivity extends AppCompatActivity {
     private TextView textCidade;
     private TextView textRaca;
     private TextView textDescricao;
-
     private View layout;
-
     private Animal anuncioSelecionado;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -92,13 +89,6 @@ public class DetalhesAnimalActivity extends AppCompatActivity {
         textRaca = findViewById(R.id.txv_raca);
         textDescricao = findViewById(R.id.txv_descricao);
 
-        /*btnTeste.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startActivity(new Intent(DetalhesAnimalActivity.this, SomeActivity.class));
-                finish();
-            }
-        });*/
         layout = findViewById(R.id.linear_layout_detalhes_animal);
         Button btnVerTelefone = findViewById(R.id.btnVerTelefone);
 
@@ -175,6 +165,4 @@ public class DetalhesAnimalActivity extends AppCompatActivity {
             e.printStackTrace();
         }
     }
-
-
 }
