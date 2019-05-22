@@ -49,7 +49,8 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/textView10"
-            app:srcCompat="@drawable/com_facebook_profile_picture_blank_square" />
+            app:srcCompat="@drawable/com_facebook_profile_picture_blank_square"
+            android:contentDescription="@string/complemento" />
 
         <Button
             android:id="@+id/btn_voltar_foto"
@@ -330,7 +331,8 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textView13" />
+            app:layout_constraintTop_toBottomOf="@+id/textView13"
+            android:autofillHints="" />
 
         <Button
             android:id="@+id/btn_volta_fone"
@@ -432,7 +434,7 @@
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/spinner_cad_cidade_complemento" />
+                     />
 
                 <EditText
                     android:id="@+id/editText_cad_sobremim"

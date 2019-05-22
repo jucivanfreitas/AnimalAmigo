@@ -620,8 +620,8 @@ public class AdapterAnuncios extends RecyclerView.Adapter<AdapterAnuncios.MyView
 
             Intent intent = new Intent(Intent.ACTION_SEND);
             intent.setType("image/jpeg");
-            intent.putExtra(Intent.EXTRA_TEXT, ctx.getString(R.string.instale_e_conheca)+ anuncio.getNome()+ ctx.getString(R.string.disponivel_em) +
-                    "https://play.google.com/store/apps/details?id=" + Constantes.APPLICATION_ID +"\n\n");
+            intent.putExtra(Intent.EXTRA_TEXT, ctx.getString(R.string.instale_e_conheca)+" "+ anuncio.getNome()+ ctx.getString(R.string.disponivel_em) +
+                    " https://play.google.com/store/apps/details?id=" + Constantes.APPLICATION_ID +"\n\n");
             intent.putExtra(Intent.EXTRA_STREAM, uri);
             myViewHolder.itemView.getContext().startActivity(Intent.createChooser(intent, ctx.getString(R.string.compartilhando_imagem)));
 

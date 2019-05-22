@@ -3,6 +3,7 @@ package com.celvansystems.projetoamigoanimal.activity;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
@@ -10,12 +11,17 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.celvansystems.projetoamigoanimal.R;
+import com.celvansystems.projetoamigoanimal.helper.ConfiguracaoFirebase;
 import com.celvansystems.projetoamigoanimal.helper.Util;
 import com.celvansystems.projetoamigoanimal.model.Animal;
 import com.google.android.gms.ads.AdListener;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
 import com.google.android.gms.ads.MobileAds;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.ValueEventListener;
 import com.squareup.picasso.Picasso;
 import com.synnapps.carouselview.CarouselView;
 import com.synnapps.carouselview.ImageListener;
@@ -48,8 +54,28 @@ public class DetalhesAnimalActivity extends AppCompatActivity {
 
         inicializarComponentes();
 
+
+    }
+
+    private void inicializarComponentes() {
+
+        carouselView = findViewById(R.id.carouselView);
+        textNome = findViewById(R.id.txv_nome_meus_anuncios);
+        textEspecie = findViewById(R.id.txv_especie);
+        textGenero = findViewById(R.id.txv_genero);
+        textIdade = findViewById(R.id.txv_idade);
+        textPorte = findViewById(R.id.txv_porte);
+        textEstado = findViewById(R.id.txv_estado);
+        textCidade = findViewById(R.id.txv_cidade);
+        textRaca = findViewById(R.id.txv_raca);
+        textDescricao = findViewById(R.id.txv_descricao);
+
+        layout = findViewById(R.id.linear_layout_detalhes_animal);
+        final Button btnVerTelefone = findViewById(R.id.btnVerTelefone);
+
         //recupera anuncio para exibicao
         anuncioSelecionado = (Animal) getIntent().getSerializableExtra("anuncioSelecionado");
+
         if (anuncioSelecionado != null) {
 
             ImageListener imageListener = new ImageListener() {
@@ -73,40 +99,50 @@ public class DetalhesAnimalActivity extends AppCompatActivity {
             textRaca.setText(anuncioSelecionado.getRaca());
 
             textDescricao.setText(anuncioSelecionado.getDescricao());
-        }
-    }
 
-    private void inicializarComponentes() {
+            DatabaseReference usuariosRef = ConfiguracaoFirebase.getFirebase()
+                    .child("usuarios");
 
-        carouselView = findViewById(R.id.carouselView);
-        textNome = findViewById(R.id.txv_nome_meus_anuncios);
-        textEspecie = findViewById(R.id.txv_especie);
-        textGenero = findViewById(R.id.txv_genero);
-        textIdade = findViewById(R.id.txv_idade);
-        textPorte = findViewById(R.id.txv_porte);
-        textEstado = findViewById(R.id.txv_estado);
-        textCidade = findViewById(R.id.txv_cidade);
-        textRaca = findViewById(R.id.txv_raca);
-        textDescricao = findViewById(R.id.txv_descricao);
+            usuariosRef.addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
 
-        layout = findViewById(R.id.linear_layout_detalhes_animal);
-        Button btnVerTelefone = findViewById(R.id.btnVerTelefone);
+                    for (DataSnapshot usuarios : dataSnapshot.getChildren()) {
+                        if (usuarios != null) {
+                            if (usuarios.child("id").getValue() != null) {
 
-        btnVerTelefone.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
+                                if (Objects.requireNonNull(usuarios.child("id").getValue()).toString()
+                                        .equalsIgnoreCase(anuncioSelecionado.getDonoAnuncio())) {
 
-                // TODO: 18/02/2019 configurar para pegar o telefone cadastrado do usuario
-                if (anuncioSelecionado.getDonoAnuncio() != null) {
-                    Intent i = new Intent(Intent.ACTION_DIAL, Uri.fromParts("tel",
-                            anuncioSelecionado.getDonoAnuncio(), null));
-                    // TODO: 10/02/2019 mudar getDonoanuncio para getTelefone
-                    startActivity(i);
-                } else {
-                    Util.setSnackBar(layout, getString(R.string.telefone_nao_cadastrado));
+                                    if (usuarios.child("telefone").getValue() != null) {
+
+                                        final String telefone = Objects.requireNonNull(usuarios.child("telefone").getValue()).toString();
+                                        btnVerTelefone.setOnClickListener(new View.OnClickListener() {
+                                            @Override
+                                            public void onClick(View v) {
+
+                                                Intent i = new Intent(Intent.ACTION_DIAL, Uri.fromParts("tel",
+                                                        telefone, null));
+
+                                                startActivity(i);
+                                            }
+                                        });
+                                    } else {
+                                        Util.setSnackBar(layout, getString(R.string.telefone_nao_cadastrado));
+                                    }
+                                }
+                            }
+                        }
+                    }
                 }
-            }
-        });
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                }
+            });
+        }
+
 
         configuraAdMob();
     }

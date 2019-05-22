@@ -60,7 +60,8 @@
                             app:layout_constraintHorizontal_bias="1.0"
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintTop_toTopOf="parent"
-                            app:srcCompat="@drawable/bg_img_card_gradient" />
+                            app:srcCompat="@drawable/bg_img_card_gradient"
+                            android:contentDescription="@string/detalhes" />
 
                     </android.support.constraint.ConstraintLayout>
 
@@ -85,7 +86,8 @@
                             android:layout_marginTop="8dp"
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintTop_toBottomOf="@+id/txv_estado"
-                            app:srcCompat="@drawable/ic_perfilpet" />
+                            app:srcCompat="@drawable/ic_perfilpet"
+                            android:contentDescription="@string/txt_estado" />
 
                         <ImageView
                             android:id="@+id/imageView"
@@ -95,7 +97,8 @@
                             android:layout_marginTop="8dp"
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintTop_toBottomOf="@+id/imageView5"
-                            app:srcCompat="@drawable/ic_perfilpet" />
+                            app:srcCompat="@drawable/ic_perfilpet"
+                            android:contentDescription="@string/perfis" />
 
                         <TextView
                             android:id="@+id/txv_nome_meus_anuncios"
@@ -247,14 +250,15 @@
                             app:layout_constraintBottom_toBottomOf="parent"
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toBottomOf="@+id/txv_descricao" />
+                            app:layout_constraintTop_toBottomOf="@+id/txv_descricao"
+                            android:focusable="true" />
 
                         <ImageView
                             android:id="@+id/imageView5"
                             android:layout_width="50dp"
                             android:layout_height="50dp"
                             android:layout_marginStart="8dp"
-                            android:contentDescription="TODO"
+                            android:contentDescription="@string/title_activity_meus_anuncios"
                             android:padding="8dp"
                             android:visibility="invisible"
                             app:layout_constraintBottom_toBottomOf="@+id/txv_nome_meus_anuncios"
@@ -347,7 +351,8 @@
                             android:layout_marginTop="8dp"
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintTop_toBottomOf="@+id/txv_genero"
-                            app:srcCompat="@drawable/ic_microchip" />
+                            app:srcCompat="@drawable/ic_microchip"
+                            android:contentDescription="@string/txt_genero" />
                     </android.support.constraint.ConstraintLayout>
 
                 </android.support.constraint.ConstraintLayout>

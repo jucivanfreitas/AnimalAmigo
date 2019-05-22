@@ -66,7 +66,6 @@
                     android:layout_marginBottom="60dp"
                     android:autofillHints=""
                     android:background="@drawable/bg_caixa_txt"
-                    android:contentDescription="@string/editTextComentar_description"
                     android:ems="10"
                     android:hint="@string/txt_comentar"
                     android:inputType="textPersonName"

@@ -108,7 +108,8 @@
             android:visibility="visible"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@+id/imv_compartilhar_anuncio"
-            app:srcCompat="@drawable/ic_comentario_branco_24dp" />
+            app:srcCompat="@drawable/ic_comentario_branco_24dp"
+            android:contentDescription="@string/comentar" />
 
         <ImageView
             android:id="@+id/imv_curtir_anuncio"
@@ -196,7 +197,8 @@
             android:padding="9dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:srcCompat="@drawable/ic_more_vert_black_24dp" />
+            app:srcCompat="@drawable/ic_more_vert_black_24dp"
+            android:contentDescription="@string/mais_opcoes" />
 
     </android.support.constraint.ConstraintLayout>
 
@@ -241,7 +243,7 @@
             android:layout_marginStart="8dp"
             android:layout_marginEnd="8dp"
 
-            android:text="Textview"
+            android:text="@string/curtidas"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@+id/txv_num_curtidas"
             app:layout_constraintStart_toStartOf="parent"
@@ -272,7 +274,7 @@
             android:layout_marginEnd="8dp"
             android:layout_marginBottom="8dp"
             android:backgroundTint="@color/colorAccent"
-            android:contentDescription="TODO"
+            android:contentDescription="@string/comentar"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent"
@@ -295,7 +297,8 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@+id/imageButton_comentar"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent"
+            android:autofillHints="" />
 
     </android.support.constraint.ConstraintLayout>
 

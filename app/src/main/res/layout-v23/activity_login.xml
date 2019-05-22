@@ -27,7 +27,8 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/bg_colocrcao_afago" />
+        app:srcCompat="@drawable/bg_colocrcao_afago"
+        android:contentDescription="@string/logar" />
 
     <ProgressBar
         android:id="@+id/login_progress"

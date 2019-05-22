@@ -273,7 +273,7 @@
     <string name="insira_comentario_valido">Insira um comentário válido!</string>
     <string name="insira_seu_email">Insira seu e-mail!</string>
     <string name="insira_seu_nome">Insira seu nome!</string>
-    <string name="instale_e_conheca">Instale o App Pet Amigo e conheça o</string>
+    <string name="instale_e_conheca">Instale o App Pet Amigo e conheça o(a)</string>
     <string name="disponivel_em">! Disponível em</string>
     <string name="compartilhando_imagem">Compartilhando imagem…</string>
     <string name="remover">Remover</string>
@@ -283,5 +283,9 @@
     <string name="estaa_opcao_nao_podera_revertida">Esta opção não poderá ser revertida.</string>
     <string name="usuario_excluido">Usuário excluído com sucesso!</string>
     <string name="falha_excluir_usuario">Falha ao excluir usuário!</string>
+    <string name="complemento">complemento</string>
+    <string name="sobre_mim">Sobre Mim</string>
+    <string name="mais_opcoes">mais_opcoes</string>
+    <string name="teste_fragment_cadasrtrar_ado_o">teste fragment cadasrtrar adoção</string>
 
 </resources>

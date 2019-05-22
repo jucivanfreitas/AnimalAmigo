@@ -17,7 +17,8 @@
         android:visibility="visible"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"></LinearLayout>
+        app:layout_constraintTop_toTopOf="parent">
+    </LinearLayout>
 
     <android.support.constraint.ConstraintLayout
         android:id="@+id/view_pager"
@@ -91,10 +92,6 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical" />
         </ScrollView>
 
         <ImageView
@@ -105,7 +102,8 @@
             android:layout_marginTop="8dp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="@+id/scrollView3"
-            app:srcCompat="@drawable/ic_foto_perfil" />
+            app:srcCompat="@drawable/ic_foto_perfil"
+            android:contentDescription="@string/perfis" />
 
         <TextView
 
@@ -196,16 +194,6 @@
             android:text="@string/txt_genero"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/textView_resumo" />
-
-        <ScrollView
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical" />
-        </ScrollView>
 
     </android.support.constraint.ConstraintLayout>
 
