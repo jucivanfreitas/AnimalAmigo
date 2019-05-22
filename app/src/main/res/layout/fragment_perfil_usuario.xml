@@ -180,7 +180,7 @@
     <TextView
         android:id="@+id/textView_telefone"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="0dp"
         android:layout_marginTop="4dp"
         android:text="@string/txt_editar"
         android:textColor="@color/common_google_signin_btn_text_dark_focused"
