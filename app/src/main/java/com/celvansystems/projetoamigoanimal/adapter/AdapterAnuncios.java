@@ -143,7 +143,7 @@ public class AdapterAnuncios extends RecyclerView.Adapter<AdapterAnuncios.MyView
                 @Override
                 public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                     int size = (int) dataSnapshot.getChildrenCount();
-                    atualizaComentarios(size, anuncio, myViewHolder);
+                    //atualizaComentarios(size, anuncio, myViewHolder);
 
                     List<Comentario> comentsList = new ArrayList<>();
                     for (DataSnapshot comentarios : dataSnapshot.getChildren()) {
@@ -153,9 +153,10 @@ public class AdapterAnuncios extends RecyclerView.Adapter<AdapterAnuncios.MyView
                             coment.setDatahora(Objects.requireNonNull(comentarios.child("datahora").getValue()).toString());
                             coment.setTexto(Objects.requireNonNull(comentarios.child("texto").getValue()).toString());
                             Usuario usuario = new Usuario();
+                            usuario.setId(Objects.requireNonNull(comentarios.child("usuario").child("id").getValue()).toString());
                             usuario.setNome(Objects.requireNonNull(comentarios.child("usuario").child("nome").getValue()).toString());
+
                             // TODO: 05/03/2019 concluir atributos de usuario apos activity para cadastro de usuario
-                            //usuario.setFoto(ConfiguracaoFirebase.getFirebaseAutenticacao().getCurrentUser().getPhotoUrl().toString());
                             coment.setUsuario(usuario);
                             comentsList.add(coment);
                         }

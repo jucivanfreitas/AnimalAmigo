@@ -108,10 +108,9 @@ public class ComentariosActivity extends AppCompatActivity {
                 DatabaseReference usuariosRef = ConfiguracaoFirebase.getFirebase()
                         .child("usuarios");
 
-                usuariosRef.addValueEventListener(new ValueEventListener() {
+                usuariosRef.addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-
                         for (DataSnapshot usuarios : dataSnapshot.getChildren()) {
 
                             if (usuarios != null) {
@@ -134,10 +133,13 @@ public class ComentariosActivity extends AppCompatActivity {
                                             usuario.setNome(nomeUsuario);
                                         }
                                     }
+                                    if (usuarios.child("foto").getValue() != null) {
+                                        usuario.setFoto(Objects.requireNonNull(usuarios.child("foto").getValue()).toString());
+                                    }
 
                                     //Inserindo o comentário
                                     if (Util.validaTexto(texto)) {
-
+                                        usuario.setId(ConfiguracaoFirebase.getIdUsuario());
                                         Comentario coment = new Comentario(usuario, texto, Util.getDataAtualBrasil());
 
                                         comentarioRef.push().setValue(coment)
@@ -165,7 +167,10 @@ public class ComentariosActivity extends AppCompatActivity {
                                                     coment.setDatahora(Objects.requireNonNull(comentarios.child("datahora").getValue()).toString());
                                                     coment.setTexto(Objects.requireNonNull(comentarios.child("texto").getValue()).toString());
                                                     Usuario usuario = new Usuario();
+                                                    usuario.setId(Objects.requireNonNull(comentarios.child("usuario").child("id").getValue()).toString());
                                                     usuario.setNome(Objects.requireNonNull(comentarios.child("usuario").child("nome").getValue()).toString());
+                                                    //usuario.setFoto(Objects.requireNonNull(comentarios.child("usuario").child("foto").getValue()).toString());
+
                                                     // TODO: 05/03/2019 concluir atributos de usuario apos activity para cadastro de usuario
                                                     //usuario.setFoto(ConfiguracaoFirebase.getFirebaseAutenticacao().getCurrentUser().getPhotoUrl().toString());
                                                     coment.setUsuario(usuario);
@@ -185,6 +190,19 @@ public class ComentariosActivity extends AppCompatActivity {
                                 }
                             }
                         }
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                    }
+                });
+
+                usuariosRef.addValueEventListener(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+
+
                     }
 
                     @Override
