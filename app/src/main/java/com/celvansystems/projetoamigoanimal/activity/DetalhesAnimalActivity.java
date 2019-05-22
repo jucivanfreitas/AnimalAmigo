@@ -107,29 +107,29 @@ public class DetalhesAnimalActivity extends AppCompatActivity {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
 
-                    for (DataSnapshot usuarios : dataSnapshot.getChildren()) {
+                    for (final DataSnapshot usuarios : dataSnapshot.getChildren()) {
                         if (usuarios != null) {
                             if (usuarios.child("id").getValue() != null) {
 
                                 if (Objects.requireNonNull(usuarios.child("id").getValue()).toString()
                                         .equalsIgnoreCase(anuncioSelecionado.getDonoAnuncio())) {
 
-                                    if (usuarios.child("telefone").getValue() != null) {
+                                    btnVerTelefone.setOnClickListener(new View.OnClickListener() {
+                                        @Override
+                                        public void onClick(View v) {
 
-                                        final String telefone = Objects.requireNonNull(usuarios.child("telefone").getValue()).toString();
-                                        btnVerTelefone.setOnClickListener(new View.OnClickListener() {
-                                            @Override
-                                            public void onClick(View v) {
+                                            if (usuarios.child("telefone").getValue() != null) {
 
+                                                final String telefone = Objects.requireNonNull(usuarios.child("telefone").getValue()).toString();
                                                 Intent i = new Intent(Intent.ACTION_DIAL, Uri.fromParts("tel",
                                                         telefone, null));
-
                                                 startActivity(i);
+
+                                            } else {
+                                                Util.setSnackBar(layout, getString(R.string.telefone_nao_cadastrado));
                                             }
-                                        });
-                                    } else {
-                                        Util.setSnackBar(layout, getString(R.string.telefone_nao_cadastrado));
-                                    }
+                                        }
+                                    });
                                 }
                             }
                         }
@@ -142,8 +142,6 @@ public class DetalhesAnimalActivity extends AppCompatActivity {
                 }
             });
         }
-
-
         configuraAdMob();
     }
 
