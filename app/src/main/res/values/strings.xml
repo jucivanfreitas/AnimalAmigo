@@ -287,5 +287,7 @@
     <string name="sobre_mim">Sobre Mim</string>
     <string name="mais_opcoes">mais_opcoes</string>
     <string name="teste_fragment_cadasrtrar_ado_o">teste fragment cadasrtrar adoção</string>
+    <string name="txt_edit_nome">Editar Nome</string>
+    <string name="txt_voltarr"><![CDATA[<<< Voltar]]></string>
 
 </resources>
