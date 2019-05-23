@@ -1,8 +1,18 @@
 package com.celvansystems.projetoamigoanimal.activity;
 
+import android.app.Notification;
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.content.Context;
+import android.content.Intent;
+import android.media.AudioAttributes;
+import android.media.RingtoneManager;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
+import android.support.v4.app.NotificationCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -25,6 +35,7 @@ import com.google.android.gms.ads.MobileAds;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.UserInfo;
+import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -57,6 +68,7 @@ public class ComentariosActivity extends AppCompatActivity {
         recyclercomentarios = findViewById(R.id.recyclerComentarios);
         recyclercomentarios.setItemAnimator(null);
         anuncioSelecionado = (Animal) getIntent().getSerializableExtra("anuncioSelecionado");
+
 
         if (anuncioSelecionado != null) {
 
@@ -194,21 +206,9 @@ public class ComentariosActivity extends AppCompatActivity {
 
                     @Override
                     public void onCancelled(@NonNull DatabaseError databaseError) {
-
                     }
                 });
 
-                usuariosRef.addValueEventListener(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-
-
-                    }
-
-                    @Override
-                    public void onCancelled(@NonNull DatabaseError databaseError) {
-                    }
-                });
                 // fim dos dados do usuario
 
             } else {
@@ -282,5 +282,37 @@ public class ComentariosActivity extends AppCompatActivity {
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    private void createNotificationMessage(Context ctx,String Title,String Msg){
+        int id=15;
+        Intent intent= new Intent(ctx, MainActivity.class);
+        PendingIntent contentIntent = PendingIntent.getActivity(ctx, 0, intent, 0);
+        Notification.Builder b = new Notification.Builder(ctx);
+
+        NotificationChannel mChannel = null;
+        b.setAutoCancel(true)
+                .setSmallIcon(R.mipmap.ic_launcher_foreground)
+                .setContentTitle(Title)
+                .setTicker(Title)
+                .setContentText(Msg)
+                .setSound(RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION))
+                .setContentIntent(contentIntent);
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            mChannel = new NotificationChannel("cid", "name",NotificationManager.IMPORTANCE_HIGH);
+            b.setChannelId("cid");
+            mChannel.setSound(RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION), new AudioAttributes.Builder()
+                    .setContentType(AudioAttributes.CONTENT_TYPE_SONIFICATION)
+                    .setUsage(AudioAttributes.USAGE_NOTIFICATION_RINGTONE)
+                    .build());
+        }
+
+        NotificationManager notificationManager = (NotificationManager) ctx.getSystemService(Context.NOTIFICATION_SERVICE);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            notificationManager.createNotificationChannel(mChannel);
+        }
+        notificationManager.notify(id, b.build());
+
     }
 }

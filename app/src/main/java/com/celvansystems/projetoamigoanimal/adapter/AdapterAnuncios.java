@@ -2,13 +2,20 @@ package com.celvansystems.projetoamigoanimal.adapter;
 
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
+import android.app.Notification;
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
+import android.media.AudioAttributes;
+import android.media.RingtoneManager;
 import android.net.Uri;
+import android.os.Build;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
@@ -23,6 +30,7 @@ import android.widget.TextView;
 import com.celvansystems.projetoamigoanimal.R;
 import com.celvansystems.projetoamigoanimal.activity.ComentariosActivity;
 import com.celvansystems.projetoamigoanimal.activity.DetalhesAnimalActivity;
+import com.celvansystems.projetoamigoanimal.activity.MainActivity;
 import com.celvansystems.projetoamigoanimal.helper.ConfiguracaoFirebase;
 import com.celvansystems.projetoamigoanimal.helper.Constantes;
 import com.celvansystems.projetoamigoanimal.helper.Util;
@@ -43,13 +51,17 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
+import static android.content.Context.NOTIFICATION_SERVICE;
+
 public class AdapterAnuncios extends RecyclerView.Adapter<AdapterAnuncios.MyViewHolder>
         implements Serializable {
 
     private List<Animal> anuncios;
+    private String ultimoComentario;
 
     /**
      * construtor
+     *
      * @param anuncios lista de animais
      */
     public AdapterAnuncios(List<Animal> anuncios) {
@@ -66,6 +78,7 @@ public class AdapterAnuncios extends RecyclerView.Adapter<AdapterAnuncios.MyView
 
     /**
      * só habilitar o menu quando o usuario está logado
+     *
      * @param myViewHolder myViewHolder
      */
     private void configuracoesMaisOpcoes(AdapterAnuncios.MyViewHolder myViewHolder) {
@@ -142,8 +155,6 @@ public class AdapterAnuncios extends RecyclerView.Adapter<AdapterAnuncios.MyView
             comentarioRef.addValueEventListener(new ValueEventListener() {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                    int size = (int) dataSnapshot.getChildrenCount();
-                    //atualizaComentarios(size, anuncio, myViewHolder);
 
                     List<Comentario> comentsList = new ArrayList<>();
                     for (DataSnapshot comentarios : dataSnapshot.getChildren()) {
@@ -357,8 +368,9 @@ public class AdapterAnuncios extends RecyclerView.Adapter<AdapterAnuncios.MyView
 
     /**
      * lógica da denuncia de anuncios
+     *
      * @param myViewHolder myViewHolder
-     * @param anuncio Animal
+     * @param anuncio      Animal
      */
     private void denunciarAnuncio(final RecyclerView.ViewHolder myViewHolder,
                                   final Animal anuncio) {
@@ -422,7 +434,7 @@ public class AdapterAnuncios extends RecyclerView.Adapter<AdapterAnuncios.MyView
 
         if (ConfiguracaoFirebase.isUsuarioLogado()) {
 
-            if(myViewHolder.edtComentar.getText() != null && !myViewHolder.edtComentar.getText().toString().equalsIgnoreCase("")) {
+            if (myViewHolder.edtComentar.getText() != null && !myViewHolder.edtComentar.getText().toString().equalsIgnoreCase("")) {
 
                 final DatabaseReference comentarioRef = ConfiguracaoFirebase.getFirebase()
                         .child("meus_animais")
@@ -488,7 +500,7 @@ public class AdapterAnuncios extends RecyclerView.Adapter<AdapterAnuncios.MyView
                     }
                 });
                 // fim dos dados do usuario
-            }else {
+            } else {
                 Util.setSnackBar(myViewHolder.layout, ctx.getString(R.string.insira_comentario_valido));
             }
 
@@ -523,10 +535,10 @@ public class AdapterAnuncios extends RecyclerView.Adapter<AdapterAnuncios.MyView
         }
     }
 
-    private void atualizaComentarios(int size, Animal anuncio, MyViewHolder myViewHolder) {
+    private void atualizaComentarios(int size, final Animal anuncio, MyViewHolder myViewHolder) {
         try {
-            
-            Context ctx = myViewHolder.itemView.getContext();
+
+            final Context ctx = myViewHolder.itemView.getContext();
 
             if (anuncio.getListaComentarios() != null) {
                 if (size > 1) {
@@ -541,6 +553,38 @@ public class AdapterAnuncios extends RecyclerView.Adapter<AdapterAnuncios.MyView
                 myViewHolder.textViewTodosComentarios.setText(null);
                 myViewHolder.textViewTodosComentarios.setVisibility(View.GONE);
             }
+
+            ////////////////
+            final DatabaseReference comentarioRef = ConfiguracaoFirebase.getFirebase()
+                    .child("meus_animais")
+                    .child(anuncio.getIdAnimal())
+                    .child("comentarios");
+
+            comentarioRef.addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+
+                    if (anuncio.getDonoAnuncio().equalsIgnoreCase(ConfiguracaoFirebase.getIdUsuario())) {
+
+                        Comentario coment = new Comentario();
+                        int size = anuncio.getListaComentarios().size() - 1;
+                        String texto = anuncio.getListaComentarios().get(size).getTexto();
+                        coment.setTexto(texto);
+
+                        if (ultimoComentario == null || !ultimoComentario.equalsIgnoreCase(texto)) {
+                            createNotificationMessage(ctx, ctx.getString(R.string.novo_comentario), coment.getTexto());
+                            ultimoComentario = texto;
+                        }
+
+                    }
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                }
+            });
+            ///////////////////////
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -567,7 +611,7 @@ public class AdapterAnuncios extends RecyclerView.Adapter<AdapterAnuncios.MyView
             List<String> listaCurtidas = new ArrayList<>();
 
             if (isCurtido(anuncio)) {
-                Util.setSnackBar(((MyViewHolder) myViewHolder).layout,  ctx.getString(R.string.usuario_ja_curtiu) + " " + anuncio.getNome() + "!");
+                Util.setSnackBar(((MyViewHolder) myViewHolder).layout, ctx.getString(R.string.usuario_ja_curtiu) + " " + anuncio.getNome() + "!");
             } else {
                 if (ConfiguracaoFirebase.isUsuarioLogado()) {
                     if (anuncio.getCurtidas() != null) {
@@ -602,8 +646,9 @@ public class AdapterAnuncios extends RecyclerView.Adapter<AdapterAnuncios.MyView
 
     /**
      * método auxiliar para compartilhamento de anuncios
+     *
      * @param myViewHolder myViewHolder
-     * @param anuncio Animal
+     * @param anuncio      Animal
      */
     private void compartilharAnuncio(MyViewHolder myViewHolder, Animal anuncio) {
 
@@ -620,8 +665,8 @@ public class AdapterAnuncios extends RecyclerView.Adapter<AdapterAnuncios.MyView
 
             Intent intent = new Intent(Intent.ACTION_SEND);
             intent.setType("image/jpeg");
-            intent.putExtra(Intent.EXTRA_TEXT, ctx.getString(R.string.instale_e_conheca)+" "+ anuncio.getNome()+ ctx.getString(R.string.disponivel_em) +
-                    " https://play.google.com/store/apps/details?id=" + Constantes.APPLICATION_ID +"\n\n");
+            intent.putExtra(Intent.EXTRA_TEXT, ctx.getString(R.string.instale_e_conheca) + " " + anuncio.getNome() + ctx.getString(R.string.disponivel_em) +
+                    " https://play.google.com/store/apps/details?id=" + Constantes.APPLICATION_ID + "\n\n");
             intent.putExtra(Intent.EXTRA_STREAM, uri);
             myViewHolder.itemView.getContext().startActivity(Intent.createChooser(intent, ctx.getString(R.string.compartilhando_imagem)));
 
@@ -636,7 +681,7 @@ public class AdapterAnuncios extends RecyclerView.Adapter<AdapterAnuncios.MyView
      * @param animal anuncio
      * @return boolean
      */
-    private boolean isCurtido (Animal animal) {
+    private boolean isCurtido(Animal animal) {
         boolean retorno = false;
 
         if (ConfiguracaoFirebase.isUsuarioLogado()) {
@@ -714,4 +759,41 @@ public class AdapterAnuncios extends RecyclerView.Adapter<AdapterAnuncios.MyView
             imvMaisOpcoesAnuncios = itemView.findViewById(R.id.imv_mais_opcoes_anuncios);
         }
     }
+
+    private void createNotificationMessage(Context ctx, String Title, String Msg) {
+
+        int id = 15;
+        Intent intent = new Intent(ctx, MainActivity.class);
+        PendingIntent contentIntent = PendingIntent.getActivity(ctx, 0, intent, 0);
+
+        Notification.Builder b = new Notification.Builder(ctx);
+
+
+        NotificationChannel mChannel = null;
+
+        b.setAutoCancel(true)
+                .setSmallIcon(R.mipmap.ic_launcher_foreground)
+                .setContentTitle(Title)
+                .setTicker(Title)
+                .setContentText(Msg)
+                .setSound(RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION))
+                .setContentIntent(contentIntent);
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            mChannel = new NotificationChannel("cid", "name", NotificationManager.IMPORTANCE_HIGH);
+            b.setChannelId("cid");
+            mChannel.setSound(RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION), new AudioAttributes.Builder()
+                    .setContentType(AudioAttributes.CONTENT_TYPE_SONIFICATION)
+                    .setUsage(AudioAttributes.USAGE_NOTIFICATION_RINGTONE)
+                    .build());
+
+        }
+
+        NotificationManager notificationManager = (NotificationManager) ctx.getSystemService(NOTIFICATION_SERVICE);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            notificationManager.createNotificationChannel(mChannel);
+        }
+        notificationManager.notify(id, b.build());
+    }
+
 }
