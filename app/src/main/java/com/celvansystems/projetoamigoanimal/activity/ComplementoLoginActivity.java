@@ -36,6 +36,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
+import com.squareup.picasso.Picasso;
 import com.vansuita.pickimage.bean.PickResult;
 import com.vansuita.pickimage.bundle.PickSetup;
 import com.vansuita.pickimage.dialog.PickImageDialog;
@@ -81,7 +82,8 @@ public class ComplementoLoginActivity extends AppCompatActivity {
     private Button btn_voltar_fone;
     private Button btn_voltar_foto;
     private Button btn_voltar_cidade;
-    //private String urlFoto;
+    private String urlFotoAntiga;
+    private boolean isNovaFoto;
 
     //Permissoes
     private String[] permissoes = new String[]{
@@ -178,10 +180,14 @@ public class ComplementoLoginActivity extends AppCompatActivity {
                                         edtTelefone.setText(Objects.requireNonNull(usuarios.child("telefone").getValue()).toString());
                                     }
 
-                                    /*if(usuarios.child("foto").getValue() != null){
-                                        String foto = usuarios.child("foto").getValue().toString();
+                                    if(usuarios.child("foto").getValue() != null){
+
+                                        urlFotoAntiga = Objects.requireNonNull(usuarios.child("foto").getValue()).toString();
+
+                                        String foto = Objects.requireNonNull(usuarios.child("foto").getValue()).toString();
                                         Picasso.get().load(foto).into(imvFoto);
-                                    }*/
+
+                                    }
 
                                     if (usuarios.child("uf").getValue() != null) {
 
@@ -444,6 +450,8 @@ public class ComplementoLoginActivity extends AppCompatActivity {
                         public void onPickResult(PickResult r) {
                             if (r.getError() == null) {
 
+                                isNovaFoto = true;
+
                                 Uri imagemSelecionada = r.getUri();
                                 String caminhoImagem = Objects.requireNonNull(imagemSelecionada).toString();
 
@@ -479,7 +487,7 @@ public class ComplementoLoginActivity extends AppCompatActivity {
 
         //salvar imagem no storage
         try {
-            if (usuario.getFoto() != null) {
+            if (usuario.getFoto() != null && isNovaFoto) {
                 Log.d("INFO8", usuario.getFoto());
                 //cria nó do storage
                 final StorageReference imagemUsuario = storage
@@ -489,6 +497,8 @@ public class ComplementoLoginActivity extends AppCompatActivity {
                         .child("perfil");
 
                 Uri selectedImage = Uri.parse(usuario.getFoto());
+                Log.d("INFO8", "selected: "+selectedImage.toString());
+
                 //imagem comprimida
                 byte[] byteArray = comprimirImagem(selectedImage);
                 UploadTask uploadTask = imagemUsuario.putBytes(byteArray);
@@ -535,6 +545,7 @@ public class ComplementoLoginActivity extends AppCompatActivity {
                     }
                 });
             } else {
+                usuario.setFoto(urlFotoAntiga);
                 usuario.salvar();
 
                 Util.setSnackBar(layout, getString(R.string.sucesso_ao_fazer_upload));
