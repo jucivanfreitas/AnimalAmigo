@@ -288,17 +288,18 @@
             android:layout_marginTop="8dp"
             android:layout_marginEnd="8dp"
             android:layout_marginBottom="8dp"
+            android:autofillHints=""
             android:ems="10"
             android:hint="@string/txt_comentar"
             android:inputType="textShortMessage|textAutoCorrect|textMultiLine|textPersonName|textCapSentences|textAutoComplete"
+            android:maxLines="3"
             android:selectAllOnFocus="false"
             android:singleLine="false"
             android:visibility="visible"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@+id/imageButton_comentar"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            android:autofillHints="" />
+            app:layout_constraintTop_toTopOf="parent" />
 
     </android.support.constraint.ConstraintLayout>
 
