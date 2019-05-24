@@ -25,9 +25,6 @@ public class Util {
 
     public static List<String> comentariosNotificacoes = new ArrayList<>();
 
-    public Util(){
-
-    }
     /**
      * retorna os estados
      *
