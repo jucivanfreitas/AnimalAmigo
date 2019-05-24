@@ -22,6 +22,8 @@
             android:background="@drawable/bg_branco_gradient"
             android:elevation="20dp"
             android:orientation="horizontal"
+
+
             android:visibility="visible"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
