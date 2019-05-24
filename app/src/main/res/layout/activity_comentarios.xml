@@ -70,11 +70,13 @@
                     android:ems="10"
                     android:hint="@string/txt_comentar"
                     android:inputType="textPersonName"
+                    android:maxLines="3"
+                    android:singleLine="false"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toStartOf="@+id/imageButton_comentarAnuncio"
+
                     app:layout_constraintHorizontal_bias="0.0"
                     app:layout_constraintStart_toStartOf="parent"
-
                     app:layout_constraintTop_toTopOf="parent"
                     tools:targetApi="o" />
 
