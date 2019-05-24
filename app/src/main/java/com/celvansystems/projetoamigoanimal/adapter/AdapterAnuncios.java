@@ -570,7 +570,8 @@ public class AdapterAnuncios extends RecyclerView.Adapter<AdapterAnuncios.MyView
                         String texto = anuncio.getListaComentarios().get(size).getTexto();
                         coment.setTexto(texto);
 
-                        if ((ultimoComentario == null || !ultimoComentario.equalsIgnoreCase(texto)) && !Util.comentariosNotificacoes.contains(texto) ) {
+                        if ((ultimoComentario == null || !ultimoComentario.equalsIgnoreCase(texto)) &&
+                                !Util.comentariosNotificacoes.contains(texto) && !anuncio.getDonoAnuncio().equalsIgnoreCase(ConfiguracaoFirebase.getIdUsuario())) {
                             createNotificationMessage(ctx, ctx.getString(R.string.novo_comentario), coment.getTexto(), anuncio);
                             ultimoComentario = texto;
                             Util.comentariosNotificacoes.add(texto);
