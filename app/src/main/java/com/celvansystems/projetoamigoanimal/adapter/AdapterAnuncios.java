@@ -30,7 +30,6 @@ import android.widget.TextView;
 import com.celvansystems.projetoamigoanimal.R;
 import com.celvansystems.projetoamigoanimal.activity.ComentariosActivity;
 import com.celvansystems.projetoamigoanimal.activity.DetalhesAnimalActivity;
-import com.celvansystems.projetoamigoanimal.activity.MainActivity;
 import com.celvansystems.projetoamigoanimal.helper.ConfiguracaoFirebase;
 import com.celvansystems.projetoamigoanimal.helper.Constantes;
 import com.celvansystems.projetoamigoanimal.helper.Util;
@@ -571,11 +570,11 @@ public class AdapterAnuncios extends RecyclerView.Adapter<AdapterAnuncios.MyView
                         String texto = anuncio.getListaComentarios().get(size).getTexto();
                         coment.setTexto(texto);
 
-                        if (ultimoComentario == null || !ultimoComentario.equalsIgnoreCase(texto)) {
-                            createNotificationMessage(ctx, ctx.getString(R.string.novo_comentario), coment.getTexto());
+                        if ((ultimoComentario == null || !ultimoComentario.equalsIgnoreCase(texto)) && !Util.comentariosNotificacoes.contains(texto) ) {
+                            createNotificationMessage(ctx, ctx.getString(R.string.novo_comentario), coment.getTexto(), anuncio);
                             ultimoComentario = texto;
+                            Util.comentariosNotificacoes.add(texto);
                         }
-
                     }
                 }
 
@@ -760,14 +759,14 @@ public class AdapterAnuncios extends RecyclerView.Adapter<AdapterAnuncios.MyView
         }
     }
 
-    private void createNotificationMessage(Context ctx, String Title, String Msg) {
+    private void createNotificationMessage(Context ctx, String Title, String Msg, Animal anuncio) {
 
         int id = 15;
-        Intent intent = new Intent(ctx, MainActivity.class);
+        Intent intent = new Intent(ctx, ComentariosActivity.class);
+        intent.putExtra("anuncioSelecionado", anuncio);
         PendingIntent contentIntent = PendingIntent.getActivity(ctx, 0, intent, 0);
 
         Notification.Builder b = new Notification.Builder(ctx);
-
 
         NotificationChannel mChannel = null;
 
@@ -786,7 +785,6 @@ public class AdapterAnuncios extends RecyclerView.Adapter<AdapterAnuncios.MyView
                     .setContentType(AudioAttributes.CONTENT_TYPE_SONIFICATION)
                     .setUsage(AudioAttributes.USAGE_NOTIFICATION_RINGTONE)
                     .build());
-
         }
 
         NotificationManager notificationManager = (NotificationManager) ctx.getSystemService(NOTIFICATION_SERVICE);
@@ -795,5 +793,4 @@ public class AdapterAnuncios extends RecyclerView.Adapter<AdapterAnuncios.MyView
         }
         notificationManager.notify(id, b.build());
     }
-
 }
