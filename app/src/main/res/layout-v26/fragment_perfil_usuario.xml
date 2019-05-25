@@ -295,17 +295,14 @@
             android:background="@drawable/bg_caixa_txt"
             android:ems="10"
             android:importantForAutofill="no"
-            android:labelFor="@+id/editText_editar_nome_usuario"
             android:inputType="textPersonName"
             android:text="@string/txt_celio"
+            android:labelFor="@+id/editText_editar_nome_usuario"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@+id/imagebtn_submet_edt_nome_usuario"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
     </android.support.constraint.ConstraintLayout>
-
-
-
 
     <android.support.constraint.ConstraintLayout
         android:id="@+id/constraintLayout"

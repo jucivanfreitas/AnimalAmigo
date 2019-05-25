@@ -262,9 +262,13 @@ public class AdapterAnuncios extends RecyclerView.Adapter<AdapterAnuncios.MyView
         myViewHolder.imvComentarAnuncio.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent comentariosIntent = new Intent(v.getContext(), ComentariosActivity.class);
-                comentariosIntent.putExtra("anuncioSelecionado", anuncio);
-                v.getContext().startActivity(comentariosIntent);
+                if (ConfiguracaoFirebase.isUsuarioLogado()) {
+                    Intent comentariosIntent = new Intent(v.getContext(), ComentariosActivity.class);
+                    comentariosIntent.putExtra("anuncioSelecionado", anuncio);
+                    v.getContext().startActivity(comentariosIntent);
+                } else {
+                    Util.setSnackBar(myViewHolder.layout, myViewHolder.itemView.getContext().getString(R.string.usuario_nao_logado));
+                }
             }
         });
 
@@ -272,9 +276,12 @@ public class AdapterAnuncios extends RecyclerView.Adapter<AdapterAnuncios.MyView
         myViewHolder.imbComentarAnuncio.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
-                comentarAnuncio(myViewHolder,
-                        anuncio);
+                if (ConfiguracaoFirebase.isUsuarioLogado()) {
+                    comentarAnuncio(myViewHolder,
+                            anuncio);
+                } else {
+                    Util.setSnackBar(myViewHolder.layout, myViewHolder.itemView.getContext().getString(R.string.usuario_nao_logado));
+                }
             }
         });
 
@@ -291,9 +298,13 @@ public class AdapterAnuncios extends RecyclerView.Adapter<AdapterAnuncios.MyView
             @Override
             public void onClick(View v) {
 
-                Intent comentariosIntent = new Intent(v.getContext(), ComentariosActivity.class);
-                comentariosIntent.putExtra("anuncioSelecionado", anuncio);
-                v.getContext().startActivity(comentariosIntent);
+                if (ConfiguracaoFirebase.isUsuarioLogado()) {
+                    Intent comentariosIntent = new Intent(v.getContext(), ComentariosActivity.class);
+                    comentariosIntent.putExtra("anuncioSelecionado", anuncio);
+                    v.getContext().startActivity(comentariosIntent);
+                } else {
+                    Util.setSnackBar(myViewHolder.layout, myViewHolder.itemView.getContext().getString(R.string.usuario_nao_logado));
+                }
             }
         });
 
@@ -328,14 +339,23 @@ public class AdapterAnuncios extends RecyclerView.Adapter<AdapterAnuncios.MyView
 
                         if (ctx.getString(R.string.curtir).equalsIgnoreCase(opcoes[which])) {
 
-                            curtirAnuncio(myViewHolder,
-                                    anuncio, myViewHolder.imvCurtirAnuncio);
+                            if (ConfiguracaoFirebase.isUsuarioLogado()) {
+                                curtirAnuncio(myViewHolder,
+                                        anuncio, myViewHolder.imvCurtirAnuncio);
+                            } else {
+                                Util.setSnackBar(myViewHolder.layout, myViewHolder.itemView.getContext().getString(R.string.usuario_nao_logado));
+                            }
+
 
                         } else if (ctx.getString(R.string.comentar).equalsIgnoreCase(opcoes[which])) {
 
-                            Intent detalhesIntent = new Intent(v.getContext(), ComentariosActivity.class);
-                            detalhesIntent.putExtra("anuncioSelecionado", anuncio);
-                            v.getContext().startActivity(detalhesIntent);
+                            if (ConfiguracaoFirebase.isUsuarioLogado()) {
+                                Intent detalhesIntent = new Intent(v.getContext(), ComentariosActivity.class);
+                                detalhesIntent.putExtra("anuncioSelecionado", anuncio);
+                                v.getContext().startActivity(detalhesIntent);
+                            } else {
+                                Util.setSnackBar(myViewHolder.layout, myViewHolder.itemView.getContext().getString(R.string.usuario_nao_logado));
+                            }
 
                         } else if (ctx.getString(R.string.adotar).equalsIgnoreCase(opcoes[which])) {
 
@@ -344,6 +364,7 @@ public class AdapterAnuncios extends RecyclerView.Adapter<AdapterAnuncios.MyView
                             v.getContext().startActivity(detalhesIntent);
 
                         } else if (ctx.getString(R.string.denunciar).equalsIgnoreCase(opcoes[which])) {
+                            if (ConfiguracaoFirebase.isUsuarioLogado()) {
                             new AlertDialog.Builder(myViewHolder.itemView.getContext())
                                     .setMessage(ctx.getText(R.string.tem_certeza_denunciar_anuncio))
                                     .setCancelable(false)
@@ -356,6 +377,9 @@ public class AdapterAnuncios extends RecyclerView.Adapter<AdapterAnuncios.MyView
                                     })
                                     .setNegativeButton(ctx.getText(R.string.nao), null)
                                     .show();
+                            } else {
+                                Util.setSnackBar(myViewHolder.layout, myViewHolder.itemView.getContext().getString(R.string.usuario_nao_logado));
+                            }
                         }
                     }
 

@@ -291,5 +291,8 @@
     <string name="txt_voltarr"><![CDATA[<<< Voltar]]></string>
     <string name="txt_edit_cidade">Editar Cidade</string>
     <string name="novo_comentario">Novo comentário!</string>
+    <string name="a">A</string>
+    <string name="b">B</string>
+    <string name="nome_completo">Nome completo</string>
 
 </resources>

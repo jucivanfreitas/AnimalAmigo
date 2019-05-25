@@ -7,7 +7,7 @@
         <item
             android:id="@+id/menu_logar"
             android:title="@string/txt_entrar"
-            app:showAsAction="always" />
+            app:showAsAction="ifRoom" />
     </group>
 
     <group android:id="@+id/group_log_in" android:visible="false">
