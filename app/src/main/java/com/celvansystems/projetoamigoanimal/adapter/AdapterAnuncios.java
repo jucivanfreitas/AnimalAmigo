@@ -56,7 +56,7 @@ public class AdapterAnuncios extends RecyclerView.Adapter<AdapterAnuncios.MyView
         implements Serializable {
 
     private List<Animal> anuncios;
-    private String ultimoComentario;
+    //private String ultimoComentario;
 
     /**
      * construtor
@@ -553,8 +553,9 @@ public class AdapterAnuncios extends RecyclerView.Adapter<AdapterAnuncios.MyView
                 myViewHolder.textViewTodosComentarios.setVisibility(View.GONE);
             }
 
+            Util.configuraNotificacoes(ctx, anuncio);
             ////////////////
-            final DatabaseReference comentarioRef = ConfiguracaoFirebase.getFirebase()
+            /*final DatabaseReference comentarioRef = ConfiguracaoFirebase.getFirebase()
                     .child("meus_animais")
                     .child(anuncio.getIdAnimal())
                     .child("comentarios");
@@ -570,10 +571,11 @@ public class AdapterAnuncios extends RecyclerView.Adapter<AdapterAnuncios.MyView
                         String texto = anuncio.getListaComentarios().get(size).getTexto();
                         coment.setTexto(texto);
 
-                        if ((ultimoComentario == null || !ultimoComentario.equalsIgnoreCase(texto)) &&
-                                !Util.comentariosNotificacoes.contains(texto) && !anuncio.getDonoAnuncio().equalsIgnoreCase(ConfiguracaoFirebase.getIdUsuario())) {
-                            createNotificationMessage(ctx, ctx.getString(R.string.novo_comentario), coment.getTexto(), anuncio);
-                            ultimoComentario = texto;
+                        int sizeComentsNotificacoes = Util.comentariosNotificacoes.size();
+                        if ((sizeComentsNotificacoes == 0 || !Util.comentariosNotificacoes.get(sizeComentsNotificacoes-1).equalsIgnoreCase(texto))
+                                && !anuncio.getDonoAnuncio().equalsIgnoreCase(ConfiguracaoFirebase.getIdUsuario())) {
+                            Util.createNotificationMessage(ctx, ctx.getString(R.string.novo_comentario), coment.getTexto(), anuncio);
+                            //ultimoComentario = texto;
                             Util.comentariosNotificacoes.add(texto);
                         }
                     }
@@ -581,9 +583,8 @@ public class AdapterAnuncios extends RecyclerView.Adapter<AdapterAnuncios.MyView
 
                 @Override
                 public void onCancelled(@NonNull DatabaseError databaseError) {
-
                 }
-            });
+            });*/
             ///////////////////////
 
         } catch (Exception e) {
@@ -760,38 +761,5 @@ public class AdapterAnuncios extends RecyclerView.Adapter<AdapterAnuncios.MyView
         }
     }
 
-    private void createNotificationMessage(Context ctx, String Title, String Msg, Animal anuncio) {
 
-        int id = 15;
-        Intent intent = new Intent(ctx, ComentariosActivity.class);
-        intent.putExtra("anuncioSelecionado", anuncio);
-        PendingIntent contentIntent = PendingIntent.getActivity(ctx, 0, intent, 0);
-
-        Notification.Builder b = new Notification.Builder(ctx);
-
-        NotificationChannel mChannel = null;
-
-        b.setAutoCancel(true)
-                .setSmallIcon(R.mipmap.ic_launcher_foreground)
-                .setContentTitle(Title)
-                .setTicker(Title)
-                .setContentText(Msg)
-                .setSound(RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION))
-                .setContentIntent(contentIntent);
-
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            mChannel = new NotificationChannel("cid", "name", NotificationManager.IMPORTANCE_HIGH);
-            b.setChannelId("cid");
-            mChannel.setSound(RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION), new AudioAttributes.Builder()
-                    .setContentType(AudioAttributes.CONTENT_TYPE_SONIFICATION)
-                    .setUsage(AudioAttributes.USAGE_NOTIFICATION_RINGTONE)
-                    .build());
-        }
-
-        NotificationManager notificationManager = (NotificationManager) ctx.getSystemService(NOTIFICATION_SERVICE);
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            notificationManager.createNotificationChannel(mChannel);
-        }
-        notificationManager.notify(id, b.build());
-    }
 }

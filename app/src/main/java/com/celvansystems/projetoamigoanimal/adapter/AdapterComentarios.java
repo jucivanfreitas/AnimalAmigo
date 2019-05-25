@@ -11,6 +11,7 @@ import android.widget.TextView;
 
 import com.celvansystems.projetoamigoanimal.R;
 import com.celvansystems.projetoamigoanimal.helper.ConfiguracaoFirebase;
+import com.celvansystems.projetoamigoanimal.helper.Util;
 import com.celvansystems.projetoamigoanimal.model.Comentario;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -41,6 +42,10 @@ public class AdapterComentarios extends RecyclerView.Adapter<AdapterComentarios.
     public MyViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
 
         View item = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.adapter_comentarios_activity, viewGroup, false);
+
+
+
+
 
         return new MyViewHolder(item);
     }

@@ -109,7 +109,7 @@ public class ComentariosActivity extends AppCompatActivity {
 
             final Context ctx = this.getApplicationContext();
 
-            if(edtComentario.getText() != null && !edtComentario.getText().toString().equalsIgnoreCase("")) {
+            if (edtComentario.getText() != null && !edtComentario.getText().toString().equalsIgnoreCase("")) {
 
                 final DatabaseReference comentarioRef = ConfiguracaoFirebase.getFirebase()
                         .child("meus_animais")
@@ -211,6 +211,41 @@ public class ComentariosActivity extends AppCompatActivity {
 
                 // fim dos dados do usuario
 
+                Util.configuraNotificacoes(ctx, anuncio);
+                ////////////////
+                /*final DatabaseReference comentRef = ConfiguracaoFirebase.getFirebase()
+                        .child("meus_animais")
+                        .child(anuncio.getIdAnimal())
+                        .child("comentarios");
+
+                comentRef.addValueEventListener(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+
+                        if (anuncio.getDonoAnuncio().equalsIgnoreCase(ConfiguracaoFirebase.getIdUsuario())) {
+
+                            Comentario coment = new Comentario();
+                            int size = anuncio.getListaComentarios().size() - 1;
+                            String texto = anuncio.getListaComentarios().get(size).getTexto();
+                            coment.setTexto(texto);
+
+                            int sizeComentsNotificacoes = Util.comentariosNotificacoes.size();
+                            if ((sizeComentsNotificacoes == 0 || !Util.comentariosNotificacoes.get(sizeComentsNotificacoes-1).equalsIgnoreCase(texto))
+                                    && !anuncio.getDonoAnuncio().equalsIgnoreCase(ConfiguracaoFirebase.getIdUsuario())) {
+                                Util.createNotificationMessage(ctx, ctx.getString(R.string.novo_comentario), coment.getTexto(), anuncio);
+                                //ultimoComentario = texto;
+                                Util.comentariosNotificacoes.add(texto);
+                            }
+                        }
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError databaseError) {
+                    }
+                });*/
+                ///////////////////////
+
+
             } else {
                 Util.setSnackBar(layout, ctx.getString(R.string.insira_comentario_valido));
             }
@@ -284,35 +319,5 @@ public class ComentariosActivity extends AppCompatActivity {
         }
     }
 
-    private void createNotificationMessage(Context ctx,String Title,String Msg){
-        int id=15;
-        Intent intent= new Intent(ctx, MainActivity.class);
-        PendingIntent contentIntent = PendingIntent.getActivity(ctx, 0, intent, 0);
-        Notification.Builder b = new Notification.Builder(ctx);
 
-        NotificationChannel mChannel = null;
-        b.setAutoCancel(true)
-                .setSmallIcon(R.mipmap.ic_launcher_foreground)
-                .setContentTitle(Title)
-                .setTicker(Title)
-                .setContentText(Msg)
-                .setSound(RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION))
-                .setContentIntent(contentIntent);
-
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            mChannel = new NotificationChannel("cid", "name",NotificationManager.IMPORTANCE_HIGH);
-            b.setChannelId("cid");
-            mChannel.setSound(RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION), new AudioAttributes.Builder()
-                    .setContentType(AudioAttributes.CONTENT_TYPE_SONIFICATION)
-                    .setUsage(AudioAttributes.USAGE_NOTIFICATION_RINGTONE)
-                    .build());
-        }
-
-        NotificationManager notificationManager = (NotificationManager) ctx.getSystemService(Context.NOTIFICATION_SERVICE);
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            notificationManager.createNotificationChannel(mChannel);
-        }
-        notificationManager.notify(id, b.build());
-
-    }
 }
