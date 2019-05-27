@@ -30,16 +30,6 @@ import java.util.Objects;
 
 public class DetalhesAnimalActivity extends AppCompatActivity {
 
-    private CarouselView carouselView;
-    private TextView textNome;
-    private TextView textEspecie;
-    private TextView textGenero;
-    private TextView textIdade;
-    private TextView textPorte;
-    private TextView textEstado;
-    private TextView textCidade;
-    private TextView textRaca;
-    private TextView textDescricao;
     private View layout;
     private Animal anuncioSelecionado;
 
@@ -59,16 +49,16 @@ public class DetalhesAnimalActivity extends AppCompatActivity {
 
     private void inicializarComponentes() {
 
-        carouselView = findViewById(R.id.carouselView);
-        textNome = findViewById(R.id.txv_nome_meus_anuncios);
-        textEspecie = findViewById(R.id.txv_especie);
-        textGenero = findViewById(R.id.txv_genero);
-        textIdade = findViewById(R.id.txv_idade);
-        textPorte = findViewById(R.id.txv_porte);
-        textEstado = findViewById(R.id.txv_estado);
-        textCidade = findViewById(R.id.txv_cidade);
-        textRaca = findViewById(R.id.txv_raca);
-        textDescricao = findViewById(R.id.txv_descricao);
+        CarouselView carouselView = findViewById(R.id.carouselView);
+        TextView textNome = findViewById(R.id.txv_nome_meus_anuncios);
+        TextView textEspecie = findViewById(R.id.txv_especie);
+        TextView textGenero = findViewById(R.id.txv_genero);
+        TextView textIdade = findViewById(R.id.txv_idade);
+        TextView textPorte = findViewById(R.id.txv_porte);
+        TextView textEstado = findViewById(R.id.txv_estado);
+        TextView textCidade = findViewById(R.id.txv_cidade);
+        TextView textRaca = findViewById(R.id.txv_raca);
+        TextView textDescricao = findViewById(R.id.txv_descricao);
 
         layout = findViewById(R.id.linear_layout_detalhes_animal);
         final Button btnVerTelefone = findViewById(R.id.btnVerTelefone);

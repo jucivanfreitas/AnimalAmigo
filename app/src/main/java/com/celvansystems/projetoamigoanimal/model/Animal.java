@@ -182,7 +182,7 @@ public class Animal implements Serializable {
         return dataCadastro;
     }
 
-    private void setDataCadastro(String dataCadastro) {
+    public void setDataCadastro(String dataCadastro) {
         this.dataCadastro = dataCadastro;
     }
 

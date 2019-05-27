@@ -1,14 +1,18 @@
 package com.celvansystems.projetoamigoanimal.fragment;
 
 import android.Manifest;
+import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -41,6 +45,7 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
+import com.squareup.picasso.Picasso;
 import com.vansuita.pickimage.bean.PickResult;
 import com.vansuita.pickimage.bundle.PickSetup;
 import com.vansuita.pickimage.dialog.PickImageDialog;
@@ -52,6 +57,7 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Objects;
 
@@ -69,7 +75,7 @@ public class CadastrarAnuncioFragment extends Fragment
     private Spinner spnEstado, spnCidade;
     private EditText edtRaca, edtNome;
     private AutoCompleteTextView edtDescricao;
-    private List<String> listaFotosRecuperadas;
+    private HashMap<Integer, String> listaFotosRecuperadas;
     private List<String> listaURLFotos;
     private ImageView imagem1, imagem2, imagem3;
     private AlertDialog dialog;
@@ -90,25 +96,90 @@ public class CadastrarAnuncioFragment extends Fragment
             Manifest.permission.CAMERA
     };
 
-    public CadastrarAnuncioFragment() {}
+    public CadastrarAnuncioFragment() {
+    }
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
-        viewFragment =  inflater.inflate(R.layout.fragment_cadastrar_anuncio, container, false);
+        viewFragment = inflater.inflate(R.layout.fragment_cadastrar_anuncio, container, false);
         Bundle bundle = this.getArguments();
 
         inicializarComponentes();
 
-        if(bundle != null){
+        if (bundle != null) {
             Animal anuncio = (Animal) bundle.getSerializable("anuncioSelecionado");
             btnCadastrarAnuncio.setText(getString(R.string.atualizar_cadastro));
-            if(anuncio!=null) {
+            if (anuncio != null) {
                 preencheCampos(anuncio);
             }
         }
         return viewFragment;
+    }
+
+    /**
+     * Configuracoes iniciais
+     */
+    @SuppressLint("UseSparseArrays")
+    private void inicializarComponentes() {
+
+        storage = ConfiguracaoFirebase.getFirebaseStorage();
+
+        layout = viewFragment.findViewById(R.id.constraintLayout_cadastrar);
+
+        spnEspecie = viewFragment.findViewById(R.id.spinner_cad_Especie);
+        spnSexo = viewFragment.findViewById(R.id.spinner_cad_Sexo);
+        spnIdade = viewFragment.findViewById(R.id.spinner_cad_idade);
+        spnPorte = viewFragment.findViewById(R.id.spinner_cad_porte);
+        spnEstado = viewFragment.findViewById(R.id.spinner_cad_estado_complemento);
+        spnCidade = viewFragment.findViewById(R.id.spinner_cad_cidade_complemento);
+        edtDescricao = viewFragment.findViewById(R.id.editText_cad_descrição);
+        edtDescricao.setVerticalScrollBarEnabled(true);
+        edtDescricao.setMovementMethod(new ScrollingMovementMethod());
+        edtRaca = viewFragment.findViewById(R.id.edtRaca);
+        edtNome = viewFragment.findViewById(R.id.editText_cad_NomeAnimal);
+
+        btnCadastrarAnuncio = viewFragment.findViewById(R.id.btnCadAnuncio);
+
+        //imageviews
+        imagem1 = viewFragment.findViewById(R.id.imageCad1);
+        imagem2 = viewFragment.findViewById(R.id.imageCad2);
+        imagem3 = viewFragment.findViewById(R.id.imageCad3);
+        imagem1.setOnClickListener(this);
+        imagem2.setOnClickListener(this);
+        imagem3.setOnClickListener(this);
+
+        //listaFotosRecuperadas = new ArrayList<>();
+        listaFotosRecuperadas = new HashMap<>();
+        listaURLFotos = new ArrayList<>();
+
+        spnEstado.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+
+                setAdapterSpinnerCidades();
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+            }
+        });
+
+        //Validar permissões
+        Permissoes.validarPermissoes(permissoes, getActivity(), 1);
+
+        carregarDadosSpinner();
+
+        btnCadastrarAnuncio.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                validarDadosAnuncio();
+            }
+        });
+
+        //propagandas
+        configuraAdMob();
     }
 
     private void preencheCampos(Animal anuncio) {
@@ -139,90 +210,161 @@ public class CadastrarAnuncioFragment extends Fragment
         editando = true;
         idEditando = anuncio.getIdAnimal();
 
-        /*List<String> listaFotos = anuncio.getFotos();
-
-        String[] fotos = new String[listaFotos.size()];
-        fotos = listaFotos.toArray(fotos);
-
-        for (int i=0; i < fotos.length; i++){
-            switch (i){
-                case 0:
-                    Picasso.get().load(fotos[i]).into(imagem1);
-                    break;
-                case 1:
-                    Picasso.get().load(fotos[i]).into(imagem2);
-                    break;
-                case 2:
-                    Picasso.get().load(fotos[i]).into(imagem3);
-                    break;
-            }
-        }*/
+        configuraFotos(anuncio);
     }
 
     /**
-     * Configuracoes iniciais
+     * Popula imaageviews das imagens
+      * @param anuncio animal
      */
-    private void inicializarComponentes(){
+    private void configuraFotos(Animal anuncio) {
 
-        storage = ConfiguracaoFirebase.getFirebaseStorage();
+        try {
+            dialog = new SpotsDialog.Builder()
+                    .setContext(getContext())
+                    .setMessage(R.string.carregando_fotos)
+                    .setCancelable(false)
+                    .build();
+            dialog.show();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
-        layout = viewFragment.findViewById(R.id.constraintLayout_cadastrar);
+        List<String> listaFotos = anuncio.getFotos();
 
-        spnEspecie = viewFragment.findViewById(R.id.spinner_cad_Especie);
-        spnSexo = viewFragment.findViewById(R.id.spinner_cad_Sexo);
-        spnIdade = viewFragment.findViewById(R.id.spinner_cad_idade);
-        spnPorte = viewFragment.findViewById(R.id.spinner_cad_porte);
-        spnEstado = viewFragment.findViewById(R.id.spinner_cad_estado_complemento);
-        spnCidade = viewFragment.findViewById(R.id.spinner_cad_cidade_complemento);
-        edtDescricao = viewFragment.findViewById(R.id.editText_cad_descrição);
-        edtDescricao.setVerticalScrollBarEnabled(true);
-        edtDescricao.setMovementMethod(new ScrollingMovementMethod());
-        edtRaca = viewFragment.findViewById(R.id.edtRaca);
-        edtNome = viewFragment.findViewById(R.id.editText_cad_NomeAnimal);
+        String[] fotosAnuncioSelecionado = new String[listaFotos.size()];
+        fotosAnuncioSelecionado = listaFotos.toArray(fotosAnuncioSelecionado);
 
-        btnCadastrarAnuncio = viewFragment.findViewById(R.id.btnCadAnuncio);
+        final Context ctx = viewFragment.getContext();
 
-        //imageviews
-        imagem1 = viewFragment.findViewById(R.id.imageCad1);
-        imagem2 = viewFragment.findViewById(R.id.imageCad2);
-        imagem3 = viewFragment.findViewById(R.id.imageCad3);
-        imagem1.setOnClickListener(this);
-        imagem2.setOnClickListener(this);
-        imagem3.setOnClickListener(this);
+        final String[] finalFotosAnuncioSelecionado = fotosAnuncioSelecionado;
 
-        listaFotosRecuperadas = new ArrayList<>();
-        listaURLFotos = new ArrayList<>();
+        for (int i = 0; i < fotosAnuncioSelecionado.length; i++) {
 
-        spnEstado.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+            switch (i) {
 
-                setAdapterSpinnerCidades();
+                //imagem 1
+                case 0:
+                    try {
+                        imagem1.post(new Runnable() {
+                            @Override
+                            public void run() {
+                                Picasso.get().load(finalFotosAnuncioSelecionado[0])
+                                        .resize(imagem1.getWidth(), imagem1.getHeight())
+                                        .centerCrop()
+                                        .into(imagem1, new com.squareup.picasso.Callback() {
+                                            @Override
+                                            public void onSuccess() {
+                                                Drawable drawable = imagem1.getDrawable();
+
+                                                Bitmap mBitmap = ((BitmapDrawable) drawable).getBitmap();
+
+                                                String path = MediaStore.Images.Media.insertImage(ctx
+                                                        .getContentResolver(), mBitmap, null, null);
+                                                Uri uri = Uri.parse(path);
+
+                                                listaFotosRecuperadas.put(1, uri.toString());
+                                                dialog.dismiss();
+                                            }
+
+                                            @Override
+                                            public void onError(Exception e) {
+                                                dialog.dismiss();
+                                                e.printStackTrace();
+                                            }
+                                        });
+                            }
+                        });
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                    break;
+
+                    //imagem 2
+                case 1:
+                    try {
+                        imagem2.post(new Runnable() {
+                            @Override
+                            public void run() {
+                                Picasso.get().load(finalFotosAnuncioSelecionado[1])
+                                        .resize(imagem2.getWidth(), imagem2.getHeight())
+                                        .centerCrop()
+                                        .into(imagem2, new com.squareup.picasso.Callback() {
+                                            @Override
+                                            public void onSuccess() {
+                                                Drawable drawable = imagem2.getDrawable();
+
+                                                Bitmap mBitmap = ((BitmapDrawable) drawable).getBitmap();
+
+                                                String path = MediaStore.Images.Media.insertImage(ctx
+                                                        .getContentResolver(), mBitmap, null, null);
+                                                Uri uri = Uri.parse(path);
+
+                                                listaFotosRecuperadas.put(2, uri.toString());
+                                                dialog.dismiss();
+                                            }
+
+                                            @Override
+                                            public void onError(Exception e) {
+                                                dialog.dismiss();
+                                                e.printStackTrace();
+                                            }
+                                        });
+                            }
+                        });
+
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                    break;
+
+                    //imagem 3
+                    case 2:
+
+                    try {
+                        imagem3.post(new Runnable() {
+                            @Override
+                            public void run() {
+                                Picasso.get().load(finalFotosAnuncioSelecionado[2])
+                                        .resize(imagem3.getWidth(), imagem3.getHeight())
+                                        .centerCrop()
+                                        .into(imagem3, new com.squareup.picasso.Callback() {
+                                            @Override
+                                            public void onSuccess() {
+                                                Drawable drawable = imagem3.getDrawable();
+                                                // ...
+                                                Bitmap mBitmap = ((BitmapDrawable) drawable).getBitmap();
+
+                                                String path = MediaStore.Images.Media.insertImage(ctx
+                                                        .getContentResolver(), mBitmap, null, null);
+                                                Uri uri = Uri.parse(path);
+
+                                                listaFotosRecuperadas.put(3, uri.toString());
+                                                dialog.dismiss();
+                                            }
+
+                                            @Override
+                                            public void onError(Exception e) {
+                                                dialog.dismiss();
+                                                e.printStackTrace();
+                                            }
+                                        });
+                            }
+                        });
+
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                    break;
             }
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-            }
-        });
-        //Validar permissões
-        Permissoes.validarPermissoes(permissoes, getActivity(), 1);
-
-        carregarDadosSpinner();
-
-        btnCadastrarAnuncio.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                validarDadosAnuncio();
-            }
-        });
-
-        //propagandas
-        configuraAdMob();
+        }
     }
+
 
     /**
      * Configura o adapter do spinner Cidades
      */
-    public void setAdapterSpinnerCidades(){
+    public void setAdapterSpinnerCidades() {
 
         try {
             adapterCidades = new ArrayAdapter<>(Objects.requireNonNull(getContext()), simple_spinner_item,
@@ -231,14 +373,15 @@ public class CadastrarAnuncioFragment extends Fragment
 
             spnCidade.setAdapter(adapterCidades);
             adapterCidades.notifyDataSetChanged();
-        } catch (Exception e){e.printStackTrace();}
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     /**
-     *
      * @param animal anuncio
      */
-    private void salvarAnuncio(Animal animal){
+    private void salvarAnuncio(Animal animal) {
 
         hideKeyboard(getContext(), edtDescricao);
 
@@ -249,26 +392,29 @@ public class CadastrarAnuncioFragment extends Fragment
                     .setCancelable(false)
                     .build();
             dialog.show();
-        } catch (Exception e){e.printStackTrace();}
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
         //salvar imagem no storage
         try {
             int tamanhoLista = animal.getFotos().size();
-            for (int i=0; i < tamanhoLista; i++) {
+            for (int i = 0; i < tamanhoLista; i++) {
                 String urlImagem = animal.getFotos().get(i);
                 salvarFotosStorage(animal, urlImagem, tamanhoLista, i);
             }
-        } catch (Exception e){e.printStackTrace();}
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     /**
-     *
-     * @param animal animal
-     * @param url url
+     * @param animal     animal
+     * @param url        url
      * @param totalFotos número de fotos
-     * @param contador contador
+     * @param contador   contador
      */
-    private void salvarFotosStorage(final Animal animal, String url, final int totalFotos, int contador){
+    private void salvarFotosStorage(final Animal animal, String url, final int totalFotos, int contador) {
 
         try {
             //cria nó do storage
@@ -276,7 +422,7 @@ public class CadastrarAnuncioFragment extends Fragment
                     .child("imagens")
                     .child("animais")
                     .child(animal.getIdAnimal())
-                    .child("imagem"+contador);
+                    .child("imagem" + contador);
 
             Uri selectedImage = Uri.parse(url);
 
@@ -303,7 +449,7 @@ public class CadastrarAnuncioFragment extends Fragment
                         String urlConvertida = Objects.requireNonNull(firebaseUrl).toString();
                         listaURLFotos.add(urlConvertida);
 
-                        if(totalFotos == listaURLFotos.size()){
+                        if (totalFotos == listaURLFotos.size()) {
                             animal.setFotos(listaURLFotos);
                             animal.salvar();
                             Util.setSnackBar(layout, getString(R.string.sucesso_ao_fazer_upload));
@@ -320,15 +466,18 @@ public class CadastrarAnuncioFragment extends Fragment
                     }
                 }
             });
-        } catch (Exception e){e.printStackTrace();}
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     /**
      * metodo auxiliar para comprimir imagens que serao salvas do firebase storage
+     *
      * @param selectedImage imagem selecionada
      * @return byte[]
      */
-    public byte[] comprimirImagem (Uri selectedImage){
+    public byte[] comprimirImagem(Uri selectedImage) {
         byte[] byteArray = null;
         try {
             InputStream imageStream;
@@ -346,7 +495,7 @@ public class CadastrarAnuncioFragment extends Fragment
 
         } catch (FileNotFoundException e) {
             e.printStackTrace();
-        }catch (IOException e) {
+        } catch (IOException e) {
 
             e.printStackTrace();
         }
@@ -355,12 +504,13 @@ public class CadastrarAnuncioFragment extends Fragment
 
     /**
      * cria objeto que representa os campos preenchidos da activity
+     *
      * @return animal
      */
-    private Animal getAnimalDaActivity(){
+    private Animal getAnimalDaActivity() {
 
         Animal retorno = new Animal();
-        if(editando) {
+        if (editando) {
             retorno.setIdAnimal(idEditando);
         }
 
@@ -389,8 +539,10 @@ public class CadastrarAnuncioFragment extends Fragment
             retorno.setDescricao(descricao);
             retorno.setUf(estado);
             retorno.setCidade(cidade);
-            retorno.setFotos(listaFotosRecuperadas);
-        } catch (Exception e){e.printStackTrace();}
+            retorno.setFotos(new ArrayList<>(listaFotosRecuperadas.values()));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         return retorno;
     }
 
@@ -402,24 +554,24 @@ public class CadastrarAnuncioFragment extends Fragment
     /**
      * valida o preenchimento dos dados pelo usuário
      */
-    public void validarDadosAnuncio(){
+    public void validarDadosAnuncio() {
 
         Animal animal = this.getAnimalDaActivity();
 
-        if( listaFotosRecuperadas.size() != 0 ){
-            if( !animal.getNome().isEmpty() ){
-                if( !animal.getRaca().isEmpty() ){
+        if (listaFotosRecuperadas.size() != 0) {
+            if (!animal.getNome().isEmpty()) {
+                if (!animal.getRaca().isEmpty()) {
                     if (!animal.getDescricao().isEmpty()) {
 
-                            salvarAnuncio(animal);
+                        salvarAnuncio(animal);
 
                     } else {
                         Util.setSnackBar(layout, getString(R.string.preencha_descricao));
                     }
-                }else {
+                } else {
                     Util.setSnackBar(layout, getString(R.string.preencha_raca));
                 }
-            }else {
+            } else {
                 Util.setSnackBar(layout, getString(R.string.preencha_nome));
             }
         } else {
@@ -429,6 +581,7 @@ public class CadastrarAnuncioFragment extends Fragment
 
     /**
      * clique das fotos
+     *
      * @param v view
      */
     @Override
@@ -436,14 +589,14 @@ public class CadastrarAnuncioFragment extends Fragment
 
         requisicao = 1;
 
-        switch ( v.getId() ){
-            case R.id.imageCad1 :
+        switch (v.getId()) {
+            case R.id.imageCad1:
                 requisicao = 1;
                 break;
-            case R.id.imageCad2 :
+            case R.id.imageCad2:
                 requisicao = 2;
                 break;
-            case R.id.imageCad3 :
+            case R.id.imageCad3:
                 requisicao = 3;
                 break;
         }
@@ -453,7 +606,7 @@ public class CadastrarAnuncioFragment extends Fragment
     /**
      * ImagePick
      */
-    public void escolherImagem(){
+    public void escolherImagem() {
         try {
 
             PickSetup setup = new PickSetup()
@@ -498,7 +651,12 @@ public class CadastrarAnuncioFragment extends Fragment
 
                                     imagem3.setImageURI(r.getUri());
                                 }
-                                listaFotosRecuperadas.add(caminhoImagem);
+                                /*if(listaFotosRecuperadas.size() == 3) {
+                                    listaFotosRecuperadas.remove(0);
+                                }*/
+                                //listaFotosRecuperadas.add(caminhoImagem);
+                                listaFotosRecuperadas.put(requisicao, caminhoImagem);
+
                             }
                         }
                     })
@@ -508,7 +666,9 @@ public class CadastrarAnuncioFragment extends Fragment
 
                         }
                     }).show(Objects.requireNonNull(getActivity()).getSupportFragmentManager());
-        }catch (Exception e){e.printStackTrace();}
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     /**
@@ -527,7 +687,9 @@ public class CadastrarAnuncioFragment extends Fragment
             adapterEspecies = new ArrayAdapter<>(getContext(), android.R.layout.simple_spinner_item, especies);
             adapterEspecies.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
             spnEspecie.setAdapter(adapterEspecies);
-        } catch (Exception e){e.printStackTrace();}
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
         //sexos
         try {
@@ -535,33 +697,41 @@ public class CadastrarAnuncioFragment extends Fragment
 
             adapterSexos.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
             spnSexo.setAdapter(adapterSexos);
-        } catch (Exception e){e.printStackTrace();}
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
         /* idades */
-        try{
+        try {
             adapterIdades = new ArrayAdapter<>(getContext(), android.R.layout.simple_spinner_item, idades);
             adapterIdades.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
             spnIdade.setAdapter(adapterIdades);
-        } catch (Exception e){e.printStackTrace();}
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
         /* portes */
         try {
             adapterPortes = new ArrayAdapter<>(getContext(), android.R.layout.simple_spinner_item, portes);
             adapterPortes.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
             spnPorte.setAdapter(adapterPortes);
-        } catch (Exception e){e.printStackTrace();}
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
         /*estados*/
         try {
             adapterEstados = new ArrayAdapter<>(getContext(), android.R.layout.simple_spinner_item, estados);
             adapterEstados.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
             spnEstado.setAdapter(adapterEstados);
-        } catch (Exception e){e.printStackTrace();}
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
-    public void onRequestPermissionsResult ( int requestCode, @NonNull String[] permissions,
-                                             @NonNull int[] grantResults){
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions,
+                                           @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
 
         try {
@@ -570,10 +740,12 @@ public class CadastrarAnuncioFragment extends Fragment
                     alertaValidacaoPermissao();
                 }
             }
-        } catch (Exception e){e.printStackTrace();}
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
-    private void alertaValidacaoPermissao () {
+    private void alertaValidacaoPermissao() {
 
         try {
             AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
@@ -588,19 +760,24 @@ public class CadastrarAnuncioFragment extends Fragment
             });
             AlertDialog dialog = builder.create();
             dialog.show();
-        } catch (Exception e){e.printStackTrace();}
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     /**
      * esconde o teclado virtual
-     * @param context contexto
+     *
+     * @param context  contexto
      * @param editText view
      */
-    public static void hideKeyboard (Context context, View editText){
+    public static void hideKeyboard(Context context, View editText) {
         try {
             InputMethodManager imm = (InputMethodManager) context.getSystemService(Context.INPUT_METHOD_SERVICE);
             imm.hideSoftInputFromWindow(editText.getWindowToken(), 0);
-        } catch (Exception e){e.printStackTrace();}
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     /**
@@ -653,6 +830,8 @@ public class CadastrarAnuncioFragment extends Fragment
                     //mInterstitialAd.loadAd(new AdRequest.Builder().build());
                 }
             });
-        } catch (Exception e) {e.printStackTrace();}
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }

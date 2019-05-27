@@ -294,5 +294,6 @@
     <string name="a">A</string>
     <string name="b">B</string>
     <string name="nome_completo">Nome completo</string>
+    <string name="carregando_fotos">Carregando fotos…</string>
 
 </resources>

@@ -2,20 +2,13 @@ package com.celvansystems.projetoamigoanimal.adapter;
 
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
-import android.app.Notification;
-import android.app.NotificationChannel;
-import android.app.NotificationManager;
-import android.app.PendingIntent;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
-import android.media.AudioAttributes;
-import android.media.RingtoneManager;
 import android.net.Uri;
-import android.os.Build;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
@@ -50,13 +43,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-import static android.content.Context.NOTIFICATION_SERVICE;
-
 public class AdapterAnuncios extends RecyclerView.Adapter<AdapterAnuncios.MyViewHolder>
         implements Serializable {
 
     private List<Animal> anuncios;
-    //private String ultimoComentario;
 
     /**
      * construtor
@@ -365,18 +355,18 @@ public class AdapterAnuncios extends RecyclerView.Adapter<AdapterAnuncios.MyView
 
                         } else if (ctx.getString(R.string.denunciar).equalsIgnoreCase(opcoes[which])) {
                             if (ConfiguracaoFirebase.isUsuarioLogado()) {
-                            new AlertDialog.Builder(myViewHolder.itemView.getContext())
-                                    .setMessage(ctx.getText(R.string.tem_certeza_denunciar_anuncio))
-                                    .setCancelable(false)
-                                    .setPositiveButton(ctx.getText(R.string.sim), new DialogInterface.OnClickListener() {
-                                        public void onClick(DialogInterface dialog, int id) {
+                                new AlertDialog.Builder(myViewHolder.itemView.getContext())
+                                        .setMessage(ctx.getText(R.string.tem_certeza_denunciar_anuncio))
+                                        .setCancelable(false)
+                                        .setPositiveButton(ctx.getText(R.string.sim), new DialogInterface.OnClickListener() {
+                                            public void onClick(DialogInterface dialog, int id) {
 
-                                            denunciarAnuncio(myViewHolder,
-                                                    anuncio);
-                                        }
-                                    })
-                                    .setNegativeButton(ctx.getText(R.string.nao), null)
-                                    .show();
+                                                denunciarAnuncio(myViewHolder,
+                                                        anuncio);
+                                            }
+                                        })
+                                        .setNegativeButton(ctx.getText(R.string.nao), null)
+                                        .show();
                             } else {
                                 Util.setSnackBar(myViewHolder.layout, myViewHolder.itemView.getContext().getString(R.string.usuario_nao_logado));
                             }
@@ -578,38 +568,6 @@ public class AdapterAnuncios extends RecyclerView.Adapter<AdapterAnuncios.MyView
             }
 
             Util.configuraNotificacoes(ctx, anuncio);
-            ////////////////
-            /*final DatabaseReference comentarioRef = ConfiguracaoFirebase.getFirebase()
-                    .child("meus_animais")
-                    .child(anuncio.getIdAnimal())
-                    .child("comentarios");
-
-            comentarioRef.addValueEventListener(new ValueEventListener() {
-                @Override
-                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-
-                    if (anuncio.getDonoAnuncio().equalsIgnoreCase(ConfiguracaoFirebase.getIdUsuario())) {
-
-                        Comentario coment = new Comentario();
-                        int size = anuncio.getListaComentarios().size() - 1;
-                        String texto = anuncio.getListaComentarios().get(size).getTexto();
-                        coment.setTexto(texto);
-
-                        int sizeComentsNotificacoes = Util.comentariosNotificacoes.size();
-                        if ((sizeComentsNotificacoes == 0 || !Util.comentariosNotificacoes.get(sizeComentsNotificacoes-1).equalsIgnoreCase(texto))
-                                && !anuncio.getDonoAnuncio().equalsIgnoreCase(ConfiguracaoFirebase.getIdUsuario())) {
-                            Util.createNotificationMessage(ctx, ctx.getString(R.string.novo_comentario), coment.getTexto(), anuncio);
-                            //ultimoComentario = texto;
-                            Util.comentariosNotificacoes.add(texto);
-                        }
-                    }
-                }
-
-                @Override
-                public void onCancelled(@NonNull DatabaseError databaseError) {
-                }
-            });*/
-            ///////////////////////
 
         } catch (Exception e) {
             e.printStackTrace();

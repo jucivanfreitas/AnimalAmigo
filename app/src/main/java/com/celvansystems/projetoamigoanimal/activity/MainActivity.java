@@ -51,7 +51,6 @@ public class MainActivity extends AppCompatActivity
     private NavigationView navigationView;
     private InterstitialAd mInterstitialAd;
     private AdView adView;
-    private View layout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -73,7 +72,7 @@ public class MainActivity extends AppCompatActivity
 
         autenticacao = ConfiguracaoFirebase.getFirebaseAutenticacao();
 
-        layout = findViewById(R.id.view_pager);
+        View layout = findViewById(R.id.view_pager);
 
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(

@@ -41,7 +41,7 @@ import static android.content.Context.NOTIFICATION_SERVICE;
 
 public class Util {
 
-    public static List<String> comentariosNotificacoes = new ArrayList<>();
+    private static List<String> comentariosNotificacoes = new ArrayList<>();
 
     /**
      * retorna os estados
@@ -233,17 +233,19 @@ public class Util {
                 if (anuncio.getDonoAnuncio().equalsIgnoreCase(ConfiguracaoFirebase.getIdUsuario())) {
 
                     Comentario coment = new Comentario();
-                    int size = anuncio.getListaComentarios().size() - 1;
-                    String texto = anuncio.getListaComentarios().get(size).getTexto();
-                    coment.setTexto(texto);
+                    int size = anuncio.getListaComentarios().size();
+                    if(size > 0) {
+                        String texto = anuncio.getListaComentarios().get(size - 1).getTexto();
+                        coment.setTexto(texto);
 
-                    int sizeComentsNotificacoes = Util.comentariosNotificacoes.size();
-                    if ((sizeComentsNotificacoes == 0 || !Util.comentariosNotificacoes.get(sizeComentsNotificacoes-1).equalsIgnoreCase(texto))
-                            && !anuncio.getDonoAnuncio().equalsIgnoreCase(ConfiguracaoFirebase.getIdUsuario())) {
-                        createNotificationMessage(ctx, ctx.getString(R.string.novo_comentario), coment.getTexto(), anuncio);
+                        int sizeComentsNotificacoes = Util.comentariosNotificacoes.size();
+                        if ((sizeComentsNotificacoes == 0 || !Util.comentariosNotificacoes.get(sizeComentsNotificacoes - 1).equalsIgnoreCase(texto))
+                                && !anuncio.getDonoAnuncio().equalsIgnoreCase(ConfiguracaoFirebase.getIdUsuario())) {
+                            createNotificationMessage(ctx, ctx.getString(R.string.novo_comentario), coment.getTexto(), anuncio);
 
-                        //ultimoComentario = texto;
-                        Util.comentariosNotificacoes.add(texto);
+                            //ultimoComentario = texto;
+                            Util.comentariosNotificacoes.add(texto);
+                        }
                     }
                 }
             }
@@ -288,4 +290,5 @@ public class Util {
         }
         notificationManager.notify(id, b.build());
     }
+
 }

@@ -180,7 +180,7 @@ public class ComplementoLoginActivity extends AppCompatActivity {
                                         edtTelefone.setText(Objects.requireNonNull(usuarios.child("telefone").getValue()).toString());
                                     }
 
-                                    if(usuarios.child("foto").getValue() != null){
+                                    if (usuarios.child("foto").getValue() != null) {
 
                                         urlFotoAntiga = Objects.requireNonNull(usuarios.child("foto").getValue()).toString();
 
@@ -456,7 +456,6 @@ public class ComplementoLoginActivity extends AppCompatActivity {
                                 String caminhoImagem = Objects.requireNonNull(imagemSelecionada).toString();
 
                                 imvFoto.setImageURI(r.getUri());
-                                //urlFoto = caminhoImagem;
                                 usuario.setFoto(caminhoImagem);
                             }
                         }
@@ -497,7 +496,6 @@ public class ComplementoLoginActivity extends AppCompatActivity {
                         .child("perfil");
 
                 Uri selectedImage = Uri.parse(usuario.getFoto());
-                Log.d("INFO8", "selected: "+selectedImage.toString());
 
                 //imagem comprimida
                 byte[] byteArray = comprimirImagem(selectedImage);
@@ -525,9 +523,6 @@ public class ComplementoLoginActivity extends AppCompatActivity {
                             usuario.salvar();
                             Util.setSnackBar(layout, getString(R.string.sucesso_ao_fazer_upload));
 
-
-                            //startActivity(new Intent(ComplementoLoginActivity.this, MainActivity.class));
-                            //finish();
                             Intent intent = new Intent(ComplementoLoginActivity.this, MainActivity.class);
                             intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                             startActivity(intent);
@@ -552,8 +547,6 @@ public class ComplementoLoginActivity extends AppCompatActivity {
 
                 dialog.dismiss();
 
-                //startActivity(new Intent(ComplementoLoginActivity.this, MainActivity.class));
-                //finish();
                 Intent intent = new Intent(ComplementoLoginActivity.this, MainActivity.class);
                 intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 startActivity(intent);
