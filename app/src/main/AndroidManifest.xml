@@ -19,14 +19,19 @@
         android:allowBackup="true"
         android:fullBackupContent="@xml/my_backup_rules"
         android:icon="@mipmap/ic_launcher_pegada"
-        tools:replace="android:label"
         android:label="@string/nome_app"
         android:roundIcon="@mipmap/ic_launcher_pegada_round"
         android:supportsRtl="true"
-        android:theme="@style/AppTheme">
-        <activity
-            android:name=".activity.ComplementoLoginActivity"
-            />
+        android:theme="@style/AppTheme"
+        tools:replace="android:label">
+        <activity android:name=".activity.SplashScreenActivity"
+            android:theme="@style/Theme.AppCompat.NoActionBar">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity android:name=".activity.ComplementoLoginActivity" />
         <activity
             android:name=".activity.ComentariosActivity"
             android:parentActivityName=".activity.MainActivity" />
@@ -34,11 +39,7 @@
             android:name=".activity.MainActivity"
             android:label="@string/nome_app"
             android:theme="@style/AppTheme.NoActionBar.navheader">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
 
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
         </activity>
 
         <provider
