@@ -6,7 +6,7 @@
     android:id="@+id/login_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/bg_peb_cao_afago"
+    android:background="@drawable/bg_img_card_gradientbranco"
     android:elevation="0dp"
     android:gravity="center"
     android:paddingLeft="@dimen/activity_horizontal_margin"
@@ -21,14 +21,16 @@
         android:layout_width="0dp"
 
         android:layout_height="match_parent"
+        android:contentDescription="@string/logar"
+
         android:scaleType="centerCrop"
         android:visibility="invisible"
-
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintDimensionRatio="1:1"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/bg_colocrcao_afago"
-        android:contentDescription="@string/logar" />
+        app:srcCompat="@drawable/bg_colocrcao_afago" />
 
     <ProgressBar
         android:id="@+id/login_progress"
@@ -132,9 +134,10 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="8dp"
+                android:padding="10dp"
                 android:text="@string/esqueci_senha"
                 android:textAlignment="viewEnd"
-                android:textColor="@color/backgroundcolor"
+                android:textColor="@color/colorPrimaryDark"
                 android:textSize="18sp" />
 
             <LinearLayout
@@ -150,6 +153,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginEnd="5dp"
                     android:elevation="15dp"
+                    android:padding="10dp"
                     android:shadowColor="@color/black_overlay"
                     android:shadowDx="15"
                     android:text="@string/logar"
@@ -164,7 +168,8 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:gravity="center"
-                    android:shadowColor="@color/design_default_color_primary_dark"
+                    android:padding="10dp"
+                    android:shadowColor="@color/common_google_signin_btn_text_light_pressed"
                     android:textColor="@color/design_default_color_primary_dark"
                     android:textColorLink="@color/colorPrimaryDark"
                     android:textSize="24sp"
@@ -176,6 +181,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="5dp"
                     android:elevation="15dp"
+                    android:padding="10dp"
                     android:shadowColor="@color/black_overlay"
                     android:shadowDx="15"
                     android:text="@string/cadastrese"
@@ -239,9 +245,10 @@
                     android:layout_marginTop="8dp"
                     android:layout_marginEnd="8dp"
                     android:layout_marginBottom="8dp"
+                    android:padding="10dp"
                     android:text="@string/ir_anuncios"
                     android:textAlignment="viewEnd"
-                    android:textColor="@color/backgroundcolor"
+                    android:textColor="@color/colorPrimaryDark"
                     android:textSize="18sp"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
