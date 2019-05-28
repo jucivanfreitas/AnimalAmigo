@@ -36,6 +36,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="300dp"
                         app:layout_constraintBottom_toTopOf="@+id/constraintLayout3"
+                        app:layout_constraintDimensionRatio="w,16:10"
                         app:layout_constraintTop_toTopOf="parent">
 
                         <com.synnapps.carouselview.CarouselView
@@ -43,6 +44,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="300dp"
                             app:fillColor="#FFFFFFFF"
+                            app:layout_constraintDimensionRatio="w,16:10"
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintTop_toTopOf="parent"
@@ -56,12 +58,13 @@
                             android:id="@+id/imageView3"
                             android:layout_width="0dp"
                             android:layout_height="300dp"
+                            android:contentDescription="@string/detalhes"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintDimensionRatio="w,16:10"
                             app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintHorizontal_bias="1.0"
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintTop_toTopOf="parent"
-                            app:srcCompat="@drawable/bg_img_card_gradient"
-                            android:contentDescription="@string/detalhes" />
+                            app:srcCompat="@drawable/bg_img_card_gradient" />
 
                     </android.support.constraint.ConstraintLayout>
 

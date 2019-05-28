@@ -15,6 +15,7 @@
         android:layout_marginTop="8dp"
         android:layout_marginBottom="39dp"
         android:contentDescription="@string/doe_um_lar_para_um_pet"
+        android:elevation="35dp"
         android:src="@mipmap/ic_launcher_pegada_round_512"
         app:layout_constraintBottom_toTopOf="@+id/txv_pegada"
         app:layout_constraintEnd_toEndOf="parent"
