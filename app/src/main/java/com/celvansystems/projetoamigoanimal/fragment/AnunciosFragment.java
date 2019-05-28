@@ -10,6 +10,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -99,6 +100,7 @@ public class AnunciosFragment extends Fragment {
         txvSemAnuncios = view.findViewById(R.id.txv_sem_anuncios);
         txvSemAnuncios.setText(Objects.requireNonNull(getContext()).getString(R.string.nenhum_pet_encontrado));
         txvSemAnuncios.setTextSize(15);
+        txvSemAnuncios.setVisibility(View.GONE);
 
         btnLocal.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -210,6 +212,7 @@ public class AnunciosFragment extends Fragment {
     @Override
     public void onStart() {
         super.onStart();
+        txvSemAnuncios.setVisibility(View.INVISIBLE);
 
         // Verifica se há conta do google logada.
         GoogleSignInAccount account = GoogleSignIn.getLastSignedInAccount(view.getContext());
@@ -242,6 +245,7 @@ public class AnunciosFragment extends Fragment {
 
         try {
             dialog.show();
+            txvSemAnuncios.setVisibility(View.INVISIBLE);
 
             //cidade
             if (cidade != null && !cidade.equalsIgnoreCase(getString(R.string.todas)) && !cidade.equalsIgnoreCase(getString(R.string.todos))) {
@@ -330,6 +334,8 @@ public class AnunciosFragment extends Fragment {
                         adapterAnuncios.notifyDataSetChanged();
 
                         dialog.dismiss();
+                        verificaRecyclerZerada();
+
                     }
                 }
 
@@ -348,6 +354,8 @@ public class AnunciosFragment extends Fragment {
     public void filtraPorEspecie(View view) {
 
         try {
+            txvSemAnuncios.setVisibility(View.INVISIBLE);
+
             AlertDialog.Builder dialogEspecie = new AlertDialog.Builder(view.getContext());
             dialogEspecie.setTitle(getString(R.string.selecione_especie));
 
@@ -374,7 +382,7 @@ public class AnunciosFragment extends Fragment {
                     btnEspecie.setText(filtroEspecie);
                     refreshRecyclerAnuncios();
 
-                    verificaRecyclerZerada();
+                    //verificaRecyclerZerada();
                 }
 
 
@@ -401,6 +409,7 @@ public class AnunciosFragment extends Fragment {
             p.topMargin = 400; // in PX
             txvSemAnuncios.setLayoutParams(p);*/
 
+            Log.d("INFO4","sem anuncios");
             txvSemAnuncios.setVisibility(View.VISIBLE);
         } else {
             txvSemAnuncios.setVisibility(View.INVISIBLE);
@@ -415,6 +424,8 @@ public class AnunciosFragment extends Fragment {
     public void filtraPorCidade(View view) {
 
         try {
+            txvSemAnuncios.setVisibility(View.INVISIBLE);
+
             AlertDialog.Builder dialogCidade = new AlertDialog.Builder(view.getContext());
             dialogCidade.setTitle(getString(R.string.selecione_cidade));
 
@@ -427,7 +438,7 @@ public class AnunciosFragment extends Fragment {
             spinnerEstado = viewSpinner.findViewById(R.id.spinnerFiltroEstado);
             spinnerCidade = viewSpinner.findViewById(R.id.spinnerFiltroCidade);
 
-            spinnerCidade.setVisibility(View.VISIBLE);
+            //spinnerCidade.setVisibility(View.VISIBLE);
 
             ArrayList<String> cidadesLista = Util.getCidadesLista("AC", view.getContext());
 
@@ -476,7 +487,7 @@ public class AnunciosFragment extends Fragment {
                         }
                     }
                     refreshRecyclerAnuncios();
-                    verificaRecyclerZerada();
+
 
                 }
             });
