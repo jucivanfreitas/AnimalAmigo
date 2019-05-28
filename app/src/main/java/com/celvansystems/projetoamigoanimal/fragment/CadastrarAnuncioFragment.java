@@ -215,7 +215,8 @@ public class CadastrarAnuncioFragment extends Fragment
 
     /**
      * Popula imaageviews das imagens
-      * @param anuncio animal
+     *
+     * @param anuncio animal
      */
     private void configuraFotos(Animal anuncio) {
 
@@ -280,7 +281,7 @@ public class CadastrarAnuncioFragment extends Fragment
                     }
                     break;
 
-                    //imagem 2
+                //imagem 2
                 case 1:
                     try {
                         imagem2.post(new Runnable() {
@@ -318,8 +319,8 @@ public class CadastrarAnuncioFragment extends Fragment
                     }
                     break;
 
-                    //imagem 3
-                    case 2:
+                //imagem 3
+                case 2:
 
                     try {
                         imagem3.post(new Runnable() {

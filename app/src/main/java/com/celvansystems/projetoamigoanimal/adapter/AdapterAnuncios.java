@@ -1,6 +1,8 @@
 package com.celvansystems.projetoamigoanimal.adapter;
 
+import android.Manifest;
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -12,6 +14,7 @@ import android.net.Uri;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -25,6 +28,7 @@ import com.celvansystems.projetoamigoanimal.activity.ComentariosActivity;
 import com.celvansystems.projetoamigoanimal.activity.DetalhesAnimalActivity;
 import com.celvansystems.projetoamigoanimal.helper.ConfiguracaoFirebase;
 import com.celvansystems.projetoamigoanimal.helper.Constantes;
+import com.celvansystems.projetoamigoanimal.helper.Permissoes;
 import com.celvansystems.projetoamigoanimal.helper.Util;
 import com.celvansystems.projetoamigoanimal.model.Animal;
 import com.celvansystems.projetoamigoanimal.model.Comentario;
@@ -47,6 +51,11 @@ public class AdapterAnuncios extends RecyclerView.Adapter<AdapterAnuncios.MyView
         implements Serializable {
 
     private List<Animal> anuncios;
+    //Permissoes
+    private String[] permissoes = new String[]{
+            Manifest.permission.READ_EXTERNAL_STORAGE,
+            Manifest.permission.WRITE_EXTERNAL_STORAGE
+    };
 
     /**
      * construtor
@@ -62,7 +71,13 @@ public class AdapterAnuncios extends RecyclerView.Adapter<AdapterAnuncios.MyView
     public MyViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
 
         View item = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.adapter_anuncios, viewGroup, false);
+        iniciarComponentes(item);
         return new MyViewHolder(item);
+    }
+
+    private void iniciarComponentes(View item) {
+
+        Permissoes.validarPermissoes(permissoes, (Activity) item.getContext(), 1);
     }
 
     /**
@@ -310,6 +325,7 @@ public class AdapterAnuncios extends RecyclerView.Adapter<AdapterAnuncios.MyView
 
                 if (ConfiguracaoFirebase.isUsuarioLogado()) {
                     opcoesLista.add(ctx.getString(R.string.curtir));
+                    opcoesLista.add(ctx.getString(R.string.compartilhar));
                     opcoesLista.add(ctx.getString(R.string.comentar));
                     opcoesLista.add(ctx.getString(R.string.adotar));
                     opcoesLista.add(ctx.getString(R.string.denunciar));
@@ -336,6 +352,10 @@ public class AdapterAnuncios extends RecyclerView.Adapter<AdapterAnuncios.MyView
                                 Util.setSnackBar(myViewHolder.layout, myViewHolder.itemView.getContext().getString(R.string.usuario_nao_logado));
                             }
 
+
+                        } else if (ctx.getString(R.string.compartilhar).equalsIgnoreCase(opcoes[which])) {
+
+                            compartilharAnuncio(myViewHolder, anuncio);
 
                         } else if (ctx.getString(R.string.comentar).equalsIgnoreCase(opcoes[which])) {
 
@@ -637,7 +657,7 @@ public class AdapterAnuncios extends RecyclerView.Adapter<AdapterAnuncios.MyView
 
         try {
             // TODO: 13/02/2019 configurar quando o app for publicado do google play
-
+            Log.d("INFO5", "iniciado o compartilhamento");
             Context ctx = myViewHolder.itemView.getContext();
             Drawable mDrawable = myViewHolder.foto.getDrawable();
             Bitmap mBitmap = ((BitmapDrawable) mDrawable).getBitmap();
@@ -652,9 +672,12 @@ public class AdapterAnuncios extends RecyclerView.Adapter<AdapterAnuncios.MyView
                     " https://play.google.com/store/apps/details?id=" + Constantes.APPLICATION_ID + "\n\n");
             intent.putExtra(Intent.EXTRA_STREAM, uri);
             myViewHolder.itemView.getContext().startActivity(Intent.createChooser(intent, ctx.getString(R.string.compartilhando_imagem)));
+            Log.d("INFO5", "finalizado o compartilhamento");
 
         } catch (Exception e) {
             e.printStackTrace();
+            Log.d("INFO5", "erro de compartilhamento");
+
         }
     }
 

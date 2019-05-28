@@ -283,8 +283,8 @@ public class AnunciosFragment extends Fragment {
                                 if (((textoBotaoCidade.equalsIgnoreCase(getString(R.string.todas)) ||
                                         textoBotaoCidade.equalsIgnoreCase(getString(R.string.todos)) ||
                                         textoBotaoCidade.equalsIgnoreCase(getString(R.string.cidade))) && ((
-                                                textoBotaoEspecie.equalsIgnoreCase(getString(R.string.especie)) ||
-                                                        textoBotaoEspecie.equalsIgnoreCase(getString(R.string.todas)))))) {
+                                        textoBotaoEspecie.equalsIgnoreCase(getString(R.string.especie)) ||
+                                                textoBotaoEspecie.equalsIgnoreCase(getString(R.string.todas)))))) {
                                     listaAnuncios.add(animal);
 
                                 } else {
@@ -329,13 +329,11 @@ public class AnunciosFragment extends Fragment {
                                 }
                             }
                         }
-
                         Collections.reverse(listaAnuncios);
                         adapterAnuncios.notifyDataSetChanged();
 
                         dialog.dismiss();
                         verificaRecyclerZerada();
-
                     }
                 }
 
@@ -381,8 +379,6 @@ public class AnunciosFragment extends Fragment {
                     String filtroEspecie = spinnerEspecie.getSelectedItem().toString();
                     btnEspecie.setText(filtroEspecie);
                     refreshRecyclerAnuncios();
-
-                    //verificaRecyclerZerada();
                 }
 
 
@@ -404,12 +400,7 @@ public class AnunciosFragment extends Fragment {
 
     private void verificaRecyclerZerada() {
         if (getItemsSizeFromRecycler() == 0) {
-            /*RelativeLayout.LayoutParams p = (RelativeLayout.LayoutParams) txvSemAnuncios.getLayoutParams();
-            p.leftMargin = 50; // in PX
-            p.topMargin = 400; // in PX
-            txvSemAnuncios.setLayoutParams(p);*/
 
-            Log.d("INFO4","sem anuncios");
             txvSemAnuncios.setVisibility(View.VISIBLE);
         } else {
             txvSemAnuncios.setVisibility(View.INVISIBLE);
@@ -487,8 +478,6 @@ public class AnunciosFragment extends Fragment {
                         }
                     }
                     refreshRecyclerAnuncios();
-
-
                 }
             });
 
@@ -498,7 +487,6 @@ public class AnunciosFragment extends Fragment {
 
                 }
             });
-
             AlertDialog dialog = dialogCidade.create();
             dialog.show();
 

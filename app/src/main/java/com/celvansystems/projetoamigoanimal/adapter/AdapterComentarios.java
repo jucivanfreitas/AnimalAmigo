@@ -43,10 +43,6 @@ public class AdapterComentarios extends RecyclerView.Adapter<AdapterComentarios.
 
         View item = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.adapter_comentarios_activity, viewGroup, false);
 
-
-
-
-
         return new MyViewHolder(item);
     }
 

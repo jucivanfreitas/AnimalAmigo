@@ -1,5 +1,7 @@
 package com.celvansystems.projetoamigoanimal.adapter;
 
+import android.Manifest;
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -28,6 +30,7 @@ import com.celvansystems.projetoamigoanimal.fragment.AnunciosFragment;
 import com.celvansystems.projetoamigoanimal.fragment.CadastrarAnuncioFragment;
 import com.celvansystems.projetoamigoanimal.helper.ConfiguracaoFirebase;
 import com.celvansystems.projetoamigoanimal.helper.Constantes;
+import com.celvansystems.projetoamigoanimal.helper.Permissoes;
 import com.celvansystems.projetoamigoanimal.helper.Util;
 import com.celvansystems.projetoamigoanimal.model.Animal;
 import com.squareup.picasso.Picasso;
@@ -40,6 +43,11 @@ public class AdapterMeusAnuncios extends RecyclerView.Adapter<AdapterMeusAnuncio
         implements Serializable {
 
     private List<Animal> anuncios;
+    //Permissoes
+    private String[] permissoes = new String[]{
+            Manifest.permission.READ_EXTERNAL_STORAGE,
+            Manifest.permission.WRITE_EXTERNAL_STORAGE
+    };
 
     public AdapterMeusAnuncios(List<Animal> anuncios) {
         this.anuncios = anuncios;
@@ -50,13 +58,18 @@ public class AdapterMeusAnuncios extends RecyclerView.Adapter<AdapterMeusAnuncio
     public MyViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
 
         View item = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.adapter_meus_anuncios, viewGroup, false);
+        iniciarComponentes(item);
         return new MyViewHolder(item);
     }
 
+    private void iniciarComponentes(View item) {
+
+        Permissoes.validarPermissoes(permissoes, (Activity) item.getContext(), 1);
+    }
 
     private void configuracoesMaisOpcoes(AdapterMeusAnuncios.MyViewHolder myViewHolder) {
 
-        if(ConfiguracaoFirebase.isUsuarioLogado()) {
+        if (ConfiguracaoFirebase.isUsuarioLogado()) {
             myViewHolder.imvMaisOpcoesMeusAnuncios.setVisibility(View.VISIBLE);
         } else {
             myViewHolder.imvMaisOpcoesMeusAnuncios.setVisibility(View.GONE);
@@ -66,7 +79,7 @@ public class AdapterMeusAnuncios extends RecyclerView.Adapter<AdapterMeusAnuncio
     @Override
     public void onBindViewHolder(@NonNull final MyViewHolder myViewHolder, int i) {
 
-        if(anuncios != null) {
+        if (anuncios != null) {
 
             final Context ctx = myViewHolder.itemView.getContext();
 
@@ -106,20 +119,7 @@ public class AdapterMeusAnuncios extends RecyclerView.Adapter<AdapterMeusAnuncio
                         myViewHolder.imvCompartilharMeusAnuncios.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {
-                                Drawable mDrawable = myViewHolder.foto.getDrawable();
-                                Bitmap mBitmap = ((BitmapDrawable) mDrawable).getBitmap();
-
-                                String path = MediaStore.Images.Media.insertImage(myViewHolder.itemView.getContext()
-                                        .getContentResolver(), mBitmap, "Imagem", "");
-                                Uri uri = Uri.parse(path);
-
-                                Intent intent = new Intent(Intent.ACTION_SEND);
-                                intent.setType("image/jpeg");
-                                intent.putExtra(Intent.EXTRA_TEXT, ctx.getString(R.string.instale_e_conheca)+
-                                        anuncio.getNome()+ ctx.getString(R.string.disponivel_em) +
-                                        "https://play.google.com/store/apps/details?id=" + Constantes.APPLICATION_ID +"\n\n");
-                                intent.putExtra(Intent.EXTRA_STREAM, uri);
-                                myViewHolder.itemView.getContext().startActivity(Intent.createChooser(intent, ctx.getString(R.string.compartilhando_imagem)));
+                                compartilharAnuncio(myViewHolder, anuncio);
                             }
                         });
                     }
@@ -129,11 +129,11 @@ public class AdapterMeusAnuncios extends RecyclerView.Adapter<AdapterMeusAnuncio
                     @Override
                     public void onClick(View v) {
 
-                        Toast.makeText(myViewHolder.imvMaisOpcoesMeusAnuncios.getContext(), "bla", Toast.LENGTH_LONG).show();
                         List<String> opcoesLista = new ArrayList<>();
 
                         if (ConfiguracaoFirebase.getIdUsuario().equalsIgnoreCase(anuncio.getDonoAnuncio())) {
                             opcoesLista.add(ctx.getString(R.string.editar));
+                            opcoesLista.add(ctx.getString(R.string.compartilhar));
                             opcoesLista.add(ctx.getString(R.string.remover));
                         }
 
@@ -162,6 +162,10 @@ public class AdapterMeusAnuncios extends RecyclerView.Adapter<AdapterMeusAnuncio
                                     FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
                                     fragmentTransaction.replace(R.id.view_pager, cadFragment).addToBackStack("tag").commit();
 
+                                } else if (ctx.getString(R.string.compartilhar).equalsIgnoreCase(opcoes[which])) {
+
+                                    compartilharAnuncio(myViewHolder, anuncio);
+
                                 } else if (ctx.getString(R.string.remover).equals(opcoes[which])) {
 
                                     new AlertDialog.Builder(myViewHolder.itemView.getContext())
@@ -189,6 +193,26 @@ public class AdapterMeusAnuncios extends RecyclerView.Adapter<AdapterMeusAnuncio
                 });
             }
         }
+    }
+
+    private void compartilharAnuncio(MyViewHolder myViewHolder, Animal anuncio) {
+
+        Context ctx = myViewHolder.itemView.getContext();
+
+        Drawable mDrawable = myViewHolder.foto.getDrawable();
+        Bitmap mBitmap = ((BitmapDrawable) mDrawable).getBitmap();
+
+        String path = MediaStore.Images.Media.insertImage(myViewHolder.itemView.getContext()
+                .getContentResolver(), mBitmap, "Imagem", "");
+        Uri uri = Uri.parse(path);
+
+        Intent intent = new Intent(Intent.ACTION_SEND);
+        intent.setType("image/jpeg");
+        intent.putExtra(Intent.EXTRA_TEXT, ctx.getString(R.string.instale_e_conheca) +
+                anuncio.getNome() + ctx.getString(R.string.disponivel_em) +
+                "https://play.google.com/store/apps/details?id=" + Constantes.APPLICATION_ID + "\n\n");
+        intent.putExtra(Intent.EXTRA_STREAM, uri);
+        myViewHolder.itemView.getContext().startActivity(Intent.createChooser(intent, ctx.getString(R.string.compartilhando_imagem)));
     }
 
     @Override

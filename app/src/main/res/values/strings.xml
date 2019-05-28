@@ -295,5 +295,6 @@
     <string name="b">B</string>
     <string name="nome_completo">Nome completo</string>
     <string name="carregando_fotos">Carregando fotos…</string>
+    <string name="compartilhar">Compartihar…</string>
 
 </resources>
