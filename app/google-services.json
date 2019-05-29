@@ -15,11 +15,11 @@
       },
       "oauth_client": [
         {
-          "client_id": "401004222439-fpgc320ar0giebe3a9icj190sscsm18q.apps.googleusercontent.com",
+          "client_id": "401004222439-ckpf9hkpi0r1v0hav3kbf8gua31shv4p.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
             "package_name": "com.celvansystems.projetoamigoanimal",
-            "certificate_hash": "e7329d392119f04d690c0f3eb4c6511d94462612"
+            "certificate_hash": "325b315c302df6e3241f7cb40ec0ad161268c671"
           }
         },
         {
@@ -28,6 +28,14 @@
           "android_info": {
             "package_name": "com.celvansystems.projetoamigoanimal",
             "certificate_hash": "da39a3ee5e6b4b0d3255bfef95601890afd80709"
+          }
+        },
+        {
+          "client_id": "401004222439-fpgc320ar0giebe3a9icj190sscsm18q.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.celvansystems.projetoamigoanimal",
+            "certificate_hash": "e7329d392119f04d690c0f3eb4c6511d94462612"
           }
         },
         {
@@ -41,20 +49,13 @@
         }
       ],
       "services": {
-        "analytics_service": {
-          "status": 1
-        },
         "appinvite_service": {
-          "status": 2,
           "other_platform_oauth_client": [
             {
               "client_id": "401004222439-vcq1o7a32eocodqf4k2ho6t2q3c35pq0.apps.googleusercontent.com",
               "client_type": 3
             }
           ]
-        },
-        "ads_service": {
-          "status": 2
         }
       },
       "admob_app_id": "ca-app-pub-6718857112988900~9519509403"
