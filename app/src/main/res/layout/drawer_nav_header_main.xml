@@ -47,7 +47,6 @@
         android:layout_marginStart="5dp"
         android:layout_marginTop="-5dp"
         android:paddingTop="@dimen/nav_header_vertical_spacing"
-        android:text="@string/txt_nome"
         android:textAppearance="@style/TextAppearance.AppCompat.Body1"
         android:textStyle="bold"
         app:layout_constraintStart_toStartOf="@+id/imageView_perfil"
@@ -58,7 +57,6 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="4dp"
-        android:text="@string/txt_email_exemplo"
         app:layout_constraintStart_toStartOf="@+id/textview_nome_humano"
         app:layout_constraintTop_toBottomOf="@+id/textview_nome_humano" />
 

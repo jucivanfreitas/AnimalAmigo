@@ -54,6 +54,8 @@ public class MainActivity extends AppCompatActivity
     private NavigationView navigationView;
     private InterstitialAd mInterstitialAd;
     private AdView adView;
+    private ImageView imageViewPerfil;
+    private View headerView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -77,6 +79,11 @@ public class MainActivity extends AppCompatActivity
 
         View layout = findViewById(R.id.view_pager);
 
+        navigationView = findViewById(R.id.nav_view);
+        headerView = navigationView.getHeaderView(0);
+
+        imageViewPerfil = headerView.findViewById(R.id.imageView_perfil);
+
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
@@ -91,9 +98,9 @@ public class MainActivity extends AppCompatActivity
 
         if (usuario_excluido != null) {
 
-            if (usuario_excluido.equalsIgnoreCase("Sim")) {
+            if (usuario_excluido.equalsIgnoreCase(getString(R.string.sim))) {
                 Util.setSnackBar(layout, getString(R.string.usuario_excluido));
-            } else if (usuario_excluido.equalsIgnoreCase("Não")) {
+            } else if (usuario_excluido.equalsIgnoreCase(getString(R.string.nao))) {
                 Util.setSnackBar(layout, getString(R.string.falha_excluir_usuario));
             }
         }
@@ -122,11 +129,8 @@ public class MainActivity extends AppCompatActivity
                         if (usuarios.child("id").getValue() != null && ConfiguracaoFirebase.isUsuarioLogado()) {
                             if (Objects.requireNonNull(usuarios.child("id").getValue()).toString().equalsIgnoreCase(Objects.requireNonNull(user).getUid())) {
 
-                                NavigationView navigationView = findViewById(R.id.nav_view);
-                                View headerView = navigationView.getHeaderView(0);
                                 TextView navUsername = headerView.findViewById(R.id.textview_nome_humano);
                                 TextView navEmail = headerView.findViewById(R.id.textView_email_cadastrado);
-                                ImageView imageViewPerfil = headerView.findViewById(R.id.imageView_perfil);
 
                                 Usuario usuario = new Usuario();
                                 usuario.setId(ConfiguracaoFirebase.getIdUsuario());

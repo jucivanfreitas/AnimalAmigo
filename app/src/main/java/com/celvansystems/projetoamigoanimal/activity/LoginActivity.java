@@ -43,6 +43,7 @@ import com.facebook.AccessToken;
 import com.facebook.CallbackManager;
 import com.facebook.FacebookCallback;
 import com.facebook.FacebookException;
+import com.facebook.FacebookSdk;
 import com.facebook.GraphRequest;
 import com.facebook.GraphResponse;
 import com.facebook.login.LoginResult;
@@ -107,6 +108,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         setContentView(R.layout.activity_login);
         setupActionBar();
 
@@ -233,8 +235,8 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         callbackManager = CallbackManager.Factory.create();
 
         LoginButton loginButton = findViewById(R.id.login_button_facebook);
-        loginButton.setReadPermissions(Arrays.asList(
-                "email", "public_profile"));
+        /*loginButton.setReadPermissions(Arrays.asList(
+                "email", "public_profile"));*/
 
         // Callback registration
         loginButton.registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
@@ -268,8 +270,8 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                             String id = object.getString("id");
                             String first_name = object.getString("first_name");
                             String last_name = object.getString("last_name");
-                            String gender = object.getString("gender");
-                            String birthday = object.getString("birthday");
+                            //String gender = object.getString("gender");
+                            //String birthday = object.getString("birthday");
                             String image_url = "http://graph.facebook.com/" + id + "/picture?type=large";
 
                             String email;
@@ -352,14 +354,14 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         super.onStart();
 
         // Verifica se há conta do google logada.
-        /*GoogleSignInAccount account = GoogleSignIn.getLastSignedInAccount(this);
+        GoogleSignInAccount account = GoogleSignIn.getLastSignedInAccount(this);
         if(account == null) {
             Log.d("INFO40", "usuario nao logado com google");
 
         } else {
             Log.d("INFO40", "usuario logado com google");
 
-        }*/
+        }
     }
 
     @Override
@@ -367,7 +369,6 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         super.onActivityResult(requestCode, resultCode, data);
 
         callbackManager.onActivityResult(requestCode, resultCode, data);
-        //callbackManager.onActivityResult(requestCode, resultCode, data);
 
         // Result returned from launching the Intent from GoogleSignInClient.getSignInIntent(...);
         if (requestCode == Constantes.GOOGLE_REQUEST_CODE) {
@@ -376,7 +377,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                 task.addOnCompleteListener(new OnCompleteListener<GoogleSignInAccount>() {
                     @Override
                     public void onComplete(@NonNull Task<GoogleSignInAccount> task) {
-                        Log.d("INFO6", "login completo pelo google");
+
                         // Google Sign In was successful, authenticate with Firebase
                         try {
                             GoogleSignInAccount account = task.getResult(ApiException.class);
