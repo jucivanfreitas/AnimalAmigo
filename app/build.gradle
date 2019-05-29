@@ -7,7 +7,7 @@ android {
         minSdkVersion 21
         targetSdkVersion 28
         versionCode 7
-        versionName "1.1.377"
+        versionName "1.1.393"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         ndk {
             ndk.abiFilters 'armeabi-v7a', 'arm64-v8a', 'x86', 'x86_64'
