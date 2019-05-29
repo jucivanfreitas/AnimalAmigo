@@ -815,11 +815,11 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             long tempo = 1000; //5 minutos
             float distancia = 30; // 30 metros
 
-            String[] perm = new String[2];
+            String[] perm = new String[mark2];
             perm[0] = permission.ACCESS_FINE_LOCATION;
-            perm[1] = permission.ACCESS_COARSE_LOCATION;
+            perm[mark1] = permission.ACCESS_COARSE_LOCATION;
 
-            if (Permissoes.validarPermissoes(perm, this, 1)) {
+            if (Permissoes.validarPermissoes(perm, this, mark1)) {
 
                 locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, tempo, distancia, new LocationListener() {
 

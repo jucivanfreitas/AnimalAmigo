@@ -487,7 +487,7 @@ public class ComplementoLoginActivity extends AppCompatActivity {
         //salvar imagem no storage
         try {
             if (usuario.getFoto() != null && isNovaFoto) {
-                Log.d("INFO8", usuario.getFoto());
+
                 //cria nó do storage
                 final StorageReference imagemUsuario = storage
                         .child("imagens")
