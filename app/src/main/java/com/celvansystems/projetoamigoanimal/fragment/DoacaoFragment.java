@@ -44,6 +44,7 @@ public class DoacaoFragment extends Fragment implements BillingProcessor.IBillin
     }
 
     private void carregarFotoMarketing() {
+
         try {
 
             int aleatorio = aleatoriar(1, 3);
