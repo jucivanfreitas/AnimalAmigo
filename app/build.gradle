@@ -6,8 +6,8 @@ android {
         applicationId "com.celvansystems.projetoamigoanimal"
         minSdkVersion 21
         targetSdkVersion 28
-        versionCode 8
-        versionName "1.1.397"
+        versionCode 10
+        versionName "1.10.399"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         ndk {
             ndk.abiFilters 'armeabi-v7a', 'arm64-v8a', 'x86', 'x86_64'

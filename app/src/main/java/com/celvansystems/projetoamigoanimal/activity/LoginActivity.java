@@ -31,6 +31,7 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Switch;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.celvansystems.projetoamigoanimal.R;
 import com.celvansystems.projetoamigoanimal.helper.ConfiguracaoFirebase;
@@ -41,6 +42,8 @@ import com.facebook.AccessToken;
 import com.facebook.CallbackManager;
 import com.facebook.FacebookCallback;
 import com.facebook.FacebookException;
+import com.facebook.GraphRequest;
+import com.facebook.GraphResponse;
 import com.facebook.login.LoginBehavior;
 import com.facebook.login.LoginResult;
 import com.facebook.login.widget.LoginButton;
@@ -51,6 +54,7 @@ import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.common.SignInButton;
 import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.AuthResult;
@@ -67,6 +71,9 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.ValueEventListener;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -234,20 +241,25 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
 
                 handleFacebookAccessToken(loginResult.getAccessToken());
 
-                //getFbInfo();
+                getFbInfo();
+                Util.setSnackBar(layout, "login result sucesso!");
             }
 
             @Override
             public void onCancel() {
+                Util.setSnackBar(layout, "Login pelo facebook cancelado");
             }
 
             @Override
             public void onError(FacebookException exception) {
+                Util.setSnackBar(layout, "Erro: " + exception.getMessage());
+                Toast.makeText(LoginActivity.this, "Erro: " + exception.getMessage(),
+                        Toast.LENGTH_SHORT).show();
             }
         });
     }
 
-    /*private void getFbInfo() {
+    private void getFbInfo() {
         GraphRequest request = GraphRequest.newMeRequest(
                 AccessToken.getCurrentAccessToken(),
                 new GraphRequest.GraphJSONObjectCallback() {
@@ -256,6 +268,9 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                             JSONObject object,
                             GraphResponse response) {
                         try {
+
+                            Toast.makeText(LoginActivity.this, "getFB onCompleted",
+                                    Toast.LENGTH_SHORT).show();
 
                             String id, first_name, last_name, image_url, email;
 
@@ -279,13 +294,14 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                             e.printStackTrace();
                         }
                     }
+
                 });
 
         Bundle parameters = new Bundle();
         parameters.putString("fields", "id,first_name,last_name,email"); // id,first_name,last_name,email,gender,birthday,cover,picture.type(large)
         request.setParameters(parameters);
         request.executeAsync();
-    }*/
+    }
 
     /**
      * método auxiliar para login por facebook
@@ -321,7 +337,12 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                         showProgress(false);
                         mImageBg_color.setVisibility(View.INVISIBLE);
                     }
-                });
+                }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                Util.setSnackBar(layout, "Login pelo facebook Failure");
+            }
+        });
     }
 
     /**
@@ -450,61 +471,68 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                             e.printStackTrace();
                         }
                     }
-                });
+                }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                Util.setSnackBar(layout, getString(R.string.falha_realizar_login));
+            }
+        });
     }
 
     private void concluiCadastroUsuario(FirebaseUser user) {
 
-        final String uidTask = Objects.requireNonNull(user.getUid());
-        final String nomeTask = Objects.requireNonNull(user.getDisplayName());
-        final String fotoTask = Objects.requireNonNull(user.getPhotoUrl()).toString();
-        final String emailTask = Objects.requireNonNull(user.getEmail());
+        try {
+            final String uidTask = Objects.requireNonNull(user.getUid());
+            final String nomeTask = Objects.requireNonNull(user.getDisplayName());
+            final String fotoTask = Objects.requireNonNull(user.getPhotoUrl()).toString();
+            final String emailTask = Objects.requireNonNull(user.getEmail());
 
-        final DatabaseReference usuariosRef = ConfiguracaoFirebase.getFirebase()
-                .child("usuarios");
+            final DatabaseReference usuariosRef = ConfiguracaoFirebase.getFirebase()
+                    .child("usuarios");
 
-        usuariosRef.addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+            usuariosRef.addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
 
-                boolean usuarioExists = false;
+                    boolean usuarioExists = false;
 
-                //criando usuario...
-                Usuario usuario = new Usuario();
-                usuario.setId(Objects.requireNonNull(uidTask));
-                usuario.setNome(Objects.requireNonNull(nomeTask));
-                usuario.setFoto(Objects.requireNonNull(fotoTask));
-                usuario.setEmail(Objects.requireNonNull(emailTask));
+                    //criando usuario...
+                    Usuario usuario = new Usuario();
+                    usuario.setId(Objects.requireNonNull(uidTask));
+                    usuario.setNome(Objects.requireNonNull(nomeTask));
+                    usuario.setFoto(Objects.requireNonNull(fotoTask));
+                    usuario.setEmail(Objects.requireNonNull(emailTask));
 
-                for (DataSnapshot usuarios : dataSnapshot.getChildren()) {
-                    if (usuarios != null) {
-                        if (usuarios.child("id").getValue() != null) {
-                            if (Objects.requireNonNull(usuarios.child("id").getValue()).toString().equalsIgnoreCase(uidTask)) {
-                                usuarioExists = true;
+                    for (DataSnapshot usuarios : dataSnapshot.getChildren()) {
+                        if (usuarios != null) {
+                            if (usuarios.child("id").getValue() != null) {
+                                if (Objects.requireNonNull(usuarios.child("id").getValue()).toString().equalsIgnoreCase(uidTask)) {
+                                    usuarioExists = true;
 
-                                if (Objects.requireNonNull(usuarios.child("loginCompleto").getValue()).toString()
-                                        .equalsIgnoreCase("true")) {
-                                    //direciona para a tela principal
-                                    startActivity(new Intent(LoginActivity.this, MainActivity.class));
-                                } else {
-                                    startActivity(new Intent(LoginActivity.this, ComplementoLoginActivity.class));
+                                    if (Objects.requireNonNull(usuarios.child("loginCompleto").getValue()).toString()
+                                            .equalsIgnoreCase("true")) {
+                                        //direciona para a tela principal
+                                        startActivity(new Intent(LoginActivity.this, MainActivity.class));
+                                    } else {
+                                        startActivity(new Intent(LoginActivity.this, ComplementoLoginActivity.class));
+                                    }
+                                    break;
                                 }
-                                break;
                             }
                         }
                     }
+                    if (!usuarioExists) {
+                        usuario.salvar();
+                        startActivity(new Intent(LoginActivity.this, ComplementoLoginActivity.class));
+                    }
                 }
-                if (!usuarioExists) {
-                    usuario.salvar();
-                    startActivity(new Intent(LoginActivity.this, ComplementoLoginActivity.class));
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError databaseError) {
+
                 }
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-
-            }
-        });
+            });
+        } catch (Exception e) {e.printStackTrace();}
     }
 
     private void tentarLogin() {
