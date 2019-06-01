@@ -70,6 +70,8 @@ public class MainActivity extends AppCompatActivity
         configuraAdMob();
     }
 
+
+
     private void inicializarComponentes() {
 
         Toolbar toolbar = findViewById(R.id.toolbar);
