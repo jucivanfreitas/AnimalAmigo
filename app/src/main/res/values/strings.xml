@@ -293,13 +293,11 @@
     <string name="novo_comentario">Novo comentário!</string>
     <string name="a">A</string>
     <string name="b">B</string>
-    <string name="nome_completo">Nome completo</string>
-    <string name="carregando_fotos">Carregando fotos…</string>
-    <string name="compartilhar">Compartihar…</string>
-    <string name="doe_um_lar_para_um_pet">Doe seu lar para um Pet</string>
-    <string name="cooperight">CelVanSystems 2019 ©</string>
-    <string name="botao_login_facebook">Fazer login com o Facebook</string>
+    <string name="fazer_login_facebook">Fazer login com o Facebook</string>
     <string name="login_sucesso">Login realizado com sucesso!</string>
-    <string name="falha_realizar_login">Falha ao realizar login</string>
+    <string name="doe_um_lar_para_um_pet">Doe um lar para um Pet</string>
+    <string name="compartilhar">Compartilhar</string>
+    <string name="carregando_fotos">Carregando fotos…</string>
+    <string name="cooperight">CelVanSystems® 2019</string>
 
 </resources>

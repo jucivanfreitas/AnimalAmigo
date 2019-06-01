@@ -1,14 +1,303 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <string name="application_name">Pet Amigo</string>
+    <string name="action_settings">Configurações</string>
+    <string name="txt_entrar">Entrar</string>
+    <string name="txt_sair">Sair</string>
+    <string name="txt_meus_anuncios">Meus Anúncios</string>
+    <string name="title_activity_login">Sign in</string>
+
+    <string name="prompt_email">Email</string>
+    <string name="prompt_password">Senha</string>
+    <string name="action_sign_in">Login ou Registrar</string>
+    <string name="action_sign_in_short">Sign in</string>
+    <string name="error_invalid_email">E-mail inválido</string>
+    <string name="error_invalid_password">Esta senha é muito curta</string>
+    <string name="error_incorrect_password">Senha incorreta</string>
+    <string name="error_field_required">Campo obrigatório</string>
+    <string name="permission_rationale">"Contacts permissions are needed for providing email
+        completions."
+    </string>
+    <string name="title_activity_meus_anuncios">Meus Anúncios</string>
+    <string name="title_activity_cadastrar_anuncio">Cadastrar anúncio</string>
+    <string name="cadastrar">Cadastrar</string>
+    <string name="cadastrese">Cadastre-se</string>
+    <string name="logar">Logar</string>
+    <string name="anuncios">Anúncios</string>
+    <string name="cadastrar_anuncio">Cadastrar Anúncio</string>
+    <string name="descricao_do_animal">Descrição do animal</string>
+    <string name="nome_do_animal">Nome do animal</string>
+    <string name="raca">Raça</string>
+    <string name="txt_compartilhar">Compartilhar</string>
+    <string name="txt_modelo_comentarios">Fulano de tal</string>
+    <string name="txt_modelo_comentarios2">Nossa qque cadela linda, merece ganhar logo uma casa!</string>
+    <string name="barra">|</string>
+    <string name="cidade">Cidade</string>
+    <string name="especie">Espécie</string>
+    <string name="txt_cad_helper_descrição_animal">Escreva um pouco sobre a história do Pet, quais as caracteristicas, suas rotinas, se é carinhoso, se é adestrado, castrado. Conte os motivos quais levaram à Adoção ou em que condições foi encontrado!</string>
+    <string name="configuracoes">Configurações</string>
+    <string name="todo">TODO</string>
+    <string name="txt_num_curtidas">num_curtidas</string>
+    <string name="botao_curtir">btn_curtir</string>
+    <string name="ver_telefone">ver_telefone</string>
+    <string name="background_black">background_black</string>
+    <string name="txt_nun_cuti">quantidade de curtidas</string>
+    <string name="txt_curtidas">Curtidas</string>
+    <string name="txt_comentar">Comentar…</string>
+    <string name="zero">0</string>
+    <string name="doacao">Doação</string>
+    <string name="nome_app">Pet Amigo</string>
+    <string name="txt_nome">Nome do Perfil Humano</string>
+    <string name="txt_email_exemplo">nome@email.com.br</string>
+    <string name="app_id">ca-app-pub-6718857112988900~9519509403</string>
+    <string name="banner_id">ca-app-pub-6718857112988900/9409443166</string>
+    <string name="detalhes">Detalhes</string>
+
+
+    <string-array name="idade">
+        <item>0–3 meses</item>
+        <item>4–6 meses</item>
+        <item>1 ano</item>
+        <item>2 anos</item>
+        <item>3 anos ou mais</item>
+    </string-array>
+
+    <string-array name="portes">
+        <item>pequeno</item>
+        <item>médio</item>
+        <item>grande</item>
+    </string-array>
+
+    <string-array name="especies">
+        <item>Cão</item>
+        <item>Gato</item>
+        <item>Cavalo</item>
+        <item>Coelho</item>
+        <item>Ave</item>
+        <item>Réptil</item>
+        <item>Peixe</item>
+        <item>Outro</item>
+    </string-array>
+
+    <string-array name="sexos">
+        <item>Macho</item>
+        <item>Fêmea</item>
+    </string-array>
+
+    <string-array name="cidades">
+        <item>Mamanguape</item>
+        <item>Olinda</item>
+        <item>Recife</item>
+    </string-array>
+    <string name="title_activity_perfil_humano">PerfilHumanoActivity</string>
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+    <string name="nav_header_title">Android Studio</string>
+    <string name="nav_header_subtitle">android.studio@android.com</string>
+    <string name="nav_header_desc">Navigation header</string>
+    <string name="txt_minha_conta">Minha Conta</string>
+    <string name="txt_config_notificar">Configurar Notificações</string>
+    <string name="cad_novo_animal">Pet</string>
+    <string name="txt_ajudar">Saiba como Contribuir</string>
+    <string name="txt_conversas">Minhas Mensagens</string>
+    <string name="txt_Sobre_App">Sobre o App</string>
+    <string name="comunication">Comunicações</string>
+    <string name="txt_perdido">Perdido</string>
+    <string name="txt_compartilhar_app">Compartilhar App</string>
+    <string name="enc_conta">Encerrar Conta</string>
+    <string name="txt_idade">35</string>
+    <string name="txt_anos">Anos</string>
+    <string name="txt_estado">Estado</string>
+    <string name="txt_pais">País</string>
+    <string name="txt_um_pouco_sobre">Sobre mim..</string>
+    <string name="txt_genero">Sexo</string>
+    <string name="curtida">Curtida</string>
+    <string name="curtidas">Curtidas</string>
+    <string name="desativarConta">Desativar Conta</string>
+    <string name="facebook_app_id">314424992539028</string>
+    <string name="fb_login_protocol_scheme">fb314424992539028</string>
+    <string name="google_web_client">401004222439-k032p84b3o9tp5rngjjqqeiodtflfa50.apps.googleusercontent.com</string>
+    <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="ir_anuncios">Ir para os anúncios</string>
-    <string name="txt_termos_de_uso">Estes Termos de uso regem seu uso de quaisquer aplicativos ou serviços de propriedade da CelVanSystems. Denominada “CVS Mobile”, com endereço comercial sito à São Lourenço da Mata, Pernambuco-BRASIL Estes Termos de uso consistem nos termos e nas condições abaixo, juntamente com os termos definidos na Política de Privacidade (passível de alteração periodicamente). Certifique-se de estar sempre informado sobre quaisquer mudanças visitando regularmente página Legal.  1.\tCobranças: você é responsável pelo pagamento de quaisquer custos ou despesas incorridos como resultado do download e do uso de quaisquer Aplicativo da CVS, incluindo cobranças de roaming e da operadora de rede. Consulte seu provedor de serviços para obter detalhes. 2.\tNotificações push: os Aplicativos da CVS enviam notificações push aos usuários como parte do funcionamento normal. Você pode desativar essas notificações nas configurações do aplicativo. 3.\tPublicidade: alguns Aplicativos da CVS Mobile poderão exibir promoções e publicidade da CVS Mobile, bem como de terceiros. Talvez seja possível desativar os anúncios nas configurações desses aplicativos. Os outros Aplicativos da CVS Mobile são financiados por publicidade. Por isso, se preferir não receber publicidade, você precisará desativar o aplicativo. 4.\tSites, serviços ou aplicativos de terceiros: o Aplicativo da CVS Mobile pode permitir que você acesse um link ou se conecte para usar funcionalidades de sites, serviços ou aplicativos que não são controlados pela CVS Mobile (coletivamente \"Aplicativos de terceiros\"). Todos os Aplicativos de terceiros estarão sujeitos aos termos e condições do fornecedor terceirizado relevante, e a CVS Mobile não será responsável por questões relacionadas a transações ou negociações com esses terceiros nem sobre conteúdo de terceiros, conteúdo sindicado, aplicativos, serviços, sites, propagandas, links, práticas e/ou políticas de privacidade desses terceiros que possam ser acessadas por meio do Aplicativo da CVS Mobile. É sua responsabilidade verificar todos os termos legais (incluindo as políticas de privacidade e os termos de serviço/uso) dos Aplicativos de terceiros antes de fazer o download, o uso ou participar desses Aplicativos de terceiros. 5.\tIdioma: o conteúdo pode não estar disponível em seu idioma local. 6.\tEngenharia Reversa: você concorda em não desmontar, descompilar, usar engenharia reversa ou tentar de outra forma obter acesso ao código-fonte de qualquer Aplicativo da CVS Mobile ou de seus componentes. Você não pode copiar nenhuma parte do Aplicativo da CVS Mobile ou usá-lo comercialmente, alugar, emprestar, vender, publicar, licenciar, sublicenciar, distribuir, atribuir ou transferir de outra forma qualquer parte do Aplicativo da CVS Mobile para terceiros. 7.\tEstatísticas anônimas: a CVS Mobile reserva-se o direito de rastrear e reportar anonimamente suas atividades com o Aplicativo da CVS Mobile a nossos provedores de serviços estatísticos de terceiros. 8.\tProtegendo suas informações pessoais: queremos ajudar você a tomar todas as medidas necessárias para proteger sua privacidade e suas informações. Leia a Política de Privacidade da CVS Mobile e o aviso de privacidade do Aplicativo da CVS Mobile para saber o tipo de informações que são coletadas dos Aplicativos da CVS Mobile e as medidas que tomamos para proteger suas informações pessoais. 9.\tIMPORTANTE: PODEMOS, SEM NENHUMA RESPONSABILIDADE DE SUA PARTE, MODIFICAR ESTES TERMOS DE USO SEM AVISO PRÉVIO A QUALQUER MOMENTO. SEU USO CONTÍNUO DOS APLICATIVOS DA CVS MOBILE DEPOIS DE QUAISQUER MODIFICAÇÕES NESSES TERMOS DE USO ESTARÁ SUJEITO À ACEITAÇÃO DESSAS MODIFICAÇÕES. SE NÃO ACEITAR E OBEDECER A ESTES TERMOS DE USO, VOCÊ NÃO PODERÁ USAR O APLICATIVO DA CVS MOBILE NEM BAIXAR OU USAR QUALQUER SOFTWARE RELACIONADO. O USO DO APLICATIVO DA CVS MOBILE É POR SUA CONTA E RISCO. CADA APLICATIVO DA CVS MOBILE É FORNECIDO \"COMO ESTÁ\" E \"CONFORME DISPONÍVEL\". NÃO OFERECEMOS GARANTIA E NOS ISENTAMOS DE TODAS AS RESPONSABILIDADES SOBRE A DISPONIBILIDADE, A OPORTUNIDADE, A SEGURANÇA, A CONFIABILIDADE E A QUALIDADE DE QUALQUER APLICATIVO DA CVS MOBILE, QUALQUER SOFTWARE RELACIONADO OU OUTROS PRODUTOS, SERVIÇOS E INFORMAÇÕES OBTIDOS POR MEIO DO APLICATIVO DA CVS MOBILE. NÃO NOS RESPONSABILIZAMOS PELA EXCLUSÃO OU A FALHA EM ARMAZENAR OU TRANSMITIR QUALQUER CONTEÚDO OU OUTRAS INFORMAÇÕES MANTIDAS OU TRANSMITIDAS PELO APLICATIVO DA CVS MOBILE. NÃO NOS RESPONSABILIZAMOS PELA PRECISÃO OU CONFIABILIDADE DE QUALQUER INFORMAÇÃO OU RECOMENDAÇÃO TRANSMITIDA PELO APLICATIVO DA CVS MOBILE. PODEMOS, A QUALQUER MOMENTO, LIMITAR O USO OU DESCONTINUAR OS APLICATIVOS DA CVS MOBILE A CRITÉRIO PRÓPRIO. À EXTENSÃO LEGALMENTE PERMITIDA, EM HIPÓTESE ALGUMA SEREMOS RESPONSÁVEIS POR PERDAS OU DANOS DE QUALQUER NATUREZA. ALGUMAS JURISDIÇÕES NÃO PERMITEM A EXCLUSÃO OU A LIMITAÇÃO DE RESPONSABILIDADE POR DETERMINADOS DANOS. POR ISSO, A LIMITAÇÃO OU EXCLUSÃO ACIMA TALVEZ NÃO SEJA APLICÁVEL. EM HIPÓTESE ALGUMA NOSSA RESPONSABILIDADE TOTAL COM VOCÊ EXCEDERÁ O VALOR TOTAL PAGO POR VOCÊ (SE HOUVER) PELO APLICATIVO DA CVS MOBILE E O SOFTWARE RELACIONADO. 10.\tDireitos reservados: você reconhece que nós (ou nossos licenciados) somos proprietários de todos os direitos, títulos e interesses referentes ao Aplicativo da CVS Mobile e ao software relacionado. \"CVS Mobile\" é a marca comercial ou registrada da CelVanSystems. Você não pode alterar, destruir, ocultar ou remover de outra forma qualquer direito autoral ou rótulos ou avisos de propriedade nos Aplicativos da CVS Mobile. 11.\tDivulgações de terceiros: no caso de Aplicativos da CVS Mobile que contêm software de terceiros, todos os termos que acompanham esse software serão aplicados, além destes Termos de uso, e o terceiro em questão será beneficiado desses termos. 12.\tEscolha da legislação e local: de acordo com o que é permitido pelos lei aplicável dos direitos do consumidor, estes Termos de uso são regidos pela legislação do Brasil, excluindo seus conflitos com as disposições legais. Você está de acordo com a jurisdição dos tribunais Brasileiros e aceita como foro a Comarca de São Lourenço da Mata –Pernambuco-Brasil.</string>
+    <string name="senha">Senha</string>
+    <string name="sucesso_login_facebook">Sucesso ao realizar login pelo facebook</string>
+    <string name="falha_login_facebook">Falha ao realizar login pelo Facebook.</string>
+    <string name="sucesso_login_google">Sucesso ao realizar login pelo google,</string>
+    <string name="cadastro_realizado">Cadastro realizado. Acesse sua caixa de e-mails e valide sua conta.</string>
+    <string name="digite_senha_forte">Digite uma senha mais forte</string>
+    <string name="digite_email_valido">Digite um e-mail válido</string>
+    <string name="conta_cadastrada">Conta já cadastrada. Realize seu login</string>
+    <string name="usuario_inexistente">Usuário inexistente</string>
+    <string name="falha_cadastro_usuario">Falha ao cadastrar usuário</string>
+    <string name="erro">Erro:</string>
+    <string name="sucesso_login">Sucesso ao realizar login.</string>
+    <string name="email_nao_verificado">E-mail não verificado. Gentileza verificar sua caixa de e-mail.</string>
+    <string name="falha_login">Falha ao realizar login:</string>
+    <string name="selecione_especie">Selecione a espécie desejada</string>
+    <string name="cancelar">Cancelar</string>
+    <string name="selecione_cidade">Selecione a cidade desejada</string>
+    <string name="todos">Todos</string>
+    <string name="todas">Todas</string>
+    <string name="salvando_anuncio">Salvando anúncio</string>
+    <string name="sucesso_ao_fazer_upload">Sucesso ao fazer upload</string>
+    <string name="falha_upload">Falha ao fazer upload</string>
+    <string name="preencha_descricao">Preencha o campo descrição!</string>
+    <string name="preencha_cidade">Preencha o campo cidade!</string>
+    <string name="preencha_estado">Preencha o campo estado!</string>
+    <string name="preencha_raca">Preencha o campo raça!</string>
+    <string name="preencha_porte">Preencha o campo porte!</string>
+    <string name="preencha_idade">Preencha o campo idade!</string>
+    <string name="preencha_sexo">Preencha o campo sexo!</string>
+    <string name="preencha_especie">Preencha o campo especie!</string>
+    <string name="preencha_nome">Preencha o campo nome!</string>
+    <string name="selecione_foto">Selecione pelo menos uma foto!</string>
+    <string name="escolha">Escolha</string>
+    <string name="cameraa">Câmera</string>
+    <string name="galeria">Galeria</string>
+    <string name="permissoes_negadas">Permissões negadas</string>
+    <string name="necessario_aceitar_permissoes">Para utilizar o app é necessário aceitar as permissões</string>
+    <string name="confirmar">Confirmar</string>
+    <string name="telefone_nao_cadastrado">Telefone não cadastrado.</string>
+    <string name="anuncio_excluido">Anúncio excluído!</string>
+    <string name="fotos_excluidas">Fotos excluídas com sucesso</string>
+    <string name="falha_deletar_fotos">Falha ao deletar fotos</string>
+    <string name="falha_carregar_anuncios">Falha ao carregar anúncios.</string>
+    <string name="esqueci_senha">Esqueci minha senha</string>
+    <string name="email_enviado">Um e-mail foi enviado para você.</string>
+    <string name="email_senha_invalido">E-mail ou senha inválido!</string>
+    <string name="falha_enviar_email_recuperacao">Falha ao enviar e-mail de recuperação de senha.</string>
+    <string name="txt_modificar">Modificar</string>
+    <string name="adotar_pet">Adotar Pet</string>
+    <string name="cadastrar_pet">Cadastrar Pet</string>
+    <string name="txt_termos_de_uso">
+                 Estes Termos de uso regem seu uso de quaisquer aplicativos ou serviços de propriedade da CelVanSystems.\n
+        \n
+
+       <u> "Estes Termos de uso regem seu uso de quaisquer aplicativos ou serviços de propriedade da CelVanSystems. </u>
+        Denominada “CVS Mobile”, com endereço comercial sito à São Lourenço da Mata, Pernambuco-BRASIL Estes Termos de uso consistem nos termos e nas condições abaixo, juntamente com os termos definidos na Política de Privacidade (passível de alteração periodicamente).
+        \n Certifique-se de estar sempre informado sobre quaisquer mudanças visitando regularmente página Legal.
+\n\n        1. Cobranças: você é responsável pelo pagamento de quaisquer custos ou despesas incorridos como resultado do download e do uso de quaisquer Aplicativo da CVS, incluindo cobranças de roaming e da operadora de rede. Consulte seu provedor de serviços para obter detalhes.
+ \n\n       2. Notificações push: os Aplicativos da CVS enviam notificações push aos usuários como parte do funcionamento normal. Você pode desativar essas notificações nas configurações do aplicativo.
+  \n\n      3. Publicidade: alguns Aplicativos da CVS Mobile poderão exibir promoções e publicidade da CVS Mobile, bem como de terceiros. Talvez seja possível desativar os anúncios nas configurações desses aplicativos. Os outros Aplicativos da CVS Mobile são financiados por publicidade. Por isso, se preferir não receber publicidade, você precisará desativar o aplicativo.
+\n\n        4. Sites, serviços ou aplicativos de terceiros: o Aplicativo da CVS Mobile pode permitir que você acesse um link ou se conecte para usar funcionalidades de sites, serviços ou aplicativos que não são controlados pela CVS Mobile (coletivamente "Aplicativos de terceiros"). Todos os Aplicativos de terceiros estarão sujeitos aos termos e condições do fornecedor terceirizado relevante, e a CVS Mobile não será responsável por questões relacionadas a transações ou negociações com esses terceiros nem sobre conteúdo de terceiros, conteúdo sindicado, aplicativos, serviços, sites, propagandas, links, práticas e/ou políticas de privacidade desses terceiros que possam ser acessadas por meio do Aplicativo da CVS Mobile. É sua responsabilidade verificar todos os termos legais (incluindo as políticas de privacidade e os termos de serviço/uso) dos Aplicativos de terceiros antes de fazer o download, o uso ou participar desses Aplicativos de terceiros.
+ \n\n
+   \n\n     5. Idioma: o conteúdo pode não estar disponível em seu idioma local.
+\n\n
+        \n\n6. Engenharia Reversa: você concorda em não desmontar, descompilar, usar engenharia reversa ou tentar de outra forma obter acesso ao código-fonte de qualquer Aplicativo da CVS Mobile ou de seus componentes. Você não pode copiar nenhuma parte do Aplicativo da CVS Mobile ou usá-lo comercialmente, alugar, emprestar, vender, publicar, licenciar, sublicenciar, distribuir, atribuir ou transferir de outra forma qualquer parte do Aplicativo da CVS Mobile para terceiros.
+\n\n        7. Estatísticas anônimas: a CVS Mobile reserva-se o direito de rastrear e reportar anonimamente suas atividades com o Aplicativo da CVS Mobile a nossos provedores de serviços estatísticos de terceiros.
+ \n\n       8. Protegendo suas informações pessoais: queremos ajudar você a tomar todas as medidas necessárias para proteger sua privacidade e suas informações. Leia a Política de Privacidade da CVS Mobile e o aviso de privacidade do Aplicativo da CVS Mobile para saber o tipo de informações que são coletadas dos Aplicativos da CVS Mobile e as medidas que tomamos para proteger suas informações pessoais.
+  \n\n      9. IMPORTANTE: PODEMOS, SEM NENHUMA RESPONSABILIDADE DE SUA PARTE, MODIFICAR ESTES TERMOS DE USO SEM AVISO PRÉVIO A QUALQUER MOMENTO. SEU USO CONTÍNUO DOS APLICATIVOS DA CVS MOBILE DEPOIS DE QUAISQUER MODIFICAÇÕES NESSES TERMOS DE USO ESTARÁ SUJEITO À ACEITAÇÃO DESSAS MODIFICAÇÕES. SE NÃO ACEITAR E OBEDECER A ESTES TERMOS DE USO, VOCÊ NÃO PODERÁ USAR O APLICATIVO DA CVS MOBILE NEM BAIXAR OU USAR QUALQUER SOFTWARE RELACIONADO. O USO DO APLICATIVO DA CVS MOBILE É POR SUA CONTA E RISCO. CADA APLICATIVO DA CVS MOBILE É FORNECIDO \"COMO ESTÁ\" E \"CONFORME DISPONÍVEL\". NÃO OFERECEMOS GARANTIA E NOS ISENTAMOS DE TODAS AS RESPONSABILIDADES SOBRE A DISPONIBILIDADE, A OPORTUNIDADE, A SEGURANÇA, A CONFIABILIDADE E A QUALIDADE DE QUALQUER APLICATIVO DA CVS MOBILE, QUALQUER SOFTWARE RELACIONADO OU OUTROS PRODUTOS, SERVIÇOS E INFORMAÇÕES OBTIDOS POR MEIO DO APLICATIVO DA CVS MOBILE. NÃO NOS RESPONSABILIZAMOS PELA EXCLUSÃO OU A FALHA EM ARMAZENAR OU TRANSMITIR QUALQUER CONTEÚDO OU OUTRAS INFORMAÇÕES MANTIDAS OU TRANSMITIDAS PELO APLICATIVO DA CVS MOBILE. NÃO NOS RESPONSABILIZAMOS PELA PRECISÃO OU CONFIABILIDADE DE QUALQUER INFORMAÇÃO OU RECOMENDAÇÃO TRANSMITIDA PELO APLICATIVO DA CVS MOBILE. PODEMOS, A QUALQUER MOMENTO, LIMITAR O USO OU DESCONTINUAR OS APLICATIVOS DA CVS MOBILE A CRITÉRIO PRÓPRIO. À EXTENSÃO LEGALMENTE PERMITIDA, EM HIPÓTESE ALGUMA SEREMOS RESPONSÁVEIS POR PERDAS OU DANOS DE QUALQUER NATUREZA. ALGUMAS JURISDIÇÕES NÃO PERMITEM A EXCLUSÃO OU A LIMITAÇÃO DE RESPONSABILIDADE POR DETERMINADOS DANOS. POR ISSO, A LIMITAÇÃO OU EXCLUSÃO ACIMA TALVEZ NÃO SEJA APLICÁVEL. EM HIPÓTESE ALGUMA NOSSA RESPONSABILIDADE TOTAL COM VOCÊ EXCEDERÁ O VALOR TOTAL PAGO POR VOCÊ (SE HOUVER) PELO APLICATIVO DA CVS MOBILE E O SOFTWARE RELACIONADO.
+ \n\n       10.Direitos reservados: você reconhece que nós (ou nossos licenciados) somos proprietários de todos os direitos, títulos e interesses referentes ao Aplicativo da CVS Mobile e ao software relacionado. "CVS Mobile" é a marca comercial ou registrada da CelVanSystems. Você não pode alterar, destruir, ocultar ou remover de outra forma qualquer direito autoral ou rótulos ou avisos de propriedade nos Aplicativos da CVS Mobile.
+\n\n        11.Divulgações de terceiros: no caso de Aplicativos da CVS Mobile que contêm software de terceiros, todos os termos que acompanham esse software serão aplicados, além destes Termos de uso, e o terceiro em questão será beneficiado desses termos.
+ \n\n       12.Escolha da legislação e local: de acordo com o que é permitido pelos lei aplicável dos direitos do consumidor, estes Termos de uso são regidos pela legislação do Brasil, excluindo seus conflitos com as disposições legais. Você está de acordo com a jurisdição dos tribunais Brasileiros e aceita como foro a Comarca de São Lourenço da Mata –Pernambuco-Brasil.</string>
+    "
     <string name="btn_termo">Termo de USO</string>
-    <string name="nome_completo">Nome completo</string>
-    <string name="carregando_fotos">Carregando fotos…</string>
-    <string name="compartilhar">Compartihar…</string>
-    <string name="doe_um_lar_para_um_pet">Doe seu lar para um Pet</string>
-    <string name="cooperight">CelVanSystems 2019 ©</string>
-    <string name="botao_login_facebook">Fazer login com o Facebook</string>
+    <string name="txt_loren">Lorem ipsum ultrices felis fusce bibendum viverra amet elit, ornare posuere mattis sociosqu nostra justo dictumst ultricies interdum, dapibus ut fringilla integer euismod at velit. mi curae diam dui maecenas a habitant sapien tempor metus lectus blandit, hendrerit adipiscing potenti viverra aenean diam purus non justo etiam habitant hac, velit dictum etiam imperdiet at semper sollicitudin pharetra malesuada platea. convallis interdum convallis cubilia dictumst vestibulum sociosqu viverra mollis, sit a orci convallis ultrices aliquam laoreet cras ac, dui proin nunc at etiam accumsan vestibulum. rhoncus nostra curabitur viverra in pretium id, aptent phasellus libero molestie egestas class adipiscing, egestas eget sollicitudin nec conubia.   \tEt elit nisi potenti gravida curae in eget quisque, mauris euismod litora faucibus magna tempus elit. faucibus erat malesuada scelerisque rhoncus lorem congue pretium ultrices enim massa, nec morbi magna commodo lectus arcu aenean consectetur vestibulum, blandit curabitur id platea lobortis pellentesque lorem taciti est. sagittis interdum rhoncus vivamus sodales mauris erat faucibus eros bibendum facilisis sodales, curabitur fermentum auctor etiam orci quam sem vel lobortis nisl aptent laoreet, auctor eros semper euismod tellus sit libero ad consequat cursus. aenean senectus mi ut tempus quam sem risus, eu viverra elit leo nostra ut, dictumst sagittis fames eleifend dapibus pellentesque.   \tFelis quam luctus quam id faucibus iaculis at lectus, aliquam ultrices inceptos enim diam fames pretium volutpat, tincidunt pellentesque etiam a duis sagittis ad. maecenas in feugiat turpis odio lobortis sem massa, ultricies porttitor luctus elementum fermentum inceptos, aliquam est facilisis nam conubia pellentesque. per purus euismod vulputate mi at consequat nisl vitae fringilla, tempus est nostra quisque purus tincidunt cras suscipit cursus, ullamcorper rhoncus sapien felis commodo pharetra dolor lorem. euismod aliquam volutpat at rhoncus malesuada vel tellus eget sociosqu ante suscipit lectus dapibus praesent aliquam urna, class etiam pulvinar tristique vivamus dui scelerisque justo facilisis lobortis curabitur leo quis est.   \tTorquent auctor dictum scelerisque fringilla ullamcorper maecenas proin, ante convallis aliquam turpis senectus augue, tempus nibh vitae orci sapien mattis. vivamus porta eleifend nam lacinia luctus augue sapien semper fermentum maecenas, fusce lacinia eu vel est cursus neque consectetur. auctor lobortis tristique vestibulum sit malesuada felis per leo integer volutpat, mauris arcu magna tincidunt class inceptos cursus erat vestibulum nulla quam, metus nam feugiat ut dolor habitant sem aliquet pellentesque. ut ullamcorper ut erat cubilia et hac urna ultricies aliquam varius, porta mattis sollicitudin mollis primis lorem mi commodo accumsan.   \tUrna habitant vestibulum orci blandit ut odio, luctus ultricies viverra eleifend facilisis, odio metus adipiscing elit dolor. vehicula imperdiet auctor neque dictum congue dolor cubilia aptent faucibus maecenas nulla, eleifend augue magna primis rhoncus scelerisque lobortis sit aenean odio. neque curabitur nibh velit curabitur quisque eu facilisis integer vestibulum cursus vestibulum, donec bibendum curae cras tortor eros mattis pellentesque fusce dolor. ultricies class conubia in bibendum dapibus tellus nostra interdum, donec volutpat vivamus dolor phasellus fringilla fermentum, dolor at nullam ligula pharetra vestibulum integer. risus cras suspendisse taciti urna donec auctor, habitasse aliquam dictum scelerisque cursus cubilia, habitant duis dictumst adipiscing elementum.</string>
+    <string name="tst">Estes Termos de uso regem seu uso de quaisquer aplicativos ou serviços de propriedade da CelVanSystems. Denominada “CVS Mobile”, com endereço comercial sito à São Lourenço da Mata, Pernambuco-BRASIL              Estes Termos de uso consistem nos termos e nas condições abaixo, juntamente com os termos definidos na Política de Privacidade (passível de alteração periodicamente).              Certifique-se de estar sempre informado sobre quaisquer mudanças visitando regularmente página Legal.                          1. Cobranças: você é responsável pelo pagamento de quaisquer custos ou despesas incorridos como resultado do download e do uso de quaisquer Aplicativo da CVS, incluindo cobranças de roaming e da operadora de rede. Consulte seu provedor de serviços para obter detalhes.                          2. Notificações push: os Aplicativos da CVS enviam notificações push aos usuários como parte do funcionamento normal. Você pode desativar essas notificações nas configurações do aplicativo.                          3. Publicidade: alguns Aplicativos da CVS Mobile poderão exibir promoções e publicidade da CVS Mobile, bem como de terceiros. Talvez seja possível desativar os anúncios nas configurações desses aplicativos. Os outros Aplicativos da CVS Mobile são financiados por publicidade. Por isso, se preferir não receber publicidade, você precisará desativar o aplicativo.                          4. Sites, serviços ou aplicativos de terceiros: o Aplicativo da CVS Mobile pode permitir que você acesse um link ou se conecte para usar funcionalidades de sites, serviços ou aplicativos que não são controlados pela CVS Mobile (coletivamente Aplicativos de terceiros). Todos os Aplicativos de terceiros estarão sujeitos aos termos e condições do fornecedor terceirizado relevante, e a CVS Mobile não será responsável por questões relacionadas a transações ou negociações com esses terceiros nem sobre conteúdo de terceiros, conteúdo sindicado, aplicativos, serviços, sites, propagandas, links, práticas e/ou políticas de privacidade desses terceiros que possam ser acessadas por meio do Aplicativo da CVS Mobile. É sua responsabilidade verificar todos os termos legais (incluindo as políticas de privacidade e os termos de serviço/uso) dos Aplicativos de terceiros antes de fazer o download, o uso ou participar desses Aplicativos de terceiros.                          5. Idioma: o conteúdo pode não estar disponível em seu idioma local.                          6. Engenharia Reversa: você concorda em não desmontar, descompilar, usar engenharia reversa ou tentar de outra forma obter acesso ao código-fonte de qualquer Aplicativo da CVS Mobile ou de seus componentes. Você não pode copiar nenhuma parte do Aplicativo da CVS Mobile ou usá-lo comercialmente, alugar, emprestar, vender, publicar, licenciar, sublicenciar, distribuir, atribuir ou transferir de outra forma qualquer parte do Aplicativo da CVS Mobile para terceiros.                          7. Estatísticas anônimas: a CVS Mobile reserva-se o direito de rastrear e reportar anonimamente suas atividades com o Aplicativo da CVS Mobile a nossos provedores de serviços estatísticos de terceiros.                          8. Protegendo suas informações pessoais: queremos ajudar você a tomar todas as medidas necessárias para proteger sua privacidade e suas informações. Leia a Política de Privacidade da CVS Mobile e o aviso de privacidade do Aplicativo da CVS Mobile para saber o tipo de informações que são coletadas dos Aplicativos da CVS Mobile e as medidas que tomamos para proteger suas informações pessoais.                          9. IMPORTANTE: PODEMOS, SEM NENHUMA RESPONSABILIDADE DE SUA PARTE, MODIFICAR ESTES TERMOS DE USO SEM AVISO PRÉVIO A QUALQUER MOMENTO. SEU USO CONTÍNUO DOS APLICATIVOS DA CVS MOBILE DEPOIS DE QUAISQUER MODIFICAÇÕES NESSES TERMOS DE USO ESTARÁ SUJEITO À ACEITAÇÃO DESSAS MODIFICAÇÕES. SE NÃO ACEITAR E OBEDECER A ESTES TERMOS DE USO, VOCÊ NÃO PODERÁ USAR O APLICATIVO DA CVS MOBILE NEM BAIXAR OU USAR QUALQUER SOFTWARE RELACIONADO. O USO DO APLICATIVO DA CVS MOBILE É POR SUA CONTA E RISCO. CADA APLICATIVO DA CVS MOBILE É FORNECIDO COMO ESTÁ E CONFORME DISPONÍVEL. NÃO OFERECEMOS GARANTIA E NOS ISENTAMOS DE TODAS AS RESPONSABILIDADES SOBRE A DISPONIBILIDADE, A OPORTUNIDADE, A SEGURANÇA, A CONFIABILIDADE E A QUALIDADE DE QUALQUER APLICATIVO DA CVS MOBILE, QUALQUER SOFTWARE RELACIONADO OU OUTROS PRODUTOS, SERVIÇOS E INFORMAÇÕES OBTIDOS POR MEIO DO APLICATIVO DA CVS MOBILE. NÃO NOS RESPONSABILIZAMOS PELA EXCLUSÃO OU A FALHA EM ARMAZENAR OU TRANSMITIR QUALQUER CONTEÚDO OU OUTRAS INFORMAÇÕES MANTIDAS OU TRANSMITIDAS PELO APLICATIVO DA CVS MOBILE. NÃO NOS RESPONSABILIZAMOS PELA PRECISÃO OU CONFIABILIDADE DE QUALQUER INFORMAÇÃO OU RECOMENDAÇÃO TRANSMITIDA PELO APLICATIVO DA CVS MOBILE. PODEMOS, A QUALQUER MOMENTO, LIMITAR O USO OU DESCONTINUAR OS APLICATIVOS DA CVS MOBILE A CRITÉRIO PRÓPRIO. À EXTENSÃO LEGALMENTE PERMITIDA, EM HIPÓTESE ALGUMA SEREMOS RESPONSÁVEIS POR PERDAS OU DANOS DE QUALQUER NATUREZA. ALGUMAS JURISDIÇÕES NÃO PERMITEM A EXCLUSÃO OU A LIMITAÇÃO DE RESPONSABILIDADE POR DETERMINADOS DANOS. POR ISSO, A LIMITAÇÃO OU EXCLUSÃO ACIMA TALVEZ NÃO SEJA APLICÁVEL. EM HIPÓTESE ALGUMA NOSSA RESPONSABILIDADE TOTAL COM VOCÊ EXCEDERÁ O VALOR TOTAL PAGO POR VOCÊ (SE HOUVER) PELO APLICATIVO DA CVS MOBILE E O SOFTWARE RELACIONADO.                          10.Direitos reservados: você reconhece que nós (ou nossos licenciados) somos proprietários de todos os direitos, títulos e interesses referentes ao Aplicativo da CVS Mobile e ao software relacionado. \"CVS Mobile\" é a marca comercial ou registrada da CelVanSystems. Você não pode alterar, destruir, ocultar ou remover de outra forma qualquer direito autoral ou rótulos ou avisos de propriedade nos Aplicativos da CVS Mobile.                          11.Divulgações de terceiros: no caso de Aplicativos da CVS Mobile que contêm software de terceiros, todos os termos que acompanham esse software serão aplicados, além destes Termos de uso, e o terceiro em questão será beneficiado desses termos.                          12.Escolha da legislação e local: de acordo com o que é permitido pelos lei aplicável dos direitos do consumidor, estes Termos de uso são regidos pela legislação do Brasil, excluindo seus conflitos com as disposições legais. Você está de acordo com a jurisdição dos tribunais Brasileiros e aceita como foro a Comarca de São Lourenço da Mata –Pernambuco-Brasil.\"</string>
+    <string name="nao_foi_possivel_email">Não foi possível enviar o e-mail de recuperaçã de senha.</string>
+    <string name="atualizando_pets">Atualizando Pets…</string>
+    <string name="bg_pegadas">Pegadas</string>
+    <string name="interAdTestId">ca-app-pub-3940256099942544/1033173712</string>
+    <string name="mobileadsIdTeste">ca-app-pub-3940256099942544~3347511713</string>
+    <string name="testeDeviceId">33BE2250B43518CCDA7DE426D04EE231</string>
+    <string name="imageButton_comentar_description">Botão para enviar comentário</string>
+    <string name="editTextComentar_description">Campo para inserir um comentário</string>
+    <string name="ver_todos_os">Ver todos os</string>
+    <string name="comentarios">comentários</string>
+    <string name="comentario">comentário</string>
+    <string name="ver">Ver</string>
+    <string name="comentarios_titulo">Comentários</string>
+    <string name="texto_perfil_humano_fragment">texto perfil humano fragment</string>
+    <string name="usuario">Usuário</string>
+    <string name="email">E-mail</string>
+    <string name="txt_nome_completo">Nome Completo</string>
+    <string name="txt_telefone">Telefone para contato</string>
+    <string name="txt_nascimento">Data de Nascimento</string>
+    <string name="txt_ocupação">Qual sua profissão?</string>
+    <string name="atualizar_cadastro">Atualizar cadastro</string>
+    <string name="txt_saber_mais">Quero Saber Mais…</string>
+    <string name="txt_locallização">Localização do PET</string>
+    <string name="txt_pouco_sobre">Sobre o PET</string>
+    <string name="txt_diz">Diz:</string>
+    <string name="txt_data">Data</string>
+    <string name="txt_inserir_foto">Vamos Inserir uma foto sua??</string>
+    <string name="txt_voltar">Voltar..</string>
+    <string name="txt_proximo">Próximo</string>
+    <string name="txt_cadastro">Precisamos completar seu cadastro</string>
+    <string name="txt_qual_nome">Qua seu nome??</string>
+    <string name="txt_seu_telefon">Insira seu telefone..</string>
+    <string name="txt_local_user">De onde você é?</string>
+    <string name="txt_finalizar_cadastro">Finalizar cadastro</string>
+    <string name="proximo">Próximo</string>
+    <string name="salvando_usuario">Salvando usuário</string>
+    <string name="txt_nomee">Nome:</string>
+    <string name="txt_celio">Célio Alves da Silveira</string>
+    <string name="txt_cidade">Cidade:</string>
+    <string name="txt_riolargo">Rio Largo</string>
+    <string name="txt_alagoas">Alagoas</string>
+    <string name="txt_contato">Contato:</string>
+    <string name="txt_teste">a</string>
+    <string name="perfis">perfis</string>
+    <string name="edite_seu_perfil">[Edite seu perfil]</string>
+    <string name="escolha_uma_opcao">Escolha uma opção</string>
+    <string name="anuncio_denunciado">Anúncio denunciado!</string>
+    <string name="usuario_ja_denunciou">Usuário já denunciou</string>
+    <string name="nao">Não</string>
+    <string name="sim">Sim</string>
+    <string name="curtir">Curtir</string>
+    <string name="comentar">Comentar…</string>
+    <string name="adotar">Adotar…</string>
+    <string name="denunciar">Denunciar…</string>
+    <string name="tem_certeza_denunciar_anuncio">Tem certeza de que deseja denunciar este anúncio?</string>
+    <string name="ver_comentario">Ver %d comentário</string>
+    <string name="ver_todos_comentarios">Ver todos os %d comentários</string>
+    <string name="usuario_nao_logado">Usuário não logado!</string>
+    <string name="anonimo">Anônimo</string>
+    <string name="comentario_inserido">Comentário inserido!</string>
+    <string name="comentario_invalido">Comentário inválido!</string>
+    <string name="usuario_ja_curtiu">Usuário já curtiu </string>
+    <string name="anuncio_curtido">Anúncio curtido!</string>
+    <string name="nao_ha_anuncios">Não há anúncios a serem exibidos nesta seleção. Tente outras opções!</string>
+    <string name="usuario_facebook">Usuário logado pelo facebook</string>
+    <string name="usuario_google">Usuário logado pelo google</string>
+    <string name="nenhum_pet_encontrado">Nenhum Pet encontrado. Tente outra opção!</string>
+    <string name="txt_doarAgora">Doar Agora</string>
+    <string name="button">Button</string>
+    <string name="title_activity_in_app_billing">InAppBillingActivity</string>
+    <string name="txt_editar">Editar</string>
+    <string name="txt_doar10">Doar Dez Reais</string>
+    <string name="txt_doar5">Doar Cinco reais</string>
+    <string name="txt_doar5reais">Doar Cinco Reais</string>
+    <string name="txt_doar2">Doar Dois reais</string>
+    <string name="txt_mkt">Marketing App Pet Amigo</string>
+    <string name="procurando_anuncios">Procurando anúncios…</string>
+    <string name="insira_comentario_valido">Insira um comentário válido!</string>
+    <string name="insira_seu_email">Insira seu e-mail!</string>
+    <string name="insira_seu_nome">Insira seu nome!</string>
+    <string name="instale_e_conheca">Instale o App Pet Amigo e conheça o(a)</string>
+    <string name="disponivel_em">! Disponível em</string>
+    <string name="compartilhando_imagem">Compartilhando imagem…</string>
+    <string name="remover">Remover</string>
+    <string name="editar">Editar</string>
+    <string name="tem_certeza_excluir_anuncio">Tem certeza de que deseja excluir este anúncio?</string>
+    <string name="tem_certeza_desativar_conta">Tem certeza que deseja desativar sua conta?</string>
+    <string name="estaa_opcao_nao_podera_revertida">Esta opção não poderá ser revertida.</string>
+    <string name="usuario_excluido">Usuário excluído com sucesso!</string>
+    <string name="falha_excluir_usuario">Falha ao excluir usuário!</string>
+    <string name="complemento">complemento</string>
+    <string name="sobre_mim">Sobre Mim</string>
+    <string name="mais_opcoes">mais_opcoes</string>
+    <string name="teste_fragment_cadasrtrar_ado_o">teste fragment cadasrtrar adoção</string>
+    <string name="txt_edit_nome">Editar Nome</string>
+    <string name="txt_voltarr"><![CDATA[<<< Voltar]]></string>
+    <string name="txt_edit_cidade">Editar Cidade</string>
+    <string name="novo_comentario">Novo comentário!</string>
+    <string name="a">A</string>
+    <string name="b">B</string>
+    <string name="fazer_login_facebook">Fazer login com o Facebook</string>
     <string name="login_sucesso">Login realizado com sucesso!</string>
-    <string name="falha_realizar_login">Falha ao realizar login</string>
+    <string name="doe_um_lar_para_um_pet">Doe um lar para um Pet</string>
+    <string name="compartilhar">Compartilhar</string>
+    <string name="carregando_fotos">Carregando fotos…</string>
+    <string name="cooperight">CelVanSystems® 2019</string>
 </resources>

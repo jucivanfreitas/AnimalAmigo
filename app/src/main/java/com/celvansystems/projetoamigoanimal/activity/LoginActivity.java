@@ -29,6 +29,7 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Switch;
 import android.widget.TextView;
+
 import com.celvansystems.projetoamigoanimal.R;
 import com.celvansystems.projetoamigoanimal.helper.ConfiguracaoFirebase;
 import com.celvansystems.projetoamigoanimal.helper.Constantes;
@@ -38,7 +39,6 @@ import com.facebook.AccessToken;
 import com.facebook.CallbackManager;
 import com.facebook.FacebookCallback;
 import com.facebook.FacebookException;
-import com.facebook.login.LoginBehavior;
 import com.facebook.login.LoginResult;
 import com.facebook.login.widget.LoginButton;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
@@ -219,13 +219,13 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             callbackManager = CallbackManager.Factory.create();
 
             LoginButton loginButton = findViewById(R.id.login_button_facebook);
-            loginButton.setLoginText(getString(R.string.botao_login_facebook));
-            loginButton.setLoginBehavior(LoginBehavior.WEB_ONLY);
+            loginButton.setLoginText(getString(R.string.fazer_login_facebook));
+            //loginButton.setLoginBehavior(LoginBehavior.WEB_ONLY);
 
             loginButton.setPermissions(Arrays.asList(
                     "email", "public_profile"));
             //loginButton.setReadPermissions(Arrays.asList(
-             //       "email", "public_profile"));
+            //       "email", "public_profile"));
 
             //Callback registration
             loginButton.registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
@@ -322,7 +322,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
 
                                     Util.setSnackBar(layout, getString(R.string.login_sucesso));
                                 } else {
-                                    Util.setSnackBar(layout, getString(R.string.falha_realizar_login));
+                                    Util.setSnackBar(layout, getString(R.string.falha_login));
                                 }
                             } catch (Exception e) {
                                 e.printStackTrace();
@@ -337,7 +337,8 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                     Util.setSnackBar(layout, e.getMessage());
                 }
             });
-        } catch (Exception e) {e.printStackTrace();
+        } catch (Exception e) {
+            e.printStackTrace();
             Util.setSnackBar(layout, e.getMessage());
         }
     }
@@ -368,7 +369,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             });
         } catch (Exception e) {
             e.printStackTrace();
-            Util.setSnackBar(layout, e.getMessage());
+            Util.setSnackBar(layout, "1-" + e.getMessage());
         }
     }
 
@@ -380,7 +381,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             Intent signInIntent = mGoogleSignInClient.getSignInIntent();
             startActivityForResult(signInIntent, Constantes.GOOGLE_REQUEST_CODE);
         } catch (Exception e) {
-            Util.setSnackBar(layout, e.getMessage());
+            Util.setSnackBar(layout, "2-" + e.getMessage());
         }
     }
 
@@ -398,7 +399,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                 //Log.d("INFO40", "usuario logado com google");
             }
         } catch (Exception e) {
-            Util.setSnackBar(layout, e.getMessage());
+            Util.setSnackBar(layout, "3-" + e.getMessage());
         }
     }
 
@@ -411,6 +412,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             if (requestCode == Constantes.GOOGLE_REQUEST_CODE) {
 
                 Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(data);
+
                 task.addOnCompleteListener(new OnCompleteListener<GoogleSignInAccount>() {
                     @Override
                     public void onComplete(@NonNull Task<GoogleSignInAccount> task) {
@@ -424,20 +426,20 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                             //handleSignInResult(task);
                         } catch (ApiException e) {
                             e.printStackTrace();
-                            Util.setSnackBar(layout, e.getMessage());
+                            Util.setSnackBar(layout, "4-" + e.getMessage());
                         }
                     }
                 }).addOnFailureListener(new OnFailureListener() {
                     @Override
                     public void onFailure(@NonNull Exception e) {
-                        Util.setSnackBar(layout, e.getMessage());
+                        Util.setSnackBar(layout, "5-" + e.getMessage());
                     }
                 });
             } else {
                 callbackManager.onActivityResult(requestCode, resultCode, data);
             }
         } catch (Exception e) {
-            Util.setSnackBar(layout, e.getMessage());
+            Util.setSnackBar(layout, "6-" + e.getMessage());
         }
     }
 
@@ -485,24 +487,24 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
 
                                     Util.setSnackBar(layout, getString(R.string.login_sucesso));
                                 } else {
-                                    Util.setSnackBar(layout, getString(R.string.falha_realizar_login));
+                                    Util.setSnackBar(layout, getString(R.string.falha_login));
                                 }
                                 showProgress(false);
                                 mImageBg_color.setVisibility(View.INVISIBLE);
                             } catch (Exception e) {
                                 e.printStackTrace();
-                                Util.setSnackBar(layout, e.getMessage());
+                                Util.setSnackBar(layout, "7-" + e.getMessage());
                             }
                         }
                     }).addOnFailureListener(new OnFailureListener() {
                 @Override
                 public void onFailure(@NonNull Exception e) {
 
-                    Util.setSnackBar(layout, e.getMessage());
+                    Util.setSnackBar(layout, "8-" + e.getMessage());
                 }
             });
         } catch (Exception e) {
-            Util.setSnackBar(layout, e.getMessage());
+            Util.setSnackBar(layout, "9-" + e.getMessage());
         }
     }
 
@@ -556,10 +558,13 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
 
                 @Override
                 public void onCancelled(@NonNull DatabaseError databaseError) {
-
+                    Util.setSnackBar(layout, "12-" + databaseError.getMessage());
                 }
             });
-        } catch (Exception e) {e.printStackTrace();}
+        } catch (Exception e) {
+            e.printStackTrace();
+            Util.setSnackBar(layout, "13-"+e.getMessage());
+        }
     }
 
     private void tentarLogin() {
@@ -587,7 +592,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                                 Util.setSnackBar(layout, getString(R.string.cadastro_realizado));
                                 sendVerificationEmail();
 
-                                FirebaseUser user = ConfiguracaoFirebase.getFirebaseAutenticacao().getCurrentUser();
+                                //FirebaseUser user = ConfiguracaoFirebase.getFirebaseAutenticacao().getCurrentUser();
 
                                 //UserProfileChangeRequest profileUpdates = new UserProfileChangeRequest.Builder()
                                 //       .setDisplayName(txiNome.getText().toString()).build();
