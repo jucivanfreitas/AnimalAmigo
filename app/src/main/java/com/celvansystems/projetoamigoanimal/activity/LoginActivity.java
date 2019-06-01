@@ -65,6 +65,8 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.ValueEventListener;
 
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -316,7 +318,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
 
                                     FirebaseUser user = Objects.requireNonNull(task.getResult()).getUser();
 
-                                    concluiCadastroUsuario(user);
+                                    concluiCadastroUsuario(user, token);
 
                                     finish();
 
@@ -481,7 +483,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
 
                                     FirebaseUser user = Objects.requireNonNull(task.getResult()).getUser();
 
-                                    concluiCadastroUsuario(user);
+                                    concluiCadastroUsuario(user, null);
 
                                     finish();
 
@@ -508,7 +510,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         }
     }
 
-    private void concluiCadastroUsuario(FirebaseUser user) {
+    private void concluiCadastroUsuario(final FirebaseUser user, final AccessToken token) {
 
         try {
             final String uidTask = Objects.requireNonNull(user.getUid());
@@ -529,7 +531,16 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                     Usuario usuario = new Usuario();
                     usuario.setId(Objects.requireNonNull(uidTask));
                     usuario.setNome(Objects.requireNonNull(nomeTask));
-                    usuario.setFoto(Objects.requireNonNull(fotoTask));
+                    //usuario.setFoto(Objects.requireNonNull(fotoTask));
+                    try {
+                        if(token != null) {
+                            usuario.setFoto(new URL("https://graph.facebook.com/" + token.getUserId() + "/picture?type=large").toString());
+                        } else {
+                            usuario.setFoto(Objects.requireNonNull(fotoTask));
+                        }
+                    } catch (MalformedURLException e) {
+                        e.printStackTrace();
+                    }
                     usuario.setEmail(Objects.requireNonNull(emailTask));
 
                     for (DataSnapshot usuarios : dataSnapshot.getChildren()) {
@@ -540,6 +551,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
 
                                     if (Objects.requireNonNull(usuarios.child("loginCompleto").getValue()).toString()
                                             .equalsIgnoreCase("true")) {
+
                                         //direciona para a tela principal
                                         startActivity(new Intent(LoginActivity.this, MainActivity.class));
                                     } else {
