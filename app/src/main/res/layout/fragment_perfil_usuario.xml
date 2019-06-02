@@ -93,7 +93,7 @@
         app:layout_constraintStart_toStartOf="@+id/textView15"
         app:layout_constraintTop_toBottomOf="@+id/textview_nome_humano" />
 
-<!--
+    <!--
     <ImageView
         android:id="@+id/imageView_perfil1"
         android:layout_width="93dp"
@@ -241,7 +241,7 @@
         android:layout_height="0dp"
         android:background="@color/common_google_signin_btn_text_light_pressed"
         android:elevation="50dp"
-        android:visibility="visible"
+        android:visibility="invisible"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="1.0"
@@ -295,17 +295,32 @@
             android:background="@drawable/bg_caixa_txt"
             android:ems="10"
             android:importantForAutofill="no"
-            android:labelFor="@+id/editText_editar_nome_usuario"
             android:inputType="textPersonName"
+            android:labelFor="@+id/editText_editar_nome_usuario"
             android:text="@string/txt_celio"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@+id/imagebtn_submet_edt_nome_usuario"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
+
+
     </android.support.constraint.ConstraintLayout>
 
 
-
+    <Button
+        android:id="@+id/btn_editar_perfil"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="128dp"
+        android:layout_marginEnd="8dp"
+        android:background="@drawable/bg_btn"
+        android:text="@string/editar_perfil"
+        android:textColor="@color/common_google_signin_btn_text_dark_default"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.465"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView_email_cadastrado" />
 
     <android.support.constraint.ConstraintLayout
         android:id="@+id/constraintLayout"

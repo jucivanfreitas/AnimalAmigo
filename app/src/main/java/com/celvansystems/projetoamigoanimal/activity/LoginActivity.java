@@ -318,7 +318,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
 
                                     FirebaseUser user = Objects.requireNonNull(task.getResult()).getUser();
 
-                                    concluiCadastroUsuario(user, token);
+                                    concluiCadastroUsuario(user);
 
                                     finish();
 
@@ -483,7 +483,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
 
                                     FirebaseUser user = Objects.requireNonNull(task.getResult()).getUser();
 
-                                    concluiCadastroUsuario(user, null);
+                                    concluiCadastroUsuario(user);
 
                                     finish();
 
@@ -510,7 +510,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         }
     }
 
-    private void concluiCadastroUsuario(final FirebaseUser user, final AccessToken token) {
+    private void concluiCadastroUsuario(final FirebaseUser user) {
 
         try {
             final String uidTask = Objects.requireNonNull(user.getUid());
@@ -531,8 +531,8 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                     Usuario usuario = new Usuario();
                     usuario.setId(Objects.requireNonNull(uidTask));
                     usuario.setNome(Objects.requireNonNull(nomeTask));
-                    //usuario.setFoto(Objects.requireNonNull(fotoTask));
-                    try {
+                    usuario.setFoto(Objects.requireNonNull(fotoTask));
+                    /*try {
                         if(token != null) {
                             usuario.setFoto(new URL("https://graph.facebook.com/" + token.getUserId() + "/picture?type=large").toString());
                         } else {
@@ -540,7 +540,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                         }
                     } catch (MalformedURLException e) {
                         e.printStackTrace();
-                    }
+                    }*/
                     usuario.setEmail(Objects.requireNonNull(emailTask));
 
                     for (DataSnapshot usuarios : dataSnapshot.getChildren()) {
