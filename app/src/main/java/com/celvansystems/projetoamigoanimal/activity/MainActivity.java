@@ -67,7 +67,7 @@ public class MainActivity extends AppCompatActivity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        getWindow().setNavigationBarColor(getResources().getColor(R.color.cinza));
+        configuraNavBar();
 
         setContentView(R.layout.activity_main);
 
@@ -79,6 +79,12 @@ public class MainActivity extends AppCompatActivity
         configuraAdMob();
     }
 
+    private void configuraNavBar() {
+        getWindow().setNavigationBarColor(getResources().getColor(R.color.lightgray));
+        View decorView = getWindow().getDecorView();
+        int uiOptions = View.SYSTEM_UI_FLAG_LIGHT_NAVIGATION_BAR;
+        decorView.setSystemUiVisibility(uiOptions);
+    }
 
 
     private void inicializarComponentes() {
