@@ -22,6 +22,7 @@ import android.widget.Spinner;
 import com.celvansystems.projetoamigoanimal.R;
 import com.celvansystems.projetoamigoanimal.helper.ConfiguracaoFirebase;
 import com.celvansystems.projetoamigoanimal.helper.Constantes;
+import com.celvansystems.projetoamigoanimal.helper.Mask;
 import com.celvansystems.projetoamigoanimal.helper.Permissoes;
 import com.celvansystems.projetoamigoanimal.helper.Util;
 import com.celvansystems.projetoamigoanimal.model.Usuario;
@@ -111,6 +112,7 @@ public class ComplementoLoginActivity extends AppCompatActivity {
             imvFoto = findViewById(R.id.imv_foto_complemento);
             edtNome = findViewById(R.id.edt_cad_nome);
             edtTelefone = findViewById(R.id.edt_cad_telefone);
+            edtTelefone.addTextChangedListener(Mask.insert("(##)#########", edtTelefone));
             //edtDataNascimento = findViewById(R.id.edt_data_nascimento);
             //spnSexo = findViewById(R.id.spinner_cad_Sexo);
             spnPais = findViewById(R.id.spinner_cad_pais_complemento);
