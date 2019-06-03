@@ -5,10 +5,14 @@ import android.support.annotation.NonNull;
 import com.celvansystems.projetoamigoanimal.helper.ConfiguracaoFirebase;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.StorageReference;
 
 import java.io.Serializable;
+import java.util.Objects;
 
 public class Usuario implements Serializable {
 
@@ -19,10 +23,10 @@ public class Usuario implements Serializable {
     private String pais;
     private String uf;
     private String cidade;
-    private String latitude;
-    private String longitude;
+    //private String latitude;
+    //private String longitude;
     private String foto;
-    private String genero;
+    //private String genero;
 
     /**
      * salva usuario
@@ -50,15 +54,54 @@ public class Usuario implements Serializable {
                     .child("usuarios")
                     .child(getId());
 
-
             usuarioRef.removeValue().addOnSuccessListener(new OnSuccessListener<Void>() {
                 @Override
                 public void onSuccess(Void aVoid) {
                     apagarFotoStorage();
+                    apagarComentarios();
                 }
             }).addOnFailureListener(new OnFailureListener() {
                 @Override
                 public void onFailure(@NonNull Exception e) {
+                }
+            });
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void apagarComentarios() {
+
+        try {
+            final DatabaseReference animaisRef = ConfiguracaoFirebase.getFirebase()
+                    .child("meus_animais");
+
+            animaisRef.addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                    for (DataSnapshot anuncios : dataSnapshot.getChildren()) {
+                        if (anuncios != null) {
+                            String idAnuncio = anuncios.getKey();
+                            if (anuncios.child("comentarios").getValue() != null) {
+                                for (DataSnapshot comentarios : anuncios.child("comentarios").getChildren()) {
+                                    String idComentario = comentarios.getKey();
+                                    if (comentarios.child("usuario").getValue() != null) {
+                                        if (comentarios.child("usuario").child("id").getValue() != null) {
+                                            if (Objects.requireNonNull(comentarios.child("usuario").child("id").getValue()).toString().equalsIgnoreCase(id)) {
+                                                animaisRef.child(Objects.requireNonNull(idAnuncio)).child("comentarios")
+                                                        .child(Objects.requireNonNull(idComentario)).removeValue();
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError databaseError) {
+
                 }
             });
         } catch (Exception e) {
@@ -117,9 +160,9 @@ public class Usuario implements Serializable {
         this.telefone = telefone;
     }
 
-    public String getPais() {
+    /*public String getPais() {
         return pais;
-    }
+    }*/
 
     public void setPais(String pais) {
         this.pais = pais;
@@ -141,7 +184,7 @@ public class Usuario implements Serializable {
         this.cidade = cidade;
     }
 
-    public String getLatitude() {
+    /*public String getLatitude() {
         return latitude;
     }
 
@@ -155,7 +198,7 @@ public class Usuario implements Serializable {
 
     public void setLongitude(String longitude) {
         this.longitude = longitude;
-    }
+    }*/
 
     public String getFoto() {
         return foto;
@@ -165,25 +208,29 @@ public class Usuario implements Serializable {
         this.foto = foto;
     }
 
-    public String getGenero() {
+    /*public String getGenero() {
         return genero;
     }
 
     public void setGenero(String genero) {
         this.genero = genero;
-    }
+    }*/
 
-    public boolean isLoginCompleto() {
+    /*public boolean isLoginCompleto() {
 
         boolean retorno = false;
 
-        if (nome != null && telefone != null &&
-                foto != null && cidade != null) {
-            if (!nome.isEmpty() && !telefone.isEmpty() &&
-                    !foto.isEmpty() && !cidade.isEmpty()) {
-                retorno = true;
+        try {
+            if (nome != null && telefone != null &&
+                    foto != null && cidade != null) {
+                if (!nome.isEmpty() && !telefone.isEmpty() &&
+                        !foto.isEmpty() && !cidade.isEmpty()) {
+                    retorno = true;
+                }
             }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
         return retorno;
-    }
+    }*/
 }

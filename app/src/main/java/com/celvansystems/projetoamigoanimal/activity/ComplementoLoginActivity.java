@@ -99,6 +99,16 @@ public class ComplementoLoginActivity extends AppCompatActivity {
         setContentView(R.layout.activity_complemento_login);
 
         inicializarComponentes();
+
+        preencheDadosSpinners();
+
+        configuraAcoes();
+
+        preencheDadosDoUsuario();
+
+        //Validar permissões
+        Permissoes.validarPermissoes(permissoes, this, 1);
+
     }
 
     private void inicializarComponentes() {
@@ -136,14 +146,6 @@ public class ComplementoLoginActivity extends AppCompatActivity {
             layout_inserir_cidade = findViewById(R.id.layout_inserir_cidade);
             layout_inserir_fone = findViewById(R.id.layout_inserir_fone);
 
-            preencheDadosSpinners();
-
-            configuraAcoes();
-
-            preencheDadosDoUsuario();
-
-            //Validar permissões
-            Permissoes.validarPermissoes(permissoes, this, 1);
 
         } catch (Exception e) {
             e.printStackTrace();

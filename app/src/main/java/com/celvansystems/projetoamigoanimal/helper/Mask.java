@@ -6,7 +6,7 @@ import android.widget.EditText;
 
 public class Mask {
 
-    public static String unmask(String s) {
+    private static String unmask(String s) {
         return s.replaceAll("[.]", "").replaceAll("[-]", "")
                 .replaceAll("[/]", "").replaceAll("[(]", "")
                 .replaceAll("[)]", "");
@@ -45,5 +45,4 @@ public class Mask {
             public void afterTextChanged(Editable s) {}
         };
     }
-
 }
