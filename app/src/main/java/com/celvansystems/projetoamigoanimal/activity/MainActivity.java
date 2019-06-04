@@ -79,7 +79,6 @@ public class MainActivity extends AppCompatActivity
             View decorView = getWindow().getDecorView();
             int uiOptions = View.SYSTEM_UI_FLAG_LIGHT_NAVIGATION_BAR;
             decorView.setSystemUiVisibility(uiOptions);
-
         }
     }
 
