@@ -80,10 +80,15 @@ public class MainActivity extends AppCompatActivity
     }
 
     private void configuraNavBar() {
-        getWindow().setNavigationBarColor(getResources().getColor(R.color.lightgray));
-        View decorView = getWindow().getDecorView();
-        int uiOptions = View.SYSTEM_UI_FLAG_LIGHT_NAVIGATION_BAR;
-        decorView.setSystemUiVisibility(uiOptions);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            getWindow().setNavigationBarColor(getResources().getColor(R.color.lightgray));
+        }
+
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
+            View decorView = getWindow().getDecorView();
+            int uiOptions = View.SYSTEM_UI_FLAG_LIGHT_NAVIGATION_BAR;
+            decorView.setSystemUiVisibility(uiOptions);
+        }
     }
 
 
