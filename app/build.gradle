@@ -4,12 +4,11 @@ android {
     compileSdkVersion 28
     defaultConfig {
         applicationId "com.celvansystems.projetoamigoanimal"
-        minSdkVersion 18
+        minSdkVersion 21
         targetSdkVersion 28
         versionCode 7
         versionName "1.1.377"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
-        multiDexEnabled true
         ndk {
             ndk.abiFilters 'armeabi-v7a', 'arm64-v8a', 'x86', 'x86_64'
         }
@@ -74,9 +73,6 @@ dependencies {
 
     //circulo de imagem
     implementation 'com.mikhaellopez:circularimageview:3.2.0'
-
-    //multidex
-    implementation 'com.android.support:multidex:1.0.3'
 
 }
 apply plugin: 'com.google.gms.google-services'
