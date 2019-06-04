@@ -1,31 +1,22 @@
 package com.celvansystems.projetoamigoanimal.activity;
 
 import android.content.Intent;
-import android.content.res.Resources;
-import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
-import android.support.annotation.ColorInt;
 import android.support.annotation.NonNull;
-import android.support.annotation.RequiresApi;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.GravityCompat;
-import android.support.v4.view.ViewCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.Window;
-import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.TextView;
-
 import com.celvansystems.projetoamigoanimal.R;
 import com.celvansystems.projetoamigoanimal.fragment.AnunciosFragment;
 import com.celvansystems.projetoamigoanimal.fragment.CadastrarAnuncioFragment;
@@ -80,10 +71,16 @@ public class MainActivity extends AppCompatActivity
     }
 
     private void configuraNavBar() {
-        getWindow().setNavigationBarColor(getResources().getColor(R.color.lightgray));
-        View decorView = getWindow().getDecorView();
-        int uiOptions = View.SYSTEM_UI_FLAG_LIGHT_NAVIGATION_BAR;
-        decorView.setSystemUiVisibility(uiOptions);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            getWindow().setNavigationBarColor(getResources().getColor(R.color.lightgray));
+        }
+
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
+            View decorView = getWindow().getDecorView();
+            int uiOptions = View.SYSTEM_UI_FLAG_LIGHT_NAVIGATION_BAR;
+            decorView.setSystemUiVisibility(uiOptions);
+
+        }
     }
 
 
