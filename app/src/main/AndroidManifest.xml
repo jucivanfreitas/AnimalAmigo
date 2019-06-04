@@ -25,7 +25,7 @@
         android:theme="@style/AppTheme"
         tools:replace="android:label">
         <activity android:name=".activity.SplashScreenActivity"
-            android:theme="@style/Theme.Transparent">
+            android:theme="@style/Theme.AppCompat.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
