@@ -9,14 +9,11 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.Window;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.celvansystems.projetoamigoanimal.R;
-import com.celvansystems.projetoamigoanimal.activity.ComplementoLoginActivity;
-import com.celvansystems.projetoamigoanimal.activity.LoginActivity;
 import com.celvansystems.projetoamigoanimal.activity.MainActivity;
 import com.celvansystems.projetoamigoanimal.helper.ConfiguracaoFirebase;
 import com.celvansystems.projetoamigoanimal.model.Animal;
@@ -90,15 +87,6 @@ public class PerfilUsuarioFragment extends Fragment {
 
         //Preenchendo os campos do Fragment com dados do usuario
         txvEmail.setText(getEmailUsuario());
-
-        Button btnEditarperfil = viewFragment.findViewById(R.id.btn_editar_perfil);
-
-        btnEditarperfil.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startActivity(new Intent(getActivity(), ComplementoLoginActivity.class));
-            }
-        });
 
         Button btnDesativarConta = viewFragment.findViewById(R.id.btnEncerrarConta);
 
