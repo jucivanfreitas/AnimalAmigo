@@ -1,5 +1,6 @@
 package com.celvansystems.projetoamigoanimal.fragment;
 
+
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
@@ -9,6 +10,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -23,6 +25,9 @@ import com.celvansystems.projetoamigoanimal.adapter.AdapterAnuncios;
 import com.celvansystems.projetoamigoanimal.helper.ConfiguracaoFirebase;
 import com.celvansystems.projetoamigoanimal.helper.Util;
 import com.celvansystems.projetoamigoanimal.model.Animal;
+import com.facebook.AccessToken;
+import com.google.android.gms.auth.api.signin.GoogleSignIn;
+import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -54,7 +59,7 @@ public class AnunciosFragment extends Fragment {
     private SwipeRefreshLayout swipeRefreshLayout;
     private TextView txvSemAnuncios;
     private View view;
-    //private View layout;
+    private View layout;
 
     public AnunciosFragment() {
     }
@@ -75,7 +80,7 @@ public class AnunciosFragment extends Fragment {
     @SuppressLint("RestrictedApi")
     private void inicializarComponentes() {
 
-        //layout = view.findViewById(R.id.const_layout_anuncios);
+        layout = view.findViewById(R.id.const_layout_anuncios);
 
         try {
             anunciosPublicosRef = ConfiguracaoFirebase.getFirebase()
@@ -210,7 +215,7 @@ public class AnunciosFragment extends Fragment {
         txvSemAnuncios.setVisibility(View.INVISIBLE);
 
         // Verifica se há conta do google logada.
-        /*GoogleSignInAccount account = GoogleSignIn.getLastSignedInAccount(view.getContext());
+        GoogleSignInAccount account = GoogleSignIn.getLastSignedInAccount(view.getContext());
         if (account != null) {
             Util.setSnackBar(layout, Objects.requireNonNull(getContext()).getString(R.string.usuario_google));
         } else {
@@ -220,7 +225,7 @@ public class AnunciosFragment extends Fragment {
             if (token != null) {
                 Util.setSnackBar(layout, Objects.requireNonNull(getContext()).getString(R.string.usuario_facebook));
             }
-        }*/
+        }
     }
 
     @Override

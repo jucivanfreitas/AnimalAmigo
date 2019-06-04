@@ -1,11 +1,7 @@
 package com.celvansystems.projetoamigoanimal.activity;
 
 import android.content.Intent;
-import android.content.res.Resources;
-import android.graphics.Color;
-import android.os.Build;
 import android.os.Bundle;
-import android.support.annotation.ColorInt;
 import android.support.annotation.NonNull;
 import android.support.annotation.RequiresApi;
 import android.support.design.widget.NavigationView;
@@ -21,8 +17,6 @@ import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.Window;
-import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -60,15 +54,10 @@ public class MainActivity extends AppCompatActivity
     private NavigationView navigationView;
     private InterstitialAd mInterstitialAd;
     private AdView adView;
-    private ImageView imageViewPerfil;
-    private View headerView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        configuraNavBar();
-
         setContentView(R.layout.activity_main);
 
         inicializarComponentes();
@@ -79,14 +68,6 @@ public class MainActivity extends AppCompatActivity
         configuraAdMob();
     }
 
-    private void configuraNavBar() {
-        getWindow().setNavigationBarColor(getResources().getColor(R.color.lightgray));
-        View decorView = getWindow().getDecorView();
-        int uiOptions = View.SYSTEM_UI_FLAG_LIGHT_NAVIGATION_BAR;
-        decorView.setSystemUiVisibility(uiOptions);
-    }
-
-
     private void inicializarComponentes() {
 
         Toolbar toolbar = findViewById(R.id.toolbar);
@@ -95,11 +76,6 @@ public class MainActivity extends AppCompatActivity
         autenticacao = ConfiguracaoFirebase.getFirebaseAutenticacao();
 
         View layout = findViewById(R.id.view_pager);
-
-        navigationView = findViewById(R.id.nav_view);
-        headerView = navigationView.getHeaderView(0);
-
-        imageViewPerfil = headerView.findViewById(R.id.imageView_perfil);
 
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
@@ -115,9 +91,9 @@ public class MainActivity extends AppCompatActivity
 
         if (usuario_excluido != null) {
 
-            if (usuario_excluido.equalsIgnoreCase(getString(R.string.sim))) {
+            if (usuario_excluido.equalsIgnoreCase("Sim")) {
                 Util.setSnackBar(layout, getString(R.string.usuario_excluido));
-            } else if (usuario_excluido.equalsIgnoreCase(getString(R.string.nao))) {
+            } else if (usuario_excluido.equalsIgnoreCase("Não")) {
                 Util.setSnackBar(layout, getString(R.string.falha_excluir_usuario));
             }
         }
@@ -146,8 +122,11 @@ public class MainActivity extends AppCompatActivity
                         if (usuarios.child("id").getValue() != null && ConfiguracaoFirebase.isUsuarioLogado()) {
                             if (Objects.requireNonNull(usuarios.child("id").getValue()).toString().equalsIgnoreCase(Objects.requireNonNull(user).getUid())) {
 
+                                NavigationView navigationView = findViewById(R.id.nav_view);
+                                View headerView = navigationView.getHeaderView(0);
                                 TextView navUsername = headerView.findViewById(R.id.textview_nome_humano);
                                 TextView navEmail = headerView.findViewById(R.id.textView_email_cadastrado);
+                                ImageView imageViewPerfil = headerView.findViewById(R.id.imageView_perfil);
 
                                 Usuario usuario = new Usuario();
                                 usuario.setId(ConfiguracaoFirebase.getIdUsuario());

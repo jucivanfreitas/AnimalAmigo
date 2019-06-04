@@ -34,7 +34,6 @@ import com.google.android.gms.ads.AdView;
 import com.google.android.gms.ads.MobileAds;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
-import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.UserInfo;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
@@ -226,12 +225,12 @@ public class ComentariosActivity extends AppCompatActivity {
                         if (anuncio.getDonoAnuncio().equalsIgnoreCase(ConfiguracaoFirebase.getIdUsuario())) {
 
                             Comentario coment = new Comentario();
-                            int size = anuncio.getListaComentarios().size() - mark1;
+                            int size = anuncio.getListaComentarios().size() - 1;
                             String texto = anuncio.getListaComentarios().get(size).getTexto();
                             coment.setTexto(texto);
 
                             int sizeComentsNotificacoes = Util.comentariosNotificacoes.size();
-                            if ((sizeComentsNotificacoes == 0 || !Util.comentariosNotificacoes.get(sizeComentsNotificacoes-mark1).equalsIgnoreCase(texto))
+                            if ((sizeComentsNotificacoes == 0 || !Util.comentariosNotificacoes.get(sizeComentsNotificacoes-1).equalsIgnoreCase(texto))
                                     && !anuncio.getDonoAnuncio().equalsIgnoreCase(ConfiguracaoFirebase.getIdUsuario())) {
                                 Util.createNotificationMessage(ctx, ctx.getString(R.string.novo_comentario), coment.getTexto(), anuncio);
                                 //ultimoComentario = texto;

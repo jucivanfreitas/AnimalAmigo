@@ -244,7 +244,7 @@ public class CadastrarAnuncioFragment extends Fragment
 
             switch (i) {
 
-                //imagem mark1
+                //imagem 1
                 case 0:
                     try {
                         imagem1.post(new Runnable() {
@@ -281,7 +281,7 @@ public class CadastrarAnuncioFragment extends Fragment
                     }
                     break;
 
-                //imagem mark2
+                //imagem 2
                 case 1:
                     try {
                         imagem2.post(new Runnable() {
@@ -319,7 +319,7 @@ public class CadastrarAnuncioFragment extends Fragment
                     }
                     break;
 
-                //imagem mark3
+                //imagem 3
                 case 2:
 
                     try {
@@ -652,7 +652,7 @@ public class CadastrarAnuncioFragment extends Fragment
 
                                     imagem3.setImageURI(r.getUri());
                                 }
-                                /*if(listaFotosRecuperadas.size() == mark3) {
+                                /*if(listaFotosRecuperadas.size() == 3) {
                                     listaFotosRecuperadas.remove(0);
                                 }*/
                                 //listaFotosRecuperadas.add(caminhoImagem);

@@ -422,7 +422,7 @@ public class AdapterAnuncios extends RecyclerView.Adapter<AdapterAnuncios.MyView
             if (isDenunciado(anuncio)) {
 
                 Util.setSnackBar(((MyViewHolder) myViewHolder).layout,
-                        ctx.getString(R.string.usuario_ja_denunciou) + " " + anuncio.getNome() + "!");
+                        ctx.getString(R.string.usuario_ja_denunciou) + anuncio.getNome() + "!");
 
             } else {
                 if (ConfiguracaoFirebase.isUsuarioLogado()) {
