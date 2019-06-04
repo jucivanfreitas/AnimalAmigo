@@ -42,8 +42,6 @@
         android:id="@+id/textView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginEnd="8dp"
         android:layout_marginBottom="16dp"
         android:text="@string/cooperight"
         android:textColor="@color/common_google_signin_btn_text_dark_focused"
