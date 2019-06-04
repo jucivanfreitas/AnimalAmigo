@@ -11,6 +11,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.constraint.ConstraintLayout;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -22,7 +23,6 @@ import android.widget.Spinner;
 import com.celvansystems.projetoamigoanimal.R;
 import com.celvansystems.projetoamigoanimal.helper.ConfiguracaoFirebase;
 import com.celvansystems.projetoamigoanimal.helper.Constantes;
-import com.celvansystems.projetoamigoanimal.helper.Mask;
 import com.celvansystems.projetoamigoanimal.helper.Permissoes;
 import com.celvansystems.projetoamigoanimal.helper.Util;
 import com.celvansystems.projetoamigoanimal.model.Usuario;
@@ -99,16 +99,6 @@ public class ComplementoLoginActivity extends AppCompatActivity {
         setContentView(R.layout.activity_complemento_login);
 
         inicializarComponentes();
-
-        preencheDadosSpinners();
-
-        configuraAcoes();
-
-        preencheDadosDoUsuario();
-
-        //Validar permissões
-        Permissoes.validarPermissoes(permissoes, this, 1);
-
     }
 
     private void inicializarComponentes() {
@@ -122,7 +112,6 @@ public class ComplementoLoginActivity extends AppCompatActivity {
             imvFoto = findViewById(R.id.imv_foto_complemento);
             edtNome = findViewById(R.id.edt_cad_nome);
             edtTelefone = findViewById(R.id.edt_cad_telefone);
-            edtTelefone.addTextChangedListener(Mask.insert("(##)#########", edtTelefone));
             //edtDataNascimento = findViewById(R.id.edt_data_nascimento);
             //spnSexo = findViewById(R.id.spinner_cad_Sexo);
             spnPais = findViewById(R.id.spinner_cad_pais_complemento);
@@ -146,6 +135,14 @@ public class ComplementoLoginActivity extends AppCompatActivity {
             layout_inserir_cidade = findViewById(R.id.layout_inserir_cidade);
             layout_inserir_fone = findViewById(R.id.layout_inserir_fone);
 
+            preencheDadosSpinners();
+
+            configuraAcoes();
+
+            preencheDadosDoUsuario();
+
+            //Validar permissões
+            Permissoes.validarPermissoes(permissoes, this, 1);
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -160,6 +157,7 @@ public class ComplementoLoginActivity extends AppCompatActivity {
                     .child("usuarios");
 
             final Context ctx = this;
+
 
             usuariosRef.addValueEventListener(new ValueEventListener() {
                 @Override
@@ -489,7 +487,7 @@ public class ComplementoLoginActivity extends AppCompatActivity {
         //salvar imagem no storage
         try {
             if (usuario.getFoto() != null && isNovaFoto) {
-
+                Log.d("INFO8", usuario.getFoto());
                 //cria nó do storage
                 final StorageReference imagemUsuario = storage
                         .child("imagens")

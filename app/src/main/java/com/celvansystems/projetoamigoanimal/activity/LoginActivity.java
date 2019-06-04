@@ -11,26 +11,28 @@ import android.content.Intent;
 import android.content.Loader;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
-import android.graphics.Color;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.provider.ContactsContract;
 import android.support.annotation.NonNull;
 import android.support.design.widget.Snackbar;
+import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
-import android.view.WindowManager;
 import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
+import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Switch;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.celvansystems.projetoamigoanimal.R;
 import com.celvansystems.projetoamigoanimal.helper.ConfiguracaoFirebase;
@@ -41,6 +43,8 @@ import com.facebook.AccessToken;
 import com.facebook.CallbackManager;
 import com.facebook.FacebookCallback;
 import com.facebook.FacebookException;
+import com.facebook.GraphRequest;
+import com.facebook.GraphResponse;
 import com.facebook.login.LoginResult;
 import com.facebook.login.widget.LoginButton;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
@@ -50,7 +54,6 @@ import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.common.SignInButton;
 import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.AuthResult;
@@ -62,13 +65,15 @@ import com.google.firebase.auth.FirebaseAuthUserCollisionException;
 import com.google.firebase.auth.FirebaseAuthWeakPasswordException;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
+import com.google.firebase.auth.UserProfileChangeRequest;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.ValueEventListener;
 
-import java.net.MalformedURLException;
-import java.net.URL;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -89,8 +94,8 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
 
     private AutoCompleteTextView mEmailView;
     private EditText mPasswordView;
-    //private AutoCompleteTextView txiNome;
-    //private TextInputLayout txiLayout;
+    private AutoCompleteTextView txiNome;
+    private TextInputLayout txiLayout;
     private View mProgressView;
     private View mLoginFormView;
     private ImageView mImageBg_color;
@@ -102,7 +107,6 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         setContentView(R.layout.activity_login);
         setupActionBar();
 
@@ -111,7 +115,6 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         inicializarComponentes();
 
         configuraLoginFacebook();
-
 
         configuraLoginGoogle();
 
@@ -127,9 +130,9 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             mProgressView = findViewById(R.id.login_progress);
             mImageBg_color = findViewById(R.id.imageViewbg_color);
             mPasswordView = findViewById(R.id.txiPassword);
-            //txiNome = findViewById(R.id.txi_nome);
-            //txiLayout = findViewById(R.id.txt_imput_nome);
-            //txiLayout.setVisibility(View.INVISIBLE);
+            txiNome = findViewById(R.id.txi_nome);
+            txiLayout = findViewById(R.id.txt_imput_nome);
+            txiLayout.setVisibility(View.INVISIBLE);
 
             Button btnLogin = findViewById(R.id.btnLogin);
             swtLoginCadastrar = findViewById(R.id.swtLoginCadastrar);
@@ -160,7 +163,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                 }
             });
 
-            /*swtLoginCadastrar.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            swtLoginCadastrar.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
                 public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                     if (isChecked) {
                         txiNome.setVisibility(View.VISIBLE);
@@ -170,7 +173,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                         txiLayout.setVisibility(View.INVISIBLE);
                     }
                 }
-            });*/
+            });
             txvEsqueciSenha.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -214,52 +217,45 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                 });
     }
 
+    /**
+     * ação do botao de login do google
+     */
+    private void signInGoogle() {
+        Intent signInIntent = mGoogleSignInClient.getSignInIntent();
+        startActivityForResult(signInIntent, Constantes.GOOGLE_REQUEST_CODE);
+    }
 
     /**
      * método que configura o login por meio do facebook
      */
     private void configuraLoginFacebook() {
 
-        try {
-            callbackManager = CallbackManager.Factory.create();
+        callbackManager = CallbackManager.Factory.create();
 
-            LoginButton loginButton = findViewById(R.id.login_button_facebook);
-            loginButton.setLoginText(getString(R.string.fazer_login_facebook));
-            //loginButton.setLoginBehavior(LoginBehavior.WEB_ONLY);
+        LoginButton loginButton = findViewById(R.id.login_button_facebook);
+        loginButton.setReadPermissions(Arrays.asList(
+                "email", "public_profile"));
 
-            loginButton.setPermissions(Arrays.asList(
-                    "email", "public_profile"));
-            //loginButton.setReadPermissions(Arrays.asList(
-            //       "email", "public_profile"));
+        // Callback registration
+        loginButton.registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
+            @Override
+            public void onSuccess(LoginResult loginResult) {
+                handleFacebookAccessToken(loginResult.getAccessToken());
 
-            //Callback registration
-            loginButton.registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
-                @Override
-                public void onSuccess(LoginResult loginResult) {
+                getFbInfo();
+            }
 
-                    handleFacebookAccessToken(loginResult.getAccessToken());
+            @Override
+            public void onCancel() {
+            }
 
-                    //getFbInfo();
-                    //Util.setSnackBar(layout, "login result sucesso!");
-                }
-
-                @Override
-                public void onCancel() {
-                    Util.setSnackBar(layout, "Login pelo facebook cancelado");
-                }
-
-                @Override
-                public void onError(FacebookException exception) {
-                    Util.setSnackBar(layout, "Erro: " + exception.getMessage());
-                }
-            });
-        } catch (Exception e) {
-            e.printStackTrace();
-            Util.setSnackBar(layout, e.getMessage());
-        }
+            @Override
+            public void onError(FacebookException exception) {
+            }
+        });
     }
 
-    /*private void getFbInfo() {
+    private void getFbInfo() {
         GraphRequest request = GraphRequest.newMeRequest(
                 AccessToken.getCurrentAccessToken(),
                 new GraphRequest.GraphJSONObjectCallback() {
@@ -269,35 +265,52 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                             GraphResponse response) {
                         try {
 
-                            String id, first_name, last_name, image_url, email;
+                            String id = object.getString("id");
+                            String first_name = object.getString("first_name");
+                            String last_name = object.getString("last_name");
+                            String gender = object.getString("gender");
+                            String birthday = object.getString("birthday");
+                            String image_url = "http://graph.facebook.com/" + id + "/picture?type=large";
 
-                            //String gender = object.getString("gender");
-                            //String birthday = object.getString("birthday");
-
-                            if (object.has("id")) {
-                                id = object.getString("id");
-                                image_url = "http://graph.facebook.com/" + id + "/picture?type=large";
-                            }
-                            if (object.has("first_name")) {
-                                first_name = object.getString("first_name");
-                            }
-                            if (object.has("last_name")) {
-                                last_name = object.getString("last_name");
-                            }
+                            String email;
                             if (object.has("email")) {
                                 email = object.getString("email");
                             }
+
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
                     }
                 });
-
         Bundle parameters = new Bundle();
-        parameters.putString("fields", "id,first_name,last_name,email"); // id,first_name,last_name,email,gender,birthday,cover,picture.type(large)
+        parameters.putString("fields", "id,first_name,last_name,email,gender,birthday"); // id,first_name,last_name,email,gender,birthday,cover,picture.type(large)
         request.setParameters(parameters);
         request.executeAsync();
-    }*/
+    }
+
+    /**
+     * método que configura o login por meio do google
+     */
+    private void configuraLoginGoogle() {
+        //Google Login
+        SignInButton signInButton = findViewById(R.id.login_button_google);
+        signInButton.setSize(SignInButton.SIZE_WIDE);
+        signInButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (v.getId() == R.id.login_button_google) {
+                    signInGoogle();
+                }
+            }
+        });
+
+        // Configure Google Sign In
+        GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                .requestIdToken(getString(R.string.google_web_client))
+                .requestEmail()
+                .build();
+        mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
+    }
 
     /**
      * método auxiliar para login por facebook
@@ -306,163 +319,88 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
      */
     private void handleFacebookAccessToken(final AccessToken token) {
 
-        try {
+        showProgress(true);
 
-            showProgress(true);
+        final AuthCredential credential = FacebookAuthProvider.getCredential(token.getToken());
 
-            final AuthCredential credential = FacebookAuthProvider.getCredential(token.getToken());
+        authentication.signInWithCredential(credential)
+                .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+                    @Override
+                    public void onComplete(@NonNull Task<AuthResult> task) {
+                        try {
+                            if (task.isSuccessful()) {
 
-            authentication.signInWithCredential(credential)
-                    .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
-                        @Override
-                        public void onComplete(@NonNull Task<AuthResult> task) {
-                            try {
-                                if (task.isSuccessful()) {
+                                //direciona para a tela principal
+                                startActivity(new Intent(LoginActivity.this, MainActivity.class));
+                                finish();
 
-                                    FirebaseUser user = Objects.requireNonNull(task.getResult()).getUser();
-
-                                    concluiCadastroUsuario(user);
-
-                                    finish();
-
-                                    Util.setSnackBar(layout, getString(R.string.login_sucesso));
-                                } else {
-                                    Util.setSnackBar(layout, getString(R.string.falha_login));
-                                }
-                            } catch (Exception e) {
-                                e.printStackTrace();
+                                Util.setSnackBar(layout, getString(R.string.sucesso_login_facebook));
+                            } else {
+                                Util.setSnackBar(layout, getString(R.string.falha_login_facebook));
                             }
-                            showProgress(false);
-                            mImageBg_color.setVisibility(View.INVISIBLE);
+                        } catch (Exception e) {
+                            e.printStackTrace();
                         }
-                    }).addOnFailureListener(new OnFailureListener() {
-
-                @Override
-                public void onFailure(@NonNull Exception e) {
-                    Util.setSnackBar(layout, e.getMessage());
-                }
-            });
-        } catch (Exception e) {
-            e.printStackTrace();
-            Util.setSnackBar(layout, e.getMessage());
-        }
-    }
-
-    /**
-     * método que configura o login por meio do google
-     */
-    private void configuraLoginGoogle() {
-
-        try {
-            // Configure Google Sign In
-            GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-                    .requestIdToken(getString(R.string.google_web_client))
-                    .requestEmail()
-                    .build();
-            mGoogleSignInClient = GoogleSignIn.getClient(LoginActivity.this, gso);
-
-            //Google Login
-            SignInButton signInButton = findViewById(R.id.login_button_google);
-            signInButton.setSize(SignInButton.SIZE_WIDE);
-            signInButton.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    //if (v.getId() == R.id.login_button_google) {
-                    signInGoogle();
-                    //}
-                }
-            });
-        } catch (Exception e) {
-            e.printStackTrace();
-            Util.setSnackBar(layout, "1-" + e.getMessage());
-        }
-    }
-
-    /**
-     * ação do botao de login do google
-     */
-    private void signInGoogle() {
-        try {
-            Intent signInIntent = mGoogleSignInClient.getSignInIntent();
-            startActivityForResult(signInIntent, Constantes.GOOGLE_REQUEST_CODE);
-        } catch (Exception e) {
-            Util.setSnackBar(layout, "2-" + e.getMessage());
-        }
+                        showProgress(false);
+                        mImageBg_color.setVisibility(View.INVISIBLE);
+                    }
+                });
     }
 
     @Override
     public void onStart() {
         super.onStart();
 
-        try {
-            // Verifica se há conta do google logada.
-            GoogleSignInAccount account = GoogleSignIn.getLastSignedInAccount(this);
-            if (account == null) {
-                //Log.d("INFO40", "usuario nao logado com google");
+        // Verifica se há conta do google logada.
+        /*GoogleSignInAccount account = GoogleSignIn.getLastSignedInAccount(this);
+        if(account == null) {
+            Log.d("INFO40", "usuario nao logado com google");
 
-            } else {
-                //Log.d("INFO40", "usuario logado com google");
-            }
-        } catch (Exception e) {
-            Util.setSnackBar(layout, "3-" + e.getMessage());
-        }
+        } else {
+            Log.d("INFO40", "usuario logado com google");
+
+        }*/
     }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        try {
-            // Result returned from launching the Intent from GoogleSignInClient.getSignInIntent(...);
-            if (requestCode == Constantes.GOOGLE_REQUEST_CODE) {
+        callbackManager.onActivityResult(requestCode, resultCode, data);
+        callbackManager.onActivityResult(requestCode, resultCode, data);
 
-                Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(data);
+        // Result returned from launching the Intent from GoogleSignInClient.getSignInIntent(...);
+        if (requestCode == Constantes.GOOGLE_REQUEST_CODE) {
 
-                task.addOnCompleteListener(new OnCompleteListener<GoogleSignInAccount>() {
-                    @Override
-                    public void onComplete(@NonNull Task<GoogleSignInAccount> task) {
-
-                        // Google Sign In was successful, authenticate with Firebase
-                        try {
-                            GoogleSignInAccount account = task.getResult(ApiException.class);
-                            if (account != null) {
-                                firebaseAuthWithGoogle(account);
-                            }
-                            //handleSignInResult(task);
-                        } catch (ApiException e) {
-                            e.printStackTrace();
-                            Util.setSnackBar(layout, "4-" + e.getMessage());
-                        }
-                    }
-                }).addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        Util.setSnackBar(layout, "5-" + e.getMessage());
-                    }
-                });
-            } else {
-                callbackManager.onActivityResult(requestCode, resultCode, data);
+            Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(data);
+            try {
+                // Google Sign In was successful, authenticate with Firebase
+                GoogleSignInAccount account = task.getResult(ApiException.class);
+                if (account != null) {
+                    firebaseAuthWithGoogle(account);
+                }
+            } catch (ApiException e) {
+                // Google Sign In failed, update UI appropriately
+                e.printStackTrace();
             }
-        } catch (Exception e) {
-            Util.setSnackBar(layout, "6-" + e.getMessage());
+            handleSignInResult(task);
         }
     }
 
-    /*
+    /**
      * método que pega o resultado da tentativa de login do google
      *
      * @param completedTask task
      */
-    /*private void handleSignInResult(Task<GoogleSignInAccount> completedTask) {
+    private void handleSignInResult(Task<GoogleSignInAccount> completedTask) {
         try {
             GoogleSignInAccount account = completedTask.getResult(ApiException.class);
-            if (account != null) {
-            }
-            //Log.d("INFO40", String.format("handle - logado pelo google %s", account.getDisplayName()));
+            if (account != null)
+                Log.d("INFO40", String.format("handle - logado pelo google %s", account.getDisplayName()));
         } catch (ApiException e) {
             e.printStackTrace();
         }
-    }*/
+    }
 
     /**
      * método usado para fazer login no google com uma credential
@@ -474,114 +412,33 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         showProgress(true);
         mImageBg_color.setVisibility(View.GONE);
 
-        try {
-            AuthCredential credential = GoogleAuthProvider.getCredential(acct.getIdToken(), null);
-            authentication.signInWithCredential(credential)
-                    .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
-                        @Override
-                        public void onComplete(@NonNull Task<AuthResult> task) {
+        AuthCredential credential = GoogleAuthProvider.getCredential(acct.getIdToken(), null);
+        authentication.signInWithCredential(credential)
+                .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+                    @Override
+                    public void onComplete(@NonNull Task<AuthResult> task) {
+                        if (task.isSuccessful()) {
 
-                            try {
-                                if (task.isSuccessful()) {
-
-                                    FirebaseUser user = Objects.requireNonNull(task.getResult()).getUser();
-
-                                    concluiCadastroUsuario(user);
-
-                                    finish();
-
-                                    Util.setSnackBar(layout, getString(R.string.login_sucesso));
-                                } else {
-                                    Util.setSnackBar(layout, getString(R.string.falha_login));
-                                }
-                                showProgress(false);
-                                mImageBg_color.setVisibility(View.INVISIBLE);
-                            } catch (Exception e) {
-                                e.printStackTrace();
-                                Util.setSnackBar(layout, "7-" + e.getMessage());
+                            FirebaseUser user = authentication.getCurrentUser();
+                            //direciona para a tela principal
+                            if (user != null && user.getEmail() != null) {
+                                Toast.makeText(LoginActivity.this, getString(R.string.sucesso_login_google) +
+                                                user.getEmail(),
+                                        Toast.LENGTH_SHORT).show();
+                                //Util.setSnackBar();
+                                // TODO: 06/03/2019 setSnackBar passando mensagem
                             }
+                            startActivity(new Intent(getApplicationContext(), MainActivity.class));
+                            finish();
                         }
-                    }).addOnFailureListener(new OnFailureListener() {
-                @Override
-                public void onFailure(@NonNull Exception e) {
-
-                    Util.setSnackBar(layout, "8-" + e.getMessage());
-                }
-            });
-        } catch (Exception e) {
-            Util.setSnackBar(layout, "9-" + e.getMessage());
-        }
+                        showProgress(false);
+                        mImageBg_color.setVisibility(View.INVISIBLE);
+                    }
+                });
     }
 
-    private void concluiCadastroUsuario(final FirebaseUser user) {
 
-        try {
-            final String uidTask = Objects.requireNonNull(user.getUid());
-            final String nomeTask = Objects.requireNonNull(user.getDisplayName());
-            final String fotoTask = Objects.requireNonNull(user.getPhotoUrl()).toString();
-            final String emailTask = Objects.requireNonNull(user.getEmail());
-
-            final DatabaseReference usuariosRef = ConfiguracaoFirebase.getFirebase()
-                    .child("usuarios");
-
-            usuariosRef.addListenerForSingleValueEvent(new ValueEventListener() {
-                @Override
-                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-
-                    boolean usuarioExists = false;
-
-                    //criando usuario...
-                    Usuario usuario = new Usuario();
-                    usuario.setId(Objects.requireNonNull(uidTask));
-                    usuario.setNome(Objects.requireNonNull(nomeTask));
-                    usuario.setFoto(Objects.requireNonNull(fotoTask));
-                    /*try {
-                        if(token != null) {
-                            usuario.setFoto(new URL("https://graph.facebook.com/" + token.getUserId() + "/picture?type=large").toString());
-                        } else {
-                            usuario.setFoto(Objects.requireNonNull(fotoTask));
-                        }
-                    } catch (MalformedURLException e) {
-                        e.printStackTrace();
-                    }*/
-                    usuario.setEmail(Objects.requireNonNull(emailTask));
-
-                    for (DataSnapshot usuarios : dataSnapshot.getChildren()) {
-                        if (usuarios != null) {
-                            if (usuarios.child("id").getValue() != null) {
-                                if (Objects.requireNonNull(usuarios.child("id").getValue()).toString().equalsIgnoreCase(uidTask)) {
-                                    usuarioExists = true;
-
-                                    if (Objects.requireNonNull(usuarios.child("loginCompleto").getValue()).toString()
-                                            .equalsIgnoreCase("true")) {
-
-                                        //direciona para a tela principal
-                                        startActivity(new Intent(LoginActivity.this, MainActivity.class));
-                                    } else {
-                                        startActivity(new Intent(LoginActivity.this, ComplementoLoginActivity.class));
-                                    }
-                                    break;
-                                }
-                            }
-                        }
-                    }
-                    if (!usuarioExists) {
-                        usuario.salvar();
-                        startActivity(new Intent(LoginActivity.this, ComplementoLoginActivity.class));
-                    }
-                }
-
-                @Override
-                public void onCancelled(@NonNull DatabaseError databaseError) {
-                    Util.setSnackBar(layout, "12-" + databaseError.getMessage());
-                }
-            });
-        } catch (Exception e) {
-            e.printStackTrace();
-            Util.setSnackBar(layout, "13-"+e.getMessage());
-        }
-    }
-
+    //@SuppressLint("MissingPermission")
     private void tentarLogin() {
 
         //esconde o teclado
@@ -594,58 +451,58 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         //cadastrando...
         if (swtLoginCadastrar.isChecked()) {
 
-            //if (txiNome.getText() != null && !txiNome.getText().toString().equalsIgnoreCase("")) {
+            if (txiNome.getText() != null && !txiNome.getText().toString().equalsIgnoreCase("")) {
 
-            authentication.createUserWithEmailAndPassword(email, password)
-                    .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
-                        @Override
-                        public void onComplete(@NonNull Task<AuthResult> task) {
+                authentication.createUserWithEmailAndPassword(email, password)
+                        .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+                            @Override
+                            public void onComplete(@NonNull Task<AuthResult> task) {
 
-                            if (task.isSuccessful()) {
+                                if (task.isSuccessful()) {
 
-                                swtLoginCadastrar.setChecked(false);
-                                Util.setSnackBar(layout, getString(R.string.cadastro_realizado));
-                                sendVerificationEmail();
+                                    swtLoginCadastrar.setChecked(false);
+                                    Util.setSnackBar(layout, getString(R.string.cadastro_realizado));
+                                    sendVerificationEmail();
 
-                                //FirebaseUser user = ConfiguracaoFirebase.getFirebaseAutenticacao().getCurrentUser();
+                                    FirebaseUser user = ConfiguracaoFirebase.getFirebaseAutenticacao().getCurrentUser();
 
-                                //UserProfileChangeRequest profileUpdates = new UserProfileChangeRequest.Builder()
-                                //       .setDisplayName(txiNome.getText().toString()).build();
+                                    UserProfileChangeRequest profileUpdates = new UserProfileChangeRequest.Builder()
+                                            .setDisplayName(txiNome.getText().toString()).build();
 
-                                ////if (user != null) {
-                                //     user.updateProfile(profileUpdates);
-                                // }
+                                    if (user != null) {
+                                        user.updateProfile(profileUpdates);
+                                    }
 
-                                //criando usuario...
-                                Usuario usuario = new Usuario();
-                                usuario.setId(Objects.requireNonNull(task.getResult()).getUser().getUid());
-                                // usuario.setNome(txiNome.getText().toString());
-                                usuario.setEmail(email);
-                                usuario.salvar();
+                                    //criando usuario...
+                                    Usuario usuario = new Usuario();
+                                    usuario.setId(Objects.requireNonNull(task.getResult()).getUser().getUid());
+                                    usuario.setNome(txiNome.getText().toString());
+                                    usuario.setEmail(email);
+                                    usuario.salvar();
 
-                            } else {
-                                String erroExcecao;
-                                try {
-                                    throw Objects.requireNonNull(task.getException());
-                                } catch (FirebaseAuthWeakPasswordException e) {
-                                    erroExcecao = getString(R.string.digite_senha_forte);
-                                } catch (FirebaseAuthInvalidCredentialsException e) {
-                                    erroExcecao = getString(R.string.digite_email_valido);
-                                } catch (FirebaseAuthUserCollisionException e) {
-                                    erroExcecao = getString(R.string.conta_cadastrada);
-                                } catch (FirebaseAuthInvalidUserException e) {
-                                    erroExcecao = getString(R.string.usuario_inexistente);
-                                } catch (Exception e) {
-                                    erroExcecao = getString(R.string.falha_cadastro_usuario) + e.getMessage();
-                                    e.printStackTrace();
+                                } else {
+                                    String erroExcecao;
+                                    try {
+                                        throw Objects.requireNonNull(task.getException());
+                                    } catch (FirebaseAuthWeakPasswordException e) {
+                                        erroExcecao = getString(R.string.digite_senha_forte);
+                                    } catch (FirebaseAuthInvalidCredentialsException e) {
+                                        erroExcecao = getString(R.string.digite_email_valido);
+                                    } catch (FirebaseAuthUserCollisionException e) {
+                                        erroExcecao = getString(R.string.conta_cadastrada);
+                                    } catch (FirebaseAuthInvalidUserException e) {
+                                        erroExcecao = getString(R.string.usuario_inexistente);
+                                    } catch (Exception e) {
+                                        erroExcecao = getString(R.string.falha_cadastro_usuario) + e.getMessage();
+                                        e.printStackTrace();
+                                    }
+                                    Util.setSnackBar(layout, getString(R.string.erro) + erroExcecao);
                                 }
-                                Util.setSnackBar(layout, getString(R.string.erro) + erroExcecao);
                             }
-                        }
-                    });
-            //} else {
-            // Util.setSnackBar(layout, getString(R.string.insira_seu_nome));
-            //}
+                        });
+            } else {
+                Util.setSnackBar(layout, getString(R.string.insira_seu_nome));
+            }
             //logando...
         } else {
             if (!email.equalsIgnoreCase("") && !password.equalsIgnoreCase("")) {
@@ -952,11 +809,11 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             long tempo = 1000; //5 minutos
             float distancia = 30; // 30 metros
 
-            String[] perm = new String[mark2];
+            String[] perm = new String[2];
             perm[0] = permission.ACCESS_FINE_LOCATION;
-            perm[mark1] = permission.ACCESS_COARSE_LOCATION;
+            perm[1] = permission.ACCESS_COARSE_LOCATION;
 
-            if (Permissoes.validarPermissoes(perm, this, mark1)) {
+            if (Permissoes.validarPermissoes(perm, this, 1)) {
 
                 locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, tempo, distancia, new LocationListener() {
 
